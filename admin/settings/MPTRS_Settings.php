@@ -33,6 +33,9 @@
                                 <li data-tabs-target="#mptrs_settings_date_time">
                                     <i class="fas fa-clock _mR_xs"></i><?php esc_html_e('Date & Time', 'tablely'); ?>
                                 </li>
+								<li data-tabs-target="#mptrs_seat_mapping">
+                                    <i class="fas fa-chair _mR_xs"></i><?php esc_html_e('Seat Mapping', 'tablely'); ?>
+                                </li>
                                 <li data-tabs-target="#mptrs_extra_service_settings">
                                     <i class="fas fa-funnel-dollar _mR_xs"></i><?php esc_html_e('Extra Service', 'tablely'); ?>
                                 </li>
