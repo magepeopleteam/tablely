@@ -62,9 +62,14 @@
 				// admin setting global
 				wp_enqueue_script('mptrs_admin_settings', MPTRS_PLUGIN_URL . '/assets/admin/mptrs_admin_settings.js', array('jquery'), time(), true);
 				wp_enqueue_style('mptrs_admin_settings', MPTRS_PLUGIN_URL . '/assets/admin/mptrs_admin_settings.css', array(), time());
+                wp_enqueue_style('create_seat_plan', MPTRS_PLUGIN_URL . '/assets/frontend/create_seat_plan.css', [], time());
+
+                wp_enqueue_script('jquery', 'https://code.jquery.com/jquery-3.6.0.min.js', [], null, true);
+                wp_enqueue_script('jquery-ui', 'https://code.jquery.com/ui/1.12.1/jquery-ui.min.js', ['jquery'], null, true);
 				// ****custom************//
 				wp_enqueue_style('mptrs_admin', MPTRS_PLUGIN_URL . '/assets/admin/mptrs_admin.css', [], time());
 				wp_enqueue_script('mptrs_admin', MPTRS_PLUGIN_URL . '/assets/admin/mptrs_admin.js', ['jquery'], time(), true);
+				wp_enqueue_script('create_seat_plan', MPTRS_PLUGIN_URL . '/assets/admin/create_seat_plan.js', ['jquery'], time(), true);
 				wp_localize_script('mptrs_admin', 'mptrs_admin_ajax', array(
 					'ajax_url' => admin_url('admin-ajax.php'),
 					'nonce'    => wp_create_nonce('mptrs_admin_nonce')

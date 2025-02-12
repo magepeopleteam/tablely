@@ -20,6 +20,10 @@
 				// mptrs_delete_faq_data
 				add_action('wp_ajax_mptrs_faq_delete_item', [$this, 'faq_delete_item']);
 				add_action('wp_ajax_nopriv_mptrs_faq_delete_item', [$this, 'faq_delete_item']);
+
+                // mptrs_set seat maps
+                add_action('wp_ajax_mptrs_save_seat_maps_meta_data', [$this, 'mptrs_save_seat_maps_meta_data']);
+                add_action('wp_ajax_nopriv_mptrs_save_seat_maps_meta_data', [$this, 'mptrs_save_seat_maps_meta_data']);
 			}
 			public function my_custom_editor_enqueue() {
 				// Enqueue necessary scripts
@@ -219,6 +223,39 @@
 				}
 				die;
 			}
+
+            public function mptrs_save_seat_maps_meta_data(){
+//                check_ajax_referer('custom_ajax_nonce', 'nonce');
+
+                $post_id = intval($_POST['post_id']);
+                error_log( print_r( [ '$post_id' => $post_id ], true ) );
+                if (!$post_id || get_post_type($post_id) !== 'mptrs_item') {
+                    wp_send_json_error(['message' => 'Invalid post ID or post type.']);
+                }
+
+                if (!current_user_can('edit_post', $post_id)) {
+                    wp_send_json_error(['message' => 'Permission denied.']);
+                }
+
+                $custom_field_1 = $_POST['custom_field_1'];
+                $seat_plan_texts= isset( $_POST['seatPlanTexts'] ) ? $_POST['seatPlanTexts'] : '' ;
+                $seatIcon = isset( $_POST['seatIcon'] ) ? $_POST['seatIcon'] : 'noicon';
+                $dynamicShapes = isset( $_POST['dynamicShapes'] ) ? $_POST['dynamicShapes'] : '';
+                $template = isset( $_POST['template'] ) ? $_POST['template'] : '';
+                $seat_plan_data = array(
+                    'seat_data' => $custom_field_1,
+                    'seat_text_data' => $seat_plan_texts,
+                    'seatIcon' => $seatIcon,
+                    'dynamic_shapes' => $dynamicShapes,
+                );
+                update_post_meta( $post_id, '_mptrs_seat_maps_data', $seat_plan_data );
+                if( $template !== '' ){
+                    update_post_meta( $post_id, 'mptrs_is_seat_map_template', $template );
+                }
+
+                wp_send_json_success(['message' => 'Meta data saved successfully.']);
+            }
+
 		}
 		new MPTRS_Faq_Settings();
 	}

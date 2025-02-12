@@ -1,0 +1,983 @@
+.seatContentHolder{
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 550px;
+}
+.seatPlanHolder{
+    display: flex;
+    position: relative;
+    width: calc( 100% - 150px );
+    height: 500px;
+    overflow: scroll;
+}
+.seatActionControl{
+    display: block;
+    width: 150px;
+    margin-left: 10px;
+    max-height: 500px;
+    overflow: scroll;
+}
+#parentDiv {
+    border: 1px solid #e9e4e4;
+    position: absolute;
+    padding: 10px;
+}
+#setColor{
+    width: 30px;
+    margin-bottom: 2px;
+}
+
+#setPrice{
+    width: 60px;
+}
+.priceText{
+    width: 53px;
+    text-align: center;
+    padding-top: 5px;
+}
+.textPriceHolder{
+    display: flex;
+    width: 120px;
+    margin-bottom: 3px;
+}
+.movementHolder{
+    display: grid;
+    width: 100%;
+    padding-bottom: 10px;
+}
+.childDiv {
+    width: 35px;
+    height: 35px;
+    border: 1px dotted #c1bdbd;
+    position: absolute !important;
+    text-align: center;
+    line-height: 35px;
+    user-select: none;
+    font-size: 13px;
+    cursor: pointer;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.selected {
+    /*border: 1px solid #000000;*/
+    /*border: 2px dotted #000000;*/
+    border: 2px dashed #000000;
+}
+.selectedShape{
+    border: 2px dashed #0e0101;
+}
+.controls {
+    margin-bottom: 10px;
+}
+
+.removeSelected,
+.removeSelected,
+.importFromTemplatePopUp,
+.set_single_select,
+.setTextnew{
+    border: 1px solid #d3cccc !important;
+    font-weight: bold;
+}
+
+.rotateControls{
+    display: grid;
+    width: 100%;
+    border-bottom: 1px dotted #e5dfdf;
+}
+
+.seatIconContainer{
+    display: block;
+    padding-bottom: 10px;
+    margin-top: 5px;
+    float: left;
+    width: 100%;
+}
+
+.selectedPaste{
+    background-color: #999900;
+    color: #fff;
+}
+.shapeDisplayIconHolder{
+    display: block;
+    float: left;
+    position: relative;
+    width: 100%;
+    padding: 5px;
+    margin: 5px 0px;
+}
+.shapeDisplayIcons{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 2px;
+}
+.shapeDisplayIcon{
+    width: 25px;
+    height: 23px;
+    border: 1px solid #ddd9d9;
+    padding: 2px;
+    margin: 2px;
+    cursor: pointer;
+}
+
+.seatIconContainer, .movementHolder{
+    border-bottom: 1px dotted #b9b2b2;
+}
+
+.rotateDone{
+    border: 1px solid #d3cccc !important;
+    font-weight: bold;
+}
+
+.controls input {
+    margin-right: 10px;
+}
+/*.circleSelected{
+    background-color: #999900;
+}*/
+
+.set_text_holdercontainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.set_text_holder {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.set_text_holder .close_set_text {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    color: red;
+    font-weight: bold;
+}
+.set_text_display{
+    display: flex;
+    min-width: 100px;
+}
+.close_set_text{
+    color: #fff;
+}
+.seatText{
+    text-align: center;
+    line-height: 12px;
+    font-size: 12px;
+    overflow: visible;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    /*background-color: #fff;*/
+}
+.controlTextSizeHolder{
+    /*font-size: 14px;
+    font-weight: bold;
+    color: #990000;
+    background-color: #000000b8;
+    width: 12px;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    opacity: 1;
+    border-radius: 3px;*/
+    font-size: 14px;
+    font-weight: bold;
+    color: #990000;
+}
+.ui-icon{
+    visibility: hidden;
+}
+.seatNumber{
+    position: absolute;
+    top: 0px;
+    left: 10px;
+    z-index: 10;
+    color: #fff;
+}
+
+.enable_single_seat_selection,
+.circleSelected,
+.enable_set_text,
+.enable_drag_drop,
+.enable_resize_selected,
+.enable_clear_selected,
+.enable_set_multiselect,
+.enable_set_seat,
+.enable_set_shape,
+.setSeatNumberSelected,
+.enable_erase_seat,
+.shapeTextSelected,
+.enable_set_seat_number{
+    background-color: #cf933d;
+    color: #fff;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.childDiv.dotted {
+    outline: 2px dotted #000;
+}
+
+.movementControl{
+    display: flex;
+    position: relative;
+    margin-top: 5px;
+    /*height: 30px;*/
+}
+.movement{
+    position: relative;
+    cursor: pointer;
+}
+.arrowIcon{
+    font-size: 28px;
+    margin-right: 3px;
+}
+.seatIconTitle{
+    font-family: roboto sans-serif;
+    color: #666666;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.rotationHandle{
+    width: 130px;
+    padding: 0px 4px 0 3px !important;
+    font-size: 11px !important;
+}
+
+.seatRotateIconTextHolder{
+    display: block;
+    float: right;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.seatRotateIconImgHolder{
+    display: flex;
+    width: 100%;
+    height: 30px;
+}
+
+.seatRotateIconHolder{
+    display: flex;
+    width: 100%;
+    height: 30px;
+}
+.seatRotateDegree{
+    width: 60px;
+    padding: 0 5px !important;
+    margin-left: 10px;
+}
+.seatRotateIconText{
+    display: block;
+    float: left;
+    width: 100%;
+    position: relative;
+}
+
+.movementInPx{
+    margin-left: 0;
+    width: 50px;
+    height: 30px;
+    padding: 0 5px !important;
+}
+.movementText{
+    width: 100%;
+    text-align: left;
+    line-height: 14px;
+    font-family: roboto sans-serif;
+    color: #444444;
+    font-size: 14px;
+}
+
+.controls input[type="text"],
+.controls input[type="number"] {
+    padding: 2px 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 80px;
+    margin-right: 5px;
+}
+
+.controls label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
+.controls button {
+    padding: 6px 5px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.setPriceColorHolder{
+    display: block;
+    float: left;
+    position: relative;
+    width: 100%;
+}
+.colorPriceHolder{
+    width: 100%;
+    display: grid;
+    margin-bottom: 12px;
+    margin-top: 10px;
+}
+
+.setShapeTitle{
+    display: block;
+    float: left;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.controls .setSeatNumber {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.planControlHolder{
+    width: 100%;
+    display: flex;
+    gap: 5px;
+}
+
+.lasso-cursor {
+    cursor: crosshair;
+}
+
+#applyChanges,
+#make_circle,
+#applyColorChanges,
+#set_seat_number,
+#enable_resize,
+#enable_drag_drop,
+#set_multiselect,
+#set_seat,
+#set_shape,
+#clearAll,
+#savePlanAsTemplate,
+#savePlan {
+    font-weight: bold;
+}
+
+#set_seat_number{
+    margin-top: 2px;
+}
+
+
+
+#applyChanges, #applyColorChanges, #set_seat_number{
+    background-color: #817a7a;
+    color: #fff;
+    width: 125px;
+    border-width: 1px;
+    padding: 3px 0px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#applyChanges:hover,
+#applyColorChanges:hover,
+#set_seat_number:hover {
+    background-color: #218838;
+}
+
+.seatNumberContainer{
+    display: flex;
+    width: 130px;
+}
+
+#seat_number_prefix{
+    width: 75px;
+}
+#seat_number_count {
+    width: 45px;
+    padding: 0 2px !important;
+}
+
+#clearAll {
+    display: block;
+    float: left;
+    background-color: #dc3545;
+    color: #fff;
+    height: 30px;
+    width: 100%;
+    margin-bottom: 10px;
+    border: 1px solid #666666;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#clearAll:hover {
+    background-color: #c82333;
+}
+
+#savePlan {
+    display: block;
+    float: left;
+    background-color: #37a8db;
+    color: #fff;
+    height: 30px;
+    width: 100%;
+    margin-bottom: 10px;
+    border: 1px solid #666666;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#savePlanAsTemplate{
+    display: block;
+    float: left;
+    background-color: #728289;
+    color: #f9f7f7;
+    height: 40px;
+    width: 100%;
+    margin-bottom: 10px;
+    border: 1px solid #666666;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#savePlan:hover,
+#savePlanAsTemplate:hover {
+    cursor: pointer;
+    background-color: #e0a800;
+}
+
+#enable_resize,
+#enable_drag_drop,
+#make_circle,
+#set_seat,
+#set_shape,
+#set_multiselect {
+    border: 1px solid #d3cccc;
+}
+
+#setText:hover,
+#enable_resize:hover,
+#removeSelected:hover,
+#rotateDone:hover,
+#set_single_select:hover,
+#enable_drag_drop:hover,
+#make_circle:hover,
+#set_multiselect:hover {
+    background-color: #138496;
+    color: #fff;
+}
+
+.tooltip {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    display: none;
+    white-space: nowrap;
+    z-index: 999;
+}
+
+/* Popup container (background overlay) */
+.popup {
+    display: none;
+    position: absolute;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color:rgb(0 0 0 / 22%);
+}
+#templatePopupContainer {
+    display: block;
+    position: absolute;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color:rgb(0 0 0 / 22%);
+}
+
+.seatTextControl{
+    display: none;
+}
+
+.seatIconHolder{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 2px;
+    /*background-color: #990000;*/
+}
+.seatIcon{
+    width: 25px;
+    height: 23px;
+    border: 1px solid #ddd9d9;
+    padding: 2px;
+    margin: 2px;
+    cursor: pointer;
+}
+.iconSelected{
+    background-color: #61abe5;
+}
+
+.dynamicShape {
+    position: absolute;
+    z-index: 30;
+    cursor: move;
+    box-shadow: 0 3px 9pt rgba(0, 0, 0, .23), 0 3px 9pt rgba(0, 0, 0, .16);
+    /*border: 1px solid #b3adad5c; !* Optional: for visibility *!*/
+}
+.dynamicShapeHolder{
+    display: none;
+    width: 100%;
+    float: left;
+    position: relative;
+    margin-bottom: 10px;
+}
+.shapeRotationHolder{
+    display: flex;
+}
+.textRotationHolder{
+    display: flex;
+    width: 120px;
+}
+.shapeRotate, .textRotate{
+    padding: 3px;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.setShapeColor{
+    width: 28px;
+}
+.shapeText{
+    display: block;
+    float: left;
+    position: relative;
+    margin: 2px;
+    padding: 2px 3px;
+    border: 1px solid #6666;
+    cursor: pointer;
+    border-radius: 2px;
+}
+.shapeIcon{
+    width: 20px;
+    height: 17px;
+}
+
+#uploadSection {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 20px;
+}
+#iconUpload {
+    margin: 10px 0;
+}
+#previewImage {
+    margin-top: 15px;
+    max-width: 200px;
+    display: none;
+}
+
+.featureImagesHolder{
+    width: 100%;
+    display: block;
+    float: left;
+    position: relative;
+}
+.featureImages{
+    display: block;
+    width: calc(100% - 20px);
+    height: 80px;
+    margin: auto;
+    border-radius: 3px;
+}
+
+.templateLinks{
+    display: block;
+    float: left;
+    position: relative;
+    padding: 5px 1px;
+    width: 100%;
+    overflow: hidden;
+    color: #666666;
+    font-size: 16px;
+    line-height: 16px;
+}
+/* Popup content box */
+.popupContent {
+    position: relative;
+    margin: 15% auto;
+    padding: 20px;
+    width: 180px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+.templatePopupContent {
+    position: relative;
+    margin: 10px;
+    padding: 20px;
+    width: calc( 100% - 60px);
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+.templatesHolder{
+    width: 100%;
+    position: relative;
+    display: grid;
+    gap: 5px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+.templates{
+    display: block;
+    float: left;
+    border: 1px solid #dddada;
+    padding: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.templateSelected{
+    border: 2px dashed #5b5757;
+}
+.plus, .minus{
+    cursor: pointer;
+}
+.textMove{
+    cursor: pointer;
+    padding: 3px;
+}
+
+/* Close button */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.templatePopupClose {
+    position: absolute;
+    top: 0px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #666666;
+}
+.importSeatPlanText{
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+    display: block;
+    text-align: center;
+}
+.importSeatPlanTitleText{
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 5px;
+    display: block;
+    text-align: center;
+}
+.templateLinks{
+    text-underline: none;
+    text-decoration: none;
+}
+
+.focus-out {
+    animation: focusOut 0.8s ease-in-out forwards;
+}
+@keyframes focusOut {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+.templatePopupClose:hover{
+    color: #990000;
+}
+
+.dynamic-input {
+    border: 1px solid #ccc;
+    padding: 5px;
+    font-size: 14px;
+}
+.dynamic-text {
+    font-size: 14px;
+    color: #333;
+}
+button.zoom-in, button.zoom-out {
+    padding: 1px 2px;
+    font-size: 14px;
+    cursor: pointer;
+}
+button.zoom-in:hover, button.zoom-out:hover {
+    background-color: #ddd;
+}
+.text-wrapper{
+    z-index: 50;
+}
+
+.textSelected{
+    border: 2px dashed #0a0a0a;
+}
+
+.zoom-in, .zoom-out, .setRotateBtn {
+    display: block;
+    margin-left: 4px;
+    padding-block: 1px;
+    padding-inline: 3px
+}
+.remove-text, .removeShape{
+    display: block;
+    margin-left: 4px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 1px 3px;
+    cursor: pointer;
+}
+
+.dynamicTextControlHolder{
+    display: block;
+    float: left;
+    position: relative;
+    margin-bottom: 10px;
+    width: 100%;
+}
+.dynamicTextControlText{
+    display: block;
+    float: left;
+    position: relative;
+    width: 100%;
+    text-align: left;
+    padding: 2px 0px;
+}
+.dynamicShapeControl{
+    display: block;
+    float: left;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.colorRemoveHolder{
+    display: flex;
+    width: 100%;
+    padding-top: 5px;
+}
+#setShapeColor{
+    width: 30px;
+}
+.dynamicShapeControlText{
+    display: block;
+    float: left;
+    position: relative;
+    width: 100%;
+}
+.removeDynamicShape{
+    display: block;
+    margin-left: 4px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 1px 5px;
+    height: 27px;
+    cursor: pointer;
+}
+.set-color, .setShapeColor{
+    display: block;
+    margin-left: 4px;
+    background-color: blue;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 1px 3px;
+    cursor: pointer;
+}
+
+.setTextColor {
+    display: block;
+    margin-left: 4px;
+    background-color: blue;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 1px 3px;
+    cursor: pointer;
+}
+
+.dynamicTextControlContainer {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    /*box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);*/
+}
+
+.textControl {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    /*align-items: center;*/
+    /*margin-bottom: 10px;*/
+}
+
+.textControl button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.textControl button:hover {
+    background-color: #2980b9;
+}
+
+.textControl .remove-text {
+    background-color: #e74c3c;
+}
+
+.textControl .remove-text:hover {
+    background-color: #c0392b;
+}
+
+.textControl input[type="color"] {
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    cursor: pointer;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.textRotationHolder {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.textRotationHolder img {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.textRotationHolder img:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+}
+
+
+
+
+/* Hide the actual file input */
+.seatIconUpload {
+    display: none;
+}
+
+/* Style the label to look like an image */
+.seat-icon-upload-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.seat-icon-upload-label {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.seat-icon-image {
+    width: 27px;
+    height: 27px;
+    object-fit: cover;
+    /*border: 1px solid #ccc;*/
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-top: 3px;
+}
+
+.seat-icon-image:hover {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a shadow */
+}
+
+
+/* Custom scrollbar styles */
+.seatActionControl::-webkit-scrollbar {
+    width: 4px;
+}
+.seatActionControl::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 2px;
+}
+.seatActionControl::-webkit-scrollbar-thumb {
+    background: #c1bfbf;
+    border-radius: 4px;
+}
+.seatActionControl::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
