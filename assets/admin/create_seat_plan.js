@@ -39,7 +39,7 @@ jQuery(document).ready(function ($) {
         formData.append('icon', fileInput);
 
         $.ajax({
-            url: ajax_object.ajax_url,
+            url: mptrs_admin_ajax.ajax_url,
             type: 'POST',
             data: {
                 action: 'upload_icon',
@@ -112,11 +112,11 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
         let postId = $(this).parent().parent().attr('id');
         $.ajax({
-            url: ajax_object.ajax_url,
+            url:  mptrs_admin_ajax.ajax_url,
             type: 'POST',
             data: {
                 action: 'render_manage_seat_templates_for_import',
-                nonce: ajax_object.nonce,
+                nonce: mptrs_admin_ajax.nonce,
                 paged: 1,
                 postId: postId,
             },
@@ -129,7 +129,7 @@ jQuery(document).ready(function ($) {
                                                 </div>\
                                             </div>\
                                         </div>';
-                    $("#seatContentHolder").append( popUp );
+                    $("#mptrs_seatContentHolder").append( popUp );
                 } else {
                     alert('Failed to load templates.');
                 }
@@ -948,7 +948,7 @@ jQuery(document).ready(function ($) {
             }
         });
     }
-    loadPlans();
+    // loadPlans();
 
     let isMultiSelecting = false;
     let isDragging = false;
@@ -1618,7 +1618,7 @@ jQuery(document).ready(function ($) {
             formData.append('action', 'image_upload');
             formData.append('nonce', ajax_object.nonce);
             $.ajax({
-                url: ajax_object.ajax_url,
+                url: mptrs_admin_ajax.ajax_url,
                 type: 'POST',
                 data: formData,
                 contentType: false,
