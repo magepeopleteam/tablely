@@ -22,7 +22,6 @@
 				require_once MPTRS_PLUGIN_DIR . '/admin/MPTRS_Dummy_Import.php';
 				require_once MPTRS_PLUGIN_DIR . '/admin/MPTRS_Hidden_Product.php';
 				require_once MPTRS_PLUGIN_DIR . '/admin/MPTRS_CPT.php';
-				require_once MPTRS_PLUGIN_DIR . '/admin/MPTRS_Quick_Setup.php';
 				//*************Global Settings*****************//
 				require_once MPTRS_PLUGIN_DIR . '/admin/global/MPTRS_Setting_API.php';
 				require_once MPTRS_PLUGIN_DIR . '/admin/global/MPTRS_Settings_Global.php';
