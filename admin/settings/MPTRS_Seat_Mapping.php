@@ -303,12 +303,12 @@
                                             <button class="seatCopyStore">Copy</button>
                                         </div>
                                         <div class="rotateControls">
-                                            <!--<select class="rotationHandle" name="rotationHandle" id="rotationHandle" style="display: none">
+                                            <select class="rotationHandle" name="rotationHandle" id="rotationHandle" style="display: none">
                                                 <option class="options" selected value="top-to-bottom">Rotate top to bottom</option>
                                                 <option class="options"  value="bottom-to-top">Rotate bottom to Top</option>
                                                 <option class="options"  value="right-to-left">Rotate right to Left</option>
                                                 <option class="options"  value="left-to-right">Rotate left to Right</option>
-                                            </select>-->
+                                            </select>
                                             <div class="seatRotateIconTextHolder">
                                                 <span class="seatRotateIconText">Seat Rotate In Degree</span>
                                                 <div class="seatRotateIconImgHolder"> 
