@@ -15,6 +15,7 @@
 		class MPTRS_Plugin {
 			public function __construct() {
 				$this->load_plugin();
+				$this->define_constants();
 			}
 			private function load_plugin() {
 				include_once(ABSPATH . 'wp-admin/includes/plugin.php');
@@ -49,6 +50,16 @@
 				$text = esc_html__('You Must Install WooCommerce Plugin before activating Tablely Manager, Because It is dependent on Woocommerce Plugin.', 'tablely') . '<a class="btn button" href="' . esc_html($wc_install_url) . '">' . esc_html__('Click Here to Install', 'tablely') . '</a>';
 				printf('<div class="error" style="background:red; color:#fff;"><p>%s</p></div>', wp_kses_post($text));
 			}
+
+            public function define_constants() {
+                define( 'MPTRS_Plan_FILE', __FILE__ );
+                define( 'MPTRS_Plan_PATH', __DIR__ );
+                define( 'MPTRS_Plan_API_LINK', MPTRS_Plan_FILE . 'api/' );
+                define( 'MPTRS_Plan_URL', plugins_url( '', MPTRS_Plan_FILE ) );
+                define( 'MPTRS_Plan_ASSETS', MPTRS_Plan_URL . '/assets/' );
+                define( 'MPTRS_Plan_PLUGIN_NAME', plugin_basename(__FILE__ ) );
+
+            }
 		}
 		new MPTRS_Plugin();
 	}
