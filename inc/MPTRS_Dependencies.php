@@ -23,7 +23,7 @@
 			}
 
 			private function load_file(): void {
-				require_once MPTRS_PLUGIN_DIR . '/Admin/MPTRS_Quick_Setup.php';
+				require_once MPTRS_PLUGIN_DIR . '/admin/MPTRS_Quick_Setup.php';
 				require_once MPTRS_PLUGIN_DIR . '/inc/MPTRS_Function.php';
 				require_once MPTRS_PLUGIN_DIR . '/inc/MPTRS_Slider.php';
 				require_once MPTRS_PLUGIN_DIR . '/inc/MPTRS_Style.php';
