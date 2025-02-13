@@ -1957,7 +1957,8 @@ jQuery(document).ready(function ($) {
             alert('No seats selected to save!');
             return;
         }
-        const postId = $('#plan_id').val();
+        const postId = $('#mptrs_mapping_plan_id').val();
+        console.log( postId );
         $.ajax({
             url: mptrs_admin_ajax.ajax_url,
             type: 'POST',
