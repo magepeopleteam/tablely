@@ -411,14 +411,14 @@ function mptrs_sticky_management() {
             }
         }
         if (index < 2 && num_of_tab > index) {
-            parent.find('.mptrs_tab_next').slideDown('fast');
-            parent.find('.mptrs_tab_prev').slideUp('fast');
+            parent.find('.mptrs_next_tab').slideDown('fast');
+            parent.find('.mptrs_prev_tab').slideUp('fast');
         } else if (num_of_tab === index) {
-            parent.find('.mptrs_tab_next').slideUp('fast');
-            parent.find('.mptrs_tab_prev').slideDown('fast');
+            parent.find('.mptrs_next_tab').slideUp('fast');
+            parent.find('.mptrs_prev_tab').slideDown('fast');
         } else {
-            parent.find('.mptrs_tab_next').slideDown('fast');
-            parent.find('.mptrs_tab_prev').slideDown('fast');
+            parent.find('.mptrs_next_tab').slideDown('fast');
+            parent.find('.mptrs_prev_tab').slideDown('fast');
         }
         target_tabContent.slideDown(350);
         tabsContent.children('[data-tabs-next].active').slideUp(350).removeClass('active').promise().done(function () {
@@ -432,20 +432,20 @@ function mptrs_sticky_management() {
             });
         });
     }
-    $(document).on('click', '.mptrs_area .mptrs_tab_next .mptrs_tab_prev_link', function () {
+    $(document).on('click', '.mptrs_area .mptrs_tab_next .mptrs_prev_tab_link', function () {
         let parent = $(this).closest('.mptrs_tab_next');
         if (parent.find('[data-tabs-target-next].active').length > 1) {
-            parent.find('.mptrs_tab_prev').trigger('click');
+            parent.find('.mptrs_prev_tab').trigger('click');
         }
     });
-    $(document).on('click', '.mptrs_area .mptrs_tab_next .mptrs_tab_next', function () {
+    $(document).on('click', '.mptrs_area .mptrs_tab_next .mptrs_next_tab', function () {
         let parent = $(this).closest('.mptrs_tab_next');
         let target = parent.find('.tabListsNext:first');
         let num_of_tab = target.children('[data-tabs-target-next].active').length + 1;
         let targetTab = target.children('[data-tabs-target-next]:nth-child(' + num_of_tab + ')').data('tabs-target-next');
         active_next_tab(parent, targetTab);
     });
-    $(document).on('click', '.mptrs_area .mptrs_tab_next .mptrs_tab_prev', function () {
+    $(document).on('click', '.mptrs_area .mptrs_tab_next .mptrs_prev_tab', function () {
         let parent = $(this).closest('.mptrs_tab_next');
         let target = parent.find('.tabListsNext:first');
         let num_of_tab = target.children('[data-tabs-target-next].active').length - 1;
