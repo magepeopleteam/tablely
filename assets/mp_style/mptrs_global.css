@@ -1023,7 +1023,7 @@
 	.mptrs_area .tabsContentNext { position: relative; width: 100%; padding: var(--mptrs_dmp); }
 	.tabsContentNext [data-tabs-next] { display: none; }
 	.tabsContentNext [data-tabs-next].active { display: block; }
-	.mptrs_tab_prev_link {cursor: pointer;}
+	.mptrs_prev_tab_link {cursor: pointer;}
 }
 /******************************************************************** Panel section ************************************************/
 @media only screen and (min-width: 10px) {
