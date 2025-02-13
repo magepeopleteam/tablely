@@ -108,7 +108,7 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $(document).on('click', '#importFromTemplatePopUp', function ( e ) {
+    $(document).on('click', '#mptrs_importFromTemplate', function ( e ) {
         e.preventDefault();
         let postId = $(this).parent().parent().attr('id');
         $.ajax({
@@ -122,10 +122,10 @@ jQuery(document).ready(function ($) {
             },
             success: function (response) {
                 if (response.success) {
-                    let popUp = '<div id="templatePopupContainer" class="popup">\
+                    let popUp = '<div id="templatePopupContainer" class="mptrs_popup">\
                                             <div class="templatePopupContent">\
                                                 <span id="templatePopupClose" class="templatePopupClose">&times;</span>\
-                                                <div id="popupInnerContent">'+response.data+'\
+                                                <div id="mptrs_popupInnerContent">'+response.data+'\
                                                 </div>\
                                             </div>\
                                         </div>';
@@ -143,16 +143,16 @@ jQuery(document).ready(function ($) {
 
     });
 
-    $(document).on('click', '#set_seat', function (e) {
+    $(document).on('click', '#mptrs_mapping_set_seat', function (e) {
         e.preventDefault();
         $(this).toggleClass('enable_set_seat');
         if( $(this).hasClass('enable_set_seat' ) ){
-            $('#set_single_select').removeClass('enable_single_seat_selection');
-            $('#set_multiselect').removeClass('enable_set_multiselect');
-            $('#removeSelected').removeClass('enable_erase_seat');
-            $('#set_shape').removeClass('enable_set_shape');
-            $('#setTextnew').removeClass('enable_set_text');
-            $('#copyPaste').removeClass('selectedPaste');
+            $('#mptrs_mapping_singleSelect').removeClass('enable_single_seat_selection');
+            $('#mptrs_mapping_multiselect').removeClass('enable_set_multiselect');
+            $('#mptrs_removeSelected').removeClass('enable_erase_seat');
+            $('#mptrs_mapping_set_shape').removeClass('enable_set_shape');
+            $('#mptrs_mapping_setText').removeClass('enable_set_text');
+            $('#mptrs_copyPaste').removeClass('selectedPaste');
             $('body').removeClass('lasso-cursor');
             isSetTextMode = false;
             $('#dynamicShapeHolder').fadeOut();
@@ -160,16 +160,16 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $(document).on('click', '#set_shape', function (e) {
+    $(document).on('click', '#mptrs_mapping_set_shape', function (e) {
         e.preventDefault();
         $(this).toggleClass('enable_set_shape');
         if( $(this).hasClass('enable_set_shape' ) ){
-            $('#set_single_select').removeClass('enable_single_seat_selection');
-            $('#set_multiselect').removeClass('enable_set_multiselect');
-            $('#removeSelected').removeClass('enable_erase_seat');
-            $('#set_seat').removeClass('enable_set_seat');
-            $('#setTextnew').removeClass('enable_set_text');
-            $('#copyPaste').removeClass('selectedPaste');
+            $('#mptrs_mapping_singleSelect').removeClass('enable_single_seat_selection');
+            $('#mptrs_mapping_multiselect').removeClass('enable_set_multiselect');
+            $('#mptrs_removeSelected').removeClass('enable_erase_seat');
+            $('#mptrs_mapping_set_seat').removeClass('enable_set_seat');
+            $('#mptrs_mapping_setText').removeClass('enable_set_text');
+            $('#mptrs_copyPaste').removeClass('selectedPaste');
             $('body').removeClass('lasso-cursor');
             $("#make_circle").fadeIn();
             isSetTextMode = false;
@@ -180,7 +180,7 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $(document).on('click', '#set_multiselect', function (e) {
+    $(document).on('click', '#mptrs_mapping_multiselect', function (e) {
         e.preventDefault();
         $(this).toggleClass('enable_set_multiselect');
         /*isLassoEnabled = !isLassoEnabled;
@@ -191,12 +191,12 @@ jQuery(document).ready(function ($) {
         }*/
 
         if( $(this).hasClass('enable_set_multiselect' ) ){
-            $('#set_single_select').removeClass('enable_single_seat_selection');
-            $('#set_seat').removeClass('enable_set_seat');
-            $('#removeSelected').removeClass('enable_erase_seat');
-            $('#set_shape').removeClass('enable_set_shape');
-            $('#setTextnew').removeClass('enable_set_text');
-            $('#copyPaste').removeClass('selectedPaste');
+            $('#mptrs_mapping_singleSelect').removeClass('enable_single_seat_selection');
+            $('#mptrs_mapping_set_seat').removeClass('enable_set_seat');
+            $('#mptrs_removeSelected').removeClass('enable_erase_seat');
+            $('#mptrs_mapping_set_shape').removeClass('enable_set_shape');
+            $('#mptrs_mapping_setText').removeClass('enable_set_text');
+            $('#mptrs_copyPaste').removeClass('selectedPaste');
             $('#dynamicShapeHolder').fadeOut();
             isSetTextMode = false;
             $('body').addClass('lasso-cursor');
@@ -205,16 +205,16 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $(document).on('click', '#removeSelected', function (e) {
+    $(document).on('click', '#mptrs_removeSelected', function (e) {
         e.preventDefault();
         $(this).toggleClass('enable_erase_seat');
         if( $(this).hasClass('enable_erase_seat' ) ){
-            $('#set_single_select').removeClass('enable_single_seat_selection');
-            $('#set_seat').removeClass('enable_set_seat');
-            $('#set_multiselect').removeClass('enable_set_multiselect');
-            $('#set_shape').removeClass('enable_set_shape');
-            $('#setTextnew').removeClass('enable_set_text');
-            $('#copyPaste').removeClass('selectedPaste');
+            $('#mptrs_mapping_singleSelect').removeClass('enable_single_seat_selection');
+            $('#mptrs_mapping_set_seat').removeClass('enable_set_seat');
+            $('#mptrs_mapping_multiselect').removeClass('enable_set_multiselect');
+            $('#mptrs_mapping_set_shape').removeClass('enable_set_shape');
+            $('#mptrs_mapping_setText').removeClass('enable_set_text');
+            $('#mptrs_copyPaste').removeClass('selectedPaste');
             $('#dynamicShapeHolder').fadeOut();
             $("#make_circle").fadeIn();
             isSetTextMode = false;
@@ -223,16 +223,16 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $(document).on('click', '#set_single_select', function (e) {
+    $(document).on('click', '#mptrs_mapping_singleSelect', function (e) {
         e.preventDefault();
         $(this).toggleClass('enable_single_seat_selection');
         if( $(this).hasClass('enable_single_seat_selection' ) ){
-            $('#set_multiselect').removeClass('enable_set_multiselect');
-            $('#set_seat').removeClass('enable_set_seat');
-            $('#removeSelected').removeClass('enable_erase_seat');
-            $('#setTextnew').removeClass('enable_set_text');
-            $('#set_shape').removeClass('enable_set_shape');
-            $('#copyPaste').removeClass('selectedPaste');
+            $('#mptrs_mapping_multiselect').removeClass('enable_set_multiselect');
+            $('#mptrs_mapping_set_seat').removeClass('enable_set_seat');
+            $('#mptrs_removeSelected').removeClass('enable_erase_seat');
+            $('#mptrs_mapping_setText').removeClass('enable_set_text');
+            $('#mptrs_mapping_set_shape').removeClass('enable_set_shape');
+            $('#mptrs_copyPaste').removeClass('selectedPaste');
             $('#dynamicShapeHolder').fadeOut();
             $('body').removeClass('lasso-cursor');
 
@@ -258,37 +258,37 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $(document).on( 'click', '#setTextnew',function ( e ) {
+    $(document).on( 'click', '#mptrs_mapping_setText',function ( e ) {
         e.preventDefault();
         $(this).toggleClass('enable_set_text');
         if( $(this).hasClass('enable_set_text')){
             isSetTextMode = !isSetTextMode;
-            $('#set_single_select').removeClass('enable_single_seat_selection');
-            $('#set_seat').removeClass('enable_set_seat');
-            $('#set_multiselect').removeClass('enable_set_multiselect');
-            $('#removeSelected').removeClass('enable_erase_seat');
-            $('#set_shape').removeClass('enable_set_shape');
-            $('#copyPaste').removeClass('selectedPaste');
+            $('#mptrs_mapping_singleSelect').removeClass('enable_single_seat_selection');
+            $('#mptrs_mapping_set_seat').removeClass('enable_set_seat');
+            $('#mptrs_mapping_multiselect').removeClass('enable_set_multiselect');
+            $('#mptrs_removeSelected').removeClass('enable_erase_seat');
+            $('#mptrs_mapping_set_shape').removeClass('enable_set_shape');
+            $('#mptrs_copyPaste').removeClass('selectedPaste');
             $('#dynamicShapeHolder').fadeOut();
         }else{
             isSetTextMode = false;
         }
     });
 
-    $(document).on( 'click', '#undo', function (e) {
+    $(document).on( 'click', '#mptrs_undo', function (e) {
         e.preventDefault();
         undo_data_display( removedData );
 
     });
-    $(document).on("click", ".copyPaste", function (e) {
+    $(document).on("click", ".mptrs_copyPaste", function (e) {
         e.preventDefault();
         $(this).toggleClass('selectedPaste');
-        $('#set_single_select').removeClass('enable_single_seat_selection');
-        $('#set_multiselect').removeClass('enable_set_multiselect');
-        $('#removeSelected').removeClass('enable_erase_seat');
-        $('#set_seat').removeClass('enable_set_seat');
-        $('#setTextnew').removeClass('enable_set_text');
-        $('#set_shape').removeClass('enable_set_shape');
+        $('#mptrs_mapping_singleSelect').removeClass('enable_single_seat_selection');
+        $('#mptrs_mapping_multiselect').removeClass('enable_set_multiselect');
+        $('#mptrs_removeSelected').removeClass('enable_erase_seat');
+        $('#mptrs_mapping_set_seat').removeClass('enable_set_seat');
+        $('#mptrs_mapping_setText').removeClass('enable_set_text');
+        $('#mptrs_mapping_set_shape').removeClass('enable_set_shape');
     });
 
     let shapeIconName = '';
@@ -296,7 +296,7 @@ jQuery(document).ready(function ($) {
     $(document).on('click', '.shapeDisplayIcon', function (e) {
         shapeIconName = $(this).attr('id');
         shapeIconImageUrl = $(this).attr('src');
-        $('.dynamicShape.selectedShape').each(function () {
+        $('.mptrs_dynamicShape.selectedShape').each(function () {
             $(this).css({
                 'background-image': `url(${shapeIconImageUrl})`,
                 'background-color': '',
@@ -343,8 +343,8 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    let parentWidth = $(".seatPlanHolder").css('width');
-    // $("#parentDiv").css({ width: parentWidth});
+    let parentWidth = $(".mptrs_seatPlanHolder").css('width');
+    // $("#mptrs_parentDiv").css({ width: parentWidth});
 
     $(document).on('click', '.movement', function (e) {
         // alert('clicked');
@@ -429,7 +429,7 @@ jQuery(document).ready(function ($) {
         selectedDraggableDivs = [];
         selectedSeatsDivs = [];
 
-        $('.dynamicShape, .text-wrapper').each( function () {
+        $('.mptrs_dynamicShape, .text-wrapper').each( function () {
             $(this).remove();
         });
 
@@ -449,8 +449,8 @@ jQuery(document).ready(function ($) {
 
     });
     function hide_remove_shape_text_sellection(){
-        $("#parentDiv").find('.text-wrapper').removeClass('textSelected');
-        $("#parentDiv").find('.dynamicShape').removeClass('selectedShape');
+        $("#mptrs_parentDiv").find('.text-wrapper').removeClass('textSelected');
+        $("#mptrs_parentDiv").find('.mptrs_dynamicShape').removeClass('selectedShape');
         $(".dynamicShapeColorHolder").hide();
         $(".dynamicTextControlHolder").hide();
     }
@@ -462,7 +462,7 @@ jQuery(document).ready(function ($) {
         let seatDivId = $this.attr('id');
         let clickId = seatDivId.replace("div", "");
         let seatTextId = 'seatText'+clickId;
-        if( $('#set_single_select').hasClass('enable_single_seat_selection' ) && $this.hasClass('save') ){
+        if( $('#mptrs_mapping_singleSelect').hasClass('enable_single_seat_selection' ) && $this.hasClass('save') ){
             $this.siblings().removeClass('selected'); // Remove selection from other items in the group
             $this.toggleClass("selected");
             selectedDivs = [];
@@ -474,7 +474,7 @@ jQuery(document).ready(function ($) {
             make_rotate( $(this).attr('id') );
         }
         else{
-            if( $this.hasClass('save') && $('#set_multiselect').hasClass('enable_set_multiselect' ) && !$('#set_seat').hasClass('enable_set_seat' ) ){
+            if( $this.hasClass('save') && $('#mptrs_mapping_multiselect').hasClass('enable_set_multiselect' ) && !$('#mptrs_mapping_set_seat').hasClass('enable_set_seat' ) ){
                 $this.toggleClass("selected");
                 make_rotate( $(this).attr('id') );
                 /*if ($('#make_circle').hasClass('circleSelected')) {
@@ -482,7 +482,7 @@ jQuery(document).ready(function ($) {
                 }*/
             }
             else {
-                if( !$('#set_seat').hasClass('enable_set_seat') ){
+                if( !$('#mptrs_mapping_set_seat').hasClass('enable_set_seat') ){
                     selectedDivs.forEach( div => {
                         div.removeClass('selected');
                     });
@@ -490,7 +490,7 @@ jQuery(document).ready(function ($) {
                  }
             }
         }
-        if( $('#set_seat').hasClass('enable_set_seat' ) && !$this.hasClass('save') ){
+        if( $('#mptrs_mapping_set_seat').hasClass('enable_set_seat' ) && !$this.hasClass('save') ){
             seat_num++;
             $this.addClass("save seatClickable");
             let color = $('#setColor').val();
@@ -519,7 +519,7 @@ jQuery(document).ready(function ($) {
             // if( $('#enable_resize').hasClass('enable_resize_selected')) {
                 if (!$this.data("ui-resizable")) {
                     $this.resizable({
-                        containment: "#parentDiv",
+                        containment: "#mptrs_parentDiv",
                         handles: "all",
                         start: function (event, ui) {
                             isResizing = true;
@@ -543,7 +543,7 @@ jQuery(document).ready(function ($) {
                 }
 
                 $(this).draggable({
-                    containment: "#parentDiv",
+                    containment: "#mptrs_parentDiv",
                     drag: function (event, ui) {
                         const current = $(this);
                         const offsetX = ui.position.left - current.position().left;
@@ -582,7 +582,7 @@ jQuery(document).ready(function ($) {
         }
 
         let text = $('#'+seatTextId).text();
-        if( $('#setText').hasClass('enable_set_text') && $("#set_single_select").hasClass('enable_single_seat_selection') ) {
+        if( $('#setText').hasClass('enable_set_text') && $("#mptrs_mapping_singleSelect").hasClass('enable_single_seat_selection') ) {
             e.stopPropagation();
             $('.set_text_holdercontainer').remove();
             let inputtext = `
@@ -593,16 +593,16 @@ jQuery(document).ready(function ($) {
                       <button class="set_text_button" id="${clickId}">Set text</button>
                     </div>
                   </div>`;
-            $('#parentDiv').prepend(inputtext);
+            $('#mptrs_parentDiv').prepend(inputtext);
 
             if( selectedDivs.length === 0 ){
                 $('.set_text_holdercontainer').remove();
             }
         }
 
-        if( $('#removeSelected').hasClass( 'enable_erase_seat' )) {
+        if( $('#mptrs_removeSelected').hasClass( 'enable_erase_seat' )) {
             removed_seat_data( $(this), 'erase' );
-            $("#undo").show();
+            $("#mptrs_undo").show();
             $(this).removeClass('save');
             $(this).removeClass('selected');
             $(this).css({
@@ -624,7 +624,7 @@ jQuery(document).ready(function ($) {
         }
 
         if( copyData.length > 0 ){
-            if( $('.copyPaste').hasClass('selectedPaste')){
+            if( $('.mptrs_copyPaste').hasClass('selectedPaste')){
                 let copyLeftPos = $(this).css('left');
                 let copyTopPos = $(this).css('top');
                 let copyDataRow = $(this).attr('data-row');
@@ -686,9 +686,9 @@ jQuery(document).ready(function ($) {
                                     <button class="setTextColora" id="color'+seatTextClickId+'">Set Color</button>\
                                 </div\
                                 ';
-        if( !$("#set_single_select").hasClass('enable_single_seat_selection' ) && !$("#removeSelected").hasClass('enable_erase_seat') ) {
-            $('#popupInnerContent').html(textMove); // Inject content
-            $('#popupContainer').fadeIn(); // Show popup
+        if( !$("#mptrs_mapping_singleSelect").hasClass('enable_single_seat_selection' ) && !$("#mptrs_removeSelected").hasClass('enable_erase_seat') ) {
+            $('#popupInnerContent').html(textMove);
+            $('#mptrs_popupContainer').fadeIn();
         }
     });
 
@@ -701,18 +701,18 @@ jQuery(document).ready(function ($) {
     });
 
 
-    $('#closePopup').click(function () {
-        $('#popupContainer').fadeOut(); // Hide popup
+    $('#mptrs_closePopup').click(function () {
+        $('#mptrs_popupContainer').fadeOut();
     });
     $(document).on( 'click', '#templatePopupClose', function (e) {
         e.preventDefault();
-        $('#templatePopupContainer').fadeOut(); // Hide popup
+        $('#templatePopupContainer').fadeOut();
         $('#templatePopupContainer').remove();
     });
-    // Close popup when clicking outside the popup content
-    $('#popupContainer').click(function (event) {
-        if ($(event.target).is('#popupContainer')) {
-            $('#popupContainer').fadeOut(); // Hide popup
+
+    $('#mptrs_popupContainer').click(function (event) {
+        if ($(event.target).is('#mptrs_popupContainer')) {
+            $('#mptrs_popupContainer').fadeOut();
         }
     });
 
@@ -754,7 +754,6 @@ jQuery(document).ready(function ($) {
         let valueLength = $this.val().length;
         $this[0].setSelectionRange(valueLength, valueLength);
     });
-    // Prevent click propagation on popup elements
     $(document).on('click', '.set_text_holdercontainer, .set_text_holder', function (e) {
         e.stopPropagation(); // Allow the input box to focus
     });
@@ -954,13 +953,13 @@ jQuery(document).ready(function ($) {
     let isDragging = false;
     let startPoint = { x: 0, y: 0 };
     let selectionBox = null;
-    let $seatGrid = $("#parentDiv");
+    let $seatGrid = $("#mptrs_parentDiv");
 
     $seatGrid.on('mousedown', function (e) {
         e.preventDefault();
 
         // if ( !$("#enable_drag_drop").hasClass("enable_drag_drop" ) ) {
-            if ($("#set_multiselect").hasClass('enable_set_multiselect')) {
+            if ($("#mptrs_mapping_multiselect").hasClass('enable_set_multiselect')) {
                 isMultiSelecting = true;
                 isDragging = false;
 
@@ -1043,9 +1042,9 @@ jQuery(document).ready(function ($) {
                     selectedSeatsDivs = selectedSeatsDivs.filter(div => div[0] !== $this[0]);
                 }
 
-                if ($("#set_multiselect").hasClass('enable_set_multiselect')) {
+                if ($("#mptrs_mapping_multiselect").hasClass('enable_set_multiselect')) {
                 $(this).draggable({
-                    containment: "#parentDiv",
+                    containment: "#mptrs_parentDiv",
                     drag: function (event, ui) {
                         const current = $(this);
                         const offsetX = ui.position.left - current.position().left;
@@ -1091,13 +1090,13 @@ jQuery(document).ready(function ($) {
     });
 
     function multiSeat_Creation(){
-        let $CreateSeatGrid = $("#parentDiv");
+        let $CreateSeatGrid = $("#mptrs_parentDiv");
         let createMultiSeats = false;
         let createSeatStartPoint = { x: 0, y: 0 };
         let createSeatSelectionBox = null;
         $CreateSeatGrid.on('mousedown', function (e) {
             e.preventDefault();
-            if ( $("#set_seat").hasClass('enable_set_seat') ) {
+            if ( $("#mptrs_mapping_set_seat").hasClass('enable_set_seat') ) {
                 createMultiSeats = true;
                 $('.childDiv').removeClass('hovered'); // Clear previous hover highlights
 
@@ -1202,25 +1201,25 @@ jQuery(document).ready(function ($) {
     //End
 
     let selectShape = 'rectangle';
-    $(document).on('click','.shapeText',function (e) {
+    $(document).on('click','.mptrs_shapeText',function (e) {
         $(this).siblings().removeClass('shapeTextSelected')
         $(this).toggleClass('shapeTextSelected')
         selectShape = $(this).attr('id');
     });
 
-    $(document).on('click','.parentDiv',function (e) {
+    $(document).on('click','.mptrs_parentDiv',function (e) {
         e.preventDefault();
-        if ( $('#setTextnew').hasClass('enable_set_text') ) {
-            $("#parentDiv").find('.text-wrapper').removeClass('textSelected');
+        if ( $('#mptrs_mapping_setText').hasClass('enable_set_text') ) {
+            $("#mptrs_parentDiv").find('.text-wrapper').removeClass('textSelected');
             set_plan_text(e);
         }
-        if( $('#set_shape').hasClass('enable_set_shape' ) ){
-            $("#parentDiv").find('.dynamicShape').removeClass('selectedShape');
+        if( $('#mptrs_mapping_set_shape').hasClass('enable_set_shape' ) ){
+            $("#mptrs_parentDiv").find('.mptrs_dynamicShape').removeClass('selectedShape');
             make_shape( e, selectShape );
         }
 
         if( copyData.length > 0 ){
-            if( $('.copyPaste').hasClass('selectedPaste')){
+            if( $('.mptrs_copyPaste').hasClass('selectedPaste')){
                 copy_data_display( copyData, e );
             }
         }
@@ -1230,15 +1229,15 @@ jQuery(document).ready(function ($) {
     $('#setShapeColor').on('input', function ( e ) {
         e.preventDefault();
         const color = $("#setShapeColor").val();
-        if (color)  $("#parentDiv").find('.dynamicShape.selectedShape').css("background-color", color);
+        if (color)  $("#mptrs_parentDiv").find('.mptrs_dynamicShape.selectedShape').css("background-color", color);
     });
 
     $("#removeDynamicShape").on("click", function (e) {
         e.preventDefault();
-        let this_shape = $("#parentDiv").find('.dynamicShape.selectedShape');
+        let this_shape = $("#mptrs_parentDiv").find('.mptrs_dynamicShape.selectedShape');
         removed_shape_data( this_shape, 'erase' );
         const color = $("#setShapeColor").val();
-        if (color)  $("#parentDiv").find('.dynamicShape.selectedShape').remove();
+        if (color)  $("#mptrs_parentDiv").find('.mptrs_dynamicShape.selectedShape').remove();
         $(".dynamicShapeColorHolder").hide();
     });
 
@@ -1247,22 +1246,22 @@ jQuery(document).ready(function ($) {
     $(document).on("click", ".shapeCopyStore", function (e) {
         copyData = [];
         e.preventDefault();
-        let getShapeData = $("#parentDiv").find('.dynamicShape.selectedShape');
+        let getShapeData = $("#mptrs_parentDiv").find('.mptrs_dynamicShape.selectedShape');
         removed_shape_data( getShapeData, 'copy' );
         alert('Your item is copied select the paste button and click where you want to paste.')
     });
     $(document).on("click", ".textCopy", function (e) {
         copyData = [];
         e.preventDefault();
-        const copyTextDiv = $("#parentDiv").find('.text-wrapper.textSelected');
+        const copyTextDiv = $("#mptrs_parentDiv").find('.text-wrapper.textSelected');
         removed_text_data( copyTextDiv, 'copy' );
         alert('Your item is copied select the paste button and click where you want to paste.');
     });
     $(document).on("click", ".seatCopyStore", function (e) {
         copyData = [];
         e.preventDefault();
-        if( $("#set_single_select").hasClass('enable_single_seat_selection')){
-            const copySeatDiv = $("#parentDiv").find('.childDiv.save.selected');
+        if( $("#mptrs_mapping_singleSelect").hasClass('enable_single_seat_selection')){
+            const copySeatDiv = $("#mptrs_parentDiv").find('.childDiv.save.selected');
             removed_seat_data( copySeatDiv, 'copy' );
             alert('Your item is copied select the paste button and click where you want to paste.');
         }
@@ -1271,7 +1270,7 @@ jQuery(document).ready(function ($) {
 
     $(document).on("click", ".shapeRotate", function (e) {
         e.preventDefault();
-        let getShape = $("#parentDiv").find('.dynamicShape.selectedShape');
+        let getShape = $("#mptrs_parentDiv").find('.mptrs_dynamicShape.selectedShape');
         let deg = parseInt(getShape.attr('data-shape-rotate')) || 0;
         let leftRight = $(this).attr('id'); // ID of the clicked button
         if (leftRight === 'shapeRotateRight') {
@@ -1286,7 +1285,7 @@ jQuery(document).ready(function ($) {
     $(document).on( 'click', '.zoom-in', function (e) {
         e.preventDefault();
         e.stopPropagation();
-        const dynamicText =  $("#parentDiv").find('.text-wrapper.textSelected').children('.dynamic-text');
+        const dynamicText =  $("#mptrs_parentDiv").find('.text-wrapper.textSelected').children('.dynamic-text');
         const currentSize = parseInt(dynamicText.css('font-size'));
 
         if (!isNaN(currentSize)) {
@@ -1297,7 +1296,7 @@ jQuery(document).ready(function ($) {
     $(document).on( 'click', '.zoom-out', function (e) {
         e.preventDefault();
         e.stopPropagation();
-        const dynamicText =  $("#parentDiv").find('.text-wrapper.textSelected').children('.dynamic-text');
+        const dynamicText =  $("#mptrs_parentDiv").find('.text-wrapper.textSelected').children('.dynamic-text');
         const currentSize = parseInt(dynamicText.css('font-size'));
         if (!isNaN(currentSize)) {
             dynamicText.css('font-size', currentSize - 1 + 'px');
@@ -1307,16 +1306,16 @@ jQuery(document).ready(function ($) {
     $(document).on( 'click', '.remove-text', function (e) {
         e.preventDefault();
         e.stopPropagation();
-        const dynamicText =  $("#parentDiv").find('.text-wrapper.textSelected').children('.dynamic-text');
+        const dynamicText =  $("#mptrs_parentDiv").find('.text-wrapper.textSelected').children('.dynamic-text');
 
-        const textDiv = $("#parentDiv").find('.text-wrapper.textSelected');
+        const textDiv = $("#mptrs_parentDiv").find('.text-wrapper.textSelected');
         removed_text_data( textDiv, 'erase' );
         dynamicText.parent().remove();
     });
 
     $(document).on("click", ".textRotate", function (e) {
         e.preventDefault();
-        let getText =$("#parentDiv").find('.text-wrapper.textSelected');
+        let getText =$("#mptrs_parentDiv").find('.text-wrapper.textSelected');
         let textDeg = parseInt(getText.attr('data-text-degree')) || 0;
         let leftRight = $(this).attr('id'); // ID of the clicked button
         if (leftRight === 'textRotateRight') {
@@ -1331,11 +1330,11 @@ jQuery(document).ready(function ($) {
     $('#setTextColor').on('input', function ( e ) {
         e.preventDefault();
         const color = $("#setTextColor").val();
-        const dynamicText =  $("#parentDiv").find('.text-wrapper.textSelected').children('.dynamic-text');
+        const dynamicText =  $("#mptrs_parentDiv").find('.text-wrapper.textSelected').children('.dynamic-text');
         if (color)  dynamicText.css("color", color);
     });
     function make_shape(e, shape_type) {
-        const parentOffset = $('.parentDiv').offset();
+        const parentOffset = $('.mptrs_parentDiv').offset();
         const x = e.pageX - parentOffset.left;
         const y = e.pageY - parentOffset.top;
 
@@ -1399,7 +1398,7 @@ jQuery(document).ready(function ($) {
                 console.warn('Invalid shape_type:', shape_type);
                 return;
         }
-        const shape = $('<div class="dynamicShape" data-shape-rotate="0"></div>').css({
+        const shape = $('<div class="mptrs_dynamicShape" data-shape-rotate="0"></div>').css({
             left: x + 'px',
             top: y + 'px',
             width: width + 'px',
@@ -1409,18 +1408,18 @@ jQuery(document).ready(function ($) {
             ...shapeStyle,
         });
 
-        $('.parentDiv').append(shape);
+        $('.mptrs_parentDiv').append(shape);
         shape.toggleClass('selectedShape');
-        if( $('#set_shape').hasClass('enable_set_shape' ) ){
-            $('#set_shape').removeClass('enable_set_shape');
+        if( $('#mptrs_mapping_set_shape').hasClass('enable_set_shape' ) ){
+            $('#mptrs_mapping_set_shape').removeClass('enable_set_shape');
         }
 
         $(".dynamicShapeColorHolder").show();
 
-        shape.draggable({ containment: '.parentDiv' });
+        shape.draggable({ containment: '.mptrs_parentDiv' });
         // if (!['triangle', 'pentagon', 'hexagon', 'rhombus', 'parallelogram', 'trapezoid'].includes(shape_type)) {
         shape.resizable({
-            containment: '.parentDiv',
+            containment: '.mptrs_parentDiv',
             minHeight: 20,
             minWidth: 20,
         });
@@ -1429,10 +1428,10 @@ jQuery(document).ready(function ($) {
 
     let isShapeDragging = false;
     let addEnableSeat = true;
-    $(document).on("click", ".dynamicShape", function (e) {
+    $(document).on("click", ".mptrs_dynamicShape", function (e) {
         const isAlreadySelected = $(this).hasClass('selectedShape');
-        $("#parentDiv").find('.dynamicShape').removeClass('selectedShape');
-        $("#parentDiv").find('.text-wrapper').removeClass('textSelected');
+        $("#mptrs_parentDiv").find('.mptrs_dynamicShape').removeClass('selectedShape');
+        $("#mptrs_parentDiv").find('.text-wrapper').removeClass('textSelected');
         $(".dynamicTextControlHolder").hide();
         $("#setPriceColorHolder").hide();
         if (!isAlreadySelected) {
@@ -1440,13 +1439,13 @@ jQuery(document).ready(function ($) {
             $(".dynamicShapeColorHolder").show();
             if (!$(this).data("initialized")) {
                 $(this).resizable({
-                    containment: '.parentDiv',
+                    containment: '.mptrs_parentDiv',
                     minHeight: 1,
                     minWidth: 1,
                 });
 
                 $(this).draggable({
-                    containment: "#parentDiv",
+                    containment: "#mptrs_parentDiv",
                     start: function () {
                         isShapeDragging = true;
                         addEnableSeat = false;
@@ -1475,14 +1474,14 @@ jQuery(document).ready(function ($) {
             $(".dynamicShapeColorHolder").hide();
         }
 
-        if( $('#removeSelected').hasClass( 'enable_erase_seat' )) {
+        if( $('#mptrs_removeSelected').hasClass( 'enable_erase_seat' )) {
             removed_shape_data( $(this), 'erase' );
             $(this).remove();
         };
 
     });
     function set_plan_text( e ){
-        const parentOffset = $('.parentDiv').offset();
+        const parentOffset = $('.mptrs_parentDiv').offset();
         const x = e.pageX - parentOffset.left;
         const y = e.pageY - parentOffset.top;
         const inputX = x;
@@ -1495,11 +1494,11 @@ jQuery(document).ready(function ($) {
             width: '120px',
             zIndex: 999,
         });
-        $('.parentDiv').append(input);
+        $('.mptrs_parentDiv').append(input);
         input.focus().blur(function () {
             const text = $(this).val().trim(); // Trim to remove extra spaces
             if (text) {
-                $("#parentDiv").find('.text-wrapper').removeClass('textSelected');
+                $("#mptrs_parentDiv").find('.text-wrapper').removeClass('textSelected');
                 $(".dynamicTextControlHolder").show();
                 const textWrapper = $('<div class="text-wrapper textSelected" data-text-degree="0"></div>').css({
                     position: 'absolute',
@@ -1545,8 +1544,8 @@ jQuery(document).ready(function ($) {
                         }
                     });
                 });*/
-                if( $('#setTextnew').hasClass('enable_set_text') ){
-                    $('#setTextnew').removeClass('enable_set_text');
+                if( $('#mptrs_mapping_setText').hasClass('enable_set_text') ){
+                    $('#mptrs_mapping_setText').removeClass('enable_set_text');
                 }
             } else {
                 $(this).remove();
@@ -1557,8 +1556,8 @@ jQuery(document).ready(function ($) {
     let isTextDragging = false;
     $(document).on("click", ".text-wrapper", function (e) {
         const isAlreadyTextSelected = $(this).hasClass('textSelected');
-        $("#parentDiv").find('.text-wrapper').removeClass('textSelected');
-        $("#parentDiv").find('.dynamicShape').removeClass('selectedShape');
+        $("#mptrs_parentDiv").find('.text-wrapper').removeClass('textSelected');
+        $("#mptrs_parentDiv").find('.mptrs_dynamicShape').removeClass('selectedShape');
         $(".dynamicShapeColorHolder").hide();
         $("#setPriceColorHolder").hide();
 
@@ -1567,7 +1566,7 @@ jQuery(document).ready(function ($) {
             $(".dynamicTextControlHolder").show();
             if (!$(this).data("textInitialized")) {
                 $(this).draggable({
-                    containment: "#parentDiv",
+                    containment: "#mptrs_parentDiv",
                     start: function () {
                         isShapeDragging = true;
                         addEnableSeat = false;
@@ -1595,7 +1594,7 @@ jQuery(document).ready(function ($) {
             $(".dynamicTextControlHolder").hide();
         }
 
-        if( $('#removeSelected').hasClass( 'enable_erase_seat' )) {
+        if( $('#mptrs_removeSelected').hasClass( 'enable_erase_seat' )) {
             removed_text_data( $(this), 'erase'  );
             $(this).remove();
         };
@@ -1676,7 +1675,7 @@ jQuery(document).ready(function ($) {
                           <div class="seatNumber" id="seatNumber_${lastElementData.id}" style="display: block;">${lastElementData.seat_number}</div>
                       </div>`;
         }
-        $("#parentDiv").append( copy_paste_html );
+        $("#mptrs_parentDiv").append( copy_paste_html );
     }
     var removedData = [];
     function removed_seat_data( div, is_erase ){
@@ -1699,7 +1698,7 @@ jQuery(document).ready(function ($) {
         if( is_erase === 'copy' ){
             copyData.push({ id, row, col, color, price, width, height, seat_number, left, top, z_index, data_degree, border_radius, seatText, backgroundImage, boxType });
         }else{
-            $("#undo").show();
+            $("#mptrs_undo").show();
             removedData.push({ id, row, col, color, price, width, height, seat_number, left, top, z_index, data_degree, border_radius, seatText, backgroundImage, boxType });
         }
     }
@@ -1716,7 +1715,7 @@ jQuery(document).ready(function ($) {
         if( is_erase === 'copy' ){
             copyData.push({ shapeLeft, shapeTop, shapeWidth, shapeHeight, shapeBackgroundColor, shapeBorderRadius, shapeClipPath, shapeRotateDeg, boxType });
         }else{
-            $("#undo").show();
+            $("#mptrs_undo").show();
             removedData.push({ shapeLeft, shapeTop, shapeWidth, shapeHeight, shapeBackgroundColor, shapeBorderRadius, shapeClipPath, shapeRotateDeg, boxType });
         }
 
@@ -1733,7 +1732,7 @@ jQuery(document).ready(function ($) {
         if( is_erase === 'copy' ){
             copyData.push({ textLeft, textTop, class_name, color, fontSize, text, textRotateDeg, boxType});
         }else{
-            $("#undo").show();
+            $("#mptrs_undo").show();
             removedData.push({ textLeft, textTop, class_name, color, fontSize, text, textRotateDeg, boxType});
         }
 
@@ -1770,7 +1769,7 @@ jQuery(document).ready(function ($) {
                           <div class="seatNumber" id="seatNumber_${lastElementData.id}" style="display: block;">${lastElementData.seat_number}</div>
                       </div>`;
             }else if( lastElementData.boxType === 'shapes' ){
-                html = `<div class="dynamicShape ui-draggable ui-draggable-handle ui-resizable" 
+                html = `<div class="mptrs_dynamicShape ui-draggable ui-draggable-handle ui-resizable" 
                             data-shape-rotate="${lastElementData.shapeRotateDeg}" 
                             style="
                                 left: ${lastElementData.shapeLeft}px; 
@@ -1807,15 +1806,15 @@ jQuery(document).ready(function ($) {
                 `;
             }
 
-            $("#parentDiv").append(html);
+            $("#mptrs_parentDiv").append(html);
         }else{
-            $("#undo").hide();
+            $("#mptrs_undo").hide();
         }
     }
     function copy_data_display( removedData, e ){
         let copy_paste_html = '';
         let lastElementData = {};
-        const parentOffset = $('.parentDiv').offset();
+        const parentOffset = $('.mptrs_parentDiv').offset();
         const x_axis = e.pageX - parentOffset.left;
         const y_axis = e.pageY - parentOffset.top;
 
@@ -1849,7 +1848,7 @@ jQuery(document).ready(function ($) {
                       </div>`;
             }
             else if( lastElementData.boxType === 'shapes' ){
-                copy_paste_html = `<div class="dynamicShape ui-draggable ui-draggable-handle ui-resizable" 
+                copy_paste_html = `<div class="mptrs_dynamicShape ui-draggable ui-draggable-handle ui-resizable" 
                             data-shape-rotate="${lastElementData.shapeRotateDeg}" 
                             style="
                                 left: ${x_axis}px; 
@@ -1887,7 +1886,7 @@ jQuery(document).ready(function ($) {
                 `;
             }
 
-            $("#parentDiv").append( copy_paste_html );
+            $("#mptrs_parentDiv").append( copy_paste_html );
         }
     }
 
@@ -1941,7 +1940,7 @@ jQuery(document).ready(function ($) {
             seatPlanTexts.push({ text, class_name, textLeft, textTop, color, fontSize, textRotateDeg});
         });
 
-        $('.dynamicShape').each(function () {
+        $('.mptrs_dynamicShape').each(function () {
             const textLeft = parseInt($(this).css('left')) || 0;
             const textTop = parseInt($(this).css('top')) || 0;
             const width = parseInt($(this).css('width')) || 0;

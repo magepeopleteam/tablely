@@ -26,29 +26,27 @@
 
                 <div class="mptrs_mapping_controls" id="<?php echo esc_attr( $post->ID ); ?>">
                     <input type="hidden" id="mptrs_mapping_plan_id" name="mptrs_mapping_plan_id" value="<?php echo esc_attr( $post->ID ); ?>">
-                    <div class="mptrs_seat_planControlHolder">
-                        <button class="set_multiselect" id="set_multiselect"><?php esc_html_e('Multiselect', 'tablely'); ?></button>
-                        <button class="set_single_select" id="set_single_select"><?php esc_html_e('Single Select', 'tablely'); ?></button>
-                        <button class="set_seat enable_set_seat" id="set_seat"><?php esc_html_e('Add Seat +', 'tablely'); ?></button>
-                        <button class="set_shape" id="set_shape"><?php esc_html_e('Add Shape +', 'tablely'); ?></button>
-                        <button class="make_circle" id="enable_resize" style="display: none"><?php esc_html_e('Resize', 'tablely'); ?></button>
-                        <button class="drag_drop" id="enable_drag_drop" style="display: none"><?php esc_html_e('Drag & Drop', 'tablely'); ?></button>
-                        <button id="setTextnew" class="setTextnew"><?php esc_html_e('Set Text', 'tablely'); ?></button>
-                        <button id="importFromTemplatePopUp" class="importFromTemplatePopUp"><?php esc_html_e('Import From Template', 'tablely'); ?></button>
-                        <button class="removeSelected" id="removeSelected"><?php esc_html_e('Erase', 'tablely'); ?></button>
-                        <button id="undo" class="undo"><?php esc_html_e('Undo', 'tablely'); ?></button>
-                        <button id="copyPaste" class="copyPaste"><?php esc_html_e('Paste', 'tablely'); ?></button>
+                    <div class="mptrs_mapping_planControlHolder">
+                        <button class="mptrs_mapping_multiselect" id="mptrs_mapping_multiselect"><?php esc_html_e('Multiselect', 'tablely'); ?></button>
+                        <button class="mptrs_mapping_singleSelect" id="mptrs_mapping_singleSelect"><?php esc_html_e('Single Select', 'tablely'); ?></button>
+                        <button class="mptrs_mapping_set_seat enable_set_seat" id="mptrs_mapping_set_seat"><?php esc_html_e('Add Seat +', 'tablely'); ?></button>
+                        <button class="mptrs_mapping_set_shape" id="mptrs_mapping_set_shape"><?php esc_html_e('Add Shape +', 'tablely'); ?></button>
+                        <button class="mptrs_mapping_setText" id="mptrs_mapping_setText" ><?php esc_html_e('Set Text', 'tablely'); ?></button>
+                        <button class="mptrs_importFromTemplate" id="mptrs_importFromTemplate"><?php esc_html_e('Import From Template', 'tablely'); ?></button>
+                        <button class="mptrs_removeSelected" id="mptrs_removeSelected"><?php esc_html_e('Erase', 'tablely'); ?></button>
+                        <button class="mptrs_undo" id="mptrs_undo" ><?php esc_html_e('Undo', 'tablely'); ?></button>
+                        <button class="mptrs_copyPaste" id="mptrs_copyPaste" ><?php esc_html_e('Paste', 'tablely'); ?></button>
                     </div>
                 </div>
 
                 <div class="mptrs_seatContentHolder" id="mptrs_seatContentHolder">
-                    <div id="popupContainer" class="popup">
-                        <div class="popupContent">
-                            <span id="closePopup" class="close">&times;</span>
-                            <div id="popupInnerContent"></div>
+                    <div id="mptrs_popupContainer" class="mptrs_popup">
+                        <div class="mptrs_popupContent">
+                            <span id="mptrs_closePopup" class="mptrs_close">&times;</span>
+                            <div id="mptrs_popupInnerContent"></div>
                         </div>
                     </div>
-                    <div class="seatPlanHolder">
+                    <div class="mptrs_seatPlanHolder">
                         <?php
                         $dynamic_shape_texts = array(
                             'rectangle'    => array( 'Rectangle', 'rectangle' ),
@@ -62,11 +60,11 @@
                             'oval'          => array( 'Oval', 'oval' ),
                         );
 
-                        $shapeText = '<span class="setShapeTitle">' . esc_html__('Select Shape', 'tablely') . '</span>';
+                        $shapeText = '<span class="mptrs_setShapeTitle">' . esc_html__('Select Shape', 'tablely') . '</span>';
                         foreach ( $dynamic_shape_texts as $key => $val ) {
                             $select_class = ( $key === 'rectangle' ) ? 'shapeTextSelected' : '';
                             $src = esc_url( MPTRS_Plan_ASSETS . 'images/icons/shape_icons/' . $val[1] . '.jpg' );
-                            $shapeText .= '<div class="shapeText ' . esc_attr( $select_class ) . '" id="' . esc_attr( $key ) . '"><img class="shapeIcon" src="' . $src . '" /></div>';
+                            $shapeText .= '<div class="mptrs_shapeText ' . esc_attr( $select_class ) . '" id="' . esc_attr( $key ) . '"><img class="shapeIcon" src="' . $src . '" /></div>';
                         }
 
                         $get_create_box_data = get_option( 'create_box_data' );
@@ -88,7 +86,7 @@
                         $parent_width = $columns * ( $childWidth + $gap ) - $gap;
                         $parent_height = $rows * ( $childHeight + $gap ) - $gap;
 
-                        echo '<div class="parentDiv" id="parentDiv" style="position: absolute; width: ' . esc_attr( $parent_width ) . 'px; height: ' . esc_attr( $parent_height ) . 'px;">';
+                        echo '<div class="mptrs_parentDiv" id="mptrs_parentDiv" style="position: absolute; width: ' . esc_attr( $parent_width ) . 'px; height: ' . esc_attr( $parent_height ) . 'px;">';
 
                         $templates = $template_id ? array_map( 'absint', explode( '_', $template_id ) ) : array( $post->ID );
 
@@ -101,7 +99,7 @@
                             if ( is_array( $dynamic_shapes ) && count( $dynamic_shapes ) > 0 ) {
                                 foreach ( $dynamic_shapes as $dynamic_shape ) {
                                     $shape_rotate_deg = isset( $dynamic_shape['shapeRotateDeg'] ) ? absint( $dynamic_shape['shapeRotateDeg'] ) : 0;
-                                    echo '<div class="dynamicShape ui-resizable ui-draggable ui-draggable-handle" data-shape-rotate="' . esc_attr( $shape_rotate_deg ) . '" style=" 
+                                    echo '<div class="mptrs_dynamicShape ui-resizable ui-draggable ui-draggable-handle" data-shape-rotate="' . esc_attr( $shape_rotate_deg ) . '" style=" 
                                         left: ' . esc_attr( $dynamic_shape['textLeft'] ) . 'px; 
                                         top: ' . esc_attr( $dynamic_shape['textTop'] ) . 'px; 
                                         width: ' . esc_attr( $dynamic_shape['width'] ) . 'px;
@@ -155,7 +153,6 @@
 
                                 if ( is_array( $plan_seats ) && count( $plan_seats ) > 0 ) {
                                     foreach ( $plan_seats as $plan_seat ) {
-            //                            error_log( print_r( [ '$plan_seat' => $plan_seat ], true ) );
                                         if ( $plan_seat['col'] == $row && $plan_seat['row'] == $col ) {
 
                                             $isSelected = true;
@@ -214,7 +211,7 @@
                             }
                         }
 
-                        $seat_icons_dir = SEAT_Plan_PATH . '/assets/images/icons/seatIcons';
+                        $seat_icons_dir = MPTRS_Plan_PATH . '/assets/images/icons/seatIcons';
                         $images = array_diff( scandir( $seat_icons_dir ), array( '.', '..' ) );
                         $image_files = array_filter( $images, function( $file ) use ( $seat_icons_dir ) {
                             $file_path = $seat_icons_dir . '/' . $file;

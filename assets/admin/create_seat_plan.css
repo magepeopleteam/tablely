@@ -4,7 +4,7 @@
     width: 100%;
     height: 550px;
 }
-.seatPlanHolder{
+.mptrs_seatPlanHolder{
     display: flex;
     position: relative;
     width: calc( 100% - 150px );
@@ -18,7 +18,7 @@
     max-height: 500px;
     overflow: scroll;
 }
-#parentDiv {
+#mptrs_parentDiv {
     border: 1px solid #e9e4e4;
     position: absolute;
     padding: 10px;
@@ -69,15 +69,15 @@
 .selectedShape{
     border: 2px dashed #0e0101;
 }
-.controls {
+.mptrs_mapping_controls {
     margin-bottom: 10px;
 }
 
-.removeSelected,
-.removeSelected,
-.importFromTemplatePopUp,
-.set_single_select,
-.setTextnew{
+.mptrs_removeSelected,
+.mptrs_removeSelected,
+.mptrs_importFromTemplate,
+.mptrs_mapping_singleSelect,
+.mptrs_mapping_setText{
     border: 1px solid #d3cccc !important;
     font-weight: bold;
 }
@@ -132,7 +132,7 @@
     font-weight: bold;
 }
 
-.controls input {
+.mptrs_mapping_controls input {
     margin-right: 10px;
 }
 /*.circleSelected{
@@ -228,7 +228,7 @@
     color: #fff;
 }
 
-.controls {
+.mptrs_mapping_controls {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -315,8 +315,8 @@
     font-size: 14px;
 }
 
-.controls input[type="text"],
-.controls input[type="number"] {
+.mptrs_mapping_controls input[type="text"],
+.mptrs_mapping_controls input[type="number"] {
     padding: 2px 5px;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -325,7 +325,7 @@
     margin-right: 5px;
 }
 
-.controls label {
+.mptrs_mapping_controls label {
     display: flex;
     align-items: center;
     gap: 5px;
@@ -333,7 +333,7 @@
     color: #333;
 }
 
-.controls button {
+.mptrs_mapping_controls button {
     padding: 6px 5px;
     border: none;
     border-radius: 5px;
@@ -354,7 +354,7 @@
     margin-top: 10px;
 }
 
-.setShapeTitle{
+.mptrs_setShapeTitle{
     display: block;
     float: left;
     width: 100%;
@@ -362,13 +362,13 @@
     font-weight: 600;
 }
 
-.controls .setSeatNumber {
+.mptrs_mapping_controls .setSeatNumber {
     width: 100%;
     display: flex;
     align-items: center;
     gap: 5px;
 }
-.planControlHolder{
+.mptrs_mapping_planControlHolder{
     width: 100%;
     display: flex;
     gap: 5px;
@@ -384,9 +384,9 @@
 #set_seat_number,
 #enable_resize,
 #enable_drag_drop,
-#set_multiselect,
-#set_seat,
-#set_shape,
+#mptrs_mapping_multiselect,
+#mptrs_mapping_set_seat,
+#mptrs_mapping_set_shape,
 #clearAll,
 #savePlanAsTemplate,
 #savePlan {
@@ -480,20 +480,20 @@
 #enable_resize,
 #enable_drag_drop,
 #make_circle,
-#set_seat,
-#set_shape,
-#set_multiselect {
+#mptrs_mapping_set_seat,
+#mptrs_mapping_set_shape,
+#mptrs_mapping_multiselect {
     border: 1px solid #d3cccc;
 }
 
 #setText:hover,
 #enable_resize:hover,
-#removeSelected:hover,
+#mptrs_removeSelected:hover,
 #rotateDone:hover,
-#set_single_select:hover,
+#mptrs_mapping_singleSelect:hover,
 #enable_drag_drop:hover,
 #make_circle:hover,
-#set_multiselect:hover {
+#mptrs_mapping_multiselect:hover {
     background-color: #138496;
     color: #fff;
 }
@@ -514,7 +514,7 @@
 }
 
 /* Popup container (background overlay) */
-.popup {
+.mptrs_popup {
     display: none;
     position: absolute;
     z-index: 999;
@@ -558,7 +558,7 @@
     background-color: #61abe5;
 }
 
-.dynamicShape {
+.mptrs_dynamicShape {
     position: absolute;
     z-index: 30;
     cursor: move;
@@ -589,7 +589,7 @@
 .setShapeColor{
     width: 28px;
 }
-.shapeText{
+.mptrs_shapeText{
     display: block;
     float: left;
     position: relative;
@@ -645,7 +645,7 @@
     line-height: 16px;
 }
 /* Popup content box */
-.popupContent {
+.mptrs_popupContent {
     position: relative;
     margin: 15% auto;
     padding: 20px;
@@ -690,7 +690,7 @@
 }
 
 /* Close button */
-.close {
+.mptrs_close {
     position: absolute;
     top: 10px;
     right: 15px;
