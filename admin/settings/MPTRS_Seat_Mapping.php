@@ -98,7 +98,7 @@
 
                             if ( is_array( $dynamic_shapes ) && count( $dynamic_shapes ) > 0 ) {
                                 foreach ( $dynamic_shapes as $dynamic_shape ) {
-                                    $shape_rotate_deg = isset( $dynamic_shape['shapeRotateDeg'] ) ? absint( $dynamic_shape['shapeRotateDeg'] ) : 0;
+                                    $shape_rotate_deg = isset( $dynamic_shape['shapeRotateDeg'] ) ? $dynamic_shape['shapeRotateDeg'] : 0;
                                     echo '<div class="mptrs_dynamicShape ui-resizable ui-draggable ui-draggable-handle" data-shape-rotate="' . esc_attr( $shape_rotate_deg ) . '" style=" 
                                         left: ' . esc_attr( $dynamic_shape['textLeft'] ) . 'px; 
                                         top: ' . esc_attr( $dynamic_shape['textTop'] ) . 'px; 
@@ -114,7 +114,7 @@
 
                             if ( is_array( $plan_seat_texts ) && count( $plan_seat_texts ) > 0 ) {
                                 foreach ( $plan_seat_texts as $plan_seat_text ) {
-                                    $text_rotate_deg = isset( $plan_seat_text['textRotateDeg'] ) ? absint( $plan_seat_text['textRotateDeg'] ) : 0;
+                                    $text_rotate_deg = isset( $plan_seat_text['textRotateDeg'] ) ?  $plan_seat_text['textRotateDeg'] : 0;
                                     echo '<div class="mptrs_text-wrapper" data-text-degree="' . esc_attr( $text_rotate_deg ) . '"
                                         style="
                                         position: absolute; 
@@ -232,128 +232,127 @@
                                 $icon_images .= '<img class="mptrs_seatIcon" id="' . esc_attr( $split_image[0] ) . '" src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/seatIcons/' . $seat_icon ) . '"/>';
                             }
                         }
-                        $icon_images .= '<img alt="No" class="mptrs_seatIcon" id="seatnull" src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/seatIcons/remove.png' ) . '"/>
+                        $icon_images .= '<img alt="No" class="mptrs_seatIcon" id="mptrs_seatnull" src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/seatIcons/remove.png' ) . '"/>
                                          <div class="seat-icon-upload-container" style="display: block">
-                                                 <label for="seatIconUpload" class="seat-icon-upload-label">
-                                                    <img src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/seatIcons/uploadIcon.png' ) . '" alt="Upload Icon" class="seat-icon-image">
+                                                 <label for="mptrs_seatIconUpload" class="mptrs_seatIconUploadLabel">
+                                                    <img src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/seatIcons/uploadIcon.png' ) . '" alt="Upload Icon" class="mptrs_seatIconImageUpload">
                                                  </label>
-                                                <input class="seatIconUpload" type="file" id="seatIconUpload" name="filename">
+                                                <input class="mptrs_seatIconUpload" type="file" id="mptrs_seatIconUpload" name="filename">
                                              </div>  
                                          </div>';
                         echo '</div> 
                             </div>
-                            <div class="seatActionControl">
-                                <div class="dynamicShapeHolder" id="dynamicShapeHolder">
+                            <div class="mptrs_seatActionControl">
+                                <div class="mptrs_dynamicShapeHolder" id="mptrs_dynamicShapeHolder">
                                     ' . $shapeText . '
                                 </div>
-                                <div class="dynamicShapeColorHolder" style="display: none">
-                                    <div class="dynamicShapeControl">
-                                        <div class="dynamicShapeControlText">Shape Setting</div>
-                                        <div class="colorRemoveHolder">
-                                            <div class="shapeRotationHolder">
-                                                <img class="shapeRotate" id="shapeRotateRight" src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/rotate/rotate_right.webp' ) . '"/>
-                                                <img class="shapeRotate" id="shapeRotateLeft" src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/rotate/rotate_left.webp' ) . '"/>
+                                <div class="mptrs_dynamicShapeColorHolder" style="display: none">
+                                    <div class="mptrs_dynamicShapeControl">
+                                        <div class="mptrs_dynamicShapeControlText">Shape Setting</div>
+                                        <div class="mptrs_colorRemoveHolder">
+                                            <div class="mptrs_shapeRotationHolder">
+                                                <img class="mptrs_shapeRotate" id="mptrs_shapeRotateRight" src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/rotate/rotate_right.webp' ) . '"/>
+                                                <img class="mptrs_shapeRotate" id="mptrs_shapeRotateLeft" src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/rotate/rotate_left.webp' ) . '"/>
                                             </div>
-                                            <input type="color" id="setShapeColor" value="#3498db">
-                                            <button class="removeDynamicShape" id="removeDynamicShape">X</button>
+                                            <input type="color" id="mptrs_setShapeColor" value="#3498db">
+                                            <button class="mptrs_removeDynamicShape" id="mptrs_removeDynamicShape">X</button>
                                         </div>
-                                        <div class="shapeDisplayIconHolder">
-                                            <div class="shapeIconTitleTextHolder"><span class="shapeIconTitleText">Add Shape</span></div>
-                                                <div class="shapeDisplayIcons">
-                                                    <img class="shapeDisplayIcon" id="table1" src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/tableIcon/table1.png' ) . '"/>
-                                                    <img class="shapeDisplayIcon" id="table2" src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/tableIcon/table2.png' ) . '"/>
-                                                    <img class="shapeDisplayIcon" id="table3" src="'. esc_url( MPTRS_Plan_ASSETS.'images/icons/tableIcon/table3.png' ) .'"/>
-                                                    <img class="shapeDisplayIcon" id="table4" src="'. esc_url( MPTRS_Plan_ASSETS.'images/icons/tableIcon/table4.png' ) .'"/>
-                                                    <img class="shapeDisplayIcon" id="dining2" src="'. esc_url( MPTRS_Plan_ASSETS.'images/icons/tableIcon/dining2.png' ) .'"/>
-                                                    <img class="shapeDisplayIcon" id="dining1" src="'. esc_url( MPTRS_Plan_ASSETS.'images/icons/tableIcon/dining1.png' ) .'"/>
+                                        <div class="mptrs_shapeDisplayIconHolder">
+                                            <div class="mptrs_shapeIconTitleTextHolder"><span class="mptrs_shapeIconTitleText">Add Shape</span></div>
+                                                <div class="mptrs_shapeDisplayIcons">
+                                                    <img class="mptrs_shapeDisplayIcon" id="table1" src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/tableIcon/table1.png' ) . '"/>
+                                                    <img class="mptrs_shapeDisplayIcon" id="table2" src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/tableIcon/table2.png' ) . '"/>
+                                                    <img class="mptrs_shapeDisplayIcon" id="table3" src="'. esc_url( MPTRS_Plan_ASSETS.'images/icons/tableIcon/table3.png' ) .'"/>
+                                                    <img class="mptrs_shapeDisplayIcon" id="table4" src="'. esc_url( MPTRS_Plan_ASSETS.'images/icons/tableIcon/table4.png' ) .'"/>
+                                                    <img class="mptrs_shapeDisplayIcon" id="dining2" src="'. esc_url( MPTRS_Plan_ASSETS.'images/icons/tableIcon/dining2.png' ) .'"/>
+                                                    <img class="mptrs_shapeDisplayIcon" id="dining1" src="'. esc_url( MPTRS_Plan_ASSETS.'images/icons/tableIcon/dining1.png' ) .'"/>
                                                 </div>
                                             </div>
-                                            <div class="copyHolder">
-                                                <button class="shapeCopyStore">Copy</button>
+                                            <div class="mptrs_copyHolder">
+                                                <button class="mptrs_shapeCopyStore">Copy</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="dynamicTextControlHolder" style="display: none">
-                                        <div class="dynamicTextControlText">Text Setting</div>
-                                        <div class="dynamicTextControlContainer">
-                                            <div class="textControl">
-                                                <button class="zoom-in">+</button>
-                                                <button class="zoom-out">-</button>
-                                                <button class="remove-text">X</button>
-                                                <input type="color" id="setTextColor" value="#3498db">
+                                    <div class="mptrs_dynamicTextControlHolder" style="display: none">
+                                        <div class="mptrs_dynamicTextControlText">Text Setting</div>
+                                        <div class="mptrs_dynamicTextControlContainer">
+                                            <div class="mptrs_textControl">
+                                                <button class="mptrs_textZoomIn">+</button>
+                                                <button class="mptrs_textZoomOut">-</button>
+                                                <button class="mptrs_removeText">X</button>
+                                                <input type="color" id="mptrs_setTextColor" value="#3498db">
                                             </div>
-                                            <div class="textRotationHolder">
-                                                <img class="textRotate" id="textRotateRight" src="'.MPTRS_Plan_ASSETS.'images/icons/rotate/rotate_right.webp'.'"/>
-                                                <img class="textRotate" id="textRotateLeft" src="'.MPTRS_Plan_ASSETS.'images/icons/rotate/rotate_left.webp'.'"/>
+                                            <div class="mptrs_textRotationHolder">
+                                                <img class="mptrs_textRotate" id="mptrs_textRotateRight" src="'.MPTRS_Plan_ASSETS.'images/icons/rotate/rotate_right.webp'.'"/>
+                                                <img class="mptrs_textRotate" id="mptrs_textRotateLeft" src="'.MPTRS_Plan_ASSETS.'images/icons/rotate/rotate_left.webp'.'"/>
                                             </div>
                                         </div>
-                                        <div class="copyHolder">
-                                            <button class="textCopy">Copy</button>
+                                        <div class="mptrs_copyHolder">
+                                            <button class="mptrs_textCopy">Copy</button>
                                         </div>
                                     </div>
                                     
-                                    <button id="clearAll"> All Clear</button>
-                                    <button class="savePlan" id="savePlan">Save Plan</button>
-                                    <button class="savePlan" id="savePlanAsTemplate">Save Plan with Template</button>
-                                    <button id="setTextPlan" class="setTextPlan" style="display: none">Set text</button>
-                                    <div class="setPriceColorHolder" id="setPriceColorHolder" style="display: none">
-                                        <div class="copyHolder">
-                                            <button class="seatCopyStore">Copy</button>
+                                    <button id="mptrs_clearAllPlan"> All Clear</button>
+                                    <button class="mptrs_savePlan" id="mptrs_savePlan">Save Plan</button>
+                                    <button class="mptrs_savePlan" id="mptrs_savePlanAsTemplate">Save Plan with Template</button>
+                                    <div class="mptrs_setPriceColorHolder" id="mptrs_setPriceColorHolder" style="display: none">
+                                        <div class="mptrs_copyHolder">
+                                            <button class="mptrs_seatCopyStore">Copy</button>
                                         </div>
-                                        <div class="rotateControls">
-                                            <select class="rotationHandle" name="rotationHandle" id="rotationHandle" style="display: none">
-                                                <option class="options" selected value="top-to-bottom">Rotate top to bottom</option>
-                                                <option class="options"  value="bottom-to-top">Rotate bottom to Top</option>
-                                                <option class="options"  value="right-to-left">Rotate right to Left</option>
-                                                <option class="options"  value="left-to-right">Rotate left to Right</option>
+                                        <div class="mptrs_rotateControls">
+                                            <select class="mptrs_rotationHandle" name="mptrs_rotationHandle" id="mptrs_rotationHandle" style="display: none">
+                                                <option class="mptrs_rotateOptions" selected value="top-to-bottom">Rotate top to bottom</option>
+                                                <option class="mptrs_rotateOptions"  value="bottom-to-top">Rotate bottom to Top</option>
+                                                <option class="mptrs_rotateOptions"  value="right-to-left">Rotate right to Left</option>
+                                                <option class="mptrs_rotateOptions"  value="left-to-right">Rotate left to Right</option>
                                             </select>
-                                            <div class="seatRotateIconTextHolder">
-                                                <span class="seatRotateIconText">Seat Rotate In Degree</span>
-                                                <div class="seatRotateIconImgHolder"> 
-                                                    <div class="seatRotateIconHolder">
-                                                        <img class="shapeRotate" id="rotateRight" src="'.MPTRS_Plan_ASSETS.'images/icons/rotate/rotate_right.webp'.'"/>
-                                                        <img class="shapeRotate" id="rotateLeft" src="'.MPTRS_Plan_ASSETS.'images/icons/rotate/rotate_left.webp'.'"/>
+                                            <div class="mptrs_seatRotateIconTextHolder">
+                                                <span class="mptrs_seatRotateIconText">Seat Rotate In Degree</span>
+                                                <div class="mptrs_seatRotateIconImgHolder"> 
+                                                    <div class="mptrs_seatRotateIconHolder">
+                                                        <img class="mptrs_shapeRotate" id="mptrs_rotateRight" src="'.MPTRS_Plan_ASSETS.'images/icons/rotate/rotate_right.webp'.'"/>
+                                                        <img class="mptrs_shapeRotate" id="mptrs_rotateLeft" src="'.MPTRS_Plan_ASSETS.'images/icons/rotate/rotate_left.webp'.'"/>
                                                     </div>
-                                                    <input class="seatRotateDegree" type="number" name="rotationAngle" id="rotationAngle" value="10" placeholder="10 degree">
+                                                    <input class="mptrs_seatRotateDegree" type="number" name="mptrs_rotationAngle" id="mptrs_rotationAngle" value="10" placeholder="10 degree">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="seatIconContainer">
-                                            <span class="seatIconTitle">Select seat icon</span>
+                                        <div class="mptrs_seatIconContainer">
+                                            <span class="mptrs_seatIconTitle">Select seat icon</span>
                                             '.$icon_images.'
                                         </div>
-                                        <div class="movementHolder" id="movementHolder">
-                                             <div class="movementControl">
-                                                <span class="movementText">Movement In Px</span>
-                                                <input class="movementInPx" id="movementInPx" name="movementInPx" type="number" value="15" placeholder="movement in px" style="display: none">
+                                        <div class="mptrs_movementHolder" id="mptrs_movementHolder">
+                                             <div class="mptrs_movementControl">
+                                                <span class="mptrs_movementText">Movement In Px</span>
+                                                <input class="mptrs_movementInPx" id="mptrs_movementInPx" name="mptrs_movementInPx" type="number" value="15" placeholder="movement in px" style="display: none">
                                             </div>
-                                            <div class="movementControl">
-                                                <div id="left" class="movement"><i class="arrowIcon far fa-arrow-alt-circle-left"></i></div>
-                                                <div id="top" class="movement"><i class="arrowIcon far fa-arrow-alt-circle-up"></i></div>
-                                                <div id="bottom" class="movement"><i class="arrowIcon far fa-arrow-alt-circle-down"></i></div>
-                                                <div id="right" class="movement"><i class="arrowIcon far fa-arrow-alt-circle-right"></i></div>
+                                            <div class="mptrs_movementControl">
+                                                <div id="mptrs_leftMovement" class="mptrs_movementPlan"><i class="arrowIcon far fa-arrow-alt-circle-left"></i></div>
+                                                <div id="mptrs_topMovement" class="mptrs_movementPlan"><i class="arrowIcon far fa-arrow-alt-circle-up"></i></div>
+                                                <div id="mptrs_bottomMovement" class="mptrs_movementPlan"><i class="arrowIcon far fa-arrow-alt-circle-down"></i></div>
+                                                <div id="mptrs_rightMovement" class="mptrs_movementPlan"><i class="arrowIcon far fa-arrow-alt-circle-right"></i></div>
                                             </div>
                                         </div>
-                                        <div class="colorPriceHolder">
+                                        <div class="mptrs_colorPriceHolder">
                                             <div>
                                                 <span>Select Color</span>:
-                                                <input type="color" id="setColor" value="#3498db">
+                                                <input type="color" id="mptrs_setSeatColor" value="#3498db">
                                             </div>
-                                            <button id="applyColorChanges">Set Color</button>
+                                            <button id="mptrs_applyColorChanges">Set Color</button>
                                         </div>
-                                        <div class="colorPriceHolder">
-                                            <div class="textPriceHolder">
-                                                <span class="priceText"> Set Price:</span>
-                                                <input type="number" id="setPrice" placeholder="Enter price">
+                                        <div class="mptrs_colorPriceHolder">
+                                            <div class="mptrs_textPriceHolder">
+                                                <span class="mptrs_priceText"> Set Price:</span>
+                                                <input type="number" id="mptrs_setSeatPrice" placeholder="Enter price">
                                             </div>
-                                            <button id="applyChanges">Set Price</button>
+                                            <button id="mptrs_applyPriceChanges">Set Price</button>
                                         </div>
-                                        <div class="setSeatNumber"  style="display: block">
-                                             <div class="seatNumberContainer">
-                                                <input type="text" id="seat_number_prefix" placeholder="Set Prefix">
-                                                <input type="number" id="seat_number_count" placeholder="1" value="0">
+                                        <div class="mptrs_setSeatNumber"  style="display: block">
+                                             <div class="mptrs_seatNumberContainer">
+                                                <input type="text" id="mptrs_seatNumberPrefix" placeholder="Set Prefix">
+                                                <input type="number" id="mptrs_seatNumberCount" placeholder="1" value="0">
                                              </div>
-                                            <button class="set_seat_number" id="set_seat_number">Set Seat Number</button>
+                                            <button class="mptrs_setSeatNumber" id="mptrs_setSeatNumber">Set Seat Number</button>
                                         </div>
                                     </div>
                                 </div>

@@ -16,8 +16,8 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             add_action('wp_ajax_import_from_template_checkbox_state',[ $this,  'import_from_template_checkbox_state']);
             add_action('wp_ajax_nopriv_import_from_template_checkbox_state', [ $this, 'import_from_template_checkbox_state']);
 
-            add_action('wp_ajax_render_manage_seat_templates_for_import', [ $this,  'render_manage_seat_templates_for_import'] );
-            add_action('wp_ajax_nopriv_render_manage_seat_templates_for_import', [ $this,  'render_manage_seat_templates_for_import'] ); // Allow non-logged-in users if needed
+            add_action('wp_ajax_mptrs_render_manage_seat_templates_for_import', [ $this,  'mptrs_render_manage_seat_templates_for_import'] );
+            add_action('wp_ajax_nopriv_mptrs_render_manage_seat_templates_for_import', [ $this,  'mptrs_render_manage_seat_templates_for_import'] ); // Allow non-logged-in users if needed
 
             add_action('wp_ajax_remove_from_templates',[ $this,  'remove_from_templates']);
 
@@ -129,7 +129,7 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             $result = delete_post_meta( $template_id, 'is_template');
             wp_send_json_success( $result );
         }
-        function render_manage_seat_templates_for_import() {
+        function mptrs_render_manage_seat_templates_for_import() {
             $paged = isset($_POST['paged']) ? absint($_POST['paged']) : 1;
             $original_post_id = isset($_POST['postId']) ? absint($_POST['postId']) : 1;
             $args = [
@@ -150,38 +150,38 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             ob_start();
             ?>
             <div class="templateWrap">
-                <span class="importSeatPlanTitleText"><?php _e('Seat Plan Templates', 'textdomain'); ?></span>
-                <span class="importSeatPlanText"><?php _e('Select any template', 'textdomain'); ?></span>
-                <div class="popupTemplateContainer">
+                <span class="mptrs_importSeatPlanTitleText"><?php _e('Seat Plan Templates', 'tablely'); ?></span>
+                <span class="mptrs_importSeatPlanText"><?php _e('Select any template', 'tablely'); ?></span>
+                <div class="mptrs_popupTemplateContainer">
                     <?php if ($query->have_posts()) :
 
                         ?>
-                        <div class="templatesHolder">
+                        <div class="mptrs_templatesHolder">
                             <?php while ($query->have_posts()) : $query->the_post(); ?>
                                 <?php
                                 $post_id = get_the_ID();
-                                $title = get_the_title() ?: __('No Title Available', 'textdomain');
+                                $title = get_the_title() ?: __('No Title Available', 'tablely');
                                 $edit_url = admin_url("post.php?post={$original_post_id}&action=edit&templateId={$post_id}");
 //                                $thumbnail_url = get_post_meta($post_id, '_custom_feature_image', true);
                                 $thumbnail_id = get_post_meta( $post_id, '_thumbnail_id', true );
                                 $thumbnail_url = wp_get_attachment_url( $thumbnail_id );
                                 ?>
-                                <div class="templates" id="template-<?php echo esc_attr($post_id); ?>">
-                                    <div class="featureImagesHolder">
-                                        <img class="featureImages" src="<?php echo $thumbnail_url?>">
+                                <div class="mptrs_templates" id="mptrs_template-<?php echo esc_attr($post_id); ?>">
+                                    <div class="mptrs_featureImagesHolder">
+                                        <img class="mptrs_featureImages" src="<?php echo $thumbnail_url?>">
                                     </div>
-                                    <a class="templateLinks" href="<?php echo esc_url($edit_url); ?>">
+                                    <a class="mptrs_templateLinks" href="<?php echo esc_url($edit_url); ?>">
                                         <?php echo esc_html($title); ?>
                                     </a>
                                 </div>
                             <?php endwhile; ?>
                         </div>
                     <?php else : ?>
-                        <p><?php _e('No templates found.', 'textdomain'); ?></p>
+                        <p><?php _e('No templates found.', 'tablely'); ?></p>
                     <?php endif; ?>
                     <?php wp_reset_postdata(); ?>
                 </div>
-                <div class="openTemplateBtnHolder"><button class="openAsTemplate" id="open_<?php echo $original_post_id ?>">Open template</button></div>
+                <div class="mptrs_openTemplateBtnHolder"><button class="mptrs_openAsTemplate" id="mptrs_open_<?php echo $original_post_id ?>">Open template</button></div>
             </div>
             <?php
             $output = ob_get_clean();

@@ -11,7 +11,7 @@
     height: 500px;
     overflow: scroll;
 }
-.seatActionControl{
+.mptrs_seatActionControl{
     display: block;
     width: 150px;
     margin-left: 10px;
@@ -23,25 +23,25 @@
     position: absolute;
     padding: 10px;
 }
-#setColor{
+#mptrs_setSeatColor{
     width: 30px;
     margin-bottom: 2px;
 }
 
-#setPrice{
+#mptrs_setSeatPrice{
     width: 60px;
 }
-.priceText{
+.mptrs_priceText{
     width: 53px;
     text-align: center;
     padding-top: 5px;
 }
-.textPriceHolder{
+.mptrs_textPriceHolder{
     display: flex;
     width: 120px;
     margin-bottom: 3px;
 }
-.movementHolder{
+.mptrs_movementHolder{
     display: grid;
     width: 100%;
     padding-bottom: 10px;
@@ -66,7 +66,7 @@
     /*border: 2px dotted #000000;*/
     border: 2px dashed #000000;
 }
-.selectedShape{
+.mptrs_selectedShape{
     border: 2px dashed #0e0101;
 }
 .mptrs_mapping_controls {
@@ -82,13 +82,13 @@
     font-weight: bold;
 }
 
-.rotateControls{
+.mptrs_rotateControls{
     display: grid;
     width: 100%;
     border-bottom: 1px dotted #e5dfdf;
 }
 
-.seatIconContainer{
+.mptrs_seatIconContainer{
     display: block;
     padding-bottom: 10px;
     margin-top: 5px;
@@ -96,11 +96,11 @@
     width: 100%;
 }
 
-.selectedPaste{
+.mptrs_selectedPaste{
     background-color: #999900;
     color: #fff;
 }
-.shapeDisplayIconHolder{
+.mptrs_shapeDisplayIconHolder{
     display: block;
     float: left;
     position: relative;
@@ -108,101 +108,29 @@
     padding: 5px;
     margin: 5px 0px;
 }
-.shapeDisplayIcons{
+.mptrs_shapeDisplayIcons{
     display: flex;
     flex-wrap: wrap;
     width: 100%;
     gap: 2px;
 }
-.shapeDisplayIcon{
-    width: 25px;
-    height: 23px;
+.mptrs_shapeDisplayIcon{
+    width: 25px !important;
+    height: 23px !important;
     border: 1px solid #ddd9d9;
     padding: 2px;
     margin: 2px;
     cursor: pointer;
 }
 
-.seatIconContainer, .movementHolder{
+.mptrs_seatIconContainer, .mptrs_movementHolder{
     border-bottom: 1px dotted #b9b2b2;
-}
-
-.rotateDone{
-    border: 1px solid #d3cccc !important;
-    font-weight: bold;
 }
 
 .mptrs_mapping_controls input {
     margin-right: 10px;
 }
-/*.circleSelected{
-    background-color: #999900;
-}*/
 
-.set_text_holdercontainer {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 100;
-    background: white;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    padding: 20px;
-}
-
-.set_text_holder {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.set_text_holder .close_set_text {
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    cursor: pointer;
-    font-size: 18px;
-    color: red;
-    font-weight: bold;
-}
-.set_text_display{
-    display: flex;
-    min-width: 100px;
-}
-.close_set_text{
-    color: #fff;
-}
-.seatText{
-    text-align: center;
-    line-height: 12px;
-    font-size: 12px;
-    overflow: visible;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 100;
-    /*background-color: #fff;*/
-}
-.controlTextSizeHolder{
-    /*font-size: 14px;
-    font-weight: bold;
-    color: #990000;
-    background-color: #000000b8;
-    width: 12px;
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    opacity: 1;
-    border-radius: 3px;*/
-    font-size: 14px;
-    font-weight: bold;
-    color: #990000;
-}
-.ui-icon{
-    visibility: hidden;
-}
 .mptrs_seatNumber{
     position: absolute;
     top: 0px;
@@ -244,13 +172,13 @@
     outline: 2px dotted #000;
 }
 
-.movementControl{
+.mptrs_movementControl{
     display: flex;
     position: relative;
     margin-top: 5px;
     /*height: 30px;*/
 }
-.movement{
+.mptrs_movementPlan{
     position: relative;
     cursor: pointer;
 }
@@ -258,55 +186,55 @@
     font-size: 28px;
     margin-right: 3px;
 }
-.seatIconTitle{
+.mptrs_seatIconTitle{
     font-family: roboto sans-serif;
     color: #666666;
     font-weight: 600;
     font-size: 15px;
 }
 
-.rotationHandle{
+.mptrs_rotationHandle{
     width: 130px;
     padding: 0px 4px 0 3px !important;
     font-size: 11px !important;
 }
 
-.seatRotateIconTextHolder{
+.mptrs_seatRotateIconTextHolder{
     display: block;
     float: right;
     width: 100%;
     margin-bottom: 10px;
 }
-.seatRotateIconImgHolder{
+.mptrs_seatRotateIconImgHolder{
     display: flex;
     width: 100%;
     height: 30px;
 }
 
-.seatRotateIconHolder{
+.mptrs_seatRotateIconHolder{
     display: flex;
     width: 100%;
     height: 30px;
 }
-.seatRotateDegree{
+.mptrs_seatRotateDegree{
     width: 60px;
     padding: 0 5px !important;
     margin-left: 10px;
 }
-.seatRotateIconText{
+.mptrs_seatRotateIconText{
     display: block;
     float: left;
     width: 100%;
     position: relative;
 }
 
-.movementInPx{
+.mptrs_movementInPx{
     margin-left: 0;
     width: 50px;
     height: 30px;
     padding: 0 5px !important;
 }
-.movementText{
+.mptrs_movementText{
     width: 100%;
     text-align: left;
     line-height: 14px;
@@ -341,13 +269,13 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-.setPriceColorHolder{
+.mptrs_setPriceColorHolder{
     display: block;
     float: left;
     position: relative;
     width: 100%;
 }
-.colorPriceHolder{
+.mptrs_colorPriceHolder{
     width: 100%;
     display: grid;
     margin-bottom: 12px;
@@ -362,7 +290,7 @@
     font-weight: 600;
 }
 
-.mptrs_mapping_controls .setSeatNumber {
+.mptrs_mapping_controls .mptrs_setSeatNumber {
     width: 100%;
     display: flex;
     align-items: center;
@@ -378,28 +306,23 @@
     cursor: crosshair;
 }
 
-#applyChanges,
-#make_circle,
-#applyColorChanges,
-#set_seat_number,
-#enable_resize,
-#enable_drag_drop,
+#mptrs_applyPriceChanges,
+#mptrs_applyColorChanges,
+#mptrs_setSeatNumber,
 #mptrs_mapping_multiselect,
 #mptrs_mapping_set_seat,
 #mptrs_mapping_set_shape,
-#clearAll,
-#savePlanAsTemplate,
-#savePlan {
+#mptrs_clearAllPlan,
+#mptrs_savePlanAsTemplate,
+#mptrs_savePlan {
     font-weight: bold;
 }
 
-#set_seat_number{
+#mptrs_setSeatNumber{
     margin-top: 2px;
 }
 
-
-
-#applyChanges, #applyColorChanges, #set_seat_number{
+#mptrs_applyPriceChanges, #mptrs_applyColorChanges, #mptrs_setSeatNumber{
     background-color: #817a7a;
     color: #fff;
     width: 125px;
@@ -409,26 +332,26 @@
     cursor: pointer;
 }
 
-#applyChanges:hover,
-#applyColorChanges:hover,
-#set_seat_number:hover {
+#mptrs_applyPriceChanges:hover,
+#mptrs_applyColorChanges:hover,
+#mptrs_setSeatNumber:hover {
     background-color: #218838;
 }
 
-.seatNumberContainer{
+.mptrs_seatNumberContainer{
     display: flex;
     width: 130px;
 }
 
-#seat_number_prefix{
+#mptrs_seatNumberPrefix{
     width: 75px;
 }
-#seat_number_count {
+#mptrs_seatNumberCount {
     width: 45px;
     padding: 0 2px !important;
 }
 
-#clearAll {
+#mptrs_clearAllPlan {
     display: block;
     float: left;
     background-color: #dc3545;
@@ -441,11 +364,11 @@
     cursor: pointer;
 }
 
-#clearAll:hover {
+#mptrs_clearAllPlan:hover {
     background-color: #c82333;
 }
 
-#savePlan {
+#mptrs_savePlan {
     display: block;
     float: left;
     background-color: #37a8db;
@@ -458,7 +381,7 @@
     cursor: pointer;
 }
 
-#savePlanAsTemplate{
+#mptrs_savePlanAsTemplate{
     display: block;
     float: left;
     background-color: #728289;
@@ -471,15 +394,12 @@
     cursor: pointer;
 }
 
-#savePlan:hover,
-#savePlanAsTemplate:hover {
+#mptrs_savePlan:hover,
+#mptrs_savePlanAsTemplate:hover {
     cursor: pointer;
     background-color: #e0a800;
 }
 
-#enable_resize,
-#enable_drag_drop,
-#make_circle,
 #mptrs_mapping_set_seat,
 #mptrs_mapping_set_shape,
 #mptrs_mapping_multiselect {
@@ -489,10 +409,7 @@
 #setText:hover,
 #enable_resize:hover,
 #mptrs_removeSelected:hover,
-#rotateDone:hover,
 #mptrs_mapping_singleSelect:hover,
-#enable_drag_drop:hover,
-#make_circle:hover,
 #mptrs_mapping_multiselect:hover {
     background-color: #138496;
     color: #fff;
@@ -513,7 +430,6 @@
     z-index: 999;
 }
 
-/* Popup container (background overlay) */
 .mptrs_popup {
     display: none;
     position: absolute;
@@ -524,7 +440,7 @@
     height: 100%;
     background-color:rgb(0 0 0 / 22%);
 }
-#templatePopupContainer {
+#mptrs_templatePopupContainer {
     display: block;
     position: absolute;
     z-index: 999;
@@ -544,9 +460,8 @@
     flex-wrap: wrap;
     width: 100%;
     gap: 2px;
-    /*background-color: #990000;*/
 }
-.mptrs_seatIcon{
+.mptrs_seatIcon, .mptrs_seatIconImageUpload{
     width: 25px !important;
     height: 23px !important;;
     border: 1px solid #ddd9d9;
@@ -563,30 +478,29 @@
     z-index: 30;
     cursor: move;
     box-shadow: 0 3px 9pt rgba(0, 0, 0, .23), 0 3px 9pt rgba(0, 0, 0, .16);
-    /*border: 1px solid #b3adad5c; !* Optional: for visibility *!*/
 }
-.dynamicShapeHolder{
+.mptrs_dynamicShapeHolder{
     display: none;
     width: 100%;
     float: left;
     position: relative;
     margin-bottom: 10px;
 }
-.shapeRotationHolder{
+.mptrs_shapeRotationHolder{
     display: flex;
 }
 .textRotationHolder{
     display: flex;
     width: 120px;
 }
-.shapeRotate, .textRotate{
+.mptrs_shapeRotate, .mptrs_textRotate{
     padding: 3px;
-    width: 25px;
-    height: 25px;
+    width: 25px !important;
+    height: 25px !important;
     cursor: pointer;
 }
 
-.setShapeColor{
+.mptrs_setShapeColor{
     width: 28px;
 }
 .mptrs_shapeText{
@@ -610,22 +524,24 @@
     align-items: flex-start;
     margin: 20px;
 }
-#iconUpload {
+
+/*#iconUpload {
     margin: 10px 0;
 }
+
 #previewImage {
     margin-top: 15px;
     max-width: 200px;
     display: none;
-}
+}*/
 
-.featureImagesHolder{
+.mptrs_featureImagesHolder{
     width: 100%;
     display: block;
     float: left;
     position: relative;
 }
-.featureImages{
+.mptrs_featureImages{
     display: block;
     width: calc(100% - 20px);
     height: 80px;
@@ -633,7 +549,7 @@
     border-radius: 3px;
 }
 
-.templateLinks{
+.mptrs_templateLinks{
     display: block;
     float: left;
     position: relative;
@@ -644,7 +560,6 @@
     font-size: 16px;
     line-height: 16px;
 }
-/* Popup content box */
 .mptrs_popupContent {
     position: relative;
     margin: 15% auto;
@@ -654,7 +569,7 @@
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
-.templatePopupContent {
+.mptrs_templatePopupContent {
     position: relative;
     margin: 10px;
     padding: 20px;
@@ -663,14 +578,14 @@
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
-.templatesHolder{
+.mptrs_templatesHolder{
     width: 100%;
     position: relative;
     display: grid;
     gap: 5px;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 }
-.templates{
+.mptrs_templates{
     display: block;
     float: left;
     border: 1px solid #dddada;
@@ -678,18 +593,20 @@
     border-radius: 3px;
     cursor: pointer;
 }
-.templateSelected{
+.mptrs_templateSelected{
     border: 2px dashed #5b5757;
 }
-.plus, .minus{
-    cursor: pointer;
-}
-.textMove{
-    cursor: pointer;
-    padding: 3px;
+
+.dynamic-input {
+    border: 1px solid #ccc;
+    padding: 5px;
+    font-size: 14px;
 }
 
-/* Close button */
+.mptrs_textSelected{
+    border: 2px dashed #0a0a0a;
+}
+
 .mptrs_close {
     position: absolute;
     top: 10px;
@@ -698,7 +615,7 @@
     font-weight: bold;
     cursor: pointer;
 }
-.templatePopupClose {
+.mptrs_templatePopupClose {
     position: absolute;
     top: 0px;
     right: 15px;
@@ -707,21 +624,21 @@
     cursor: pointer;
     color: #666666;
 }
-.importSeatPlanText{
+.mptrs_importSeatPlanText{
     font-size: 14px;
     color: #666;
     margin-bottom: 5px;
     display: block;
     text-align: center;
 }
-.importSeatPlanTitleText{
+.mptrs_importSeatPlanTitleText{
     font-size: 18px;
     color: #666;
     margin-bottom: 5px;
     display: block;
     text-align: center;
 }
-.templateLinks{
+.mptrs_templateLinks{
     text-underline: none;
     text-decoration: none;
 }
@@ -744,42 +661,33 @@
     }
 }
 
-.templatePopupClose:hover{
+.mptrs_templatePopupClose:hover{
     color: #990000;
 }
 
-.dynamic-input {
-    border: 1px solid #ccc;
-    padding: 5px;
-    font-size: 14px;
-}
 .mptrs_dynamic-text {
     font-size: 14px;
     color: #333;
 }
-button.zoom-in, button.zoom-out {
+button.mptrs_textZoomIn, button.mptrs_textZoomOut {
     padding: 1px 2px;
     font-size: 14px;
     cursor: pointer;
 }
-button.zoom-in:hover, button.zoom-out:hover {
+button.mptrs_textZoomIn:hover, button.mptrs_textZoomOut:hover {
     background-color: #ddd;
 }
 .mptrs_text-wrapper{
     z-index: 50;
 }
 
-.textSelected{
-    border: 2px dashed #0a0a0a;
-}
-
-.zoom-in, .zoom-out, .setRotateBtn {
+.mptrs_textZoomIn, .mptrs_textZoomOut, .setRotateBtn {
     display: block;
     margin-left: 4px;
     padding-block: 1px;
     padding-inline: 3px
 }
-.remove-text, .removeShape{
+.mptrs_removeText, .removeShape{
     display: block;
     margin-left: 4px;
     background-color: red;
@@ -790,14 +698,14 @@ button.zoom-in:hover, button.zoom-out:hover {
     cursor: pointer;
 }
 
-.dynamicTextControlHolder{
+.mptrs_dynamicTextControlHolder{
     display: block;
     float: left;
     position: relative;
     margin-bottom: 10px;
     width: 100%;
 }
-.dynamicTextControlText{
+.mptrs_dynamicTextControlText{
     display: block;
     float: left;
     position: relative;
@@ -805,27 +713,27 @@ button.zoom-in:hover, button.zoom-out:hover {
     text-align: left;
     padding: 2px 0px;
 }
-.dynamicShapeControl{
+.mptrs_dynamicShapeControl{
     display: block;
     float: left;
     width: 100%;
     margin-bottom: 10px;
 }
-.colorRemoveHolder{
+.mptrs_colorRemoveHolder{
     display: flex;
     width: 100%;
     padding-top: 5px;
 }
-#setShapeColor{
+#mptrs_setShapeColor{
     width: 30px;
 }
-.dynamicShapeControlText{
+.mptrs_dynamicShapeControlText{
     display: block;
     float: left;
     position: relative;
     width: 100%;
 }
-.removeDynamicShape{
+.mptrs_removeDynamicShape{
     display: block;
     margin-left: 4px;
     background-color: red;
@@ -836,7 +744,7 @@ button.zoom-in:hover, button.zoom-out:hover {
     height: 27px;
     cursor: pointer;
 }
-.set-color, .setShapeColor{
+.mptrs_setShapeColor{
     display: block;
     margin-left: 4px;
     background-color: blue;
@@ -847,7 +755,7 @@ button.zoom-in:hover, button.zoom-out:hover {
     cursor: pointer;
 }
 
-.setTextColor {
+.mptrs_setTextColor {
     display: block;
     margin-left: 4px;
     background-color: blue;
@@ -858,7 +766,7 @@ button.zoom-in:hover, button.zoom-out:hover {
     cursor: pointer;
 }
 
-.dynamicTextControlContainer {
+.mptrs_dynamicTextControlContainer {
     display: flex;
     width: 100%;
     flex-direction: column;
@@ -868,7 +776,7 @@ button.zoom-in:hover, button.zoom-out:hover {
     /*box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);*/
 }
 
-.textControl {
+.mptrs_textControl {
     display: flex;
     gap: 8px;
     width: 100%;
@@ -876,7 +784,7 @@ button.zoom-in:hover, button.zoom-out:hover {
     /*margin-bottom: 10px;*/
 }
 
-.textControl button {
+.mptrs_textControl button {
     background-color: #3498db;
     color: #fff;
     border: none;
@@ -891,19 +799,19 @@ button.zoom-in:hover, button.zoom-out:hover {
     transition: background-color 0.2s ease;
 }
 
-.textControl button:hover {
+.mptrs_textControl button:hover {
     background-color: #2980b9;
 }
 
-.textControl .remove-text {
+.mptrs_textControl .mptrs_removeText {
     background-color: #e74c3c;
 }
 
-.textControl .remove-text:hover {
+.mptrs_textControl .mptrs_removeText:hover {
     background-color: #c0392b;
 }
 
-.textControl input[type="color"] {
+.mptrs_textControl input[type="color"] {
     width: 35px;
     height: 35px;
     padding: 0;
@@ -912,79 +820,58 @@ button.zoom-in:hover, button.zoom-out:hover {
     overflow: hidden;
 }
 
-.textRotationHolder {
+.mptrs_textRotationHolder {
     display: flex;
     gap: 8px;
     justify-content: center;
     align-items: center;
 }
 
-.textRotationHolder img {
+.mptrs_textRotationHolder img {
     width: 30px;
     height: 30px;
     cursor: pointer;
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.textRotationHolder img:hover {
+.mptrs_textRotationHolder img:hover {
     transform: scale(1.1);
     opacity: 0.8;
 }
 
-
-
-
-/* Hide the actual file input */
-.seatIconUpload {
+.mptrs_seatIconUpload {
     display: none;
 }
 
-/* Style the label to look like an image */
 .seat-icon-upload-container {
     position: relative;
     display: inline-block;
     cursor: pointer;
 }
 
-.seat-icon-upload-label {
+.mptrs_seatIconUploadLabel {
     display: inline-block;
     cursor: pointer;
 }
 
-.seat-icon-image {
-    width: 27px;
-    height: 27px;
-    object-fit: cover;
-    /*border: 1px solid #ccc;*/
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    margin-top: 3px;
-}
-
-.seat-icon-image:hover {
-    transform: scale(1.05); /* Slight zoom effect on hover */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a shadow */
-}
-
-
-/* Custom scrollbar styles */
-.seatActionControl::-webkit-scrollbar {
+.mptrs_seatActionControl::-webkit-scrollbar {
     width: 4px;
 }
-.seatActionControl::-webkit-scrollbar-track {
+.mptrs_seatActionControl::-webkit-scrollbar-track {
     background: #f1f1f1;
     border-radius: 2px;
 }
-.seatActionControl::-webkit-scrollbar-thumb {
+.mptrs_seatActionControl::-webkit-scrollbar-thumb {
     background: #c1bfbf;
     border-radius: 4px;
 }
-.seatActionControl::-webkit-scrollbar-thumb:hover {
+.mptrs_seatActionControl::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
 
-.popupTemplateContainer{
+.mptrs_popupTemplateContainer{
     padding: 10px 0px;
 }
-.openAsTemplate{
+.mptrs_openAsTemplate{
     padding: 5px 10px;
 }
