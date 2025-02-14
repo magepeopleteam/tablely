@@ -74,7 +74,8 @@
 				wp_enqueue_script( 'mptrs_admin', MPTRS_PLUGIN_URL . '/assets/admin/mptrs_admin.js', [ 'jquery' ], time(), true );
 				wp_localize_script( 'mptrs_admin', 'mptrs_admin_ajax', array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
-					'nonce'    => wp_create_nonce( 'mptrs_admin_nonce' )
+					'nonce'    => wp_create_nonce( 'mptrs_admin_nonce' ),
+                    'site_url' => get_site_url(),
 				) );
 				do_action( 'add_mptrs_admin_script' );
                 wp_enqueue_style('create_seat_plan', MPTRS_PLUGIN_URL . '/assets/admin/create_seat_plan.css', [], time());

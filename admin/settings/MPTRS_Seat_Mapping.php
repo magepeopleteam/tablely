@@ -115,13 +115,13 @@
                             if ( is_array( $plan_seat_texts ) && count( $plan_seat_texts ) > 0 ) {
                                 foreach ( $plan_seat_texts as $plan_seat_text ) {
                                     $text_rotate_deg = isset( $plan_seat_text['textRotateDeg'] ) ? absint( $plan_seat_text['textRotateDeg'] ) : 0;
-                                    echo '<div class="text-wrapper" data-text-degree="' . esc_attr( $text_rotate_deg ) . '"
+                                    echo '<div class="mptrs_text-wrapper" data-text-degree="' . esc_attr( $text_rotate_deg ) . '"
                                         style="
                                         position: absolute; 
                                         left: ' . esc_attr( $plan_seat_text['textLeft'] ) . 'px; 
                                         top: ' . esc_attr( $plan_seat_text['textTop'] ) . 'px; 
                                         transform: rotate(' . esc_attr( $text_rotate_deg ) . 'deg);">
-                                        <span class="dynamic-text" 
+                                        <span class="mptrs_dynamic-text" 
                                             style="
                                                 display: block; 
                                                 color: ' . esc_attr( $plan_seat_text['color'] ) . '; 
@@ -186,7 +186,7 @@
                                 $hover_price = $seat_price === 0 ? '' : 'Price: ' . esc_attr( $seat_price );
                                 $block = $seat_num ? 'block' : 'none';
 
-                                echo '<div class=" childDiv ' . esc_attr( $class ) . '"
+                                echo '<div class=" mptrs_mappingSeat ' . esc_attr( $class ) . '"
                                     id = "div' . esc_attr( $col ) . '_' . esc_attr( $row ) . '"
                                     data-id="' . esc_attr( $col ) . '-' . esc_attr( $row ) . '" 
                                     data-row="' . esc_attr( $col ) . '" 
@@ -205,8 +205,9 @@
                                     z-index: ' . esc_attr( $zindex ) . ';
                                     transform: rotate(' . esc_attr( $degree ) . 'deg);
                                     ">
-                                    <div class="tooltip" style="display: none;z-index: 999">' . esc_attr( $hover_price ) . '</div>
-                                    <div class="seatNumber" id="seatNumber' . esc_attr( $col ) . '_' . esc_attr( $row ) . '" style="display: ' . esc_attr( $block ) . ';">' . esc_html( $seat_num ) . '</div>
+                                    
+                                    <div class="mptrs_showPriceHover" style="display: none;z-index: 999">' . esc_attr( $hover_price ) . '</div>
+                                    <div class="mptrs_seatNumber" id="mptrs_seatNumber' . esc_attr( $col ) . '_' . esc_attr( $row ) . '" style="display: ' . esc_attr( $block ) . ';">' . esc_html( $seat_num ) . '</div>
                                 </div>';
                             }
                         }
@@ -221,24 +222,24 @@
                         } );
                         $image_files = array_values( $image_files );
 
-                        $icon_images = '<div class="seatIconHolder" id="seatIconHolder">';
+                        $icon_images = '<div class="mptrs_seatIconHolder" id="mptrs_seatIconHolder">';
                         foreach ( $image_files as $seat_icon ) {
                             if ( $seat_icon === 'uploadIcon.png' || $seat_icon === 'remove.png' ) {
                                 continue;
                             }
                             if ( $seat_icon ) {
                                 $split_image = explode( '.', $seat_icon );
-                                $icon_images .= '<img class="seatIcon" id="' . esc_attr( $split_image[0] ) . '" src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/seatIcons/' . $seat_icon ) . '"/>';
+                                $icon_images .= '<img class="mptrs_seatIcon" id="' . esc_attr( $split_image[0] ) . '" src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/seatIcons/' . $seat_icon ) . '"/>';
                             }
                         }
-                        $icon_images .= '<img alt="No" class="seatIcon" id="seatnull" src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/seatIcons/remove.png' ) . '"/>
+                        $icon_images .= '<img alt="No" class="mptrs_seatIcon" id="seatnull" src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/seatIcons/remove.png' ) . '"/>
                                          <div class="seat-icon-upload-container" style="display: block">
-                                             <label for="seatIconUpload" class="seat-icon-upload-label">
-                                                <img src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/seatIcons/uploadIcon.png' ) . '" alt="Upload Icon" class="seat-icon-image">
-                                             </label>
-                                            <input class="seatIconUpload" type="file" id="seatIconUpload" name="filename">
-                                         </div>  
-                                     </div>';
+                                                 <label for="seatIconUpload" class="seat-icon-upload-label">
+                                                    <img src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/seatIcons/uploadIcon.png' ) . '" alt="Upload Icon" class="seat-icon-image">
+                                                 </label>
+                                                <input class="seatIconUpload" type="file" id="seatIconUpload" name="filename">
+                                             </div>  
+                                         </div>';
                         echo '</div> 
                             </div>
                             <div class="seatActionControl">

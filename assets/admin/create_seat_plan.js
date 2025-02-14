@@ -83,7 +83,7 @@ jQuery(document).ready(function ($) {
         let original_post = original_posts.replace('open_', '');
         if( templates.length > 0 ){
             let postIds = templates.join("_");
-            window.location.href = `${ajax_object.site_url}/wp-admin/post.php?post=${original_post}&action=edit&templateId=${postIds}`;
+            window.location.href = `${mptrs_admin_ajax.site_url}/wp-admin/post.php?post=${original_post}&action=edit&templateId=${postIds}`;
         }
     });
 
@@ -100,7 +100,7 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
         $(this).toggleClass('enable_resize_selected');
         if( !$(this).hasClass( 'enable_resize_selected' )){
-            $(".childDiv").each(function () {
+            $(".mptrs_mappingSeat").each(function () {
                 if ($(this).data("ui-resizable")) {
                     $(this).resizable("destroy");
                 }
@@ -250,7 +250,7 @@ jQuery(document).ready(function ($) {
             rotationData = {}; // Store rotation angles and positions for each div
             selectionOrder = [];
 
-            $('.childDiv.selected').each(function () {
+            $('.mptrs_mappingSeat.selected').each(function () {
                 const $this = $(this);
 
                 $this.removeClass('rotateSelected selected');
@@ -313,7 +313,7 @@ jQuery(document).ready(function ($) {
 
     let seatIconName = '';
     let imageUrl = '';
-    $(document).on('click', '.seatIcon', function (e) {
+    $(document).on('click', '.mptrs_seatIcon', function (e) {
         e.preventDefault();
         $(this).toggleClass('iconSelected');
         if( $(this).hasClass('iconSelected' ) ) {
@@ -324,7 +324,7 @@ jQuery(document).ready(function ($) {
                 imageUrl = '';
             }
 
-            $('.childDiv.save.selected').each(function () {
+            $('.mptrs_mappingSeat.save.selected').each(function () {
                 $(this).css({
                     'background-image': `url(${imageUrl})`,
                     'background-color': '',
@@ -384,7 +384,7 @@ jQuery(document).ready(function ($) {
                 }else{
                     seat_number = count;
                 }
-                $(div.find('.seatNumber')).text( seat_number );
+                $(div.find('.mptrs_seatNumber')).text( seat_number );
                 $(div).attr('data-seat-num', seat_number);
                 div.removeClass('selected');
                 count++;
@@ -411,25 +411,25 @@ jQuery(document).ready(function ($) {
 
     $(document).on('click', '#clearAll', function ( e ) {
         e.preventDefault();
-        $('.childDiv').removeClass('save');
-        $('.childDiv').removeClass('selected');
-        $('.childDiv').css({
+        $('.mptrs_mappingSeat').removeClass('save');
+        $('.mptrs_mappingSeat').removeClass('selected');
+        $('.mptrs_mappingSeat').css({
             "background": "",
             "transform": "rotate(0deg)",
             "z-index" : 'auto',
         });
-        $('.childDiv').attr({
+        $('.mptrs_mappingSeat').attr({
             'data-seat-num': '',
             'data-price': 0
         });
 
-        $('.childDiv').text('');
+        $('.mptrs_mappingSeat').text('');
         seat_num = 0;
         selectedDivs = [];
         selectedDraggableDivs = [];
         selectedSeatsDivs = [];
 
-        $('.mptrs_dynamicShape, .text-wrapper').each( function () {
+        $('.mptrs_dynamicShape, .mptrs_text-wrapper').each( function () {
             $(this).remove();
         });
 
@@ -449,13 +449,13 @@ jQuery(document).ready(function ($) {
 
     });
     function hide_remove_shape_text_sellection(){
-        $("#mptrs_parentDiv").find('.text-wrapper').removeClass('textSelected');
+        $("#mptrs_parentDiv").find('.mptrs_text-wrapper').removeClass('textSelected');
         $("#mptrs_parentDiv").find('.mptrs_dynamicShape').removeClass('selectedShape');
         $(".dynamicShapeColorHolder").hide();
         $(".dynamicTextControlHolder").hide();
     }
     let seat_num = 0;
-    $(document).on( "click", ".childDiv", function (e) {
+    $(document).on( "click", ".mptrs_mappingSeat", function (e) {
         hide_remove_shape_text_sellection();
         e.preventDefault();
         const $this = $(this);
@@ -494,7 +494,7 @@ jQuery(document).ready(function ($) {
             seat_num++;
             $this.addClass("save seatClickable");
             let color = $('#setColor').val();
-            let seatNumberId = 'seatNumber'+clickId;
+            let seatNumberId = 'mptrs_seatNumber'+clickId;
 
             $this.css({
                 'background-color' : color,
@@ -526,7 +526,7 @@ jQuery(document).ready(function ($) {
 
                             isMultiSelecting = false;
                             let maxZIndex = 0;
-                            $('.childDiv').each(function () {
+                            $('.mptrs_mappingSeat').each(function () {
                                 const currentZIndex = parseInt($(this).css('z-index')) || 0;
                                 if (currentZIndex > maxZIndex) {
                                     maxZIndex = currentZIndex;
@@ -665,7 +665,7 @@ jQuery(document).ready(function ($) {
     //Click Text
     $(document).on('click', '.seatText', function ( e ) {
         e.stopPropagation();
-        $(".childDiv.save").find( '.controlTextSizeHolder' ).remove();
+        $(".mptrs_mappingSeat.save").find( '.controlTextSizeHolder' ).remove();
         let seatTextClickId = $(this).attr('id');
 
         let textMove = '<div class="controlTextmoveHolder" id="move'+seatTextClickId+'">\
@@ -760,7 +760,7 @@ jQuery(document).ready(function ($) {
 
     $(document).on('click', function () {
         $('.set_text_holdercontainer').remove();
-        $(".childDiv.save").find( '.controlTextSizeHolder' ).remove();
+        $(".mptrs_mappingSeat.save").find( '.controlTextSizeHolder' ).remove();
     });
     $(document).on('click', '.close_set_text', function ( e ) {
         e.preventDefault();
@@ -900,11 +900,11 @@ jQuery(document).ready(function ($) {
                     div.addClass("save").removeClass('selected');
                     if (price){
                         div.attr("data-price", price)/*.text(price)*/;
-                        const tooltip = div.find('.tooltip');
-                        if (tooltip.length) {
-                            tooltip.text(`Price: ${price}`);
+                        const mptrs_showPriceHover = div.find('.mptrs_showPriceHover');
+                        if (mptrs_showPriceHover.length) {
+                            mptrs_showPriceHover.text(`Price: ${price}`);
                         } else {
-                            div.append('<div class="tooltip" style="display: none;">Price: ' + price + '</div>');
+                            div.append('<div class="mptrs_showPriceHover" style="display: none;">Price: ' + price + '</div>');
                         }
                     }
                 }
@@ -926,7 +926,7 @@ jQuery(document).ready(function ($) {
 
     // Deselect on outside click
     /*$(document).on("click", function () {
-        $(".childDiv").removeClass("selected").each(function () {
+        $(".mptrs_mappingSeat").removeClass("selected").each(function () {
             if ($(this).data("ui-resizable")) {
                 $(this).resizable("destroy");
             }
@@ -963,7 +963,7 @@ jQuery(document).ready(function ($) {
                 isMultiSelecting = true;
                 isDragging = false;
 
-                $('.childDiv').removeClass('hovered'); // Clear previous hover highlights
+                $('.mptrs_mappingSeat').removeClass('hovered'); // Clear previous hover highlights
 
                 startPoint = { x: e.pageX, y: e.pageY };
                 selectionBox = $('<div>').addClass('selection-box').appendTo($seatGrid);
@@ -997,7 +997,7 @@ jQuery(document).ready(function ($) {
                 height: height,
             });
 
-            $('.childDiv.save').each(function () {
+            $('.mptrs_mappingSeat.save').each(function () {
                 const $box = $(this);
                 const boxOffset = $box.offset();
                 const boxPosition = {
@@ -1027,7 +1027,7 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
 
         if (isMultiSelecting) {
-            $('.childDiv.save.dotted').each(function () {
+            $('.mptrs_mappingSeat.save.dotted').each(function () {
                 const $this = $(this);
                 selectedDivs.push($this);
                 selectedDraggableDivs.push($this);
@@ -1098,7 +1098,7 @@ jQuery(document).ready(function ($) {
             e.preventDefault();
             if ( $("#mptrs_mapping_set_seat").hasClass('enable_set_seat') ) {
                 createMultiSeats = true;
-                $('.childDiv').removeClass('hovered'); // Clear previous hover highlights
+                $('.mptrs_mappingSeat').removeClass('hovered'); // Clear previous hover highlights
 
                 createSeatStartPoint = {x: e.pageX, y: e.pageY};
                 createSeatSelectionBox = $('<div>').addClass('selection-box').appendTo($CreateSeatGrid);
@@ -1127,7 +1127,7 @@ jQuery(document).ready(function ($) {
                     height: height,
                 });
 
-                $('.childDiv').each(function () {
+                $('.mptrs_mappingSeat').each(function () {
 
                     if(!$(this).hasClass('save' ) && addEnableSeat){
                         const $box = $(this);
@@ -1157,7 +1157,7 @@ jQuery(document).ready(function ($) {
             e.preventDefault();
             if (createMultiSeats) {
                 createMultiSeats = false;
-                $('.childDiv.dotted').each(function () {
+                $('.mptrs_mappingSeat.dotted').each(function () {
                     const $this = $(this);
                     let MultiseatDivId = $this.attr('id');
                     let MultiseatId = MultiseatDivId.replace("div", "");
@@ -1169,7 +1169,7 @@ jQuery(document).ready(function ($) {
                         'background-color' : color,
                     });
                     $this.attr('data-seat-num', seat_num);
-                    let seatNumberId = 'seatNumber'+MultiseatId;
+                    let seatNumberId = 'mptrs_seatNumber'+MultiseatId;
                     $("#"+seatNumberId).text(seat_num);
                     $("#"+seatNumberId).show();
                     const rotate_id = $(this).attr('id');
@@ -1187,15 +1187,15 @@ jQuery(document).ready(function ($) {
     multiSeat_Creation();
 
     //Hover option
-   /* $('.childDiv').hover(function () {
-        let tooltipValue = $(this).find('.tooltip').text();
+   /* $('.mptrs_mappingSeat').hover(function () {
+        let tooltipValue = $(this).find('.mptrs_showPriceHover').text();
         if ( tooltipValue ) {
-            $(this).find('.tooltip')
+            $(this).find('.mptrs_showPriceHover')
                 .text(`${tooltipValue}`)
                 .show();
         }
     }, function () {
-        $(this).find('.tooltip').hide();
+        $(this).find('.mptrs_showPriceHover').hide();
     });*/
 
     //End
@@ -1210,7 +1210,7 @@ jQuery(document).ready(function ($) {
     $(document).on('click','.mptrs_parentDiv',function (e) {
         e.preventDefault();
         if ( $('#mptrs_mapping_setText').hasClass('enable_set_text') ) {
-            $("#mptrs_parentDiv").find('.text-wrapper').removeClass('textSelected');
+            $("#mptrs_parentDiv").find('.mptrs_text-wrapper').removeClass('textSelected');
             set_plan_text(e);
         }
         if( $('#mptrs_mapping_set_shape').hasClass('enable_set_shape' ) ){
@@ -1253,7 +1253,7 @@ jQuery(document).ready(function ($) {
     $(document).on("click", ".textCopy", function (e) {
         copyData = [];
         e.preventDefault();
-        const copyTextDiv = $("#mptrs_parentDiv").find('.text-wrapper.textSelected');
+        const copyTextDiv = $("#mptrs_parentDiv").find('.mptrs_text-wrapper.textSelected');
         removed_text_data( copyTextDiv, 'copy' );
         alert('Your item is copied select the paste button and click where you want to paste.');
     });
@@ -1261,7 +1261,7 @@ jQuery(document).ready(function ($) {
         copyData = [];
         e.preventDefault();
         if( $("#mptrs_mapping_singleSelect").hasClass('enable_single_seat_selection')){
-            const copySeatDiv = $("#mptrs_parentDiv").find('.childDiv.save.selected');
+            const copySeatDiv = $("#mptrs_parentDiv").find('.mptrs_mappingSeat.save.selected');
             removed_seat_data( copySeatDiv, 'copy' );
             alert('Your item is copied select the paste button and click where you want to paste.');
         }
@@ -1285,7 +1285,7 @@ jQuery(document).ready(function ($) {
     $(document).on( 'click', '.zoom-in', function (e) {
         e.preventDefault();
         e.stopPropagation();
-        const dynamicText =  $("#mptrs_parentDiv").find('.text-wrapper.textSelected').children('.dynamic-text');
+        const dynamicText =  $("#mptrs_parentDiv").find('.mptrs_text-wrapper.textSelected').children('.mptrs_dynamic-text');
         const currentSize = parseInt(dynamicText.css('font-size'));
 
         if (!isNaN(currentSize)) {
@@ -1296,7 +1296,7 @@ jQuery(document).ready(function ($) {
     $(document).on( 'click', '.zoom-out', function (e) {
         e.preventDefault();
         e.stopPropagation();
-        const dynamicText =  $("#mptrs_parentDiv").find('.text-wrapper.textSelected').children('.dynamic-text');
+        const dynamicText =  $("#mptrs_parentDiv").find('.mptrs_text-wrapper.textSelected').children('.mptrs_dynamic-text');
         const currentSize = parseInt(dynamicText.css('font-size'));
         if (!isNaN(currentSize)) {
             dynamicText.css('font-size', currentSize - 1 + 'px');
@@ -1306,16 +1306,16 @@ jQuery(document).ready(function ($) {
     $(document).on( 'click', '.remove-text', function (e) {
         e.preventDefault();
         e.stopPropagation();
-        const dynamicText =  $("#mptrs_parentDiv").find('.text-wrapper.textSelected').children('.dynamic-text');
+        const dynamicText =  $("#mptrs_parentDiv").find('.mptrs_text-wrapper.textSelected').children('.mptrs_dynamic-text');
 
-        const textDiv = $("#mptrs_parentDiv").find('.text-wrapper.textSelected');
+        const textDiv = $("#mptrs_parentDiv").find('.mptrs_text-wrapper.textSelected');
         removed_text_data( textDiv, 'erase' );
         dynamicText.parent().remove();
     });
 
     $(document).on("click", ".textRotate", function (e) {
         e.preventDefault();
-        let getText =$("#mptrs_parentDiv").find('.text-wrapper.textSelected');
+        let getText =$("#mptrs_parentDiv").find('.mptrs_text-wrapper.textSelected');
         let textDeg = parseInt(getText.attr('data-text-degree')) || 0;
         let leftRight = $(this).attr('id'); // ID of the clicked button
         if (leftRight === 'textRotateRight') {
@@ -1330,7 +1330,7 @@ jQuery(document).ready(function ($) {
     $('#setTextColor').on('input', function ( e ) {
         e.preventDefault();
         const color = $("#setTextColor").val();
-        const dynamicText =  $("#mptrs_parentDiv").find('.text-wrapper.textSelected').children('.dynamic-text');
+        const dynamicText =  $("#mptrs_parentDiv").find('.mptrs_text-wrapper.textSelected').children('.mptrs_dynamic-text');
         if (color)  dynamicText.css("color", color);
     });
     function make_shape(e, shape_type) {
@@ -1431,7 +1431,7 @@ jQuery(document).ready(function ($) {
     $(document).on("click", ".mptrs_dynamicShape", function (e) {
         const isAlreadySelected = $(this).hasClass('selectedShape');
         $("#mptrs_parentDiv").find('.mptrs_dynamicShape').removeClass('selectedShape');
-        $("#mptrs_parentDiv").find('.text-wrapper').removeClass('textSelected');
+        $("#mptrs_parentDiv").find('.mptrs_text-wrapper').removeClass('textSelected');
         $(".dynamicTextControlHolder").hide();
         $("#setPriceColorHolder").hide();
         if (!isAlreadySelected) {
@@ -1498,16 +1498,16 @@ jQuery(document).ready(function ($) {
         input.focus().blur(function () {
             const text = $(this).val().trim(); // Trim to remove extra spaces
             if (text) {
-                $("#mptrs_parentDiv").find('.text-wrapper').removeClass('textSelected');
+                $("#mptrs_parentDiv").find('.mptrs_text-wrapper').removeClass('textSelected');
                 $(".dynamicTextControlHolder").show();
-                const textWrapper = $('<div class="text-wrapper textSelected" data-text-degree="0"></div>').css({
+                const textWrapper = $('<div class="mptrs_text-wrapper textSelected" data-text-degree="0"></div>').css({
                     position: 'absolute',
                     left: inputX,
                     top: inputY,
                     transform: 'translate(-50%, -50%)',
                 });
 
-                const textDisplay = $('<span class="dynamic-text"></span>')
+                const textDisplay = $('<span class="mptrs_dynamic-text"></span>')
                     .text(text)
                     .css({
                         display: 'block',
@@ -1554,9 +1554,9 @@ jQuery(document).ready(function ($) {
     }
 
     let isTextDragging = false;
-    $(document).on("click", ".text-wrapper", function (e) {
+    $(document).on("click", ".mptrs_text-wrapper", function (e) {
         const isAlreadyTextSelected = $(this).hasClass('textSelected');
-        $("#mptrs_parentDiv").find('.text-wrapper').removeClass('textSelected');
+        $("#mptrs_parentDiv").find('.mptrs_text-wrapper').removeClass('textSelected');
         $("#mptrs_parentDiv").find('.mptrs_dynamicShape').removeClass('selectedShape');
         $(".dynamicShapeColorHolder").hide();
         $("#setPriceColorHolder").hide();
@@ -1615,7 +1615,7 @@ jQuery(document).ready(function ($) {
         if ( file ) {
             formData.append('image', file);
             formData.append('action', 'image_upload');
-            formData.append('nonce', ajax_object.nonce);
+            formData.append('nonce', mptrs_admin_ajax.nonce);
             $.ajax({
                 url: mptrs_admin_ajax.ajax_url,
                 type: 'POST',
@@ -1625,8 +1625,8 @@ jQuery(document).ready(function ($) {
                 success: function (response) {
                     if (response.success) {
                         alert(response.data.message);
-                        let image_link = `<img class="seatIcon" id="${response.data.image_name}" src="${response.data.file_url}" alt="Uploaded Image">`;
-                        $('#seatIconHolder').prepend( image_link );
+                        let image_link = `<img class="mptrs_seatIcon" id="${response.data.image_name}" src="${response.data.file_url}" alt="Uploaded Image">`;
+                        $('#mptrs_seatIconHolder').prepend( image_link );
                     } else {
                         alert(response.data.message);
                     }
@@ -1652,7 +1652,7 @@ jQuery(document).ready(function ($) {
         });
 
         if( lastElementData.boxType === 'seats' ){
-            copy_paste_html = `<div class="childDiv save" id="div_${whereAppend.id}" 
+            copy_paste_html = `<div class="mptrs_mappingSeat save" id="div_${whereAppend.id}" 
                           data-id="${whereAppend.data_id}" 
                           data-row="${whereAppend.row}" 
                           data-col="${whereAppend.col}" 
@@ -1671,8 +1671,8 @@ jQuery(document).ready(function ($) {
                               transform: rotate(${lastElementData.data_degree}deg);
                               border-radius: ${lastElementData.border_radius};
                           ">
-                          <div class="tooltip" style="display: none; z-index: 999;">Price: ${lastElementData.price}</div>
-                          <div class="seatNumber" id="seatNumber_${lastElementData.id}" style="display: block;">${lastElementData.seat_number}</div>
+                          <div class="mptrs_showPriceHover" style="display: none; z-index: 999;">Price: ${lastElementData.price}</div>
+                          <div class="mptrs_seatNumber" id="seatNumber_${lastElementData.id}" style="display: block;">${lastElementData.seat_number}</div>
                       </div>`;
         }
         $("#mptrs_parentDiv").append( copy_paste_html );
@@ -1724,9 +1724,9 @@ jQuery(document).ready(function ($) {
         const textLeft = parseInt(div.css('left')) || 0;
         const textTop = parseInt(div.css('top')) || 0;
         const class_name = '';
-        const color = div.children('.dynamic-text' ).css('color') || '';
-        const fontSize = div.children('.dynamic-text').css('font-size') || '';
-        const text = div.children('.dynamic-text').text() || '';
+        const color = div.children('.mptrs_dynamic-text' ).css('color') || '';
+        const fontSize = div.children('.mptrs_dynamic-text').css('font-size') || '';
+        const text = div.children('.mptrs_dynamic-text').text() || '';
         const textRotateDeg = div.data('text-degree') || 0;
         const boxType = 'texts';
         if( is_erase === 'copy' ){
@@ -1746,7 +1746,7 @@ jQuery(document).ready(function ($) {
             });
             removedData.pop();
             if( lastElementData.boxType === 'seats' ){
-                html = `<div class="childDiv save" id="div_${lastElementData.id}" 
+                html = `<div class="mptrs_mappingSeat save" id="div_${lastElementData.id}" 
                           data-id="${lastElementData.id}" 
                           data-row="${lastElementData.row}" 
                           data-col="${lastElementData.col}" 
@@ -1765,8 +1765,8 @@ jQuery(document).ready(function ($) {
                               transform: rotate(${lastElementData.data_degree}deg);
                               border-radius: ${lastElementData.border_radius};
                           ">
-                          <div class="tooltip" style="display: none; z-index: 999;">Price: ${lastElementData.price}</div>
-                          <div class="seatNumber" id="seatNumber_${lastElementData.id}" style="display: block;">${lastElementData.seat_number}</div>
+                          <div class="mptrs_showPriceHover" style="display: none; z-index: 999;">Price: ${lastElementData.price}</div>
+                          <div class="mptrs_seatNumber" id="seatNumber_${lastElementData.id}" style="display: block;">${lastElementData.seat_number}</div>
                       </div>`;
             }else if( lastElementData.boxType === 'shapes' ){
                 html = `<div class="mptrs_dynamicShape ui-draggable ui-draggable-handle ui-resizable" 
@@ -1788,13 +1788,13 @@ jQuery(document).ready(function ($) {
                         </div>`;
             }else if( lastElementData.boxType === 'texts' ){
                 html = `
-                <div class="text-wrapper" data-text-degree="${lastElementData.textRotateDeg}" 
+                <div class="mptrs_text-wrapper" data-text-degree="${lastElementData.textRotateDeg}" 
                     style="
                         position: absolute; 
                         left: ${lastElementData.textLeft}px; 
                         top: ${lastElementData.textTop}px; 
                         transform: rotate(${lastElementData.textRotateDeg}deg);">
-                     <span class="dynamic-text" 
+                     <span class="mptrs_dynamic-text" 
                         style="
                             display: block; 
                             color: ${lastElementData.color}; 
@@ -1824,7 +1824,7 @@ jQuery(document).ready(function ($) {
             });
             // removedData.pop();
             if( lastElementData.boxType === 'seats_old' ){
-                copy_paste_html = `<div class="childDiv save" id="div_${lastElementData.id}" 
+                copy_paste_html = `<div class="mptrs_mappingSeat save" id="div_${lastElementData.id}" 
                           data-id="${lastElementData.id}" 
                           data-row="${lastElementData.row}" 
                           data-col="${lastElementData.col}" 
@@ -1843,8 +1843,8 @@ jQuery(document).ready(function ($) {
                               transform: rotate(${lastElementData.data_degree}deg);
                               border-radius: ${lastElementData.border_radius};
                           ">
-                          <div class="tooltip" style="display: none; z-index: 999;">Price: ${lastElementData.price}</div>
-                          <div class="seatNumber" id="seatNumber_${lastElementData.id}" style="display: block;">${lastElementData.seat_number}</div>
+                          <div class="mptrs_showPriceHover" style="display: none; z-index: 999;">Price: ${lastElementData.price}</div>
+                          <div class="mptrs_seatNumber" id="seatNumber_${lastElementData.id}" style="display: block;">${lastElementData.seat_number}</div>
                       </div>`;
             }
             else if( lastElementData.boxType === 'shapes' ){
@@ -1868,13 +1868,13 @@ jQuery(document).ready(function ($) {
             }
             else if( lastElementData.boxType === 'texts' ){
                 copy_paste_html = `
-                <div class="text-wrapper" data-text-degree="${lastElementData.textRotateDeg}" 
+                <div class="mptrs_text-wrapper" data-text-degree="${lastElementData.textRotateDeg}" 
                     style="
                         position: absolute; 
                         left: ${x_axis}px; 
                         top: ${y_axis}px;  
                         transform: rotate(${lastElementData.textRotateDeg}deg);">
-                     <span class="dynamic-text" 
+                     <span class="mptrs_dynamic-text" 
                         style="
                             display: block; 
                             color: ${lastElementData.color}; 
@@ -1907,7 +1907,7 @@ jQuery(document).ready(function ($) {
         var seatPlanTexts = [];
         var selectedSeats = [];
         var dynamicShapes = [];
-        $('.childDiv.save').each(function () {
+        $('.mptrs_mappingSeat.save').each(function () {
             if ( $(this).css('background-color') !== 'rgb(255, 255, 255)') { // Not default white
                 const id = $(this).data('id');
                 const row = $(this).data('row');
@@ -1929,13 +1929,13 @@ jQuery(document).ready(function ($) {
             }
         });
 
-        $('.text-wrapper').each(function () {
+        $('.mptrs_text-wrapper').each(function () {
             const textLeft = parseInt($(this).css('left')) || 0;
             const textTop = parseInt($(this).css('top')) || 0;
             const class_name = $(this).data('class');
-            const color = $(this).children('.dynamic-text' ).css('color') || '';
-            const fontSize = $(this).children('.dynamic-text').css('font-size') || '';
-            const text = $(this).children('.dynamic-text').text() || '';
+            const color = $(this).children('.mptrs_dynamic-text' ).css('color') || '';
+            const fontSize = $(this).children('.mptrs_dynamic-text').css('font-size') || '';
+            const text = $(this).children('.mptrs_dynamic-text').text() || '';
             const textRotateDeg = $(this).data('text-degree') || 0;
             seatPlanTexts.push({ text, class_name, textLeft, textTop, color, fontSize, textRotateDeg});
         });

@@ -46,7 +46,7 @@
     width: 100%;
     padding-bottom: 10px;
 }
-.childDiv {
+.mptrs_mappingSeat {
     width: 35px;
     height: 35px;
     border: 1px dotted #c1bdbd;
@@ -203,7 +203,7 @@
 .ui-icon{
     visibility: hidden;
 }
-.seatNumber{
+.mptrs_seatNumber{
     position: absolute;
     top: 0px;
     left: 10px;
@@ -240,7 +240,7 @@
     margin-bottom: 20px;
 }
 
-.childDiv.dotted {
+.mptrs_mappingSeat.dotted {
     outline: 2px dotted #000;
 }
 
@@ -498,7 +498,7 @@
     color: #fff;
 }
 
-.tooltip {
+.mptrs_showPriceHover {
     position: absolute;
     top: -30px;
     left: 50%;
@@ -539,14 +539,14 @@
     display: none;
 }
 
-.seatIconHolder{
+.mptrs_seatIconHolder{
     display: flex;
     flex-wrap: wrap;
     width: 100%;
     gap: 2px;
     /*background-color: #990000;*/
 }
-.seatIcon{
+.mptrs_seatIcon{
     width: 25px !important;
     height: 23px !important;;
     border: 1px solid #ddd9d9;
@@ -753,7 +753,7 @@
     padding: 5px;
     font-size: 14px;
 }
-.dynamic-text {
+.mptrs_dynamic-text {
     font-size: 14px;
     color: #333;
 }
@@ -765,7 +765,7 @@ button.zoom-in, button.zoom-out {
 button.zoom-in:hover, button.zoom-out:hover {
     background-color: #ddd;
 }
-.text-wrapper{
+.mptrs_text-wrapper{
     z-index: 50;
 }
 
@@ -980,4 +980,11 @@ button.zoom-in:hover, button.zoom-out:hover {
 }
 .seatActionControl::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+
+.popupTemplateContainer{
+    padding: 10px 0px;
+}
+.openAsTemplate{
+    padding: 5px 10px;
 }
