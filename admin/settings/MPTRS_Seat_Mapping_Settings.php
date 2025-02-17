@@ -24,15 +24,11 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             add_action('wp_ajax_image_upload', [ $this,'handle_image_upload' ] );
             add_action('wp_ajax_nopriv_image_upload', [ $this,'handle_image_upload' ] );
 
-            add_action('wp_ajax_process_create_box_data', [ $this, 'process_create_box_data'] );
-            add_action('wp_ajax_nopriv_process_create_box_data', [ $this, 'process_create_box_data'] );
         }
 
         public function mptrs_save_seat_maps_meta_data(){
-//                check_ajax_referer('custom_ajax_nonce', 'nonce');
 
-            $post_id = intval($_POST['post_id']);
-//            error_log( print_r( [ '$post_id' => $post_id ], true ) );
+            $post_id = intval(isset( $_POST['post_id']) ? sanitize_text_field( $_POST['post_id'] ) : 0 );
             if (!$post_id || get_post_type($post_id) !== 'mptrs_item') {
                 wp_send_json_error(['message' => 'Invalid post ID or post type.']);
             }
@@ -41,15 +37,14 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
                 wp_send_json_error(['message' => 'Permission denied.']);
             }
 
-            $custom_field_1 = $_POST['custom_field_1'];
-            $seat_plan_texts= isset( $_POST['seatPlanTexts'] ) ? $_POST['seatPlanTexts'] : '' ;
-            $seatIcon = isset( $_POST['seatIcon'] ) ? $_POST['seatIcon'] : 'noicon';
-            $dynamicShapes = isset( $_POST['dynamicShapes'] ) ? $_POST['dynamicShapes'] : '';
+            $seat_maps_meta_data = isset( $_POST['seat_maps_meta_data'] ) ? MPTRS_Function::data_sanitize( $_POST['seat_maps_meta_data'] ) : [];
+
+            $seat_plan_texts= isset( $_POST['seatPlanTexts'] ) ? MPTRS_Function::data_sanitize( $_POST['seatPlanTexts'] ) : '' ;
+            $dynamicShapes = isset( $_POST['dynamicShapes'] ) ? MPTRS_Function::data_sanitize( $_POST['dynamicShapes'] ) : '';
             $template = isset( $_POST['template'] ) ? $_POST['template'] : '';
             $seat_plan_data = array(
-                'seat_data' => $custom_field_1,
+                'seat_data' => $seat_maps_meta_data,
                 'seat_text_data' => $seat_plan_texts,
-                'seatIcon' => $seatIcon,
                 'dynamic_shapes' => $dynamicShapes,
             );
             update_post_meta( $post_id, '_mptrs_seat_maps_data', $seat_plan_data );
@@ -59,34 +54,6 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
 
             wp_send_json_success(['message' => 'Meta data saved successfully.']);
         }
-
-        public function process_create_box_data(){
-            $box_size = isset($_POST['box_size']) ? intval($_POST['box_size']) : 0;
-            $numberOfRows = isset($_POST['numberOfRows']) ? intval($_POST['numberOfRows']) : 0;
-            $numberOfColumns = isset($_POST['numberOfColumns']) ? intval($_POST['numberOfColumns']) : 0;
-            $boxGap = isset($_POST['boxGap']) ? intval($_POST['boxGap']) : 0;
-
-            if ($box_size <= 0 || $numberOfRows <= 0 || $numberOfColumns <= 0 || $boxGap < 0) {
-                wp_send_json_error(['message' => 'Invalid input. Please enter valid numbers.']);
-            }
-
-            $response_data = [
-                'box_size' => $box_size,
-                'numberOfRows' => $numberOfRows,
-                'numberOfColumns' => $numberOfColumns,
-                'boxGap' => $boxGap,
-            ];
-
-            $result = update_option( 'create_box_data', $response_data );
-            if( $result ){
-                $message = 'Successfully updated box data';
-            }else{
-                $message = 'Failed to update box data';
-            }
-
-            wp_send_json_success( $message );
-        }
-
 
         function handle_image_upload() {
             // check_ajax_referer('image_upload_nonce', 'nonce');
