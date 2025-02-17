@@ -32,6 +32,7 @@
 				require_once MPTRS_PLUGIN_DIR . '/admin/settings/MPTRS_Extra_service_Settings.php';
 				require_once MPTRS_PLUGIN_DIR . '/admin/settings/MPTRS_Seat_Mapping.php';
 				require_once MPTRS_PLUGIN_DIR . '/admin/settings/MPTRS_Faq_Settings.php';
+				require_once MPTRS_PLUGIN_DIR . '/admin/settings/MPTRS_Seat_Mapping_Settings.php';
 			}
 			public function add_dummy_data() {
 				new MPTRS_Dummy_Import();
