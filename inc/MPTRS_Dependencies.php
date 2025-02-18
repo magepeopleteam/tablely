@@ -89,7 +89,9 @@
 				$this->global_enqueue();
 				wp_enqueue_style( 'mptrs', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs.css', [], time() );
 				wp_enqueue_script( 'mptrs', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs.js', [ 'jquery' ], time(), true );
+				wp_enqueue_script( 'mptrs_seat_mapping', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_seat_mapping.js', [ 'jquery' ], time(), true );
 				wp_enqueue_style( 'mptrs_registration', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_registration.css', [], time() );
+				wp_enqueue_style( 'mptrs_seat_mapping', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_seat_mapping.css', [], time() );
 				wp_enqueue_script( 'mptrs_registration', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_registration.js', [ 'jquery' ], time(), true );
 				wp_localize_script( 'mptrs_registration', 'mptrs_ajax', array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),

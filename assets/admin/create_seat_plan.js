@@ -815,6 +815,7 @@ jQuery(document).ready(function ($) {
     $("#mptrs_applyPriceChanges").on("click", function (e) {
         e.preventDefault();
         let setPriceTotal = selectedDivs.length;
+        // conosle.log( setPriceTotal );
         if( setPriceTotal > 0 ){
             const price = $("#mptrs_setSeatPrice").val();
 
@@ -1761,7 +1762,7 @@ jQuery(document).ready(function ($) {
                               width: ${lastElementData.width}; 
                               height: ${lastElementData.height}; 
                               background-color: ${lastElementData.color}; 
-                              background-image: url('http://localhost/mage_people/wp-content/plugins/dynamic-seat-plan/assets/images/icons/seatIcons/${lastElementData.backgroundImage}.png'); 
+                              background-image: url(${mptrs_admin_ajax.site_url}'/wp-content/plugins/tablely/assets/images/icons/seatIcons/${lastElementData.backgroundImage}.png'); 
                               z-index: ${lastElementData.z_index}; 
                               transform: rotate(${lastElementData.data_degree}deg);
                               border-radius: ${lastElementData.border_radius};
@@ -1888,7 +1889,7 @@ jQuery(document).ready(function ($) {
                 action: 'mptrs_save_seat_maps_meta_data',
                 nonce: mptrs_admin_ajax .nonce,
                 post_id: postId,
-                custom_field_1: selectedSeats,
+                seat_maps_meta_data: selectedSeats,
                 seatPlanTexts: seatPlanTexts,
                 seatIcon: seatIconName,
                 dynamicShapes: dynamicShapes,

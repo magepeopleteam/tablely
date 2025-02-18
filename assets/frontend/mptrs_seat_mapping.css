@@ -1,0 +1,52 @@
+.mptrs_postHolder{
+    display: block;
+    max-width: 1000px;
+    margin: auto;
+}
+#seat-grid {
+    position: relative;
+    width: 600px;
+    height: 550px;
+    margin: auto;
+    display: flex;
+    top: 10px;
+}
+.box {
+    position: absolute;
+    text-align: center;
+    line-height: 20px;
+    color: #fff;
+    cursor: pointer;
+
+}
+.boxChild{
+    /*border-radius: 3px;*/
+    margin: 3px 3px 3px 3px;
+    font-size: 12px;
+    cursor: pointer;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    /*border: 1px solid #000;*/
+    /*border-top-right-radius: 30px;*/
+    /*border-top-left-radius: 30px;*/
+}
+.text-wrapper{
+    z-index: 99;
+}
+.box_selected{
+    background-color: #333333;
+}
+.seat_number{
+    position: absolute;
+    top: 10px;
+    left: 8px;
+    color: #e31818;
+    font-weight: bold;
+}
+.dynamicShape {
+    position: absolute;
+    z-index: 99;
+    cursor: move;
+    /*border: 1px solid #000; !* Optional: for visibility *!*/
+}
