@@ -3,7 +3,7 @@
     max-width: 1000px;
     margin: auto;
 }
-#seat-grid {
+#mptrs_seatGrid {
     position: relative;
     width: 600px;
     height: 550px;
@@ -11,7 +11,7 @@
     display: flex;
     top: 10px;
 }
-.box {
+.mptrs_mappedSeat {
     position: absolute;
     text-align: center;
     line-height: 20px;
@@ -19,34 +19,70 @@
     cursor: pointer;
 
 }
-.boxChild{
-    /*border-radius: 3px;*/
+.mptrs_mappedSeatInfo{
     margin: 3px 3px 3px 3px;
     font-size: 12px;
     cursor: pointer;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    /*border: 1px solid #000;*/
-    /*border-top-right-radius: 30px;*/
-    /*border-top-left-radius: 30px;*/
 }
-.text-wrapper{
+.mptrs_dynamicTextWrapper{
     z-index: 99;
 }
 .box_selected{
     background-color: #333333;
 }
-.seat_number{
+.mptrs_seatNumber{
     position: absolute;
     top: 10px;
     left: 8px;
     color: #e31818;
     font-weight: bold;
 }
-.dynamicShape {
+.mptrs_dynamicShape {
     position: absolute;
     z-index: 99;
     cursor: move;
     /*border: 1px solid #000; !* Optional: for visibility *!*/
+}
+.mptrs_selectedSeatInfoHolder{
+    display: block;
+    float: left;
+    position: relative;
+    width: 100%;
+}
+
+.mptrs_table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+}
+
+.mptrs_table thead {
+    background-color: #0073aa;
+    color: #fff;
+}
+
+.mptrs_table th, .mptrs_table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.mptrs_table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.mptrs_table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.mptrs_removeSelectedSeat:hover{
+    color: #990000;
+}
+
+.mptrs_removeSelectedSeat{
+    cursor: pointer;
 }
