@@ -72,10 +72,18 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
 
                             <div class="mptrs_foodMenuContaine">
 
-                                <?php foreach ( $existing_menus as $key => $existing_menu ){?>
+                                <?php
+                                $fallbackImgUrl = get_site_url().'/wp-content/uploads/2025/02/fallbackimage.webp';
+                                foreach ( $existing_menus as $key => $existing_menu ){
+                                    if( $existing_menu['menuImgUrl'] === '' ){
+                                        $menu_img = $fallbackImgUrl;
+                                    }else{
+                                        $menu_img = $existing_menu['menuImgUrl'];
+                                    }
+                                    ?>
                                 <div class="mptrs_foodMenuContent" id="mptrs_foodMenuContent<?php echo esc_attr( $key )?>">
                                     <div class="mptrs_menuImageHolder">
-                                        <img class="mptrs_menuImage" id="mptrs_memuImgUrl<?php echo esc_attr( $key )?>" src="<?php echo esc_attr( $existing_menu['menuImgUrl'] ) ?>" >
+                                        <img class="mptrs_menuImage" id="mptrs_memuImgUrl<?php echo esc_attr( $key )?>" src="<?php echo esc_attr( $menu_img ) ?>" >
                                     </div>
                                     <div class="mptrs_menuInfoHolder">
                                         <div class="mptrs_topMenuInFo">
@@ -85,7 +93,7 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
                                         </div>
                                         <div class="mptrs_BottomMenuInFo">
                                             <div class="mptrs_menuPrice" id="mptrs_memuPrice<?php echo esc_attr( $key )?>">$<?php echo esc_attr( $existing_menu['menuPrice'] );?></div>
-                                            <div class="mptrs_menuPersion" id="mptrs_memuPersons<?php echo esc_attr( $key )?>"><i class='fas fa-user-alt' style='font-size:12px'></i><?php echo esc_attr( $existing_menu['numPersons'] );?></div>
+                                            <div class="mptrs_menuPersion" id="mptrs_memuPersons<?php echo esc_attr( $key )?>"><i class='fas fa-user-alt' style='font-size:14px'></i><?php echo esc_attr( $existing_menu['numPersons'] );?></div>
                                         </div>
                                         <div class="mptrs_BottomMenuInFo">
                                             <span class="mptrm_editFoodMenu" id="mptrsEditMenu_<?php echo esc_attr( $key )?>" style="display: none">Edit </span>

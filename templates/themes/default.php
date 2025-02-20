@@ -74,7 +74,7 @@
                                     </div>
                                     <div class="mptrs_BottomMenuInFo">
                                         <div class="mptrs_menuPrice">$<?php echo esc_attr( $existing_menu['menuPrice'] );?></div>
-                                        <div class="mptrs_menuPersion"><i class='fas fa-user-alt' style='font-size:12px'></i><span class="mptrs_numberOfPerson"><?php echo esc_attr( $existing_menu['numPersons'] );?></span></div>
+                                        <div class="mptrs_menuPersion"><i class='fas fa-user-alt' style='font-size:14px'></i><span class="mptrs_numberOfPerson"><?php echo esc_attr( $existing_menu['numPersons'] );?></span></div>
                                     </div>
                                 </div>
                             </div>
@@ -99,6 +99,10 @@
             </div>
         </div>
         <div class="mptrs_restaurantRightSide">
+
+
+
+
             <div class="mptrs_rightSidebar">
                 <div class="mptrs_rightSidebarItem">
                     <h4>Dress Code</h4>

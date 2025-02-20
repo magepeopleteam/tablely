@@ -11,6 +11,12 @@
     height: 500px;
     overflow: scroll;
 }
+.mptrs_seatPlanHolder::-webkit-scrollbar { width: 4px; }
+.mptrs_seatPlanHolder::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 2px; }
+.mptrs_seatPlanHolder::-webkit-scrollbar-thumb { background: #c1bfbf; border-radius: 4px; }
+.mptrs_seatPlanHolder::-webkit-scrollbar-thumb:hover { background: #555; }
+
+
 .mptrs_seatActionControl{
     display: block;
     width: 150px;
