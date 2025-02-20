@@ -1,5 +1,4 @@
 jQuery(document).ready(function ($) {
-
     /*var frame;
     $('.upload-feature-image-button').click(function(e) {
         e.preventDefault();
@@ -1887,7 +1886,7 @@ jQuery(document).ready(function ($) {
             type: 'POST',
             data: {
                 action: 'mptrs_save_seat_maps_meta_data',
-                nonce: mptrs_admin_ajax .nonce,
+                nonce: mptrs_admin_ajax.nonce,
                 post_id: postId,
                 seat_maps_meta_data: selectedSeats,
                 seatPlanTexts: seatPlanTexts,

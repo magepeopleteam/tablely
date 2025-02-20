@@ -4,15 +4,13 @@ jQuery(document).ready(function ($) {
         let totalPrice = 0;
 
         seatBooked.forEach(function (seat) {
-            console.log(seat); // Logs each seat object
             totalPrice += seat['price']; // Sum up prices
         });
 
         $("#mptrs_totalPrice").text( totalPrice );
     }
-    // Handle mptrs_mappedSeat click
+
     let seatBooked = [];
-    let totalPrice = 0;
     $('.mptrs_mappedSeat').on('click', function () {
         const seatId = $(this).attr('id');
         const price = $(this).data('price');
@@ -27,11 +25,16 @@ jQuery(document).ready(function ($) {
         }
 
         updateTotalPrice();
-        // Highlight the selected mptrs_mappedSeat
-        // $(this).children().css('background', '');
+
         $(this).css('background-color', '#cacd1e');
 
-        // Display seat info
+        let disabledDates = ["2025-02-20", "2025-02-25", "2025-02-26"];
+        let disabledValues = [2, 7, 6];
+        $('#mptrs-timepicker').empty();
+        $('#mptrs-datepicker').empty();
+        mptrs_datePicker( disabledDates );
+        mptrs_timePicker( disabledValues );
+
         $('#info').text(`Seat ID: ${seatId}, Price: $${price}, Seat number: ${seatNum}`);
         let selectedSeat = `<tr>
                                        <td>Chair</td>
@@ -41,6 +44,43 @@ jQuery(document).ready(function ($) {
                                    </tr>`;
         $("#mptrs_selectedSeatInfo").append( selectedSeat );
     });
+
+    function mptrs_datePicker( disabledDates ) {
+        $(".mptrs_DatePickerContainer").fadeIn();
+        $("#mptrs-datepicker").datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            minDate: 0,
+            maxDate: "+1Y",
+            beforeShowDay: function (date) {
+                let formattedDate = $.datepicker.formatDate("yy-mm-dd", date);
+                if (disabledDates.includes(formattedDate)) {
+                    return [false, "mptrs-disabled-date", "Not Available"]; // Disable and add tooltip
+                }
+                return [true, ""];
+            }
+        });
+        $(".mptrs-calendar-icon").click(function () {
+            $("#mptrs-datepicker").focus();
+        });
+    }
+
+    function mptrs_timePicker( disabledValues ){
+        $(".mptrs_timePickerContainer").fadeIn();
+        let timePicker = $("#mptrs-timepicker");
+        // let disabledValues = [1, 5, 6]; // Values to be disabled
+        timePicker.append(`<option value="0">select time</option>`);
+        for (let i = 1; i <= 12; i++) {
+            let isDisabled = disabledValues.includes(i) ? "disabled" : "";
+            timePicker.append(`<option value="${i}" ${isDisabled}>${i} AM</option>`);
+        }
+        for (let i = 1; i <= 12; i++) {
+            let value = i + 12;
+            let isDisabled = disabledValues.includes(value) ? "disabled" : "";
+            timePicker.append(`<option value="${value}" ${isDisabled}>${i} PM</option>`);
+        }
+    }
 
     $(document).on( 'click', '.mptrs_removeSelectedSeat', function ( e ) {
         let removeSeatClickedId = $(this).attr( 'id' );
@@ -107,7 +147,6 @@ jQuery(document).ready(function ($) {
     function removeDataFromArray(seatArray, seatIdToRemove) {
         return seatArray.filter(seat => seat.seatId !== seatIdToRemove);
     }
-
     function mptrs_load_seat_maps(){
         let postId = 123;
 

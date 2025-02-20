@@ -9,14 +9,35 @@
 	} // Cannot access pages directly.
 
 	$post_id = get_the_id();
+    $thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
     ?>
     <div class="mptrs_postHolder">
         <div class="mptrs_postTitleHolder">
-            <h1 class="mptrs_postTitleText"><?php echo get_the_title()?></h1>
+            <h1 class="mptrs_postTitleText"><?php echo esc_attr( get_the_title() );?></h1>
+        </div>
+        <?php if ( has_post_thumbnail() ) : ?>
+            <div class="mptrs_featureImageHolder">
+                <img class="mptrs_featureImage mptrs_shadow" alt="" src=" <?php  echo esc_attr( $thumbnail_url );?>">
+            </div>
+        <?php endif; ?>
+        <div class="mptrs-post-content">
+            <?php the_content(); ?>
         </div>
         <?php
             echo MPTRS_Details_Layout::display_seat_mapping();
         ?>
+
+        <div class="mptrs_DatePickerContainer" style="display: none">
+            <input type="text" id="mptrs-datepicker" placeholder="Select a Date">
+            <span class="mptrs-calendar-icon">&#128197;</span>
+        </div>
+
+        <div class="mptrs_timePickerContainer" style="display: none">
+            <select id="mptrs-timepicker">
+                <option value="">Select Time</option>
+            </select>
+        </div>
+
         <div class="mptrs_selectedSeatInfoHolder" id="mptrs_selectedSeatInfoHolder" style="display: none">
             <table class="mptrs_table">
                 <thead>
@@ -27,9 +48,7 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody id="mptrs_selectedSeatInfo">
-
-                </tbody>
+                <tbody id="mptrs_selectedSeatInfo"></tbody>
                 <tfoot>
                 <tr>
                     <td colspan="2"><strong>Total Price</strong></td>
