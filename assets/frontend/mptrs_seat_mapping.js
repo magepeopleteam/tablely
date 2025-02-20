@@ -223,4 +223,17 @@ jQuery(document).ready(function ($) {
             }
         });
     }
+
+
+    $(".mptrs_toggleBtn").click(function() {
+        var content = $(".mptrs_restaurantDes");
+        if (content.hasClass("expanded")) {
+            content.removeClass("expanded");
+            $(this).text("See More");
+        } else {
+            content.addClass("expanded");
+            $(this).text("See Less");
+        }
+    });
+
 });
