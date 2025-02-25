@@ -13,7 +13,7 @@ jQuery(document).ready(function ($) {
 
     var frame;
     var food_menu_image_url = ''
-    $('#mptrs_menuImage').click(function(e) {
+    $(document).on('click', '#mptrs_menuImage', function(e) {
         e.preventDefault();
         if (frame) {
             frame.open();
@@ -71,11 +71,61 @@ jQuery(document).ready(function ($) {
 
         let name = $("#"+menuNameId).text();
         let price = $("#"+menuPriceId).text();
+        price = price.replace("$", "");
         let person = $("#"+menuPersonId).text();
         let imgUrl = $("#"+menuImgUrlId).attr("src");
 
-        console.log( name, price, person, imgUrl);
+        var formContent = `
+        <h2>Added Food Menu Here</h2>
+        <form id="mptrs_foodMenuForm" class="mptrs_food_menu_form">
+            <div class="mptrs_form_group">
+                <label for="mptrs_menuName">Menu Name</label>
+                <input type="text" id="mptrs_menuName" name="mptrs_menuName" class="mptrs_input" required value="${name}">
+            </div>
 
+            <div class="mptrs_form_group">
+                <label for="mptrs_menuCategory">Category</label>
+                <select id="mptrs_menuCategory" name="mptrs_menuCategory" class="mptrs_select" required>
+                    <option value="starter">Starter</option>
+                    <option value="main_course">Main Course</option>
+                    <option value="dessert">Dessert</option>
+                    <option value="beverage">Beverage</option>
+                </select>
+            </div>
+
+            <div class="mptrs_form_group">
+                <label for="mptrs_menuPrice">Price ($)</label>
+                <input type="number" id="mptrs_menuPrice" name="mptrs_menuPrice" class="mptrs_input" required value="${price}">
+            </div>
+
+            <div class="mptrs_form_group">
+                <label for="mptrs_numPersons">Number of Persons</label>
+                <input type="number" id="mptrs_numPersons" name="mptrs_numPersons" class="mptrs_input" min="1" required value="${person}">
+            </div>
+
+            <div class="mptrs_form_group">
+                <label for="mptrs_menuImage">Menu Image</label>
+                <input type="file" id="mptrs_menuImage" name="mptrs_menuImage" class="mptrs_input">
+                <input type="hidden" id="mptrs_menuImage_url" name="mptrs_menuImage_url" value="${imgUrl}">
+                <div class="custom-foodMenu-image-preview"></div>
+            </div>
+
+            <button type="submit" class="mptrs_edit_food_menu_data">Update Food Menu Data</button>
+        </form>
+    `;
+
+        if ($('#mptrs_foodMenuContentContainer').is(':empty')) {
+            $('#mptrs_foodMenuContentContainer').append(formContent);
+        }
+        $('#mptrs_foodMenuPopup').fadeIn();
+
+        console.log( key, name, price, person, imgUrl);
+
+    });
+
+    $(document).on('click', '.mptrs_closePopup', function () {
+        $('#mptrs_foodMenuPopup').fadeOut();
+        $('#mptrs_foodMenuContentContainer').empty();
     });
 
     $(document).on('click', '.mptrs_submit_btn', function (e) {
@@ -87,14 +137,12 @@ jQuery(document).ready(function ($) {
         formData.menunumPersons = $("#mptrs_numPersons").val().trim();
         formData.menuImgUrl = $("#mptrs_menuImage_url").val().trim();
 
-        const postId = $('#mptrs_mapping_plan_id').val();
         $.ajax({
             url: mptrs_admin_ajax.ajax_url,
             type: 'POST',
             data: {
                 action: 'mptrs_save_food_menu',
                 nonce: mptrs_admin_ajax.nonce,
-                post_id: postId,
                 menuData: formData,
             },
             success: function (response) {
