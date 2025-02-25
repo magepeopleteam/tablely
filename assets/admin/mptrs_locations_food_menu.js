@@ -1,6 +1,6 @@
 jQuery(document).ready(function ($) {
 
-    /*$(document).on( 'click', '.mptrs_foodMenuTab', function () {
+    $(document).on( 'click', '.mptrs_foodMenuTab', function () {
        let tabClickedId = $(this).attr('id');
        $('.mptrs_foodMenuTab').removeClass('mptrs_selectedMenuTab');
        $(this).addClass('mptrs_selectedMenuTab');
@@ -8,9 +8,9 @@ jQuery(document).ready(function ($) {
        let menuTabContainer = tabClickedId+'Container';
        $("#"+menuTabContainer).siblings().hide();
        $("#"+menuTabContainer).fadeIn(1000);
-    });*/
+    });
 
-    function appendFoodMenu( foodMenuData, key ) {
+    function appendFoodMenu_old( foodMenuData, key ) {
         let menuHtml = `
         <div class="mptrs_foodMenuContent" id="mptrs_foodMenuContent${key}">
             <div class="mptrs_menuImageHolder">
@@ -40,6 +40,41 @@ jQuery(document).ready(function ($) {
         // Append the generated HTML to a container (e.g., `#mptrs_foodMenuContainer`)
         $("#mptrs_foodMenuContainer").append(menuHtml);
     }
+
+    function appendFoodMenu(foodMenuData, key) {
+        console.log( foodMenuData );
+        let row = `
+            <tr class="mptrsTableRow" id="mptrs_foodMenuContent${key}">
+                <td class="mptrsTableTd mptrsTdImage">
+                    <div class="mptrsImageWrapper">
+                        <img class="mptrsImage" id="mptrs_memuImgUrl${key}" src="${foodMenuData.menuImgUrl}" alt="${foodMenuData.menuName}">
+                    </div>
+                </td>
+                <td class="mptrsTableTd mptrsTdName">
+                    <div class="mptrs_menuName" id="mptrs_memuName${key}">
+                        ${foodMenuData.menuName}
+                    </div>
+                    <input type="hidden" name="mptrs_menuCategory" id="mptrs_menuCategory${key}" value="${foodMenuData.menuCategory}">
+                </td>
+                <td class="mptrsTableTd mptrsTdPrice">
+                    <div class="mptrs_memuPrice" id="mptrs_memuPrice${key}">$${foodMenuData.menuPrice}</div>
+                </td>
+                <td class="mptrsTableTd mptrsTdServes">
+                    <div class="mptrs_menuPersion" id="mptrs_memuPersons${key}">
+                        <i class='fas fa-user-alt' style='font-size:14px'></i> ${foodMenuData.menunumPersons}
+                    </div>
+                </td>
+                <td class="mptrsTableTd mptrsTdActions">
+                    <div class="mptrs_BottomMenuInFo">
+                        <span class="mptrm_editFoodMenu" id="mptrsEditMenu_${key}">Edit</span>
+                        <span class="mptrm_deleteFoodMenu" id="mptrsDeleteMenu_${key}">Delete</span>
+                    </div>
+                </td>
+            </tr>
+        `;
+        $("#mptrs_showAllMenu").append(row);
+    }
+
 
 
     var frame;
@@ -186,6 +221,9 @@ jQuery(document).ready(function ($) {
         person = $("#"+menuPersonId).text().trim();
         imgUrl = $("#"+menuImgUrlId).attr("src").trim();
         category = $("#"+mptrs_menuCategoryID).val().trim();
+
+        console.log( name, price, person, imgUrl, category);
+
         let btnText = 'Update Food Menu Data';
         let btnIdClass = 'mptrs_edit_food_menu_data'
         let popUpTitleText = 'Edit Food Menu';
@@ -285,4 +323,48 @@ jQuery(document).ready(function ($) {
             }
         });
     });
+
+
+    let mptrs_addedMenuItems = [];
+    $(document).on('change', '.mptrs-menu-checkbox', function() {
+
+        let getClickedId = $(this).attr('id');
+        let menuId = getClickedId.split('-')[1];
+
+        if ($(this).prop('checked')) {
+            if (!mptrs_addedMenuItems.includes(menuId)) {
+                mptrs_addedMenuItems.push(menuId);
+            }
+        } else {
+            let index = mptrs_addedMenuItems.indexOf(menuId);
+            if (index > -1) {
+                mptrs_addedMenuItems.splice(index, 1);
+            }
+        }
+
+        const postId = $('#mptrs_mapping_plan_id').val();
+        $.ajax({
+            url: mptrs_admin_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_save_food_menu_for_restaurant',
+                nonce: mptrs_admin_ajax.nonce,
+                menuItems: mptrs_addedMenuItems,
+                postId: postId,
+            },
+            success: function (response) {
+                alert(response.data.message);
+            },
+            error: function () {
+                alert('An unexpected error occurred.');
+            }
+        });
+
+    });
+
+
+
+
+
+
 });

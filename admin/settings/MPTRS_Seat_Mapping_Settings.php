@@ -33,12 +33,38 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             add_action('wp_ajax_mptrs_delete_food_menu',[ $this, 'mptrs_delete_food_menu' ] );
             add_action('wp_ajax_nopriv_mptrs_delete_food_menu', [ $this, 'mptrs_delete_food_menu' ] );
 
+            add_action('wp_ajax_mptrs_save_food_menu_for_restaurant',[ $this, 'mptrs_save_food_menu_for_restaurant' ] );
+            add_action('wp_ajax_nopriv_mptrs_save_food_menu_for_restaurant', [ $this, 'mptrs_save_food_menu_for_restaurant' ] );
+
         }
 
         public  static  function generateUniqueKey() {
             return substr(hash('sha256', uniqid(time() . mt_rand(), true)), 0, 12);
         }
 
+        public function mptrs_save_food_menu_for_restaurant(){
+            if ( !isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'mptrs_admin_nonce')) {
+                wp_send_json_error(['message' => 'Security check failed.'], 403);
+            }
+            $post_id = intval(isset( $_POST['postId']) ? sanitize_text_field( $_POST['postId'] ) : 0 );
+            if (!$post_id || get_post_type($post_id) !== 'mptrs_item') {
+                wp_send_json_error(['message' => 'Invalid post ID or post type.']);
+            }
+            $menuItems = isset( $_POST['menuItems'] ) ? MPTRS_Function::data_sanitize( $_POST['menuItems'] ) : [];
+
+            $existing_menuItems = get_post_meta( $post_id, '_mptrs_food_menu_items', true );
+            if ( is_array( $existing_menuItems ) ) {
+                $menuItems = array_merge( $menuItems , $existing_menuItems );
+            }
+            $menuItems = array_unique($menuItems);
+            $menuItems = array_values($menuItems);
+//            error_log( print_r( [ '$menuItems' => $menuItems], true ) );
+            $update = update_post_meta( $post_id, '_mptrs_food_menu_items', $menuItems );
+            wp_send_json_success([
+                'message' => 'Food Menu successfully Added In Your List!',
+                'success' => $update,
+            ]);
+        }
         public function mptrs_delete_food_menu() {
 
             if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'mptrs_admin_nonce')) {
