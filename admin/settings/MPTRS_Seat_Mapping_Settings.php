@@ -27,9 +27,16 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             add_action('wp_ajax_mptrs_save_food_menu',[ $this, 'mptrs_save_food_menu' ] );
             add_action('wp_ajax_nopriv_mptrs_save_food_menu', [ $this, 'mptrs_save_food_menu' ] );
 
+            add_action('wp_ajax_mptrs_edit_food_menu',[ $this, 'mptrs_edit_food_menu' ] );
+            add_action('wp_ajax_noprivmptrs_edit_food_menu', [ $this, 'mptrs_edit_food_menu' ] );
+
             add_action('wp_ajax_mptrs_delete_food_menu',[ $this, 'mptrs_delete_food_menu' ] );
             add_action('wp_ajax_nopriv_mptrs_delete_food_menu', [ $this, 'mptrs_delete_food_menu' ] );
 
+        }
+
+        public  static  function generateUniqueKey() {
+            return substr(hash('sha256', uniqid(time() . mt_rand(), true)), 0, 12);
         }
 
         public function mptrs_delete_food_menu() {
@@ -60,7 +67,7 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
                 wp_send_json_error(['message' => 'Security check failed.'], 403);
             }
 
-
+            $uniqueKey = self::generateUniqueKey();
             $new_menu_data = [
                 'menuName'     => sanitize_text_field($_POST['menuData']['menuName']),
                 'menuCategory' => sanitize_text_field($_POST['menuData']['menuCategory']),
@@ -76,20 +83,58 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             if ( !is_array( $existing_menus ) ) {
                 $existing_menus = [];
             }
-            $existing_menus[] = $new_menu_data;
+            $existing_menus[ $uniqueKey ] = $new_menu_data;
             $saved = update_option( '_mptrs_food_menu', $existing_menus );
             if (!$saved) {
                 wp_send_json_error(['message' => 'Failed to save menu data.'], 500);
             }
+
             wp_send_json_success([
                 'message' => 'Menu data saved successfully!',
-                'menuData' => $existing_menus
+                'uniqueKey' => $uniqueKey
+            ]);
+        }
+
+        public function mptrs_edit_food_menu() {
+
+            if ( !isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'mptrs_admin_nonce')) {
+                wp_send_json_error(['message' => 'Security check failed.'], 403);
+            }
+
+            $uniqueKey = sanitize_text_field($_POST['menuEditData']['menuKey']);
+            $new_menu_data = [
+                'menuName'     => sanitize_text_field($_POST['menuEditData']['menuName']),
+                'menuCategory' => sanitize_text_field($_POST['menuEditData']['menuCategory']),
+                'menuPrice'    => floatval($_POST['menuEditData']['menuPrice']),
+                'numPersons'   => intval($_POST['menuEditData']['menunumPersons']),
+                'menuImgUrl'   => esc_url_raw($_POST['menuEditData']['menuImgUrl']),
+            ];
+
+            if (empty($new_menu_data['menuName']) || empty($new_menu_data['menuCategory']) || $new_menu_data['menuPrice'] <= 0 || $new_menu_data['numPersons'] <= 0) {
+                wp_send_json_error(['message' => 'All fields are required and must be valid.'], 400);
+            }
+            $existing_menus = get_option( '_mptrs_food_menu' );
+            if ( !is_array( $existing_menus ) ) {
+                $existing_menus = [];
+            }else{
+                unset( $existing_menus[ $uniqueKey ] );
+            }
+
+            $existing_menus[ $uniqueKey ] = $new_menu_data;
+            $saved = update_option( '_mptrs_food_menu', $existing_menus );
+            if (!$saved) {
+                wp_send_json_error(['message' => 'Failed to save menu data.'], 500);
+            }
+
+            wp_send_json_success([
+                'message' => 'Menu data edited successfully!',
+                'uniqueKey' => $uniqueKey
             ]);
         }
 
         public function mptrs_save_seat_maps_meta_data(){
 
-            if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'mptrs_admin_nonce')) {
+            if (!isset($_POST['nonce']) || !wp_verify_nonce( sanitize_text_field( $_POST['nonce'] ), 'mptrs_admin_nonce')) {
                 wp_send_json_error(['message' => 'Security check failed.'], 403);
             }
 
@@ -103,7 +148,6 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             }
 
             $seat_maps_meta_data = isset( $_POST['seat_maps_meta_data'] ) ? MPTRS_Function::data_sanitize( $_POST['seat_maps_meta_data'] ) : [];
-
             $seat_plan_texts= isset( $_POST['seatPlanTexts'] ) ? MPTRS_Function::data_sanitize( $_POST['seatPlanTexts'] ) : '' ;
             $dynamicShapes = isset( $_POST['dynamicShapes'] ) ? MPTRS_Function::data_sanitize( $_POST['dynamicShapes'] ) : '';
             $template = isset( $_POST['template'] ) ? sanitize_text_field( $_POST['template'] ) : '';

@@ -27,7 +27,8 @@
     font-size: 16px;
 }
 
-.mptrs_submit_btn {
+.mptrs_submit_btn,
+.mptrs_edit_food_menu_data {
     width: 100%;
     background: #3474ed;
     color: #fff;
@@ -39,7 +40,7 @@
     transition: 0.3s;
 }
 
-.mptrs_submit_btn:hover {
+.mptrs_submit_btn:hover, .mptrs_edit_food_menu_data:hover {
     background: #0c3177;
 }
 
@@ -242,5 +243,22 @@
     font-size: 20px;
     cursor: pointer;
 }
-
+.mptrs_open_popup_btn {
+    background-color: #38a5d6;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: block !important;
+    margin-left: auto !important;
+}
+.mptrs_addEditMenuTitleText {
+    text-align: center;
+    width: 100%;
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
 

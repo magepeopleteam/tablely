@@ -29,6 +29,7 @@
 
             public function mptrs_new_food_menu_callback(){
                 $existing_menus = get_option( '_mptrs_food_menu' );
+//                error_log( print_r( [ '$existing_menus' => $existing_menus['menuCategory'] ], true ) );
 //                $existing_menus = get_post_meta($post_id, '_mptrs_food_menu', true);
                 ?>
                 <div id="mptrs_foodMenuPopup" class="mptrs_foodMenuPopupContainer" style="display: none;">
@@ -41,65 +42,32 @@
                 <div class="mptrs_area mptrs_global_settings">
                     <div class="tabsItem" data-tabs="#mptrs_food_menu_add">
 
-                <div class="mptrs_foodMenuTabHoilder">
+                <!--<div class="mptrs_foodMenuTabHoilder">
                     <ul class="mptrs_foodMenuTabs">
-                        <li id="mptrs_foodMenuAdded" class="mptrs_foodMenuTab"><?php esc_attr_e( 'Added Food Menu', 'tablely' )?></li>
-                        <li id="mptrs_foodMenuShow" class="mptrs_foodMenuTab"><?php esc_attr_e( 'All Food Menu', 'tablely' )?></li>
+                        <li id="mptrs_foodMenuAdded" class="mptrs_foodMenuTab"><?php /*esc_attr_e( 'Added Food Menu', 'tablely' )*/?></li>
+                        <li id="mptrs_foodMenuShow" class="mptrs_foodMenuTab"><?php /*esc_attr_e( 'All Food Menu', 'tablely' )*/?></li>
                     </ul>
 
-                </div>
+                </div>-->
+                <button id="mptrs_openPopup" class="mptrs_open_popup_btn">Add New Food Menu + </button>
                 <div class="mptrs_foodMenuContentHolder">
-                    <div id="mptrs_foodMenuAddedContainer" class="mptrs_foodMenuContainer">
-                        <h2><?php esc_html_e('Added Food Menu Here', 'tablely'); ?></h2>
-                        <form id="mptrs_foodMenuForm" class="mptrs_food_menu_form">
-                            <div class="mptrs_form_group">
-                                <label for="mptrs_menuName"><?php esc_attr_e( 'Menu Name', 'tablely' )?></label>
-                                <input type="text" id="mptrs_menuName" name="mptrs_menuName" class="mptrs_input" required>
-                            </div>
 
-                            <div class="mptrs_form_group">
-                                <label for="mptrs_menuCategory"><?php esc_attr_e( 'Category', 'tablely' )?></label>
-                                <select id="mptrs_menuCategory" name="mptrs_menuCategory" class="mptrs_select" required>
-                                    <option value="starter"><?php esc_attr_e( 'Menu Name', 'tablely' )?></option>
-                                    <option value="main_course"><?php esc_attr_e( 'Main Course', 'tablely' )?></option>
-                                    <option value="dessert"><?php esc_attr_e( 'Dessert', 'tablely' )?></option>
-                                    <option value="beverage"><?php esc_attr_e( 'Beverage', 'tablely' )?></option>
-                                </select>
-                            </div>
-
-                            <div class="mptrs_form_group">
-                                <label for="mptrs_menuPrice"><?php esc_attr_e( 'Price ($)', 'tablely' )?></label>
-                                <input type="number" id="mptrs_menuPrice" name="mptrs_menuPrice" class="mptrs_input" required>
-                            </div>
-
-                            <div class="mptrs_form_group">
-                                <label for="mptrs_numPersons"><?php esc_attr_e( 'Number of Persons', 'tablely' )?></label>
-                                <input type="number" id="mptrs_numPersons" name="mptrs_numPersons" class="mptrs_input" min="1" required>
-                            </div>
-
-                            <div class="mptrs_form_group">
-                                <label for="mptrs_menuImage"><?php esc_attr_e( 'Menu Image', 'tablely' )?></label>
-                                <input type="file" id="mptrs_menuImage" name="mptrs_menuImage" class="mptrs_input">
-                                <input  type="hidden" id="mptrs_menuImage_url" name="mptrs_menuImage_url" value="">
-                                <div class="custom-foodMenu-image-preview" ></div>
-                            </div>
-
-                            <button type="submit" class="mptrs_submit_btn"><?php esc_attr_e( 'Add Menu', 'tablely' )?></button>
-                        </form>
-                    </div>
-                    <div id="mptrs_foodMenuShowContainer" class="mptrs_foodMenuContainer" style="display: none">
+                    <div id="mptrs_foodMenuShowContainer" class="mptrs_foodMenuContainer" style="display: block">
                         <div id="mptrs_allFoodMenu" class="mptrs_allFoodMenu">
 
-                            <div class="mptrs_foodMenuContaine">
+                            <div class="mptrs_foodMenuContaine" id="mptrs_foodMenuContainer">
 
                                 <?php
                                 $fallbackImgUrl = get_site_url().'/wp-content/uploads/2025/02/fallbackimage.webp';
+                                if( is_array( $existing_menus ) && count( $existing_menus ) > 0 ){
                                 foreach ( $existing_menus as $key => $existing_menu ){
                                     if( $existing_menu['menuImgUrl'] === '' ){
                                         $menu_img = $fallbackImgUrl;
                                     }else{
                                         $menu_img = $existing_menu['menuImgUrl'];
                                     }
+
+
                                     ?>
                                     <div class="mptrs_foodMenuContent" id="mptrs_foodMenuContent<?php echo esc_attr( $key )?>">
                                         <div class="mptrs_menuImageHolder">
@@ -110,6 +78,8 @@
                                                 <div class="mptrs_menuName" id="mptrs_memuName<?php echo esc_attr( $key )?>">
                                                     <?php echo esc_attr( $existing_menu['menuName'] );?>
                                                 </div>
+                                                <input type="hidden" name="mptrs_menuCategory" id="mptrs_menuCategory<?php echo esc_attr( $key )?>" value="<?php echo esc_attr( $existing_menu['menuCategory'] )?>">
+
                                             </div>
                                             <div class="mptrs_BottomMenuInFo">
                                                 <div class="mptrs_menuPrice" id="mptrs_memuPrice<?php echo esc_attr( $key )?>">$<?php echo esc_attr( $existing_menu['menuPrice'] );?></div>
@@ -121,7 +91,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                <?php }?>
+                                <?php }
+                                }else {
+                                ?>
+                                    <div class="mptrs_emptyFoodMenu">No Food Menu</div>
+                             <?php }?>
+
                             </div>
                         </div>
                     </div>
