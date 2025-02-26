@@ -90,8 +90,8 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             if ( is_array( $existing_menuItems ) ) {
                 $menuItems = array_merge( $menuItems , $existing_menuItems );
             }
-            $menuItems = array_unique($menuItems);
-            $menuItems = array_values($menuItems);
+            $menuItems = array_unique( $menuItems );
+            $menuItems = array_values( $menuItems );
 //            error_log( print_r( [ '$menuItems' => $menuItems], true ) );
             $update = update_post_meta( $post_id, '_mptrs_food_menu_items', $menuItems );
             wp_send_json_success([

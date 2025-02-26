@@ -512,9 +512,63 @@ jQuery(document).ready(function ($) {
 
     });
 
+    $(document).on('click', '.mptrs_editMenuPriceSave', function (e) {
+        e.preventDefault();
+        let editBtnClickId = $(this).attr('id').trim();
+        let editKeys = editBtnClickId.split('-');
+        let editKey = editKeys[1];
+        let price = $("#mptrs_editMenuPrice").val();
+        const postId = $('#mptrs_mapping_plan_id').val();
+        $.ajax({
+            url: mptrs_admin_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_price_change_food_menu_restaurant',
+                nonce: mptrs_admin_ajax.nonce,
+                editKey: editKey,
+                price: price,
+                postId: postId,
+            },
+            success: function (response) {
+                alert(response.data.message);
+            },
+            error: function () {
+                alert('An unexpected error occurred.');
+            }
+        });
+    });
+    $(document).on('click', '.mptrm_editFromFoodMenu', function (e) {
+        e.preventDefault();
+        let editPriceClickedId = $(this).attr('id').trim();
+        let editPriceKeys = editPriceClickedId.split('-');
+        let editPriceKey = editPriceKeys[1];
 
+        let priceId = "mptrs_memuPrice"+editPriceKey;
 
+        let priceVal = $("#"+priceId).text().trim();
+        let priceWithoutDollar = priceVal.replace("$", "");
+        let mptrsEditMenuPrice = `
+            <div class="mptrs-overlay" id="mptrs-overlay">
+                <div class="mptrs-popup">
+                    <div class="mptrs-popup-header">
+                        <div class="mptrs_editMenuPrice">
+                            <input type="number" id="mptrs_editMenuPrice" class="mptrs_editMenuPrice" value="${priceWithoutDollar}">
+                            <button class="mptrs_editMenuPriceSave" id="mptrs_editMenuPriceSave-${editPriceKey}">Set</button>
+                            <button class="mptrs_editMenuPriceClose" >Cancel</button>
+                        </div>
+                         <span class="mptrs-close">&times;</span>
+                    </div>
+                    
+                </div>
+            </div>
+        `
+        $("#mptrs_foodMenuContentHolder").append( mptrsEditMenuPrice );
+    });
 
-
+    $(document).on('click',".mptrs-close, .mptrs_editMenuPriceClose",function ( e ) {
+        e.preventDefault();
+        $("#mptrs-overlay").empty();
+        $(".mptrs-overlay").fadeOut();
+    });
 
 });
