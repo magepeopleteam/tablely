@@ -27,7 +27,8 @@
     font-size: 16px;
 }
 
-.mptrs_submit_btn {
+.mptrs_submit_btn,
+.mptrs_edit_food_menu_data {
     width: 100%;
     background: #3474ed;
     color: #fff;
@@ -39,7 +40,7 @@
     transition: 0.3s;
 }
 
-.mptrs_submit_btn:hover {
+.mptrs_submit_btn:hover, .mptrs_edit_food_menu_data:hover {
     background: #0c3177;
 }
 
@@ -146,6 +147,13 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
+.mptrs_foodAllMenuContainer{
+    width: 100%;
+    position: relative;
+    float: left;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
 
 .mptrs_foodMenuContent {
     display: block;
@@ -186,6 +194,11 @@
     display: flex;
     gap: 10px;
     margin-top: 5px;
+}
+.mptrs_BottomAllMenuInFo{
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
 }
 .mptrs_menuName{
     display: block;
@@ -241,6 +254,222 @@
     right: 15px;
     font-size: 20px;
     cursor: pointer;
+}
+.mptrs_open_popup_btn {
+    background-color: #38a5d6;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: block !important;
+    margin-left: auto !important;
+}
+.mptrs_addEditMenuTitleText {
+    text-align: center;
+    width: 100%;
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+
+.mptrs-menu-table {
+    width: 100% !important;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mptrs-menu-table th,
+.mptrs-menu-table td {
+    padding: 15px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.mptrs-menu-table th {
+    background-color: #f8f8f8;
+    /*font-weight: normal;*/
+    color: #333;
+    /*text-transform: uppercase;*/
+}
+
+.mptrs-menu-table td {
+    background-color: #fff;
+    color: #555;
+}
+
+.mptrs-menu-table th, .mptrs-menu-table td {
+    vertical-align: middle;
+}
+
+.mptrs-menu-table td .mptrs-menu-img img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.mptrs-menu-table td:nth-child(2) {
+    font-weight: bold;
+    color: #2c3e50;
+    min-width: 150px;
+    padding-left: 20px;
+}
+
+.mptrs-menu-table td:nth-child(3),
+.mptrs-menu-table td:nth-child(4),
+.mptrs-menu-table td:nth-child(5) {
+    max-width: 80px;
+    text-align: center;
+    color: #888;
+}
+
+.mptrs-menu-table td:nth-child(6) {
+    max-width: 30px;
+    text-align: center;
+}
+
+.mptrs-menu-table tr:hover {
+    background-color: #f9f9f9;
+}
+
+@media (max-width: 768px) {
+    .mptrs-menu-table {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .mptrs-menu-table th, .mptrs-menu-table td {
+        padding: 10px;
+    }
+
+    .mptrs-menu-table td:nth-child(2) {
+        min-width: 120px;
+    }
+}
+
+/* 🌟 Table Base Styling */
+.mptrsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 🏆 Header Styling */
+.mptrsTableTh {
+    background-color: #f8f8f8;
+    padding: 12px;
+    text-align: center;
+    font-weight: bold;
+    border: 1px solid #ddd;
+}
+
+/* ✨ Columns Width */
+.mptrsThImage {
+    width: 80px;
+}
+.mptrsThName {
+    min-width: 150px;
+}
+.mptrsThPrice, .mptrsThServes, .mptrsThActions {
+    width: 100px;
+}
+
+/* 📌 Table Row Styling */
+.mptrsTableRow:nth-child(even) {
+    background-color: #f9f9f9;
+}
+.mptrsTableRow:nth-child(odd) {
+    background-color: #ffffff;
+}
+.mptrsTableRow:hover {
+    background-color: #f0f0f0;
+}
+
+.mptrsTableTd {
+    padding: 12px;
+    text-align: center;
+    border: unset !important;
+}
+
+.mptrsImageWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.mptrsImage {
+    width: 50px !important;
+    height: 50px !important;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.mptrsTdName {
+    font-weight: bold;
+    color: #333;
+    text-align: left;
+    padding-left: 15px;
+}
+
+.mptrsTdPrice, .mptrsTdServes {
+    font-weight: normal;
+    color: #666;
+}
+
+.mptrsTdActions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.mptrsButton {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.mptrsEditButton {
+    background-color: #007bff;
+    color: white;
+}
+.mptrsDeleteButton {
+    background-color: #dc3545;
+    color: white;
+}
+.mptrsButton:hover {
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .mptrsTable {
+        font-size: 14px;
+    }
+    .mptrsThImage {
+        width: 60px;
+    }
+    .mptrsThName {
+        min-width: 120px;
+    }
+    .mptrsThPrice, .mptrsThServes, .mptrsThActions {
+        width: 80px;
+    }
+    .mptrsImage {
+        width: 40px !important;
+        height: 40px !important;
+    }
+    .mptrsButton {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
 }
 
 

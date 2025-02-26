@@ -10,6 +10,72 @@ jQuery(document).ready(function ($) {
        $("#"+menuTabContainer).fadeIn(1000);
     });
 
+    function appendFoodMenu_old( foodMenuData, key ) {
+        let menuHtml = `
+        <div class="mptrs_foodMenuContent" id="mptrs_foodMenuContent${key}">
+            <div class="mptrs_menuImageHolder">
+                <img class="mptrs_menuImage" id="mptrs_memuImgUrl${key}" src="${foodMenuData.menuImgUrl}" >
+            </div>
+            <div class="mptrs_menuInfoHolder">
+                <div class="mptrs_topMenuInFo">
+                    <div class="mptrs_menuName" id="mptrs_memuName${key}">
+                        ${foodMenuData.menuName}
+                    </div>
+                    <input type="hidden" name="mptrs_menuCategory" id="mptrs_menuCategory${key}" value="${foodMenuData.menuCategory}">
+                </div>
+                <div class="mptrs_BottomMenuInFo">
+                    <div class="mptrs_menuPrice" id="mptrs_memuPrice${key}">$${foodMenuData.menuPrice}</div>
+                    <div class="mptrs_menuPersion" >
+                        <i class='fas fa-user-alt' style='font-size:14px'></i> <span id="mptrs_memuPersons${key}">${foodMenuData.menunumPersons}</span>
+                    </div>
+                </div>
+                <div class="mptrs_BottomMenuInFo">
+                    <span class="mptrm_editFoodMenu" id="mptrsEditMenu_${key}" style="display: block">Edit</span>
+                    <span class="mptrm_deleteFoodMenu" id="mptrsDeleteMenu_${key}">Delete</span>
+                </div>
+            </div>
+        </div>
+    `;
+
+        // Append the generated HTML to a container (e.g., `#mptrs_foodMenuContainer`)
+        $("#mptrs_foodMenuContainer").append(menuHtml);
+    }
+
+    function appendFoodMenu(foodMenuData, key) {
+        console.log( foodMenuData );
+        let row = `
+            <tr class="mptrsTableRow" id="mptrs_foodMenuContent${key}">
+                <td class="mptrsTableTd mptrsTdImage">
+                    <div class="mptrsImageWrapper">
+                        <img class="mptrsImage" id="mptrs_memuImgUrl${key}" src="${foodMenuData.menuImgUrl}" alt="${foodMenuData.menuName}">
+                    </div>
+                </td>
+                <td class="mptrsTableTd mptrsTdName">
+                    <div class="mptrs_menuName" id="mptrs_memuName${key}">
+                        ${foodMenuData.menuName}
+                    </div>
+                    <input type="hidden" name="mptrs_menuCategory" id="mptrs_menuCategory${key}" value="${foodMenuData.menuCategory}">
+                </td>
+                <td class="mptrsTableTd mptrsTdPrice">
+                    <div class="mptrs_memuPrice" id="mptrs_memuPrice${key}">$${foodMenuData.menuPrice}</div>
+                </td>
+                <td class="mptrsTableTd mptrsTdServes">
+                    <div class="mptrs_menuPersion" id="mptrs_memuPersons${key}">
+                        <i class='fas fa-user-alt' style='font-size:14px'></i> ${foodMenuData.menunumPersons}
+                    </div>
+                </td>
+                <td class="mptrsTableTd mptrsTdActions">
+                    <div class="mptrs_BottomMenuInFo">
+                        <span class="mptrm_editFoodMenu" id="mptrsEditMenu_${key}">Edit</span>
+                        <span class="mptrm_deleteFoodMenu" id="mptrsDeleteMenu_${key}">Delete</span>
+                    </div>
+                </td>
+            </tr>
+        `;
+        $("#mptrs_showAllMenu").append(row);
+    }
+
+
 
     var frame;
     var food_menu_image_url = ''
@@ -38,7 +104,6 @@ jQuery(document).ready(function ($) {
         let deleteMenuId = $(this).attr('id').trim();
         let deleteKeys = deleteMenuId.split('_');
         let deleteKey = deleteKeys[1];
-        const postId = $('#mptrs_mapping_plan_id').val();
         console.log( deleteKey );
         $.ajax({
             url: mptrs_admin_ajax.ajax_url,
@@ -46,7 +111,6 @@ jQuery(document).ready(function ($) {
             data: {
                 action: 'mptrs_delete_food_menu',
                 nonce: mptrs_admin_ajax.nonce,
-                post_id: postId,
                 deleteKey: deleteKey,
             },
             success: function (response) {
@@ -60,6 +124,81 @@ jQuery(document).ready(function ($) {
         });
     });
 
+    function menuPopup( data ){
+        const categories = {
+            "starter": "Starter",
+            "main_course": "Main Course",
+            "dessert": "Dessert",
+            "beverage": "Beverage"
+        };
+        let displayCategory = '';
+        $.each(categories, (key, value) => {
+            if( key === data.category ){
+                displayCategory += `<option value="${key}" selected>${value}</option>`;
+            }else{
+                displayCategory += `<option value="${key}" >${value}</option>`;
+            }
+        });
+
+        return `
+        <h2 class="mptrs_addEditMenuTitleText">${data.popUpTitleText}</h2>
+        <form id="mptrs_foodMenuForm" class="mptrs_food_menu_form">
+            <div class="mptrs_form_group">
+                <label for="mptrs_menuName">Menu Name</label>
+                <input type="text" id="mptrs_menuName" name="mptrs_menuName" class="mptrs_input" required value="${data.name}">
+            </div>
+
+            <div class="mptrs_form_group">
+                <label for="mptrs_menuCategory">Category</label>
+                <select id="mptrs_menuCategory" name="mptrs_menuCategory" class="mptrs_select" required>
+                    ${displayCategory}
+                </select>
+            </div>
+
+            <div class="mptrs_form_group">
+                <label for="mptrs_menuPrice">Price ($)</label>
+                <input type="number" id="mptrs_menuPrice" name="mptrs_menuPrice" class="mptrs_input" required value="${data.price}">
+            </div>
+
+            <div class="mptrs_form_group">
+                <label for="mptrs_numPersons">Number of Persons</label>
+                <input type="number" id="mptrs_numPersons" name="mptrs_numPersons" class="mptrs_input" min="1" required value="${data.person}">
+            </div>
+
+            <div class="mptrs_form_group">
+                <label for="mptrs_menuImage">Menu Image</label>
+                <input type="file" id="mptrs_menuImage" name="mptrs_menuImage" class="mptrs_input">
+                <input type="hidden" id="mptrs_menuImage_url" name="mptrs_menuImage_url" value="${data.imgUrl}">
+                <div class="custom-foodMenu-image-preview"></div>
+            </div>
+
+            <button type="submit" class="${data.btnIdClass}" id="mptrs_AddEdit-${data.key}">${data.btnText}</button>
+        </form>
+    `;
+    }
+
+    $(document).on('click', '#mptrs_openPopup', function (e) {
+        let name = '';
+        let key = 'addMenu';
+        let price = 0;
+        let person = 0;
+        let imgUrl = '';
+        let category = '';
+        let btnText = 'Add Menu';
+        let btnIdClass = 'mptrs_submit_btn';
+        let popUpTitleText = 'Add New Food Menu!';
+
+        let data = {
+            name, price, person, imgUrl, category, btnText, btnIdClass, popUpTitleText, key
+        }
+        let formContent = menuPopup( data );
+        if ($('#mptrs_foodMenuContentContainer').is(':empty')) {
+            $('#mptrs_foodMenuContentContainer').append(formContent);
+        }
+        $('#mptrs_foodMenuPopup').fadeIn();
+
+    });
+
     $(document).on('click', '.mptrm_editFoodMenu', function (e) {
         let editMenuId = $(this).attr('id').trim();
         let keys = editMenuId.split('_');
@@ -68,64 +207,87 @@ jQuery(document).ready(function ($) {
         let menuPriceId  = 'mptrs_memuPrice'+key;
         let menuPersonId  = 'mptrs_memuPersons'+key;
         let menuImgUrlId  = 'mptrs_memuImgUrl'+key;
+        let mptrs_menuCategoryID  = 'mptrs_menuCategory'+key;
 
-        let name = $("#"+menuNameId).text();
-        let price = $("#"+menuPriceId).text();
+        let name = '';
+        let imgUrl = '';
+        let category = '';
+        let person = '';
+        let price = '';
+
+        name = $("#"+menuNameId).text().trim();
+        price = $("#"+menuPriceId).text().trim();
         price = price.replace("$", "");
-        let person = $("#"+menuPersonId).text();
-        let imgUrl = $("#"+menuImgUrlId).attr("src");
+        person = $("#"+menuPersonId).text().trim();
+        imgUrl = $("#"+menuImgUrlId).attr("src").trim();
+        category = $("#"+mptrs_menuCategoryID).val().trim();
 
-        var formContent = `
-        <h2>Added Food Menu Here</h2>
-        <form id="mptrs_foodMenuForm" class="mptrs_food_menu_form">
-            <div class="mptrs_form_group">
-                <label for="mptrs_menuName">Menu Name</label>
-                <input type="text" id="mptrs_menuName" name="mptrs_menuName" class="mptrs_input" required value="${name}">
-            </div>
+        console.log( name, price, person, imgUrl, category);
 
-            <div class="mptrs_form_group">
-                <label for="mptrs_menuCategory">Category</label>
-                <select id="mptrs_menuCategory" name="mptrs_menuCategory" class="mptrs_select" required>
-                    <option value="starter">Starter</option>
-                    <option value="main_course">Main Course</option>
-                    <option value="dessert">Dessert</option>
-                    <option value="beverage">Beverage</option>
-                </select>
-            </div>
+        let btnText = 'Update Food Menu Data';
+        let btnIdClass = 'mptrs_edit_food_menu_data'
+        let popUpTitleText = 'Edit Food Menu';
 
-            <div class="mptrs_form_group">
-                <label for="mptrs_menuPrice">Price ($)</label>
-                <input type="number" id="mptrs_menuPrice" name="mptrs_menuPrice" class="mptrs_input" required value="${price}">
-            </div>
+        console.log( category );
 
-            <div class="mptrs_form_group">
-                <label for="mptrs_numPersons">Number of Persons</label>
-                <input type="number" id="mptrs_numPersons" name="mptrs_numPersons" class="mptrs_input" min="1" required value="${person}">
-            </div>
-
-            <div class="mptrs_form_group">
-                <label for="mptrs_menuImage">Menu Image</label>
-                <input type="file" id="mptrs_menuImage" name="mptrs_menuImage" class="mptrs_input">
-                <input type="hidden" id="mptrs_menuImage_url" name="mptrs_menuImage_url" value="${imgUrl}">
-                <div class="custom-foodMenu-image-preview"></div>
-            </div>
-
-            <button type="submit" class="mptrs_edit_food_menu_data">Update Food Menu Data</button>
-        </form>
-    `;
+        let data = {
+            name, price, person, imgUrl, category, btnText, btnIdClass, popUpTitleText, key,
+        }
+        let formContent = menuPopup( data );
 
         if ($('#mptrs_foodMenuContentContainer').is(':empty')) {
             $('#mptrs_foodMenuContentContainer').append(formContent);
         }
         $('#mptrs_foodMenuPopup').fadeIn();
-
-        console.log( key, name, price, person, imgUrl);
-
     });
 
-    $(document).on('click', '.mptrs_closePopup', function () {
+    $(document).on('click', '.mptrs_edit_food_menu_data', function ( e ) {
+        e.preventDefault();
+
+        $(this).text('Updating...');
+        let get_keys = $(this).attr('id');
+        let menuKeys = get_keys.split('-');
+        let menuKey = menuKeys[1];
+        let menuEditData = {};
+        menuEditData.menuName = $("#mptrs_menuName").val().trim();
+        menuEditData.menuCategory = $("#mptrs_menuCategory").val().trim();
+        menuEditData.menuPrice = $("#mptrs_menuPrice").val().trim();
+        menuEditData.menunumPersons = $("#mptrs_numPersons").val().trim();
+        menuEditData.menuImgUrl = $("#mptrs_menuImage_url").val().trim();
+        menuEditData.menuKey = menuKey;
+
+        $.ajax({
+            url: mptrs_admin_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_edit_food_menu',
+                nonce: mptrs_admin_ajax.nonce,
+                menuEditData: menuEditData,
+            },
+            success: function (response) {
+                alert(response.data.message);
+                let buttonId = 'mptrs_AddEdit-'+menuKey;
+                $("#"+buttonId).text('Update Food Menu Data');
+                let editedMenu = 'mptrs_foodMenuContent'+menuKey;
+                $("#"+editedMenu).fadeOut();
+                $("#"+editedMenu).empty();
+                appendFoodMenu( menuEditData, menuKey );
+                mptrs_close_popup( e );
+            },
+            error: function () {
+                alert('An unexpected error occurred.');
+                $(this).text('Update Food Menu Data');
+            }
+        });
+    });
+
+    function mptrs_close_popup( e ){
+        e.preventDefault();
         $('#mptrs_foodMenuPopup').fadeOut();
         $('#mptrs_foodMenuContentContainer').empty();
+    }
+    $(document).on('click', '.mptrs_closePopup', function (e) {
+        mptrs_close_popup( e );
     });
 
     $(document).on('click', '.mptrs_submit_btn', function (e) {
@@ -147,6 +309,9 @@ jQuery(document).ready(function ($) {
             },
             success: function (response) {
                 alert(response.data.message);
+                let key = response.data.uniqueKey;
+                appendFoodMenu( formData, key );
+
                  $("#mptrs_menuName").val('');
                  $("#mptrs_menuCategory").val('');
                  $("#mptrs_menuPrice").val('');
@@ -158,4 +323,48 @@ jQuery(document).ready(function ($) {
             }
         });
     });
+
+
+    let mptrs_addedMenuItems = [];
+    $(document).on('change', '.mptrs-menu-checkbox', function() {
+
+        let getClickedId = $(this).attr('id');
+        let menuId = getClickedId.split('-')[1];
+
+        if ($(this).prop('checked')) {
+            if (!mptrs_addedMenuItems.includes(menuId)) {
+                mptrs_addedMenuItems.push(menuId);
+            }
+        } else {
+            let index = mptrs_addedMenuItems.indexOf(menuId);
+            if (index > -1) {
+                mptrs_addedMenuItems.splice(index, 1);
+            }
+        }
+
+        const postId = $('#mptrs_mapping_plan_id').val();
+        $.ajax({
+            url: mptrs_admin_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_save_food_menu_for_restaurant',
+                nonce: mptrs_admin_ajax.nonce,
+                menuItems: mptrs_addedMenuItems,
+                postId: postId,
+            },
+            success: function (response) {
+                alert(response.data.message);
+            },
+            error: function () {
+                alert('An unexpected error occurred.');
+            }
+        });
+
+    });
+
+
+
+
+
+
 });
