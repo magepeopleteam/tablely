@@ -61,7 +61,9 @@
 .mptrs_foodMenuTabHoilder {
     width: 100%;
     background-color: #f9f9f9;
-    border-bottom: 2px solid #ddd;
+    /*border-bottom: 2px solid #ddd;*/
+    display: flex;
+    gap: 5px;
 }
 
 .mptrs_foodMenuTabs {
@@ -80,27 +82,18 @@
     font-weight: bold;
     transition: color 0.3s ease, background-color 0.3s ease;
     border-radius: 4px;
-    width: 50%;
+    width: 100%;
+    font-size: 16px;
     text-align: center;
 }
 
-.mptrs_foodMenuTab:hover {
-    background-color: #eaeaea;
-    color: #000;
-}
-
 .mptrs_selectedMenuTab{
-    background-color: #eaeaea;
+    /*background-color: #eaeaea;*/
     color: #000;
-}
-
-.mptrs_foodMenuTab.active {
-    background-color: #007bff;
-    color: #fff;
 }
 
 .mptrs_foodMenuContentHolder {
-    padding: 20px;
+    padding: 20px 5px;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -108,7 +101,9 @@
 }
 
 .mptrs_foodMenuContainer {
-    display: block;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
 .mptrs_foodMenuContainer.active {
@@ -277,13 +272,22 @@
     margin-bottom: 15px;
 }
 
+.mptrs_addMenuToPost,
+.mptrs_addedMenuToPost
+{
+    font-size: 14px !important;
+    font-weight: normal !important;
+    padding: 5px 7px !important;
+}
 
 .mptrs-menu-table {
     width: 100% !important;
+    max-width: 260px;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 1px;
     font-family: Arial, sans-serif;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e3dfdf !important;
 }
 
 .mptrs-menu-table th,
@@ -295,9 +299,7 @@
 
 .mptrs-menu-table th {
     background-color: #f8f8f8;
-    /*font-weight: normal;*/
     color: #333;
-    /*text-transform: uppercase;*/
 }
 
 .mptrs-menu-table td {
@@ -309,9 +311,9 @@
     vertical-align: middle;
 }
 
-.mptrs-menu-table td .mptrs-menu-img img {
-    width: 50px;
-    height: 50px;
+.mptrs-menu-table td .mptrsMenuImg img {
+    width: 45px;
+    height: 40px;
     object-fit: cover;
     border-radius: 5px;
 }
@@ -324,16 +326,11 @@
 }
 
 .mptrs-menu-table td:nth-child(3),
-.mptrs-menu-table td:nth-child(4),
-.mptrs-menu-table td:nth-child(5) {
+.mptrs-menu-table td:nth-child(4)
+{
     max-width: 80px;
     text-align: center;
     color: #888;
-}
-
-.mptrs-menu-table td:nth-child(6) {
-    max-width: 30px;
-    text-align: center;
 }
 
 .mptrs-menu-table tr:hover {
@@ -580,22 +577,24 @@
     margin: 5px;
     padding: 5px;
 }
-.mptrs_categoryFilter{
+.mptrs_categoryFilter, .mptrs_filterByCategory{
     padding: 3px 5px;
     /* background-color: aquamarine; */
     border-radius: 5px;
     border: 1px solid #e5dddd;
 }
-.mptrs_categoryFilter:hover{
+.mptrs_categoryFilter:hover,
+.mptrs_filterByCategory:hover{
     background-color: #d8dbda;
     cursor: pointer;
 }
-.mptrs_categoryFilter.active {
+.mptrs_categoryFilter.active, .mptrs_filterByCategory.active {
     background: #333;
     color: #fff;
 }
-.mptrm_editFromFoodMenu{
+.mptrm_editAddedMenuPrice{
     cursor: pointer;
+    font-size: 10px;
 }
 
 

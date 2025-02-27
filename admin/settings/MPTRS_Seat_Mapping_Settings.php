@@ -36,6 +36,9 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             add_action('wp_ajax_mptrs_save_food_menu_for_restaurant',[ $this, 'mptrs_save_food_menu_for_restaurant' ] );
             add_action('wp_ajax_nopriv_mptrs_save_food_menu_for_restaurant', [ $this, 'mptrs_save_food_menu_for_restaurant' ] );
 
+            add_action('wp_ajax_mptrs_remove_saved_food_menu_for_restaurant',[ $this, 'mptrs_remove_saved_food_menu_for_restaurant' ] );
+            add_action('wp_ajax_nopriv_mptrs_remove_saved_food_menu_for_restaurant', [ $this, 'mptrs_remove_saved_food_menu_for_restaurant' ] );
+
             add_action('wp_ajax_mptrs_set_categories',[ $this, 'mptrs_set_categories' ] );
             add_action('wp_ajax_nopriv_mptrs_set_categories', [ $this, 'mptrs_set_categories' ] );
 
@@ -84,8 +87,8 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             if (!$post_id || get_post_type($post_id) !== 'mptrs_item') {
                 wp_send_json_error(['message' => 'Invalid post ID or post type.']);
             }
-            $menuItems = isset( $_POST['menuItems'] ) ? MPTRS_Function::data_sanitize( $_POST['menuItems'] ) : [];
-
+            $menuItemkey = isset( $_POST['menu_key'] ) ? MPTRS_Function::data_sanitize( $_POST['menu_key'] ) : [];
+            $menuItems[0] = $menuItemkey;
             $existing_menuItems = get_post_meta( $post_id, '_mptrs_food_menu_items', true );
             if ( is_array( $existing_menuItems ) ) {
                 $menuItems = array_merge( $menuItems , $existing_menuItems );
@@ -94,6 +97,32 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             $menuItems = array_values( $menuItems );
 //            error_log( print_r( [ '$menuItems' => $menuItems], true ) );
             $update = update_post_meta( $post_id, '_mptrs_food_menu_items', $menuItems );
+            wp_send_json_success([
+                'message' => 'Food Menu successfully Added In Your List!',
+                'success' => $update,
+            ]);
+        }
+
+        public function mptrs_remove_saved_food_menu_for_restaurant(){
+            if ( !isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'mptrs_admin_nonce')) {
+                wp_send_json_error(['message' => 'Security check failed.'], 403);
+            }
+            $post_id = intval(isset( $_POST['postId']) ? sanitize_text_field( $_POST['postId'] ) : 0 );
+            if (!$post_id || get_post_type($post_id) !== 'mptrs_item') {
+                wp_send_json_error(['message' => 'Invalid post ID or post type.']);
+            }
+            $menu_key = isset( $_POST['menu_key'] ) ? sanitize_file_name( $_POST['menu_key'] ) : '';
+
+            $existing_menuItems = get_post_meta( $post_id, '_mptrs_food_menu_items', true );
+            if ( is_array( $existing_menuItems ) ) {
+                $unset_key = array_search( $menu_key, $existing_menuItems, true);
+                if ( $unset_key !== false ) {
+                    unset($existing_menuItems[ $unset_key ] );
+                }
+                $existing_menuItems = array_values($existing_menuItems);
+            }
+
+            $update = update_post_meta( $post_id, '_mptrs_food_menu_items', $existing_menuItems );
             wp_send_json_success([
                 'message' => 'Food Menu successfully Added In Your List!',
                 'success' => $update,

@@ -32,12 +32,18 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             $price = isset( $_POST['editKey'] ) ? sanitize_text_field($_POST['price']) : '';
             $post_id = isset( $_POST['editKey'] ) ? sanitize_text_field($_POST['postId']) : '';
 
-            $existing_menuItems = get_post_meta( $post_id, '_mptrs_food_menu_items', true );
-            error_log( print_r( [ '$existing_menuItems' => $existing_menuItems ], true ) );
+            $existing_edited_prices = get_post_meta($post_id, '_mptrs_food_menu_edited_prices', true);
+            if (!is_array($existing_edited_prices)) {
+                $existing_edited_prices = [];
+            }
+            $existing_edited_prices[$editKey] = $price;
+
+            $update = update_post_meta( $post_id, '_mptrs_food_menu_edited_prices', $existing_edited_prices );
+//            $existing_edited_pr = get_post_meta($post_id, '_mptrs_food_menu_edited_prices', true);
 
             wp_send_json_success([
                 'message' => 'Price successfully Updated!',
-                'success' => 1,
+                'success' => $update,
             ]);
         }
 

@@ -1,6 +1,6 @@
 jQuery(document).ready(function ($) {
 
-    $(document).on( 'click', '.mptrs_foodMenuTab', function () {
+    /*$(document).on( 'click', '.mptrs_foodMenuTab', function () {
        let tabClickedId = $(this).attr('id');
        $('.mptrs_foodMenuTab').removeClass('mptrs_selectedMenuTab');
        $(this).addClass('mptrs_selectedMenuTab');
@@ -8,7 +8,7 @@ jQuery(document).ready(function ($) {
        let menuTabContainer = tabClickedId+'Container';
        $("#"+menuTabContainer).siblings().hide();
        $("#"+menuTabContainer).fadeIn(1000);
-    });
+    });*/
 
     $(document).on("click", ".mptrs_categoryFilter",function () {
         let filterValue = $(this).data("filter");
@@ -19,6 +19,18 @@ jQuery(document).ready(function ($) {
             $(".mptrsTableRow").fadeIn();
         } else {
             $(".mptrsTableRow").hide().filter(`[data-category='${filterValue}']`).fadeIn();
+        }
+    });
+
+    $(document).on("click", ".mptrs_filterByCategory",function () {
+        let filterValue = $(this).data("filter");
+        $(".mptrs_filterByCategory").removeClass("active");
+        $(this).addClass("active");
+
+        if (filterValue === "all") {
+            $(".mptrs_menuInfoHolderFilter").fadeIn();
+        } else {
+            $(".mptrs_menuInfoHolderFilter").hide().filter(`[data-category='${filterValue}']`).fadeIn();
         }
     });
 
@@ -475,35 +487,74 @@ jQuery(document).ready(function ($) {
     });
 
 
-    let mptrs_addedMenuItems = [];
-    $(document).on('change', '.mptrs-menu-checkbox', function() {
 
+    $(document).on('click', '.mptrs_addMenuToPost', function( e ) {
+        let mptrs_addedMenuItems = [];
+        e.preventDefault();
         let getClickedId = $(this).attr('id');
         let menuId = getClickedId.split('-')[1];
+        let menuAddText = $("#"+getClickedId).text().trim();
+        // console.log( menuAddText );
+        let imgContentId =   'mptrs_MenuImg-'+menuId;
+        let nameContentId =  'mptrs-menuName-'+menuId;
+        let priceContentId = 'mptrs-menuPrice-'+menuId;
+        mptrs_addedMenuItems.push(menuId);
 
-        if ($(this).prop('checked')) {
-            if (!mptrs_addedMenuItems.includes(menuId)) {
-                mptrs_addedMenuItems.push(menuId);
-            }
-        } else {
-            let index = mptrs_addedMenuItems.indexOf(menuId);
-            if (index > -1) {
-                mptrs_addedMenuItems.splice(index, 1);
-            }
+        let action = '';
+        let  removedKey = 'mptrs_addedFoodMenu'+menuId;
+        if ( menuAddText === 'Add' ) {
+            $("#"+getClickedId).text( 'Adding..' );
+            action = 'mptrs_save_food_menu_for_restaurant';
+        } else if( menuAddText === 'Added' ) {
+            action = 'mptrs_remove_saved_food_menu_for_restaurant';
+            $("#"+getClickedId).text( 'Removing..' );
+        }else{
+            $("#"+getClickedId).text( 'Deleting..' );
+            action = 'mptrs_remove_saved_food_menu_for_restaurant';
         }
-
         const postId = $('#mptrs_mapping_plan_id').val();
         $.ajax({
             url: mptrs_admin_ajax.ajax_url,
             type: 'POST',
             data: {
-                action: 'mptrs_save_food_menu_for_restaurant',
+                action: action,
                 nonce: mptrs_admin_ajax.nonce,
-                menuItems: mptrs_addedMenuItems,
+                menu_key: menuId,
                 postId: postId,
             },
             success: function (response) {
-                alert(response.data.message);
+                if ( menuAddText === 'Add' ) {
+                    $("#"+getClickedId).text( 'Added' );
+                    let imgUrl = $("#"+imgContentId).attr("src").trim();
+                    let nameContent = $("#"+nameContentId).text().trim();
+                    let priceContent = $("#"+priceContentId).text().trim();
+                    priceContent = priceContent.replace("$", "");
+                    let newAddedMenu = `
+                        <tr id="mptrs_addedFoodMenu${menuId}">
+                            <td>
+                                <div class="mptrsMenuImg">
+                                    <img src="${imgUrl}" alt="${nameContent}">
+                                </div>
+                            </td>
+                            <td class="mptrs-menuName">${nameContent}</td>
+                            <td class=" mptrm_editFromFoodMenu mptrs-menuPrice">
+                                $<span class="mptrs_addedMenuPrice" id="mptrs_addedMenuPrice-${menuId}">${priceContent}</span>
+                                <span class="mptrm_editAddedMenuPrice" id="mptrm_editAddedMenuPrice-${menuId}">Edit Price</span>
+                            </td>
+                            <td class="mptrs-menuAction">
+                                <button class="mptrs_addMenuToPost" id="mptrs_addedMenuToPost-${menuId}">Delete</button>
+                            </td>
+                        </tr>`
+                    $("#mptrs_AddedMenuData").append( newAddedMenu );
+
+                } else if( menuAddText === 'Delete' ) {
+                    $("#"+removedKey).fadeOut();
+                    let addedId = 'mptrs_addMenuToPost-'+menuId;
+                    $("#"+addedId).text('Add');
+                }else{
+                    $("#"+getClickedId).text( 'Add' );
+                    $("#"+removedKey).fadeOut();
+                }
             },
             error: function () {
                 alert('An unexpected error occurred.');
@@ -514,6 +565,7 @@ jQuery(document).ready(function ($) {
 
     $(document).on('click', '.mptrs_editMenuPriceSave', function (e) {
         e.preventDefault();
+        $(this).text( 'Updating..' );
         let editBtnClickId = $(this).attr('id').trim();
         let editKeys = editBtnClickId.split('-');
         let editKey = editKeys[1];
@@ -530,20 +582,35 @@ jQuery(document).ready(function ($) {
                 postId: postId,
             },
             success: function (response) {
-                alert(response.data.message);
+                if( response.data.success){
+                    $("#"+editBtnClickId).text( 'Set' );
+                    let id = 'mptrs_addedMenuPrice-'+editKey;
+                    $("#"+id).text( price );
+                    $(".mptrs-overlay").fadeOut();
+                    $("#mptrs-overlay").empty();
+                }else{
+                    $("#"+editBtnClickId).text( 'Set' );
+                    $(".mptrs-overlay").fadeOut();
+                    $("#mptrs-overlay").empty();
+                    alert('Update failed.');
+                }
+
             },
             error: function () {
                 alert('An unexpected error occurred.');
+                $("#"+editBtnClickId).text( 'Set' );
+                $(".mptrs-overlay").fadeOut();
+                $("#mptrs-overlay").empty();
             }
         });
     });
-    $(document).on('click', '.mptrm_editFromFoodMenu', function (e) {
+
+    $(document).on('click', '.mptrm_editAddedMenuPrice', function (e) {
         e.preventDefault();
         let editPriceClickedId = $(this).attr('id').trim();
         let editPriceKeys = editPriceClickedId.split('-');
         let editPriceKey = editPriceKeys[1];
-
-        let priceId = "mptrs_memuPrice"+editPriceKey;
+        let priceId = "mptrs_addedMenuPrice-"+editPriceKey;
 
         let priceVal = $("#"+priceId).text().trim();
         let priceWithoutDollar = priceVal.replace("$", "");
