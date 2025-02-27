@@ -36,10 +36,44 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             add_action('wp_ajax_mptrs_save_food_menu_for_restaurant',[ $this, 'mptrs_save_food_menu_for_restaurant' ] );
             add_action('wp_ajax_nopriv_mptrs_save_food_menu_for_restaurant', [ $this, 'mptrs_save_food_menu_for_restaurant' ] );
 
+            add_action('wp_ajax_mptrs_set_categories',[ $this, 'mptrs_set_categories' ] );
+            add_action('wp_ajax_nopriv_mptrs_set_categories', [ $this, 'mptrs_set_categories' ] );
+
         }
 
         public  static  function generateUniqueKey() {
             return substr(hash('sha256', uniqid(time() . mt_rand(), true)), 0, 12);
+        }
+
+        public function mptrs_set_categories(){
+
+            if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'mptrs_admin_nonce')) {
+                wp_send_json_error(['message' => 'Security check failed.'], 403);
+            }
+
+            if (!current_user_can('manage_options')) {
+                wp_send_json_error(['message' => 'Permission denied']);
+            }
+
+            $categories_json = isset($_POST['categoryJsonData']) ? sanitize_text_field( stripslashes( $_POST['categoryJsonData'] ) ) : '';
+            $categories = json_decode($categories_json, true);
+
+            $result = 0;
+            $new_categories = [];
+            if ( empty( $categories ) ) {
+                wp_send_json_error(['message' => 'Invalid data received.']);
+            }else{
+                foreach ($categories as $category) {
+                    $index = strtolower(str_replace(' ', '_', $category));
+                    $new_categories[$index] = $category;
+                }
+                $result = update_option('mptrs_categories', $new_categories );
+            }
+
+            wp_send_json_success([
+                'message' => 'Food Menu successfully Added In Your List!',
+                'success' => $result,
+            ]);
         }
 
         public function mptrs_save_food_menu_for_restaurant(){
@@ -56,8 +90,8 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             if ( is_array( $existing_menuItems ) ) {
                 $menuItems = array_merge( $menuItems , $existing_menuItems );
             }
-            $menuItems = array_unique($menuItems);
-            $menuItems = array_values($menuItems);
+            $menuItems = array_unique( $menuItems );
+            $menuItems = array_values( $menuItems );
 //            error_log( print_r( [ '$menuItems' => $menuItems], true ) );
             $update = update_post_meta( $post_id, '_mptrs_food_menu_items', $menuItems );
             wp_send_json_success([

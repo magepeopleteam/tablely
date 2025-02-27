@@ -21,16 +21,14 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
             $existing_menus = [];
 
             $all_food_menus = get_option( '_mptrs_food_menu', true);
-            if (is_array($existing_menu_by_id) && !empty($existing_menu_by_id)) {
-                foreach ($existing_menu_by_id as $item) {
-                    if (isset($all_food_menus[$item])) {
-                        $existing_menus[] = $all_food_menus[$item];
+
+            if ( is_array( $existing_menu_by_id ) && !empty( $existing_menu_by_id ) ) {
+                foreach ( $existing_menu_by_id as $item ) {
+                    if ( isset($all_food_menus[ $item ] ) ) {
+                        $existing_menus[$item] = $all_food_menus[ $item ];
                     }
                 }
             }
-
-            error_log( print_r($existing_menus, true));
-
             ?>
             <div class="tabsItem" data-tabs="#mptrs_food_menu_add">
 
@@ -41,7 +39,7 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
                     </ul>
 
                 </div>
-                <div class="mptrs_foodMenuContentHolder">
+                <div class="mptrs_foodMenuContentHolder" id="mptrs_foodMenuContentHolder">
                     <div id="mptrs_foodMenuAddedContainer" class="mptrs_foodMenuContainer">
                         <h2><?php esc_html_e('Added Food Menu From Here', 'tablely'); ?></h2>
 
@@ -113,7 +111,7 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
                                             <div class="mptrs_menuPersion" id="mptrs_memuPersons<?php echo esc_attr( $key )?>"><i class='fas fa-user-alt' style='font-size:14px'></i><?php echo esc_attr( $existing_menu['numPersons'] );?></div>
                                         </div>
                                         <div class="mptrs_BottomMenuInFo">
-                                            <span class="mptrm_editFromFoodMenu" id="mptrm_editFromFoodMenu-<?php echo esc_attr( $key )?>" style="display: block">Edit </span>
+                                            <span class="mptrm_editFromFoodMenu" id="mptrm_editFromFoodMenu-<?php echo esc_attr( $key )?>" style="display: block">Edit Price</span>
                                             <span class="mptrm_removeFromFoodMenu" id="mptrm_removeFromFoodMenu-<?php echo esc_attr( $key )?>">Delete </span>
                                         </div>
                                     </div>

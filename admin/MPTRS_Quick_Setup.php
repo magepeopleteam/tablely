@@ -29,6 +29,7 @@
 
             public function mptrs_new_food_menu_callback(){
                 $existing_menus = get_option( '_mptrs_food_menu' );
+                $menu_categories = get_option( 'mptrs_categories' );
                 ?>
                 <div id="mptrs_foodMenuPopup" class="mptrs_foodMenuPopupContainer" style="display: none;">
                     <div class="mptrs_foodMenuContentPopup">
@@ -39,16 +40,30 @@
 
                 <div class="mptrs_area mptrs_global_settings">
                     <div class="tabsItem" data-tabs="#mptrs_food_menu_add">
-                        <button id="mptrs_openPopup" class="mptrs_open_popup_btn">Add New Food Menu + </button>
+                        <div class="mptrs_categoryMenubtnHolder">
+                            <button id="mptrs_openCategoryPopup" class="mptrs_open_popup_btn">Categories..</button>
+                            <button id="mptrs_openPopup" class="mptrs_open_popup_btn">+Add New Food Menu </button>
+                        </div>
                         <div class="mptrs_foodMenuContentHolder">
 
                             <div id="mptrs_foodMenuShowContainer" class="mptrs_foodMenuContainer" style="display: block">
                                 <div id="mptrs_allFoodMenu" class="mptrs_allFoodMenu">
+                                    <div class="mptrs_categoryFilterHolder">
+                                        <div class="mptrs_categoryFilter active" data-filter="all"><?php echo __( 'All', 'tablely' ) ?></div>
+                                        <?php
+                                        if( is_array( $menu_categories ) && !empty( $menu_categories ) ) {
+                                            foreach ( $menu_categories as $key => $category ) { ?>
+                                                <div class="mptrs_categoryFilter" data-filter="<?php echo esc_attr( $key ) ?>"><?php echo esc_attr( $category ) ?></div>
+                                            <?php }
+                                        }
+                                        ?>
+                                    </div>
                                     <table class="mptrsTable" id="mptrs_showAllMenu">
                                         <thead>
                                         <tr>
                                             <th class="mptrsTableTh mptrsThImage">Image</th>
                                             <th class="mptrsTableTh mptrsThName">Name</th>
+                                            <th class="mptrsTableTh mptrsThcategory">Category</th>
                                             <th class="mptrsTableTh mptrsThPrice">Price</th>
                                             <th class="mptrsTableTh mptrsThServes">Serves</th>
                                             <th class="mptrsTableTh mptrsThActions">Actions</th>
@@ -56,37 +71,43 @@
                                         </thead>
                                         <tbody id="mptrs_foodMenuContainer">
                                         <?php
-                                        foreach ( $existing_menus as $key => $existing_menu ){
-                                            ?>
-                                            <tr class="mptrsTableRow" id="mptrs_foodMenuContent<?php echo esc_attr( $key )?>">
-                                                <td class="mptrsTableTd mptrsTdImage">
-                                                    <div class="mptrsImageWrapper" >
-                                                        <img class="mptrsImage" id="mptrs_memuImgUrl<?php echo esc_attr($key)?>" src="<?php echo esc_attr($existing_menu['menuImgUrl']); ?>" alt="<?php echo esc_attr($existing_menu['menuName']); ?>">
-                                                    </div>
-                                                </td>
-                                                <td class="mptrsTableTd mptrsTdName">
-                                                    <div class="mptrs_menuName" id="mptrs_memuName<?php echo esc_attr( $key )?>">
-                                                        <?php echo esc_attr( $existing_menu['menuName'] );?>
-                                                    </div>
-                                                    <input type="hidden" name="mptrs_menuCategory" id="mptrs_menuCategory<?php echo esc_attr( $key )?>" value="<?php echo esc_attr( $existing_menu['menuCategory'] )?>">
-                                                </td>
-                                                <td class="mptrsTableTd mptrsTdPrice" >
-                                                    <div class="mptrs_memuPrice" id="mptrs_memuPrice<?php echo esc_attr( $key )?>">$<?php echo esc_html($existing_menu['menuPrice']); ?></div>
-                                                </td>
-                                                <td class="mptrsTableTd mptrsTdServes" >
-                                                    <div class="mptrs_menuPersion" id="mptrs_memuPersons<?php echo esc_attr( $key )?>"><i class='fas fa-user-alt' style='font-size:14px'></i><?php echo esc_attr( $existing_menu['numPersons'] );?></div>
-                                                </td>
-                                                <td class="mptrsTableTd mptrsTdActions">
-                                                    <div class="mptrs_BottomAllMenuInFo">
-                                                        <span class="mptrm_editFoodMenu" id="mptrsEditMenu_<?php echo esc_attr( $key )?>">Edit </span>
-                                                        <span class="mptrm_deleteFoodMenu" id="mptrsDeleteMenu_<?php echo esc_attr( $key )?>">Delete </span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        <?php } ?>
+                                        if( is_array( $existing_menus ) && !empty( $existing_menus ) ) {
+                                            foreach ( $existing_menus as $key => $existing_menu ){
+                                                $category = isset( $menu_categories[$existing_menu['menuCategory']]) ? $menu_categories[$existing_menu['menuCategory']] : '';
+                                                ?>
+                                                <tr class="mptrsTableRow" data-category ="<?php echo esc_attr( $existing_menu['menuCategory'] )?>" id="mptrs_foodMenuContent<?php echo esc_attr( $key )?>">
+                                                    <td class="mptrsTableTd mptrsTdImage">
+                                                        <div class="mptrsImageWrapper" >
+                                                            <img class="mptrsImage" id="mptrs_memuImgUrl<?php echo esc_attr($key)?>" src="<?php echo esc_attr($existing_menu['menuImgUrl']); ?>" alt="<?php echo esc_attr($existing_menu['menuName']); ?>">
+                                                        </div>
+                                                    </td>
+                                                    <td class="mptrsTableTd mptrsTdName">
+                                                        <div class="mptrs_menuName" id="mptrs_memuName<?php echo esc_attr( $key )?>">
+                                                            <?php echo esc_attr( $existing_menu['menuName'] );?>
+                                                        </div>
+                                                        <input type="hidden" name="mptrs_menuCategory" id="mptrs_menuCategory<?php echo esc_attr( $key )?>" value="<?php echo esc_attr( $existing_menu['menuCategory'] )?>">
+                                                    </td>
+                                                    <td class="mptrsTableTd mptrsTdCategory" >
+                                                        <div class="mptrs_memuPrice" id="mptrs_Category<?php echo esc_attr( $key )?>"><?php echo esc_attr( $category )?></div>
+                                                    </td>
+                                                    <td class="mptrsTableTd mptrsTdPrice" >
+                                                        <div class="mptrs_memuPrice" id="mptrs_memuPrice<?php echo esc_attr( $key )?>">$<?php echo esc_html($existing_menu['menuPrice']); ?></div>
+                                                    </td>
+                                                    <td class="mptrsTableTd mptrsTdServes" >
+                                                        <div class="mptrs_menuPersion" id="mptrs_memuPersons<?php echo esc_attr( $key )?>"><i class='fas fa-user-alt' style='font-size:14px'></i><?php echo esc_attr( $existing_menu['numPersons'] );?></div>
+                                                    </td>
+                                                    <td class="mptrsTableTd mptrsTdActions">
+                                                        <div class="mptrs_BottomAllMenuInFo">
+                                                            <span class="mptrm_editFoodMenu" id="mptrsEditMenu_<?php echo esc_attr( $key )?>">Edit </span>
+                                                            <span class="mptrm_deleteFoodMenu" id="mptrsDeleteMenu_<?php echo esc_attr( $key )?>">Delete </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <?php }
+                                        }
+                                        ?>
                                         </tbody>
                                     </table>
-
                                 </div>
                             </div>
                         </div>

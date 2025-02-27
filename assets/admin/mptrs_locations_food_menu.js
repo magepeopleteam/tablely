@@ -10,41 +10,22 @@ jQuery(document).ready(function ($) {
        $("#"+menuTabContainer).fadeIn(1000);
     });
 
-    function appendFoodMenu_old( foodMenuData, key ) {
-        let menuHtml = `
-        <div class="mptrs_foodMenuContent" id="mptrs_foodMenuContent${key}">
-            <div class="mptrs_menuImageHolder">
-                <img class="mptrs_menuImage" id="mptrs_memuImgUrl${key}" src="${foodMenuData.menuImgUrl}" >
-            </div>
-            <div class="mptrs_menuInfoHolder">
-                <div class="mptrs_topMenuInFo">
-                    <div class="mptrs_menuName" id="mptrs_memuName${key}">
-                        ${foodMenuData.menuName}
-                    </div>
-                    <input type="hidden" name="mptrs_menuCategory" id="mptrs_menuCategory${key}" value="${foodMenuData.menuCategory}">
-                </div>
-                <div class="mptrs_BottomMenuInFo">
-                    <div class="mptrs_menuPrice" id="mptrs_memuPrice${key}">$${foodMenuData.menuPrice}</div>
-                    <div class="mptrs_menuPersion" >
-                        <i class='fas fa-user-alt' style='font-size:14px'></i> <span id="mptrs_memuPersons${key}">${foodMenuData.menunumPersons}</span>
-                    </div>
-                </div>
-                <div class="mptrs_BottomMenuInFo">
-                    <span class="mptrm_editFoodMenu" id="mptrsEditMenu_${key}" style="display: block">Edit</span>
-                    <span class="mptrm_deleteFoodMenu" id="mptrsDeleteMenu_${key}">Delete</span>
-                </div>
-            </div>
-        </div>
-    `;
+    $(document).on("click", ".mptrs_categoryFilter",function () {
+        let filterValue = $(this).data("filter");
+        $(".mptrs_categoryFilter").removeClass("active");
+        $(this).addClass("active");
 
-        // Append the generated HTML to a container (e.g., `#mptrs_foodMenuContainer`)
-        $("#mptrs_foodMenuContainer").append(menuHtml);
-    }
+        if (filterValue === "all") {
+            $(".mptrsTableRow").fadeIn();
+        } else {
+            $(".mptrsTableRow").hide().filter(`[data-category='${filterValue}']`).fadeIn();
+        }
+    });
+
 
     function appendFoodMenu(foodMenuData, key) {
-        console.log( foodMenuData );
         let row = `
-            <tr class="mptrsTableRow" id="mptrs_foodMenuContent${key}">
+            <tr class="mptrsTableRow" data-category ="${foodMenuData.menuCategory}" id="mptrs_foodMenuContent${key}">
                 <td class="mptrsTableTd mptrsTdImage">
                     <div class="mptrsImageWrapper">
                         <img class="mptrsImage" id="mptrs_memuImgUrl${key}" src="${foodMenuData.menuImgUrl}" alt="${foodMenuData.menuName}">
@@ -55,6 +36,9 @@ jQuery(document).ready(function ($) {
                         ${foodMenuData.menuName}
                     </div>
                     <input type="hidden" name="mptrs_menuCategory" id="mptrs_menuCategory${key}" value="${foodMenuData.menuCategory}">
+                </td>
+                <td class="mptrsTableTd mptrsTdCategory" >
+                    <div class="mptrs_memuPrice" id="mptrs_Category${key}">${foodMenuData.menuCategory}</div>
                 </td>
                 <td class="mptrsTableTd mptrsTdPrice">
                     <div class="mptrs_memuPrice" id="mptrs_memuPrice${key}">$${foodMenuData.menuPrice}</div>
@@ -75,6 +59,45 @@ jQuery(document).ready(function ($) {
         $("#mptrs_showAllMenu").append(row);
     }
 
+    function mptrs_category_display( categories ){
+
+        let displayCategories = '';
+        if( categories ){
+            $.each(categories, (key, value) => {
+                displayCategories += `
+                    <div class="mptrs-category-item">
+                        <i class="fas fa-bars mptrs-drag"></i>
+                        <input class="mptrs-category-name" type="text" value="${value}">
+                        <i class="fas fa-trash-alt mptrs-delete"></i>
+                    </div>
+            `;
+            });
+        }else{
+            displayCategories = 'No Category Found!';
+        }
+
+        let mptrs_category_data = `
+            <div class="mptrs_categoryDataHolder">
+                <div class="mptrs-popup-header">
+                    Categories
+                </div>
+                <div class="mptrs-category-list">
+                    ${displayCategories}
+                </div>
+                <div class="mptrs-add-category">
+                    <i class="fas fa-plus"></i> Add category
+                </div>
+                <div class="mptrs-popup-footer">
+                    <button class="mptrs-btn mptrs-cancel">Cancel</button>
+                    <button class="mptrs-btn mptrs-save">Save</button>
+                </div>
+            </div>
+        `
+        if ($('#mptrs_foodMenuContentContainer').is(':empty')) {
+            $('#mptrs_foodMenuContentContainer').append(mptrs_category_data);
+        }
+        $('#mptrs_foodMenuPopup').fadeIn();
+    }
 
 
     var frame;
@@ -104,7 +127,6 @@ jQuery(document).ready(function ($) {
         let deleteMenuId = $(this).attr('id').trim();
         let deleteKeys = deleteMenuId.split('_');
         let deleteKey = deleteKeys[1];
-        console.log( deleteKey );
         $.ajax({
             url: mptrs_admin_ajax.ajax_url,
             type: 'POST',
@@ -124,13 +146,14 @@ jQuery(document).ready(function ($) {
         });
     });
 
-    function menuPopup( data ){
-        const categories = {
+    function mptrs_menuPopup( data, categories ){
+        /*const categories = {
             "starter": "Starter",
             "main_course": "Main Course",
             "dessert": "Dessert",
             "beverage": "Beverage"
-        };
+        };*/
+
         let displayCategory = '';
         $.each(categories, (key, value) => {
             if( key === data.category ){
@@ -177,7 +200,99 @@ jQuery(document).ready(function ($) {
     `;
     }
 
+    $(document).on('click', '#mptrs_openCategoryPopup', function (e) {
+        e.preventDefault();
+        $(this).text('Loading...');
+        $.ajax({
+            url: mptrs_admin_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_get_categories',
+                nonce: mptrs_admin_ajax.nonce,
+            },
+            success: function (response) {
+                if (response.success) {
+                    $('#mptrs_openCategoryPopup').text('Categories..');
+                    let categories = response.data.mptrs_categories;
+                    mptrs_category_display( categories );
+                } else {
+                    alert("Failed to save categories.");
+                    $('#mptrs_openCategoryPopup').text('Categories..');
+                }
+            },
+            error: function () {
+                alert("Something went wrong. Try again!");
+                $('#mptrs_openCategoryPopup').text('Categories..');
+            }
+        });
+
+        // mptrs_category_display();
+    });
+    // Add new category
+    $(document).on('click', '.mptrs-add-category', function (e) {
+        e.preventDefault();
+        let newCategory = `
+                    <div class="mptrs-category-item">
+                        <i class="fas fa-bars mptrs-drag"></i>
+                        <input class="mptrs-category-name" type="text" value="" placeholder="New Category">
+                        <i class="fas fa-trash-alt mptrs-delete"></i>
+                    </div>
+                `;
+        $(".mptrs-category-list").append(newCategory);
+    });
+
+    $(document).on("input", ".mptrs-category-name", function () {
+        let value = $(this).val();
+        let validValue = value.replace(/[^a-zA-Z0-9\s]/g, '');
+        $(this).val(validValue);
+    });
+
+    $(document).on("click", ".mptrs-delete", function () {
+        $(this).closest(".mptrs-category-item").remove();
+    });
+    $(document).on('click',".mptrs-close, .mptrs-cancel",function ( e ) {
+        mptrs_close_popup(e);
+    });
+
+    // Save categories via AJAX
+    $(document).on("click", ".mptrs-save", function () {
+        let categories = [];
+        $(".mptrs-category-item").each(function () {
+            let categoryName = $(this).find(".mptrs-category-name").val().trim();
+            if (categoryName !== "") {
+                categories.push(categoryName);
+            }
+        });
+        if (categories.length === 0) {
+            alert("Please add at least one category.");
+            return;
+        }
+        let categoryJsonData = JSON.stringify(categories);
+        $.ajax({
+            url: mptrs_admin_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_set_categories',
+                nonce: mptrs_admin_ajax.nonce,
+                categoryJsonData: categoryJsonData,
+            },
+            success: function (response) {
+                if (response.success) {
+                    alert("Categories saved successfully!");
+                    $(".mptrs-overlay").fadeOut();
+                } else {
+                    alert("Failed to save categories.");
+                }
+            },
+            error: function () {
+                alert("Something went wrong. Try again!");
+            }
+        });
+    });
+
     $(document).on('click', '#mptrs_openPopup', function (e) {
+        e.preventDefault();
+        $(this).text('Loading...');
         let name = '';
         let key = 'addMenu';
         let price = 0;
@@ -191,11 +306,32 @@ jQuery(document).ready(function ($) {
         let data = {
             name, price, person, imgUrl, category, btnText, btnIdClass, popUpTitleText, key
         }
-        let formContent = menuPopup( data );
-        if ($('#mptrs_foodMenuContentContainer').is(':empty')) {
-            $('#mptrs_foodMenuContentContainer').append(formContent);
-        }
-        $('#mptrs_foodMenuPopup').fadeIn();
+
+        $.ajax({
+            url: mptrs_admin_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_get_categories',
+                nonce: mptrs_admin_ajax.nonce,
+            },
+            success: function (response) {
+                if (response.success) {
+                    $('#mptrs_openPopup').text('+Add New Food Menu ');
+                    let categories = response.data.mptrs_categories;
+                    let formContent = mptrs_menuPopup( data, categories );
+                    if ($('#mptrs_foodMenuContentContainer').is(':empty')) {
+                        $('#mptrs_foodMenuContentContainer').append(formContent);
+                    }
+                    $('#mptrs_foodMenuPopup').fadeIn();
+                } else {
+                    alert("Failed to save categories.");
+                }
+            },
+            error: function () {
+                $('#mptrs_openPopup').text('+Add New Food Menu ');
+                alert("Something went wrong. Try again!");
+            }
+        });
 
     });
 
@@ -222,23 +358,37 @@ jQuery(document).ready(function ($) {
         imgUrl = $("#"+menuImgUrlId).attr("src").trim();
         category = $("#"+mptrs_menuCategoryID).val().trim();
 
-        console.log( name, price, person, imgUrl, category);
-
         let btnText = 'Update Food Menu Data';
         let btnIdClass = 'mptrs_edit_food_menu_data'
         let popUpTitleText = 'Edit Food Menu';
 
-        console.log( category );
-
         let data = {
             name, price, person, imgUrl, category, btnText, btnIdClass, popUpTitleText, key,
         }
-        let formContent = menuPopup( data );
 
-        if ($('#mptrs_foodMenuContentContainer').is(':empty')) {
-            $('#mptrs_foodMenuContentContainer').append(formContent);
-        }
-        $('#mptrs_foodMenuPopup').fadeIn();
+        $.ajax({
+            url: mptrs_admin_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_get_categories',
+                nonce: mptrs_admin_ajax.nonce,
+            },
+            success: function (response) {
+                if (response.success) {
+                    let categories = response.data.mptrs_categories;
+                    let formContent = mptrs_menuPopup( data, categories );
+                    if ($('#mptrs_foodMenuContentContainer').is(':empty')) {
+                        $('#mptrs_foodMenuContentContainer').append(formContent);
+                    }
+                    $('#mptrs_foodMenuPopup').fadeIn();
+                } else {
+                    alert("Failed to save categories.");
+                }
+            },
+            error: function () {
+                alert("Something went wrong. Try again!");
+            }
+        });
     });
 
     $(document).on('click', '.mptrs_edit_food_menu_data', function ( e ) {
@@ -362,9 +512,63 @@ jQuery(document).ready(function ($) {
 
     });
 
+    $(document).on('click', '.mptrs_editMenuPriceSave', function (e) {
+        e.preventDefault();
+        let editBtnClickId = $(this).attr('id').trim();
+        let editKeys = editBtnClickId.split('-');
+        let editKey = editKeys[1];
+        let price = $("#mptrs_editMenuPrice").val();
+        const postId = $('#mptrs_mapping_plan_id').val();
+        $.ajax({
+            url: mptrs_admin_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_price_change_food_menu_restaurant',
+                nonce: mptrs_admin_ajax.nonce,
+                editKey: editKey,
+                price: price,
+                postId: postId,
+            },
+            success: function (response) {
+                alert(response.data.message);
+            },
+            error: function () {
+                alert('An unexpected error occurred.');
+            }
+        });
+    });
+    $(document).on('click', '.mptrm_editFromFoodMenu', function (e) {
+        e.preventDefault();
+        let editPriceClickedId = $(this).attr('id').trim();
+        let editPriceKeys = editPriceClickedId.split('-');
+        let editPriceKey = editPriceKeys[1];
 
+        let priceId = "mptrs_memuPrice"+editPriceKey;
 
+        let priceVal = $("#"+priceId).text().trim();
+        let priceWithoutDollar = priceVal.replace("$", "");
+        let mptrsEditMenuPrice = `
+            <div class="mptrs-overlay" id="mptrs-overlay">
+                <div class="mptrs-popup">
+                    <div class="mptrs-popup-header">
+                        <div class="mptrs_editMenuPrice">
+                            <input type="number" id="mptrs_editMenuPrice" class="mptrs_editMenuPrice" value="${priceWithoutDollar}">
+                            <button class="mptrs_editMenuPriceSave" id="mptrs_editMenuPriceSave-${editPriceKey}">Set</button>
+                            <button class="mptrs_editMenuPriceClose" >Cancel</button>
+                        </div>
+                         <span class="mptrs-close">&times;</span>
+                    </div>
+                    
+                </div>
+            </div>
+        `
+        $("#mptrs_foodMenuContentHolder").append( mptrsEditMenuPrice );
+    });
 
-
+    $(document).on('click',".mptrs-close, .mptrs_editMenuPriceClose",function ( e ) {
+        e.preventDefault();
+        $("#mptrs-overlay").empty();
+        $(".mptrs-overlay").fadeOut();
+    });
 
 });
