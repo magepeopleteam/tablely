@@ -489,7 +489,6 @@ jQuery(document).ready(function ($) {
 
 
     $(document).on('click', '.mptrs_addMenuToPost', function( e ) {
-        let mptrs_addedMenuItems = [];
         e.preventDefault();
         let getClickedId = $(this).attr('id');
         let menuId = getClickedId.split('-')[1];
@@ -498,7 +497,6 @@ jQuery(document).ready(function ($) {
         let imgContentId =   'mptrs_MenuImg-'+menuId;
         let nameContentId =  'mptrs-menuName-'+menuId;
         let priceContentId = 'mptrs-menuPrice-'+menuId;
-        mptrs_addedMenuItems.push(menuId);
 
         let action = '';
         let  removedKey = 'mptrs_addedFoodMenu'+menuId;
@@ -542,18 +540,18 @@ jQuery(document).ready(function ($) {
                                 <span class="mptrm_editAddedMenuPrice" id="mptrm_editAddedMenuPrice-${menuId}">Edit Price</span>
                             </td>
                             <td class="mptrs-menuAction">
-                                <button class="mptrs_addMenuToPost" id="mptrs_addedMenuToPost-${menuId}">Delete</button>
+                                <button class="mptrs_addMenuToPost" id="mptrs_addedMenuToPost-${menuId}"><i class="fa-solid fa-trash"></i></button>
                             </td>
                         </tr>`
                     $("#mptrs_AddedMenuData").append( newAddedMenu );
 
-                } else if( menuAddText === 'Delete' ) {
+                } else if( menuAddText === 'Add' ) {
+                    $("#"+getClickedId).text( 'Add' );
+                    $("#"+removedKey).fadeOut();
+                }else{
                     $("#"+removedKey).fadeOut();
                     let addedId = 'mptrs_addMenuToPost-'+menuId;
                     $("#"+addedId).text('Add');
-                }else{
-                    $("#"+getClickedId).text( 'Add' );
-                    $("#"+removedKey).fadeOut();
                 }
             },
             error: function () {

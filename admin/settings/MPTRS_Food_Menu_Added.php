@@ -138,7 +138,7 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
                                                     <span class="mptrm_editAddedMenuPrice" id="mptrm_editAddedMenuPrice-<?php echo esc_attr( $key )?>" style="display: block">Edit Price</span>
                                                 </td>
                                                 <td class="mptrs-menuAction">
-                                                    <button class="mptrs_addMenuToPost" id="mptrs_addedMenuToPost-<?php echo esc_attr( $key )?>"><?php esc_attr_e( 'Delete', 'tablely' )?></button>
+                                                    <button class="mptrs_addMenuToPost" id="mptrs_addedMenuToPost-<?php echo esc_attr( $key )?>"><i class="fa-solid fa-trash"></i></button>
                                                 </td>
                                             </tr>
                                         <?php }?>
