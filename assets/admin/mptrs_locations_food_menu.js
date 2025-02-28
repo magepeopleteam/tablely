@@ -62,8 +62,8 @@ jQuery(document).ready(function ($) {
                 </td>
                 <td class="mptrsTableTd mptrsTdActions">
                     <div class="mptrs_BottomMenuInFo">
-                        <span class="mptrm_editFoodMenu" id="mptrsEditMenu_${key}">Edit</span>
-                        <span class="mptrm_deleteFoodMenu" id="mptrsDeleteMenu_${key}">Delete</span>
+                        <span class="mptrm_editFoodMenu" id="mptrsEditMenu_${key}"><i class='far fa-edit' style='font-size:20px'></i></span>
+                        <span class="mptrm_deleteFoodMenu" id="mptrsDeleteMenu_${key}"><i class='far fa-trash-alt' style='font-size:20px'></i></span>
                     </div>
                 </td>
             </tr>
@@ -527,6 +527,7 @@ jQuery(document).ready(function ($) {
                     let nameContent = $("#"+nameContentId).text().trim();
                     let priceContent = $("#"+priceContentId).text().trim();
                     priceContent = priceContent.replace("$", "");
+                    $("#"+getClickedId).removeClass('mptrs_addMenuClass').addClass('mptrs_addedMenuClass');
                     let newAddedMenu = `
                         <tr id="mptrs_addedFoodMenu${menuId}">
                             <td>
@@ -545,12 +546,14 @@ jQuery(document).ready(function ($) {
                         </tr>`
                     $("#mptrs_AddedMenuData").append( newAddedMenu );
 
-                } else if( menuAddText === 'Add' ) {
+                } else if( menuAddText === 'Added' ) {
                     $("#"+getClickedId).text( 'Add' );
+                    $("#"+getClickedId).removeClass('mptrs_addedMenuClass').addClass('mptrs_addMenuClass');
                     $("#"+removedKey).fadeOut();
                 }else{
                     $("#"+removedKey).fadeOut();
                     let addedId = 'mptrs_addMenuToPost-'+menuId;
+                    $("#"+addedId).removeClass('mptrs_addedMenuClass').addClass('mptrs_addMenuClass');
                     $("#"+addedId).text('Add');
                 }
             },

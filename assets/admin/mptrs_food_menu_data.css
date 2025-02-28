@@ -193,7 +193,7 @@
 .mptrs_BottomAllMenuInFo{
     display: flex;
     gap: 10px;
-    margin-top: 18px;
+    margin-top: 10px;
 }
 .mptrs_menuName{
     display: block;
@@ -270,6 +270,15 @@
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 15px;
+}
+
+.mptrs_addMenuClass{
+    background-color: #10a71a;
+    color: #fff;
+}
+.mptrs_addedMenuClass{
+    background-color: #990000;
+    color: #fff;
 }
 
 .mptrs_addMenuToPost,

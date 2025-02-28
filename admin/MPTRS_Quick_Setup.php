@@ -98,8 +98,8 @@
                                                     </td>
                                                     <td class="mptrsTableTd mptrsTdActions">
                                                         <div class="mptrs_BottomAllMenuInFo">
-                                                            <span class="mptrm_editFoodMenu" id="mptrsEditMenu_<?php echo esc_attr( $key )?>">Edit </span>
-                                                            <span class="mptrm_deleteFoodMenu" id="mptrsDeleteMenu_<?php echo esc_attr( $key )?>">Delete </span>
+                                                            <span class="mptrm_editFoodMenu" id="mptrsEditMenu_<?php echo esc_attr( $key )?>"><i class='far fa-edit' style='font-size:20px'></i></span>
+                                                            <span class="mptrm_deleteFoodMenu" id="mptrsDeleteMenu_<?php echo esc_attr( $key )?>"><i class='far fa-trash-alt' style='font-size:20px'></i> </span>
                                                         </div>
                                                     </td>
                                                 </tr>

@@ -55,10 +55,10 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
                                     <table class="mptrs-menu-table">
                                         <thead>
                                             <tr>
-                                                <th>Image</th>
-                                                <th>Name</th>
-                                                <th>Price</th>
-                                                <th>Action</th>
+                                                <th><?php esc_attr_e( 'Image', 'tablely' )?></th>
+                                                <th><?php esc_attr_e( 'Name', 'tablely' )?></th>
+                                                <th><?php esc_attr_e( 'Price', 'tablely' )?></th>
+                                                <th><?php esc_attr_e( 'Action', 'tablely' )?></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -66,8 +66,10 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
 
                                         foreach( $all_food_menus as $key => $food_menu ){
                                             $add = 'Add';
+                                            $className = 'mptrs_addMenuClass';
                                             if ( isset( $existing_menus[ $key ] ) ) {
                                                 $add = 'Added';
+                                                $className = 'mptrs_addedMenuClass';
                                             }
 
                                         ?>
@@ -79,9 +81,8 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
                                                 </td>
                                                 <td class="mptrs-menuName" id="mptrs-menuName-<?php echo esc_attr( $key )?>"><?php echo esc_attr( $food_menu['menuName'])?></td>
                                                 <td class="mptrs-menuPrice" id="mptrs-menuPrice-<?php echo esc_attr( $key )?>">$<?php echo esc_attr( $food_menu['menuPrice'])?></td>
-<!--                                                <td><i class='fas fa-user-alt' style='font-size:14px'></i>--><?php //echo esc_attr( $food_menu['numPersons'])?><!--</td>-->
                                                 <td class="mptrs-menuAction">
-                                                    <button class="mptrs_addMenuToPost" id="mptrs_addMenuToPost-<?php echo esc_attr( $key )?>"><?php echo esc_attr( $add )?></button>
+                                                    <button class="mptrs_addMenuToPost <?php echo esc_attr( $className )?>" id="mptrs_addMenuToPost-<?php echo esc_attr( $key )?>"><?php echo esc_attr( $add )?></button>
                                                 </td>
                                             </tr>
                                         <?php }?>
@@ -101,10 +102,10 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
                                     <table class="mptrs-menu-table" id="mptrs_AddedMenuData">
                                         <thead>
                                             <tr>
-                                                <th>Image</th>
-                                                <th>Name</th>
-                                                <th>Price</th>
-                                                <th>Action</th>
+                                                <th><?php esc_attr_e( 'Image', 'tablely' )?></th>
+                                                <th><?php esc_attr_e( 'Name', 'tablely' )?></th>
+                                                <th><?php esc_attr_e( 'Price', 'tablely' )?></th>
+                                                <th><?php esc_attr_e( 'Action', 'tablely' )?></th>
                                             </tr>
                                         </thead>
                                         <tbody>
