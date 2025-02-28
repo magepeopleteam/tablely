@@ -16,6 +16,9 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             add_action('wp_ajax_mptrs_price_change_food_menu_restaurant', [$this, 'mptrs_price_change_food_menu_restaurant']);
             add_action('wp_ajax_nopriv_mptrs_price_change_food_menu_restaurant', [$this, 'mptrs_price_change_food_menu_restaurant']);
 
+            add_action('wp_ajax_mptrs_get_available_seats_for_reservations', [$this, 'mptrs_get_available_seats_for_reservations']);
+            add_action('wp_ajax_nopriv_mptrs_get_available_seats_for_reservations', [$this, 'mptrs_get_available_seats_for_reservations']);
+
         }
 
         public function mptrs_price_change_food_menu_restaurant(){
@@ -71,6 +74,22 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                 'success' => $result,
                 'mptrs_categories' => $categories,
             ]);
+        }
+
+        function mptrs_get_available_seats_for_reservations(){
+            if (!isset($_POST['nonce']) || !wp_verify_nonce( sanitize_text_field( $_POST['nonce'] ), 'mptrs_nonce')) {
+                wp_send_json_error(['message' => 'Security check failed.'], 403);
+            }
+            error_log( print_r( $_POST, true ) );
+
+            $post_id = isset( $_POST['post_id'] ) ? sanitize_text_field($_POST['post_id']) : '';
+            $seat_map = MPTRS_Details_Layout::display_seat_mapping( $post_id );
+
+            wp_send_json_success([
+                'message' => 'Categories Data getting successfully.!',
+                'mptrs_seat_maps' => $seat_map,
+            ]);
+
         }
 
     }

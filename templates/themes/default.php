@@ -12,10 +12,16 @@
     $thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
     $existing_menus = get_post_meta($post_id, '_mptrs_food_menu', true);
     ?>
-    <div class="mptrs_postHolder">
-        <!--<div class="mptrs_postTitleHolder">
-            <h1 class="mptrs_postTitleText"><?php /*echo esc_attr( get_the_title() );*/?></h1>
-        </div>-->
+
+        <div id="seatPopup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn">&times;</span>
+                <div class="mptrs_postHolder">
+                    <div class="mptrs_seatMapDisplay" id="mptrs_seatMapDisplay"></div>
+                </div>
+            </div>
+        </div>
+
         <?php if ( has_post_thumbnail() ) : ?>
             <div class="mptrs_featureImageHolder">
                 <img class="mptrs_featureImage mptrs_shadow" alt="<?php esc_attr( get_the_title() );?>" src=" <?php  echo esc_attr( $thumbnail_url );?>">
@@ -100,8 +106,36 @@
         </div>
         <div class="mptrs_restaurantRightSide">
 
+                <div class="mptrs_orderCardHolder">
+                    <h2 class="mptrs_title">Make a reservation</h2>
 
+                    <!-- Date Selection -->
+                    <div class="mptrs_formGroup">
+                        <label for="mptrs_date">Check in</label>
+                        <div class="mptrs_input_wrapper">
+                            <input type="date" id="mptrs_date" class="mptrs_input">
+                        </div>
+                    </div>
 
+                    <!-- Party Size -->
+                    <div class="mptrs_formGroup">
+                        <label for="mptrs_party_size">Party size</label>
+                        <div class="mptrs_input_wrapper">
+                            <select id="mptrs_party_size" class="mptrs_input">
+                                <option value="1">1</option>
+                                <option value="2" selected>2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6+</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button id="mptrs_search" class="mptrs_button">Find a time</button>
+                    <div class="mptrs_time_container">
+                        <!-- Time slots will be added dynamically -->
+                    </div>
+            </div>
 
             <div class="mptrs_rightSidebar">
                 <div class="mptrs_rightSidebarItem">
@@ -142,7 +176,7 @@
 
 
         <?php
-            echo MPTRS_Details_Layout::display_seat_mapping();
+//            echo MPTRS_Details_Layout::display_seat_mapping( $post_id );
         ?>
 
         <div class="mptrs_DatePickerContainer" style="display: none">
@@ -180,4 +214,5 @@
             </div>-->
         </div>
         <button class="mptrs_orderBtn" id="mptrs_orderBtn-<?php echo esc_attr( $post_id )?>"><?php echo esc_attr_e( 'Order', 'tablely')?></button>
+        <input type="hidden" id="mptrs_getPost" value="<?php echo esc_attr( $post_id )?>">
     </div>

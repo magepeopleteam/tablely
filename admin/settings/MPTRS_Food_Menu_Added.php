@@ -125,7 +125,7 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
                                                 }
                                             }
                                             ?>
-                                            <tr id="mptrs_addedFoodMenu<?php echo esc_attr( $key ) ?>">
+                                            <tr class="mptrs_menuInfoHolderFilter" id="mptrs_addedFoodMenu<?php echo esc_attr( $key ) ?>" data-category ="<?php echo esc_attr( $existing_menu['menuCategory'] )?>">
                                                 <td>
                                                     <div class="mptrsMenuImg">
                                                         <img src="<?php echo esc_attr( $menu_img )?>" alt="<?php echo esc_attr( $existing_menu['menuName'] )?>">

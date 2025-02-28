@@ -492,6 +492,8 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
         let getClickedId = $(this).attr('id');
         let menuId = getClickedId.split('-')[1];
+        let menuCategory = $(this).parent().parent().attr('data-category').trim();
+
         let menuAddText = $("#"+getClickedId).text().trim();
         // console.log( menuAddText );
         let imgContentId =   'mptrs_MenuImg-'+menuId;
@@ -526,10 +528,12 @@ jQuery(document).ready(function ($) {
                     let imgUrl = $("#"+imgContentId).attr("src").trim();
                     let nameContent = $("#"+nameContentId).text().trim();
                     let priceContent = $("#"+priceContentId).text().trim();
+
+
                     priceContent = priceContent.replace("$", "");
                     $("#"+getClickedId).removeClass('mptrs_addMenuClass').addClass('mptrs_addedMenuClass');
                     let newAddedMenu = `
-                        <tr id="mptrs_addedFoodMenu${menuId}">
+                        <tr class="mptrs_menuInfoHolderFilter" id="mptrs_addedFoodMenu${menuId}" data-category="${menuCategory}">
                             <td>
                                 <div class="mptrsMenuImg">
                                     <img src="${imgUrl}" alt="${nameContent}">
@@ -550,11 +554,15 @@ jQuery(document).ready(function ($) {
                     $("#"+getClickedId).text( 'Add' );
                     $("#"+getClickedId).removeClass('mptrs_addedMenuClass').addClass('mptrs_addMenuClass');
                     $("#"+removedKey).fadeOut();
+                    $("#"+removedKey).empty();
                 }else{
                     $("#"+removedKey).fadeOut();
+                    $("#"+removedKey).empty();
                     let addedId = 'mptrs_addMenuToPost-'+menuId;
+                    // alert( removedKey );
                     $("#"+addedId).removeClass('mptrs_addedMenuClass').addClass('mptrs_addMenuClass');
                     $("#"+addedId).text('Add');
+                    // $("#"+removedKey).data('category', '');
                 }
             },
             error: function () {
