@@ -10,15 +10,39 @@
 
 	$post_id = get_the_id();
     $thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
-    $existing_menus = get_post_meta($post_id, '_mptrs_food_menu', true);
+    $existing_menus = get_option( '_mptrs_food_menu' );
+    $categories = get_option( 'mptrs_categories' );
     ?>
     <div class="mptrs_postHolder">
         <div id="seatPopup" class="popup">
             <div class="popup-content">
                 <span class="close-btn">&times;</span>
                 <div class="mptrs_seatMappedHolder">
-                    <div class="mptrs_seatMapDisplay" id="mptrs_seatMapDisplay"></div>
+                    <div id="mptrs_foodDeliveryOptions" class="mptrs_foodDeliveryOptions">
+                        <div class="mptrs_orderOptionsTab">
+                            <div class="mptrs_orderOptionTab mptrs_orderTabActive" id="mptrs_dineInTab">Dine-In</div>
+                            <div class="mptrs_orderOptionTab" id="mptrs_deliveryTab">Delivery</div>
+                            <div class="mptrs_orderOptionTab" id="mptrs_takeawayTab">Takeaway</div>
+                        </div>
+                    </div>
                 </div>
+
+                <div class="mptrs_foodOrderContentholder">
+                    <div class="mptrs_seatMappedHolder" id="mptrs_dineInTabHolder" style="display: block">
+                        <div class="mptrs_seatMapDisplay" id="mptrs_seatMapDisplay"></div>
+                    </div>
+                    <div class="mptrs_seatMappedHolder" id="mptrs_deliveryTabHolder" style="display: none">
+                        <div class="">
+                            <input type="text" class="mptrs_input-field" id="location" placeholder="Location">
+                            <input type="text" class="mptrs_input-field" id="street-address" placeholder="Enter your street address">
+                            <input type="text" class="mptrs_input-field" id="postal-code" placeholder="Postal Code">
+                        </div>
+                    </div>
+                    <div class="mptrs_seatMappedHolder" id="mptrs_takeawayTabHolder" style="display: none">
+                        <div class="">Takeaway</div>
+                    </div>
+                </div>
+
                 <div class="mptrs_OrderPlaceBtn" id="mptrs_OrderPlaceBtn-<?php echo esc_attr( $post_id )?>">Order</div>
             </div>
         </div>
@@ -52,9 +76,25 @@
                 <button class="mptrs_toggleBtn">See More</button>
             </div>
 
-            <?php  if( is_array( $existing_menus ) && count( $existing_menus ) > 0 ){ ?>
+            <?php
+
+            if( is_array( $existing_menus ) && count( $existing_menus ) > 0 ){?>
+
             <div class="mptrs_FoodMenuHolder">
                 <h3 class="mptrs_FoodMenuHolderTitle">Menu(<?php echo esc_attr( count( $existing_menus ) ) ?>)</h3>
+
+                <div class="mptrs_category_container">
+                    <?php
+                    if( is_array( $categories ) && count( $categories ) > 0 ){ ?>
+                        <div class="mptrs_category_item mptrs_active" data-filter="<?php echo __( 'all', 'tablely' )?>"><?php echo __( 'All', 'tablely' )?></div>
+                       <?php foreach( $categories as $key => $category ){ ?>
+                            <div class="mptrs_category_item" data-filter="<?php echo esc_attr( $key )?>"><?php echo esc_attr( $category )?></div>
+                     <?php }
+                    }
+                    ?>
+                    <div class="mptrs_more_button">...</div>
+                </div>
+                <div class="mptrs_hidden_items"></div>
                 <?php
                     $fallbackImgUrl = get_site_url().'/wp-content/uploads/2025/02/fallbackimage.webp';
                 ?>
@@ -68,7 +108,7 @@
                                 $img = $existing_menu['menuImgUrl'];
                             }
                             ?>
-                            <div class="mptrs_foodMenuContent">
+                            <div class="mptrs_foodMenuContent" data-category ="<?php echo esc_attr( $existing_menu['menuCategory'] )?>">
                                 <div class="mptrs_menuImageHolder">
                                     <img class="mptrs_menuImage" src="<?php echo esc_attr( $img ) ?>" >
                                 </div>
@@ -106,7 +146,7 @@
         </div>
         <div class="mptrs_restaurantRightSide">
 
-                <div class="mptrs_orderCardHolder">
+                <div class="mptrs_orderCardHolder" id="mptrs_orderCardHolder">
                     <h2 class="mptrs_title">Make a reservation</h2>
 
                     <!-- Date Selection -->
@@ -175,17 +215,6 @@
             </div>
 
         </div>
-
-
-
-        <?php
-//            echo MPTRS_Details_Layout::display_seat_mapping( $post_id );
-        ?>
-
-        <!--<div class="mptrs_DatePickerContainer" style="display: none">
-            <input type="text" id="mptrs-datepicker" placeholder="Select a Date">
-            <span class="mptrs-calendar-icon">&#128197;</span>
-        </div>-->
 
         <div class="mptrs_timePickerContainer" style="display: none">
             <select id="mptrs-timepicker">

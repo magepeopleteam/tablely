@@ -1,5 +1,73 @@
 jQuery(document).ready(function ($) {
 
+    $(document).on('click',".mptrs_orderOptionTab", function() {
+        let tabClickedId = $(this).attr('id').trim();
+        $('.mptrs_orderOptionTab').removeClass('mptrs_orderTabActive');
+        $(this).addClass( 'mptrs_orderTabActive' );
+
+        let tabHolderId = tabClickedId+'Holder';
+        $("#"+tabHolderId).siblings().fadeOut();
+        $("#"+tabHolderId).fadeIn();
+
+
+    });
+
+    $(document).on("click", ".mptrs_category_item",function () {
+        $(".mptrs_category_item").removeClass('mptrs_active');
+        $(this).addClass('mptrs_active');
+        let filterValue = $(this).data("filter");
+        $(".mptrs_categoryFilter").removeClass("active");
+        $(this).addClass("active");
+
+        if (filterValue === "all") {
+            $(".mptrs_foodMenuContent").fadeIn();
+        } else {
+            $(".mptrs_foodMenuContent").hide().filter(`[data-category='${filterValue}']`).fadeIn();
+        }
+    });
+    function category_shown(){
+        let container = $(".mptrs_category_container");
+        let items = $(".mptrs_category_item");
+        let moreButton = $(".mptrs_more_button");
+        let hiddenContainer = $(".mptrs_hidden_items");
+        let availableWidth = container.width() - moreButton.outerWidth(true);
+        let usedWidth = 0;
+
+        moreButton.hide();
+        hiddenContainer.hide();
+
+        items.each(function () {
+            let itemWidth = $(this).outerWidth(true);
+            if (usedWidth + itemWidth <= availableWidth) {
+                usedWidth += itemWidth;
+            } else {
+                $(this).hide();
+                moreButton.show();
+                hiddenContainer.append($(this).clone().show());
+            }
+        });
+
+        moreButton.click(function () {
+            hiddenContainer.toggle();
+        });
+    }
+    category_shown();
+    function mptrs_make_div_fixed( divIdname ){
+        var header = $("#"+divIdname);
+        var offset = header.offset().top;
+
+        $(window).scroll(function() {
+            if ($(window).scrollTop() > offset) {
+                header.addClass("mptrs_fixed");
+            } else {
+                header.removeClass("mptrs_fixed");
+            }
+        });
+    }
+    mptrs_make_div_fixed( 'mptrs_orderCardHolder' );
+
+
+
     function updateTotalPrice() {
         let totalPrice = 0;
 
@@ -55,9 +123,8 @@ jQuery(document).ready(function ($) {
         let order_time = $('.mptrs_time_button.active').data('time');
         let order_date = $("#mptrs_date").val().trim();
 
-        // let bookedSeats = JSON.parse( seatBooked );
         let bookedSeats =  JSON.stringify( seatBooked );
-        console.log( order_time );
+        // console.log( order_time );
 
         $.ajax({
             url: mptrs_ajax.ajax_url,

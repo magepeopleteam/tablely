@@ -18,10 +18,23 @@
     padding: 20px;
     border-radius: 10px;
     width: 90%;
+    max-height: 80vh; /* Prevents content from exceeding viewport height */
+    overflow-y: auto; /* Enables vertical scrolling if content overflows */
     text-align: center;
     position: relative;
-    top: 100px;
     margin: auto;
+    top: 70px;
+}
+
+.mptrs_fixed {
+    position: fixed;
+    top: 10px;
+    width: 100%;
+    background: #ff5733;
+    color: white;
+    padding: 15px;
+    z-index: 10;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Close Button */
@@ -587,3 +600,69 @@
     color: white;
 }
 
+.mptrs_category_container {
+    width: calc( 100% - 20px ); /* Parent width */
+    /*border: 1px solid #ddd;*/
+    border-radius: 5px;
+    margin: 10px 0 0 0 ;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    overflow: hidden;
+}
+
+.mptrs_category_item {
+    background: #ededed;
+    color: #333333;
+    padding: 8px 12px;
+    margin: 5px;
+    border-radius: 5px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+.mptrs_active{
+    background-color: #f14026;
+    color: #fff;
+}
+
+.mptrs_hidden_items {
+    display: none;
+    flex-wrap: wrap;
+    position: absolute;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    z-index: 10;
+}
+
+.mptrs_more_button {
+    background: #333;
+    color: white;
+    padding: 8px 12px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.mptrs_orderOptionsTab {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+}
+.mptrs_orderOptionTab {
+    cursor: pointer;
+    padding: 5px;
+}
+.mptrs_orderOptionTab.mptrs_orderTabActive {
+    border-bottom: 2px solid red;
+}
+.mptrs_input-field {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
