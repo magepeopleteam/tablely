@@ -12,13 +12,14 @@
     $thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
     $existing_menus = get_post_meta($post_id, '_mptrs_food_menu', true);
     ?>
-
+    <div class="mptrs_postHolder">
         <div id="seatPopup" class="popup">
             <div class="popup-content">
                 <span class="close-btn">&times;</span>
-                <div class="mptrs_postHolder">
+                <div class="mptrs_seatMappedHolder">
                     <div class="mptrs_seatMapDisplay" id="mptrs_seatMapDisplay"></div>
                 </div>
+                <div class="mptrs_OrderPlaceBtn" id="mptrs_OrderPlaceBtn-<?php echo esc_attr( $post_id )?>">Order</div>
             </div>
         </div>
 
@@ -41,8 +42,7 @@
                 <div class="mptrs_restaurantOpeninglocation">5th floor, Concord MK Heritage, Dhaka, Dhanmondi Dhaka</div>
             </div>
         </div>
-    </div>
-    <div class="mptrs_postHolder">
+
 
         <div class="mptrs_restaurantLeftSide">
             <div class="mptrs_restaurantDesHolder">
@@ -113,7 +113,10 @@
                     <div class="mptrs_formGroup">
                         <label for="mptrs_date">Check in</label>
                         <div class="mptrs_input_wrapper">
-                            <input type="date" id="mptrs_date" class="mptrs_input">
+                            <div class="mptrs_DatePickerContainer" style="display: block">
+                                <input type="text" id="mptrs_date" placeholder="Select a Date">
+                                <span class="mptrs_calendarIcon">&#128197;</span>
+                            </div>
                         </div>
                     </div>
 
@@ -179,10 +182,10 @@
 //            echo MPTRS_Details_Layout::display_seat_mapping( $post_id );
         ?>
 
-        <div class="mptrs_DatePickerContainer" style="display: none">
+        <!--<div class="mptrs_DatePickerContainer" style="display: none">
             <input type="text" id="mptrs-datepicker" placeholder="Select a Date">
             <span class="mptrs-calendar-icon">&#128197;</span>
-        </div>
+        </div>-->
 
         <div class="mptrs_timePickerContainer" style="display: none">
             <select id="mptrs-timepicker">
@@ -209,10 +212,7 @@
                 </tr>
                 </tfoot>
             </table>
-           <!-- <div class="mptrs_totalPriceHolder">
-                <span class="mptrs_totalPrice"></span>
-            </div>-->
         </div>
-        <button class="mptrs_orderBtn" id="mptrs_orderBtn-<?php echo esc_attr( $post_id )?>"><?php echo esc_attr_e( 'Order', 'tablely')?></button>
+        <button class="mptrs_orderBtn" id="mptrs_orderBtn-<?php echo esc_attr( $post_id )?>"><?php esc_attr_e( 'Order', 'tablely')?></button>
         <input type="hidden" id="mptrs_getPost" value="<?php echo esc_attr( $post_id )?>">
     </div>

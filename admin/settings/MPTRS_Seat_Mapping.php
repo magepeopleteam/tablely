@@ -188,7 +188,7 @@
 
                                 echo '<div class=" mptrs_mappingSeat ' . esc_attr( $class ) . '"
                                     id = "div' . esc_attr( $col ) . '_' . esc_attr( $row ) . '"
-                                    data-id="' . esc_attr( $col ) . '-' . esc_attr( $row ) . '" 
+                                    data-id="' . esc_attr( $col ) . '_' . esc_attr( $row ) . '" 
                                     data-row="' . esc_attr( $col ) . '" 
                                     data-col="' . esc_attr( $row ) . '" 
                                     data-seat-num=" ' . esc_attr( $seat_num ) . ' " 
