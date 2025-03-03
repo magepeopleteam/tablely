@@ -1,3 +1,42 @@
+
+/* Popup Styling */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+    top: 100px;
+    margin: auto;
+}
+
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: red;
+}
+
 .mptrs_postHolder{
     display: block;
     max-width: 1024px;
@@ -299,9 +338,9 @@
     text-decoration: underline;
 }
 
-.mptrs_rightSidebar {
-    width: 320px;
-    padding: 20px;
+.mptrs_rightSidebar, .mptrs_orderHolder {
+    width: 300px;
+    padding: 10px;
     background: #f9f9f9; /* Light background */
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -445,5 +484,91 @@
 .mptrs_menuPrice,
 .mptrs_menuPersion{
     font-weight: 600;
+}
+
+.mptrs_orderCardHolder {
+    background: white;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
+}
+
+.mptrs_title {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+/* Form Group */
+.mptrs_form_group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+/* Input Wrapper */
+.mptrs_input_wrapper {
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+
+/* Inputs */
+.mptrs_input {
+    width: 100%;
+    font-size: 14px;
+    border: none;
+    background: transparent;
+    outline: none;
+}
+
+/* Button */
+.mptrs_button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #1d273b;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.mptrs_button:hover {
+    background-color: #151d2e;
+}
+
+/* Time Container */
+.mptrs_time_container {
+    display: none;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 15px;
+    justify-content: center;
+}
+
+/* Time Buttons */
+.mptrs_time_button {
+    padding: 10px;
+    width: 80px;
+    font-size: 14px;
+    background-color: #e0e0e0;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.mptrs_time_button:hover {
+    background-color: #d0d0d0;
+}
+
+/* Selected Time */
+.mptrs_time_button.active {
+    background-color: #1d273b;
+    color: white;
 }
 

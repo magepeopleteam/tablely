@@ -11,7 +11,7 @@ jQuery(document).ready(function ($) {
     }
 
     let seatBooked = [];
-    $('.mptrs_mappedSeat').on('click', function () {
+    $(document).on( 'click', '.mptrs_mappedSeat', function () {
         const seatId = $(this).attr('id');
         const price = $(this).data('price');
         const seatNum = $(this).data('seat-num');
@@ -147,82 +147,6 @@ jQuery(document).ready(function ($) {
     function removeDataFromArray(seatArray, seatIdToRemove) {
         return seatArray.filter(seat => seat.seatId !== seatIdToRemove);
     }
-    function mptrs_load_seat_maps(){
-        let postId = 123;
-
-        $.ajax({
-            url: mptrs_ajax.ajax_url,
-            type: 'POST',
-            data: {
-                action: 'set_your_Action',
-                nonce: mptrs_ajax .nonce,
-            },
-            dataType: 'json',
-            success: function (response) {
-                if (response.success) {
-                    let planData = response.data;
-                    let planSeats = planData.seat_data || [];
-                    let planSeatTexts = planData.seat_text_data || [];
-                    let dynamicShapes = planData.dynamic_shapes || [];
-
-                    let leastLeft = Math.min(...planSeats.map(s => parseInt(s.left)));
-                    let leastTop = Math.min(...planSeats.map(s => parseInt(s.top)));
-
-                    let seatGrid = $("#mptrs_seatGrid");
-                    seatGrid.css("height", leastTop + 200 + "px");
-
-
-                    dynamicShapes.forEach(shape => {
-                        let shapeDiv = `<div class="mptrs_dynamicShape" style="
-                        left: ${shape.textLeft - leastLeft}px;
-                        top: ${shape.textTop - leastTop}px;
-                        width: ${shape.width}px;
-                        height: ${shape.height}px;
-                        background-color: ${shape.backgroundColor};
-                        border-radius: ${shape.borderRadius};
-                        clip-path: ${shape.clipPath};
-                        transform: rotate(${shape.shapeRotateDeg}deg);
-                    "></div>`;
-                        seatGrid.append(shapeDiv);
-                    });
-
-
-                    planSeatTexts.forEach(text => {
-                        let textDiv = `<div class="mptrs_dynamicTextWrapper" style="
-                        left: ${text.textLeft - leastLeft}px;
-                        top: ${text.textTop - leastTop}px;
-                        transform: rotate(${text.textRotateDeg}deg);
-                    ">
-                        <span class="mptrs_dynamicText" style="
-                            color: ${text.color}; font-size: ${text.fontSize}px; cursor: pointer;">
-                            ${text.text}
-                        </span>
-                    </div>`;
-                        seatGrid.append(textDiv);
-                    });
-
-                    // 🔹 সিট যোগ করা
-                    planSeats.forEach(seat => {
-                        let seatDiv = `<div class="mptrs_mappedSeat" id="seat-${seat.id}" 
-                        data-price="${seat.price}" data-seat-num="${seat.seat_number}" style="
-                        width: ${seat.width}px;
-                        height: ${seat.height}px;
-                        left: ${seat.left - leastLeft}px;
-                        top: ${seat.top - leastTop}px;
-                        border-radius: ${seat.border_radius};
-                        transform: rotate(${seat.data_degree}deg);
-                        background-color: ${seat.color};
-                    " title="Price: $${seat.price}">
-                        <div class="mptrs_mappedSeatInfo">
-                            <span class="mptrs_seatNumber">${seat.seat_number}</span>
-                        </div>
-                    </div>`;
-                        seatGrid.append(seatDiv);
-                    });
-                }
-            }
-        });
-    }
 
 
     $(".mptrs_toggleBtn").click(function() {
@@ -234,6 +158,75 @@ jQuery(document).ready(function ($) {
             content.addClass("expanded");
             $(this).text("See Less");
         }
+    });
+
+    const timeContainer = $(".mptrs_time_container");
+
+    const timeSlots = {
+        '11': "11:00 AM",
+        '12': "12:00 PM",
+        '13': "01:00 PM",
+        '14': "02:00 PM",
+        '15': "03:00 PM",
+        '16': "04:00 PM",
+        '17': "05:00 PM",
+        '18': "06:00 PM",
+        '19': "07:00 PM",
+        '20': "08:00 PM",
+        '21': "09:00 PM",
+        '22': "10:00 PM"
+    };
+    
+    $.each( timeSlots, function ( key, time ) {
+        console.log( time );
+        let button = $("<button>")
+            .addClass("mptrs_time_button")
+            .text(time)
+            .attr("data-time", key );
+
+        timeContainer.append(button);
+    })
+
+    $(document).on( 'click', '.mptrs_button', function () {
+        $(".mptrs_time_container").css("display", "flex");
+
+    });
+
+    $(document).on('click',".close-btn",function () {
+        $("#seatPopup").fadeOut();
+        $("#mptrs_seatMapDisplay").empty();
+    });
+    // Handle time selection
+    $(".mptrs_time_button").on("click", function () {
+        $(".mptrs_time_button").removeClass("active");
+        $(this).addClass("active");
+        $("#seatPopup").fadeIn();
+
+        let get_postId =  $("#mptrs_getPost").val().trim();
+        let get_time = $(this).data('time');
+        let get_date = $("#mptrs_date").val().trim();
+        console.log( get_time, get_date );
+
+        $.ajax({
+            url: mptrs_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_get_available_seats_for_reservations',
+                nonce: mptrs_ajax .nonce,
+                get_time: get_time,
+                get_date: get_date,
+                post_id: get_postId,
+            },
+            dataType: 'json',
+            success: function (response) {
+                console.log(response);
+                $("#mptrs_seatMapDisplay").append(response.data.mptrs_seat_maps);
+            },
+            error: function () {
+                alert( 'Error occurred');
+            }
+        });
+
     });
 
 });

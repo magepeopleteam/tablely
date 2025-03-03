@@ -12,10 +12,10 @@
 				/**************/
 			}
 
-            public static function display_seat_mapping(): string{
+            public static function display_seat_mapping( $post_id ): string{
                 $content = '';
                 global $post;
-                $post_id = $post->ID;
+//                $post_id = $post->ID;
                 $plan_data = get_post_meta($post_id, '_mptrs_seat_maps_data', true);
                 $plan_seats = isset( $plan_data['seat_data'] ) ? $plan_data['seat_data'] : array();
                 $plan_seat_texts = isset( $plan_data['seat_text_data'] ) ? $plan_data['seat_text_data'] : array();
@@ -49,7 +49,7 @@
                     <div id="mptrs_seatInfo" style="margin-top: 20px; font-size: 16px;">
                         <strong>Seat Info:</strong> <span id="info"></span>
                         </div>
-                        <div id="mptrs_seatGrid" style="height: '.$height.'px">
+                        <div id="mptrs_seatGrid" /*style="height: '.$height.'px"*/>
                         <div id="mptrs_seatMapHolder-'.$post_id.'" class="mptrs_seatMapHolder">';
                             if ( is_array( $dynamic_shapes ) && count( $dynamic_shapes ) > 0 ) {
 
