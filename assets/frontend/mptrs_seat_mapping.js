@@ -1,5 +1,73 @@
 jQuery(document).ready(function ($) {
 
+    $(document).on('click',".mptrs_orderOptionTab", function() {
+        let tabClickedId = $(this).attr('id').trim();
+        $('.mptrs_orderOptionTab').removeClass('mptrs_orderTabActive');
+        $(this).addClass( 'mptrs_orderTabActive' );
+
+        let tabHolderId = tabClickedId+'Holder';
+        $("#"+tabHolderId).siblings().fadeOut();
+        $("#"+tabHolderId).fadeIn();
+
+
+    });
+
+    $(document).on("click", ".mptrs_category_item",function () {
+        $(".mptrs_category_item").removeClass('mptrs_active');
+        $(this).addClass('mptrs_active');
+        let filterValue = $(this).data("filter");
+        $(".mptrs_categoryFilter").removeClass("active");
+        $(this).addClass("active");
+
+        if (filterValue === "all") {
+            $(".mptrs_foodMenuContent").fadeIn();
+        } else {
+            $(".mptrs_foodMenuContent").hide().filter(`[data-category='${filterValue}']`).fadeIn();
+        }
+    });
+    function category_shown(){
+        let container = $(".mptrs_category_container");
+        let items = $(".mptrs_category_item");
+        let moreButton = $(".mptrs_more_button");
+        let hiddenContainer = $(".mptrs_hidden_items");
+        let availableWidth = container.width() - moreButton.outerWidth(true);
+        let usedWidth = 0;
+
+        moreButton.hide();
+        hiddenContainer.hide();
+
+        items.each(function () {
+            let itemWidth = $(this).outerWidth(true);
+            if (usedWidth + itemWidth <= availableWidth) {
+                usedWidth += itemWidth;
+            } else {
+                $(this).hide();
+                moreButton.show();
+                hiddenContainer.append($(this).clone().show());
+            }
+        });
+
+        moreButton.click(function () {
+            hiddenContainer.toggle();
+        });
+    }
+    category_shown();
+    function mptrs_make_div_fixed( divIdname ){
+        var header = $("#"+divIdname);
+        var offset = header.offset().top;
+
+        $(window).scroll(function() {
+            if ($(window).scrollTop() > offset) {
+                header.addClass("mptrs_fixed");
+            } else {
+                header.removeClass("mptrs_fixed");
+            }
+        });
+    }
+    mptrs_make_div_fixed( 'mptrs_orderCardHolder' );
+
+
+
     function updateTotalPrice() {
         let totalPrice = 0;
 
@@ -17,7 +85,7 @@ jQuery(document).ready(function ($) {
         const seatNum = $(this).data('seat-num');
         let todayDate = new Date().toISOString().split('T')[0];
         const time = 10;
-        seatBooked.push({seatId, todayDate, time, price });
+        seatBooked.push(seatId);
         if( seatBooked.length > 0 ){
             $("#mptrs_selectedSeatInfoHolder").show();
         }else{
@@ -45,9 +113,45 @@ jQuery(document).ready(function ($) {
         $("#mptrs_selectedSeatInfo").append( selectedSeat );
     });
 
+
+    let disabledDates = ["2025-03-20", "2025-03-25", "2025-02-26"];
+    mptrs_datePicker( disabledDates );
+    $(document).on('click',".mptrs_OrderPlaceBtn",function () {
+        let orderPostClickedId = $(this).attr('id').trim();
+        let orderPostId = orderPostClickedId.split('-');
+        orderPostId = orderPostId[1];
+        let order_time = $('.mptrs_time_button.active').data('time');
+        let order_date = $("#mptrs_date").val().trim();
+
+        let bookedSeats =  JSON.stringify( seatBooked );
+        // console.log( order_time );
+
+        $.ajax({
+            url: mptrs_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_set_order',
+                nonce: mptrs_ajax.nonce,
+                order_date: order_date,
+                orderPostId: orderPostId,
+                order_time: order_time,
+                bookedSeats: bookedSeats,
+            },
+            dataType: 'json',
+            success: function (response) {
+                console.log('Success:', response);
+                alert( response.data.message);
+            },
+            error: function (xhr, status, error) {
+                console.error('AJAX Error:', status, error);
+            }
+        });
+
+    });
+
     function mptrs_datePicker( disabledDates ) {
         $(".mptrs_DatePickerContainer").fadeIn();
-        $("#mptrs-datepicker").datepicker({
+        $("#mptrs_date").datepicker({
             dateFormat: "yy-mm-dd",
             changeMonth: true,
             changeYear: true,
@@ -61,8 +165,8 @@ jQuery(document).ready(function ($) {
                 return [true, ""];
             }
         });
-        $(".mptrs-calendar-icon").click(function () {
-            $("#mptrs-datepicker").focus();
+        $(".mptrs_calendarIcon").click(function () {
+            $("#mptrs_date").focus();
         });
     }
 
@@ -192,40 +296,43 @@ jQuery(document).ready(function ($) {
 
     });
 
+
     $(document).on('click',".close-btn",function () {
         $("#seatPopup").fadeOut();
         $("#mptrs_seatMapDisplay").empty();
     });
+
     // Handle time selection
     $(".mptrs_time_button").on("click", function () {
         $(".mptrs_time_button").removeClass("active");
         $(this).addClass("active");
         $("#seatPopup").fadeIn();
-
         let get_postId =  $("#mptrs_getPost").val().trim();
         let get_time = $(this).data('time');
         let get_date = $("#mptrs_date").val().trim();
-        console.log( get_time, get_date );
+        if( get_time === '' ){
+            alert('Select Date First!');
+        }else{
+            $.ajax({
+                url: mptrs_ajax.ajax_url,
+                type: 'POST',
+                data: {
+                    action: 'mptrs_get_available_seats_for_reservations',
+                    nonce: mptrs_ajax.nonce,
+                    get_time: get_time,
+                    get_date: get_date,
+                    post_id: get_postId,
+                },
+                dataType: 'json',
+                success: function (response) {
+                    $("#mptrs_seatMapDisplay").append( response.data.mptrs_seat_maps );
+                },
+                error: function () {
+                    alert( 'Error occurred');
+                }
+            });
+        }
 
-        $.ajax({
-            url: mptrs_ajax.ajax_url,
-            type: 'POST',
-            data: {
-                action: 'mptrs_get_available_seats_for_reservations',
-                nonce: mptrs_ajax .nonce,
-                get_time: get_time,
-                get_date: get_date,
-                post_id: get_postId,
-            },
-            dataType: 'json',
-            success: function (response) {
-                console.log(response);
-                $("#mptrs_seatMapDisplay").append(response.data.mptrs_seat_maps);
-            },
-            error: function () {
-                alert( 'Error occurred');
-            }
-        });
 
     });
 

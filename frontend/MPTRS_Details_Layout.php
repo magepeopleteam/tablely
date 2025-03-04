@@ -12,7 +12,7 @@
 				/**************/
 			}
 
-            public static function display_seat_mapping( $post_id ): string{
+            public static function display_seat_mapping( $post_id, $not_available_seats = [] ): string{
                 $content = '';
                 global $post;
 //                $post_id = $post->ID;
@@ -91,18 +91,36 @@
                                 }
                             }
                             foreach ($plan_seats as $seat) {
-                                if (isset($seat["left"])) {
+                                if ( isset($seat["left"] ) ) {
+
+                                    $seat_id = isset( $seat['id'] ) ? $seat['id'] : 0;
+                                    if( $seat_id !== 0 ){
+                                        $seat_id = 'seat_'.$seat['id'];
+                                    }
+
+                                    $parent_class_name = 'mptrs_mappedSeat';
+                                    $class_name = 'mptrs_mappedSeatInfo';
+                                    $seat_bg_color = esc_attr( $seat['color']);
+                                    if( in_array(  $seat_id, $not_available_seats ) ) {
+                                        $seat_bg_color = '#333333';
+                                        $class_name = 'mptrs_reservedMappedSeatInfo';
+                                        $parent_class_name = 'mptrs_reservedMappedSeat';
+                                    }
+
+
+
+
                                     $icon_url = '';
                                     $width = isset($seat['width']) ? (int)$seat['width'] : 0;
                                     $height = isset($seat['height']) ? (int)$seat['height'] : 0;
-                                    $uniqueId = "seat-{$seat['id']}"; // Unique ID for each seat
+                                    $uniqueId = "seat_{$seat['id']}"; // Unique ID for each seat
                                     $border_radius = isset( $seat['border_radius'] ) ? $seat['border_radius'] : '';
 
                                     if( isset( $seat['backgroundImage'] ) && $seat['backgroundImage'] !== '' ){
                                         $icon_url = MPTRS_Plan_ASSETS."images/icons/seatIcons/".$seat['backgroundImage'].".png";
                                     }
 
-                                    $custom_content .= '<div class="mptrs_mappedSeat" 
+                                    $custom_content .= '<div class="'.esc_attr( $parent_class_name ).'" 
                                                         id="' . esc_attr($uniqueId) . '" 
                                                         data-price="' . esc_attr($seat['price']) . '" 
                                                         data-seat-num="' . esc_attr($seat['seat_number']) . '" 
@@ -114,9 +132,9 @@
                                                             border-radius: ' .$border_radius. ';
                                                             transform: rotate('.(int)$seat['data_degree'].'deg);"
                                                         title="Price: $' . esc_attr($seat['price']) . '">
-                                                        <div class="mptrs_mappedSeatInfo" 
+                                                        <div class="'.esc_attr( $class_name ).'" 
                                                             style="
-                                                                background-color: ' . esc_attr($seat['color']) . ';
+                                                                background-color: ' . $seat_bg_color . ';
                                                                 background-image: url('.$icon_url.');
                                                                 width: ' . $width . 'px;
                                                                 height: ' . $height . 'px;">
