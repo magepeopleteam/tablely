@@ -151,7 +151,7 @@
 }
 
 .mptrs_foodMenuContent {
-    display: block;
+    display: flex;
     position: relative;
     float: left;
     width: calc(100% - 10px);
@@ -177,6 +177,11 @@
 .mptrs_menuImage{
     width: 70px !important;
     height: 90px !important;
+    margin: 2px;
+}
+.mptrs_menuDetailsImage{
+    width: 600px !important;
+    height: 400px !important;
     margin: 2px;
 }
 .mptrs_menuInfoHolder{

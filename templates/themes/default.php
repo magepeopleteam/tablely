@@ -18,32 +18,10 @@
             <div class="popup-content">
                 <span class="close-btn">&times;</span>
                 <div class="mptrs_seatMappedHolder">
-                    <div id="mptrs_foodDeliveryOptions" class="mptrs_foodDeliveryOptions">
-                        <div class="mptrs_orderOptionsTab">
-                            <div class="mptrs_orderOptionTab mptrs_orderTabActive" id="mptrs_dineInTab">Dine-In</div>
-                            <div class="mptrs_orderOptionTab" id="mptrs_deliveryTab">Delivery</div>
-                            <div class="mptrs_orderOptionTab" id="mptrs_takeawayTab">Takeaway</div>
-                        </div>
-                    </div>
+                    <span class="mptrs_selectSeatText">Choose a Seat, What's Your Choice?</span>
+                    <div class="mptrs_seatMapDisplay" id="mptrs_seatMapDisplay"></div>
                 </div>
-
-                <div class="mptrs_foodOrderContentholder">
-                    <div class="mptrs_seatMappedHolder" id="mptrs_dineInTabHolder" style="display: block">
-                        <div class="mptrs_seatMapDisplay" id="mptrs_seatMapDisplay"></div>
-                    </div>
-                    <div class="mptrs_seatMappedHolder" id="mptrs_deliveryTabHolder" style="display: none">
-                        <div class="">
-                            <input type="text" class="mptrs_input-field" id="location" placeholder="Location">
-                            <input type="text" class="mptrs_input-field" id="street-address" placeholder="Enter your street address">
-                            <input type="text" class="mptrs_input-field" id="postal-code" placeholder="Postal Code">
-                        </div>
-                    </div>
-                    <div class="mptrs_seatMappedHolder" id="mptrs_takeawayTabHolder" style="display: none">
-                        <div class="">Takeaway</div>
-                    </div>
-                </div>
-
-                <div class="mptrs_OrderPlaceBtn" id="mptrs_OrderPlaceBtn-<?php echo esc_attr( $post_id )?>">Order</div>
+                <div class="mptrs_OrderPlaceBtn" id="mptrs_OrderPlaceBtn-<?php echo esc_attr( $post_id )?>">Done</div>
             </div>
         </div>
 
@@ -123,6 +101,11 @@
                                         <div class="mptrs_menuPersion"><i class='fas fa-user-alt' style='font-size:14px'></i><span class="mptrs_numberOfPerson"><?php echo esc_attr( $existing_menu['numPersons'] );?></span></div>
                                     </div>
                                 </div>
+                                <div class="mptrs_addedMenuordered" data-menuCategory ="<?php echo esc_attr( $existing_menu['menuCategory'] )?>" data-menuName="<?php echo esc_attr( $existing_menu['menuName'] );?>"
+                                     data-menuImgUrl ="<?php echo esc_attr( $img )?>" data-menuImgPrice = "<?php echo esc_attr( $existing_menu['menuPrice'] );?>" data-numOfPerson =<?php echo esc_attr( $existing_menu['numPersons'] );?>
+                                >
+                                    <button class="mptrs_addBtn" id="mptrs_addBtn-<?php echo esc_attr( $key ) ?>">+</button>
+                                </div>
                             </div>
                         <?php
                         }
@@ -146,39 +129,54 @@
         </div>
         <div class="mptrs_restaurantRightSide">
 
-                <div class="mptrs_orderCardHolder" id="mptrs_orderCardHolder">
-                    <h2 class="mptrs_title">Make a reservation</h2>
+            <div class="mptrs_orderedFoodMenuInfoHolder" id="mptrs_orderedFoodMenuInfoHolder" style="display: none">
+                <div class="mptrs_orderedMenuHolder">
+                    <span class="">Your Ordered Food menu</span>
+                </div>
+                <div class="mptrs_orderedFoodMenuHolder" id="mptrs_orderedFoodMenuHolder"></div>
+                <div id="mptrs_foodDeliveryOptions" class="mptrs_foodDeliveryOptions">
+                    <div class="mptrs_orderOptionsTab">
+                        <div class="mptrs_orderOptionTab mptrs_orderTabActive" id="mptrs_dineInTab">Dine-In</div>
+                        <div class="mptrs_orderOptionTab" id="mptrs_deliveryTab">Delivery</div>
+                        <div class="mptrs_orderOptionTab" id="mptrs_takeawayTab">Takeaway</div>
+                    </div>
+                </div>
+            </div>
 
-                    <!-- Date Selection -->
-                    <div class="mptrs_formGroup">
-                        <label for="mptrs_date">Check in</label>
-                        <div class="mptrs_input_wrapper">
-                            <div class="mptrs_DatePickerContainer" style="display: block">
-                                <input type="text" id="mptrs_date" placeholder="Select a Date">
-                                <span class="mptrs_calendarIcon">&#128197;</span>
+            <div class="mptrs_foodOrderContentholder">
+                <div class="mptrs_seatMappedHolder" id="mptrs_dineInTabHolder" style="display: none">
+                    <div class="mptrs_orderCardHolder" id="mptrs_orderCardHolder">
+                        <h2 class="mptrs_title">Make a reservation</h2>
+                        <div class="mptrs_formGroup">
+                            <label for="mptrs_date">Check in</label>
+                            <div class="mptrs_input_wrapper">
+                                <div class="mptrs_DatePickerContainer" style="display: block">
+                                    <input type="text" id="mptrs_date" placeholder="Select a Date">
+                                    <span class="mptrs_calendarIcon">&#128197;</span>
+                                </div>
                             </div>
                         </div>
+                        <button id="mptrs_search" class="mptrs_button">Find a time</button>
+                        <div class="mptrs_time_container"></div>
+
+                        <div class="mptrs_checkoutManage" id="mptrs_checkoutManage<?php echo esc_attr( $post_id )?>">Process Checkout</div>
+                    </div>
+                </div>
+                <div class="mptrs_seatMappedHolder" id="mptrs_deliveryTabHolder" style="display: none">
+                    <div class="mptrs_orderCardDeliveryHolder">
+                        <input type="text" class="mptrs_input-field" id="location" placeholder="Location">
+                        <input type="text" class="mptrs_input-field" id="street-address" placeholder="Enter your street address">
+                        <input type="text" class="mptrs_input-field" id="postal-code" placeholder="Postal Code">
+                    </div>
+                </div>
+                <div class="mptrs_seatMappedHolder" id="mptrs_takeawayTabHolder" style="display: none">
+                    <div class="mptrs_orderCardTakeawayHolder">
+                        <div class="">Takeaway</div>
                     </div>
 
-                    <!-- Party Size -->
-                    <div class="mptrs_formGroup">
-                        <label for="mptrs_party_size">Party size</label>
-                        <div class="mptrs_input_wrapper">
-                            <select id="mptrs_party_size" class="mptrs_input">
-                                <option value="1">1</option>
-                                <option value="2" selected>2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6+</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button id="mptrs_search" class="mptrs_button">Find a time</button>
-                    <div class="mptrs_time_container">
-                        <!-- Time slots will be added dynamically -->
-                    </div>
+                </div>
             </div>
+
 
             <div class="mptrs_rightSidebar">
                 <div class="mptrs_rightSidebarItem">
@@ -213,7 +211,6 @@
                     <a href="#" class="mptrs_socialMedia">Find on Social Media</a>
                 </div>
             </div>
-
         </div>
 
         <div class="mptrs_timePickerContainer" style="display: none">

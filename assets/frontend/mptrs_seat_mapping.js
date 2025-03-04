@@ -1,5 +1,43 @@
 jQuery(document).ready(function ($) {
 
+    $(document).on('click',".mptrs_menuImageHolder", function() {
+
+        let foodMenuCategory = $(this).closest('.mptrs_foodMenuContent').find('.mptrs_addedMenuordered').attr('data-menuCategory');
+        let menuName = $(this).closest('.mptrs_foodMenuContent').find('.mptrs_addedMenuordered').attr('data-menuName').trim();
+        let menuImg = $(this).closest('.mptrs_foodMenuContent').find('.mptrs_menuImage').attr('src').trim();
+        let menuPrice = $(this).closest('.mptrs_foodMenuContent').find('.mptrs_addedMenuordered').attr('data-menuImgPrice').trim();
+        let numPersons = $(this).closest('.mptrs_foodMenuContent').find('.mptrs_addedMenuordered').attr('data-numOfPerson').trim();
+
+        let menuDetails = `
+                            <div class="mptrs_foodMenuDetailsContent">
+                                <div class="mptrs_menuDetailsImageHolder">
+                                    <img class="mptrs_menuDetailsImage" src=" ${menuImg}" >
+                                </div>
+                                <div class="mptrs_menuDetailsInfoHolder">
+                                    <div class="mptrs_topDetailsMenuInFo">
+                                        <div class="mptrs_menuDetailsName">
+                                            ${menuName}
+                                        </div>
+                                    </div>
+                                    <div class="mptrs_BottomDetailsMenuInFo">
+                                        <div class="mptrs_menuDetailsPrice">${menuPrice}</div>
+                                        <div class="mptrs_menuDetailsPersion"><i class='fas fa-user-alt' style='font-size:14px'></i><span class="mptrs_numberOfPerson">${numPersons}</span></div>
+                                    </div>
+                                </div>
+                            </div>
+        `;
+        let menuDetailePopup = `
+        <div id="menuDetailsPopup" class="mptrs_popUpDetails">
+            <div class="mptrs_popupDetailsContent">
+                <div class="mptrs_menuDetailsHolder">${menuDetails}</div>
+                <span class="mptrsPopupCloseBtn">&times;</span>
+            </div>
+        </div>
+        `;
+        $('body').append( menuDetailePopup );
+    });
+
+
     $(document).on('click',".mptrs_orderOptionTab", function() {
         let tabClickedId = $(this).attr('id').trim();
         $('.mptrs_orderOptionTab').removeClass('mptrs_orderTabActive');
@@ -64,7 +102,7 @@ jQuery(document).ready(function ($) {
             }
         });
     }
-    mptrs_make_div_fixed( 'mptrs_orderCardHolder' );
+    // mptrs_make_div_fixed( 'mptrs_orderCardHolder' );
 
 
 
@@ -124,7 +162,6 @@ jQuery(document).ready(function ($) {
         let order_date = $("#mptrs_date").val().trim();
 
         let bookedSeats =  JSON.stringify( seatBooked );
-        // console.log( order_time );
 
         $.ajax({
             url: mptrs_ajax.ajax_url,
@@ -148,6 +185,35 @@ jQuery(document).ready(function ($) {
         });
 
     });
+
+    $(document).on('click',".mptrs_checkoutManage",function () {
+        console.log( seatBooked );
+        let itemID = 100;
+        let itemName = 'new name'
+        let itemPrice = 200 ;
+        let itemImage = '';
+        $.ajax({
+            type: "POST",
+            url:  mptrs_ajax.ajax_url, // Make sure to localize this in WordPress
+            data: {
+                action: "mptrs_add_food_items_to_cart",
+                mptrs_item_id: itemID,
+                mptrs_item_name: itemName,
+                mptrs_item_price: itemPrice,
+                mptrs_item_image: itemImage,
+                nonce: mptrs_ajax.nonce,
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert(response.data.message);
+                    window.location.href = "/mage_people/checkout/"; // Redirect to WooCommerce Checkout Page
+                } else {
+                    alert(response.data.message);
+                }
+            }
+        });
+    });
+
 
     function mptrs_datePicker( disabledDates ) {
         $(".mptrs_DatePickerContainer").fadeIn();
@@ -252,7 +318,6 @@ jQuery(document).ready(function ($) {
         return seatArray.filter(seat => seat.seatId !== seatIdToRemove);
     }
 
-
     $(".mptrs_toggleBtn").click(function() {
         var content = $(".mptrs_restaurantDes");
         if (content.hasClass("expanded")) {
@@ -293,14 +358,113 @@ jQuery(document).ready(function ($) {
 
     $(document).on( 'click', '.mptrs_button', function () {
         $(".mptrs_time_container").css("display", "flex");
-
     });
 
+
+    $(document).on('click',".mptrsPopupCloseBtn",function () {
+        $("#menuDetailsPopup").fadeOut();
+        $("#menuDetailsPopup").remove();
+    });
 
     $(document).on('click',".close-btn",function () {
         $("#seatPopup").fadeOut();
         $("#mptrs_seatMapDisplay").empty();
     });
+
+
+    function calculateTotal() {
+        let total = 0;
+        $(".mptrs_menuItem").each(function () {
+            let price = parseFloat($(this).data("price"));
+            let quantity = parseInt($(this).find(".mptrs_quantity").text());
+            if (!isNaN(price) && !isNaN(quantity)) {
+                total += price * quantity;
+            }
+        });
+        $("#mptrs_totalPrice").val(total);
+    }
+    // Increase Button Click
+    $(document).on("click", ".mptrs_increase", function () {
+        let quantityElem = $(this).siblings(".mptrs_quantity");
+        let quantity = parseInt(quantityElem.text()) + 1;
+        quantityElem.text(quantity);
+        calculateTotal();
+    });
+
+    // Decrease Button Click
+    $(document).on("click", ".mptrs_decrease", function () {
+        let quantityElem = $(this).siblings(".mptrs_quantity");
+        let quantity = parseInt(quantityElem.text()) - 1;
+        if (quantity < 1) {
+            $(this).closest(".mptrs_quantityControls").hide();
+            $(this).closest(".mptrs_menuItem").find(".mptrs_addBtn").show();
+        } else {
+            quantityElem.text(quantity);
+        }
+        calculateTotal();
+    });
+    function mptrs_display_food_menu_for_order( food_menu_data ){
+        let container = $("#mptrs_foodMenuHolder");
+        $.each( food_menu_data, function (id, item) {
+            let menuItem = `
+                    <div class="mptrs_menuItem" data-id="${id}" data-price="${item.menuPrice}">
+                        <img class="mptrs_menuImg" src="${item.menuImgUrl}" alt="${item.menuName}">
+                        <div class="mptrs_menuDetails">
+                            <div class="mptrs_menuName">${item.menuName}</div>
+                            <div class="mptrs_menuPrice">৳ ${item.menuPrice}</div>
+                        </div>
+                        <button class="mptrs_addBtn">+</button>
+                        <div class="mptrs_quantityControls" style="display:none;">
+                            <button class="mptrs_decrease">−</button>
+                            <span class="mptrs_quantity">1</span>
+                            <button class="mptrs_increase">+</button>
+                        </div>
+                    </div>`;
+            container.append(menuItem);
+        });
+    }
+
+    // Add Button Click
+
+    $(document).on('click', ".mptrs_addBtn", function () {
+        $("#mptrs_orderedFoodMenuInfoHolder").fadeIn();
+        $("#mptrs_dineInTabHolder").fadeIn();
+        let foodMenuCategory = $(this).parent().attr('data-menuCategory');
+        let menuImgUrl = $(this).parent().attr('data-menuImgUrl');
+        let menuName = $(this).parent().attr('data-menuName');
+        let menuPrice = $(this).parent().attr('data-menuImgPrice');
+        let numOfPerson = $(this).parent().attr('data-numOfPerson');
+
+        let item = {
+            menuImgUrl: menuImgUrl,
+            menuName: menuName,
+            menuPrice: menuPrice,
+            numOfPerson: numOfPerson,
+            foodMenuCategory: foodMenuCategory,
+        };
+        mptrs_append_order_food_menu( item );
+    });
+    function mptrs_append_order_food_menu( item ){
+        let id = '';
+        let container = $("#mptrs_orderedFoodMenuHolder");
+            let menuItem = `
+                    <div class="mptrs_menuItem" data-id="${id}" data-price="${item.menuPrice}">
+                        <img class="mptrs_menuImg" src="${item.menuImgUrl}" alt="${item.menuName}">
+                        <div class="mptrs_menuDetails">
+                            <div class="mptrs_addedMenuName">${item.menuName}</div>
+                            <div class="mptrs_menuPrice">৳ ${item.menuPrice}</div>
+                        </div>
+                        
+                        <div class="mptrs_quantityControls" style="display:block;">
+                            <button class="mptrs_decrease">−</button>
+                            <span class="mptrs_quantity">1</span>
+                            <button class="mptrs_increase">+</button>
+                        </div>
+                    </div>`;
+        let $menuItem = $(menuItem);
+        container.append($menuItem);
+        $menuItem.hide().fadeIn(1000);
+    }
 
     // Handle time selection
     $(".mptrs_time_button").on("click", function () {
@@ -325,6 +489,8 @@ jQuery(document).ready(function ($) {
                 },
                 dataType: 'json',
                 success: function (response) {
+                    // mptrs_display_food_menu_for_order( response.data.get_food_menu )
+
                     $("#mptrs_seatMapDisplay").append( response.data.mptrs_seat_maps );
                 },
                 error: function () {
