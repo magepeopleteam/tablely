@@ -55,7 +55,7 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             }
 
             wp_send_json_success([
-                'message' => 'Price successfully Updated!',
+                'message' => 'Seat Successfully Reserved!',
                 'success' => $result,
             ]);
         }

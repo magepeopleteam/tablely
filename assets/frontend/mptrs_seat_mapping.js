@@ -140,6 +140,7 @@ jQuery(document).ready(function ($) {
             dataType: 'json',
             success: function (response) {
                 console.log('Success:', response);
+                alert( response.data.message);
             },
             error: function (xhr, status, error) {
                 console.error('AJAX Error:', status, error);
@@ -309,24 +310,29 @@ jQuery(document).ready(function ($) {
         let get_postId =  $("#mptrs_getPost").val().trim();
         let get_time = $(this).data('time');
         let get_date = $("#mptrs_date").val().trim();
-        $.ajax({
-            url: mptrs_ajax.ajax_url,
-            type: 'POST',
-            data: {
-                action: 'mptrs_get_available_seats_for_reservations',
-                nonce: mptrs_ajax.nonce,
-                get_time: get_time,
-                get_date: get_date,
-                post_id: get_postId,
-            },
-            dataType: 'json',
-            success: function (response) {
-                $("#mptrs_seatMapDisplay").append( response.data.mptrs_seat_maps );
-            },
-            error: function () {
-                alert( 'Error occurred');
-            }
-        });
+        if( get_time === '' ){
+            alert('Select Date First!');
+        }else{
+            $.ajax({
+                url: mptrs_ajax.ajax_url,
+                type: 'POST',
+                data: {
+                    action: 'mptrs_get_available_seats_for_reservations',
+                    nonce: mptrs_ajax.nonce,
+                    get_time: get_time,
+                    get_date: get_date,
+                    post_id: get_postId,
+                },
+                dataType: 'json',
+                success: function (response) {
+                    $("#mptrs_seatMapDisplay").append( response.data.mptrs_seat_maps );
+                },
+                error: function () {
+                    alert( 'Error occurred');
+                }
+            });
+        }
+
 
     });
 

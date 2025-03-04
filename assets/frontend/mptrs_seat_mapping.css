@@ -666,3 +666,14 @@
     border: 1px solid #ccc;
     border-radius: 5px;
 }
+.mptrs_OrderPlaceBtn{
+    display: block;
+    padding: 5px 15px;
+    background-color: #444444;
+    cursor: pointer;
+    color: #fff;
+    width: 50px;
+    float: left;
+    margin-left: calc(50% - 25px);
+    border-radius: 5px;
+}
