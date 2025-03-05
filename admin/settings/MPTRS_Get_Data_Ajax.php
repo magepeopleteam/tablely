@@ -22,7 +22,45 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             add_action('wp_ajax_mptrs_set_order', [$this, 'mptrs_set_order']);
             add_action('wp_ajax_nopriv_mptrs_set_order', [$this, 'mptrs_set_order']);
 
+            add_action('wp_ajax_mptrs_add_food_items_to_cart', [$this, 'mptrs_add_food_items_to_cart'] );
+            add_action('wp_ajax_nopriv_mptrs_add_food_items_to_cart', [$this, 'mptrs_add_food_items_to_cart'] );
+
+
         }
+
+        function mptrs_add_food_items_to_cart() {
+            if (!WC()->cart) {
+                wp_send_json_error(['message' => 'WooCommerce cart is not initialized.']);
+                return;
+            }
+
+            if (!isset($_POST['mptrs_item_id']) || !isset($_POST['mptrs_item_name']) || !isset($_POST['mptrs_item_price'])) {
+                wp_send_json_error(['message' => 'Missing required parameters']);
+                return;
+            }
+            if (!WC()->cart) {
+                wc_load_cart();
+            }
+
+            $custom_product_id = 127; // A dummy product ID (must exist in WooCommerce)
+
+            $cart_item_data = [
+                'mptrs_item_id'    => sanitize_text_field($_POST['mptrs_item_id']),
+                'mptrs_item_name'  => sanitize_text_field($_POST['mptrs_item_name']),
+                'mptrs_item_price' => floatval($_POST['mptrs_item_price']),
+                'mptrs_item_image' => esc_url($_POST['mptrs_item_image']),
+            ];
+
+            // Add the item to the WooCommerce cart
+            $cart_item_key = WC()->cart->add_to_cart($custom_product_id, 1, 0, [], $cart_item_data);
+
+            if ($cart_item_key) {
+                wp_send_json_success(['message' => 'Item added to cart']);
+            } else {
+                wp_send_json_error(['message' => 'Failed to add item to cart']);
+            }
+        }
+
 
         public function mptrs_set_order(){
             $result = 0;
@@ -85,6 +123,10 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                 $seat_map = MPTRS_Details_Layout::display_seat_mapping( $post_id, $not_available );
             }
 
+            $get_food_menu = get_option( '_mptrs_food_menu' );
+            if( !is_array( $get_food_menu ) && empty( $get_food_menu ) ){
+                $get_food_menu = [];
+            }
 
             /*$seat_booking_data = array(
                 'seat-2-4' => array(
@@ -108,6 +150,7 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             wp_send_json_success([
                 'message' => 'Categories Data getting successfully.!',
                 'mptrs_seat_maps' => $seat_map,
+                'get_food_menu' => $get_food_menu,
             ]);
 
         }
