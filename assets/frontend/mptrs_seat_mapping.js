@@ -187,12 +187,18 @@ jQuery(document).ready(function ($) {
     });
 
     $(document).on('click',".mptrs_checkoutManage",function () {
-        console.log( seatBooked );
+        // console.log( seatBooked );
+        // console.log( addToCartData);
+        let mptrs_totalPrices = $("#mptrs_totalPrice").val().trim();
+
+        console.log( addToCartData, mptrs_totalPrices );
         let itemID = 100;
         let itemName = 'new name'
         let itemPrice = 200 ;
         let itemImage = '';
-        $.ajax({
+
+
+       /* $.ajax({
             type: "POST",
             url:  mptrs_ajax.ajax_url, // Make sure to localize this in WordPress
             data: {
@@ -211,7 +217,7 @@ jQuery(document).ready(function ($) {
                     alert(response.data.message);
                 }
             }
-        });
+        });*/
     });
 
 
@@ -404,6 +410,9 @@ jQuery(document).ready(function ($) {
         let quantity = parseInt(quantityElem.text()) + 1;
         $("#"+menuAddedQtyKey).text(quantity);
         $("#"+menuQtyKey).text(quantity);
+
+        addToCartData[menuKey].menuCount = quantity;
+
         calculateTotal();
     });
 
@@ -428,9 +437,14 @@ jQuery(document).ready(function ($) {
             $("#"+addedMenuInCart).remove();
             $("#"+addedMenuBtn).show();
 
-            /*$(this).closest(".mptrs_quantityControls").hide();
-            $(this).closest(".mptrs_menuAddedCartItem").find(".mptrs_addBtn").show();*/
+            if (addToCartData.hasOwnProperty(menuKey)) {
+                delete addToCartData[menuKey];
+            }
+
         } else {
+
+            addToCartData[menuKey].menuCount = quantity;
+
             $("#"+menuAddedQtyKey).text(quantity);
             $("#"+menuQtyKey).text(quantity);
         }
@@ -440,7 +454,7 @@ jQuery(document).ready(function ($) {
         let container = $("#mptrs_foodMenuHolder");
         $.each( food_menu_data, function (id, item) {
             let menuItem = `
-                    <div class="mptrs_menuAddedCartItem" data-id="${id}" data-price="${item.menuPrice}">
+                    <div class="mptrs_menuAddedCartItem" data-menuKey="${id}" data-price="${item.menuPrice}">
                         <img class="mptrs_menuImg" src="${item.menuImgUrl}" alt="${item.menuName}">
                         <div class="mptrs_menuDetails">
                             <div class="mptrs_menuName">${item.menuName}</div>
@@ -457,6 +471,7 @@ jQuery(document).ready(function ($) {
         });
     }
 
+    let addToCartData = [];
     // Add Button Click
     $(document).on('click', ".mptrs_addBtn", function () {
         $(this).fadeOut();
@@ -494,6 +509,10 @@ jQuery(document).ready(function ($) {
             numOfPerson: numOfPerson,
             foodMenuCategory: foodMenuCategory,
             menuAddedKey: menuAddedKey,
+        };
+
+        addToCartData[menuAddedKey] = {
+            menuCount: 1
         };
 
         // Create flying effect
