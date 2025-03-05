@@ -494,7 +494,8 @@ jQuery(document).ready(function ($) {
         $(this).parent().append( addedMenu );
 
 
-        let animationDiv = $(".mptrs_foodMenuContent");
+        // let animationDiv = $(".mptrs_foodMenuContent");
+        let animationDiv =  $(this).parent().parent();
         let parentItem = $(this).parent();
         let foodMenuCategory = parentItem.attr('data-menuCategory');
         let menuImgUrl = parentItem.attr('data-menuImgUrl');
@@ -534,10 +535,10 @@ jQuery(document).ready(function ($) {
             opacity: 0
         }, 800, function () {
             flyItem.remove();
-
+            mptrs_append_order_food_menu(item);
+            calculateTotal();
         });
-        mptrs_append_order_food_menu(item);
-        calculateTotal();
+
     });
 
     function mptrs_append_order_food_menu(item) {
