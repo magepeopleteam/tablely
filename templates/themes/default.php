@@ -86,7 +86,7 @@
                                 $img = $existing_menu['menuImgUrl'];
                             }
                             ?>
-                            <div class="mptrs_foodMenuContent" data-category ="<?php echo esc_attr( $existing_menu['menuCategory'] )?>">
+                            <div class="mptrs_foodMenuContent" id="mptrs_foodMenuContent-<?php echo esc_attr( $key );?>" data-category ="<?php echo esc_attr( $existing_menu['menuCategory'] )?>">
                                 <div class="mptrs_menuImageHolder">
                                     <img class="mptrs_menuImage" src="<?php echo esc_attr( $img ) ?>" >
                                 </div>
@@ -134,6 +134,9 @@
                     <span class="">Your Ordered Food menu</span>
                 </div>
                 <div class="mptrs_orderedFoodMenuHolder" id="mptrs_orderedFoodMenuHolder"></div>
+                <div class="mptrs_totalPriceHolder" id="mptrs_totalPriceHolder">
+                    <input class="mptrs_totalPrice" id="mptrs_totalPrice" name="mptrs_totalPrice" value="" readonly placeholder="total price">
+                </div>
                 <div id="mptrs_foodDeliveryOptions" class="mptrs_foodDeliveryOptions">
                     <div class="mptrs_orderOptionsTab">
                         <div class="mptrs_orderOptionTab mptrs_orderTabActive" id="mptrs_dineInTab">Dine-In</div>

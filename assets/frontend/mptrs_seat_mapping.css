@@ -620,8 +620,11 @@
 }
 .mptrs_addedMenuordered{
     display: flex;
-    margin-top: 30px;
     margin-left: 5px;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
 }
 .mptrs_button:hover {
     background-color: #151d2e;
@@ -745,6 +748,15 @@
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
+.mptrs_menuAddedCartItem {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+.mptrs_menuAddedCartItem:last-child {
+    border-bottom: none;
+}
 .mptrs_menuItem {
     display: flex;
     align-items: center;
@@ -777,6 +789,13 @@
 }
 .mptrs_quantityControls {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+.mptrs_addedQuantityControls {
+    display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 5px;
 }
@@ -801,6 +820,7 @@
     color: #fff;
     border: none;
     padding: 8px 12px;
+    margin-top: 18px;
     border-radius: 50%;
     font-size: 18px;
     cursor: pointer;
@@ -885,3 +905,41 @@
     font-weight: bold;
     color: #555;
 }
+
+.mptrs_totalPriceHolder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    margin: 20px auto;
+}
+
+.mptrs_totalPrice {
+    width: calc( 100% - 20px);
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    border: none;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    color: #333;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.mptrs_totalPrice::placeholder {
+    color: rgba(51, 51, 51, 0.5);
+    font-weight: normal;
+}
+
+.mptrs_totalPrice:focus {
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 10px rgba(255, 51, 51, 0.2);
+    transform: scale(1.05);
+}
+
