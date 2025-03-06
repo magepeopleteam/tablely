@@ -97,12 +97,12 @@
                                         </div>
                                     </div>
                                     <div class="mptrs_BottomMenuInFo">
-                                        <div class="mptrs_menuPrice">$<?php echo esc_attr( $existing_menu['menuPrice'] );?></div>
-                                        <div class="mptrs_menuPersion"><i class='fas fa-user-alt' style='font-size:14px'></i><span class="mptrs_numberOfPerson"><?php echo esc_attr( $existing_menu['numPersons'] );?></span></div>
+                                        <div class="mptrs_menuPrice"><?php echo wc_price( $existing_menu['menuPrice'] );?></div>
+                                        <div class="mptrs_menuPersion"><i class='fas fa-user-alt' style='font-size:10px'></i><span class="mptrs_numberOfPerson"><?php echo esc_attr( $existing_menu['numPersons'] );?></span></div>
                                     </div>
                                 </div>
                                 <div class="mptrs_addedMenuordered" data-menuCategory ="<?php echo esc_attr( $existing_menu['menuCategory'] )?>" data-menuName="<?php echo esc_attr( $existing_menu['menuName'] );?>"
-                                     data-menuImgUrl ="<?php echo esc_attr( $img )?>" data-menuImgPrice = "<?php echo esc_attr( $existing_menu['menuPrice'] );?>" data-numOfPerson =<?php echo esc_attr( $existing_menu['numPersons'] );?>
+                                     data-menuImgUrl ="<?php echo esc_attr( $img )?>" data-menuPrice = "<?php echo esc_attr( wc_price( $existing_menu['menuPrice'] ) );?>" data-numOfPerson =<?php echo esc_attr( $existing_menu['numPersons'] );?>
                                 >
                                     <button class="mptrs_addBtn" id="mptrs_addBtn-<?php echo esc_attr( $key ) ?>">+</button>
                                 </div>
@@ -135,6 +135,7 @@
                 </div>
                 <div class="mptrs_orderedFoodMenuHolder" id="mptrs_orderedFoodMenuHolder"></div>
                 <div class="mptrs_totalPriceHolder" id="mptrs_totalPriceHolder">
+                    <span class="mptrs_totalPricetext">Total</span>
                     <input class="mptrs_totalPrice" id="mptrs_totalPrice" name="mptrs_totalPrice" value="" readonly placeholder="total price">
                 </div>
                 <div id="mptrs_foodDeliveryOptions" class="mptrs_foodDeliveryOptions">

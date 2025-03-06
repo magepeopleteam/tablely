@@ -5,7 +5,7 @@ jQuery(document).ready(function ($) {
         let foodMenuCategory = $(this).closest('.mptrs_foodMenuContent').find('.mptrs_addedMenuordered').attr('data-menuCategory');
         let menuName = $(this).closest('.mptrs_foodMenuContent').find('.mptrs_addedMenuordered').attr('data-menuName').trim();
         let menuImg = $(this).closest('.mptrs_foodMenuContent').find('.mptrs_menuImage').attr('src').trim();
-        let menuPrice = $(this).closest('.mptrs_foodMenuContent').find('.mptrs_addedMenuordered').attr('data-menuImgPrice').trim();
+        let menuPrice = $(this).closest('.mptrs_foodMenuContent').find('.mptrs_addedMenuordered').attr('data-menuPrice').trim();
         let numPersons = $(this).closest('.mptrs_foodMenuContent').find('.mptrs_addedMenuordered').attr('data-numOfPerson').trim();
 
         let menuDetails = `
@@ -188,36 +188,46 @@ jQuery(document).ready(function ($) {
 
     $(document).on('click',".mptrs_checkoutManage",function () {
         // console.log( seatBooked );
-        // console.log( addToCartData);
-        let mptrs_totalPrices = $("#mptrs_totalPrice").val().trim();
+        // let mptrs_totalPrices = $("#mptrs_totalPrice").val().trim();
 
-        console.log( addToCartData, mptrs_totalPrices );
         let itemID = 100;
         let itemName = 'new name'
         let itemPrice = 200 ;
         let itemImage = '';
 
 
-       /* $.ajax({
-            type: "POST",
-            url:  mptrs_ajax.ajax_url, // Make sure to localize this in WordPress
+        let button = $(this);
+        let post_id = 1072;
+        let menu = JSON.stringify( addToCartData ) ; // Array of selected food menu items
+        let seats = JSON.stringify( seatBooked ) ;
+        let price = 6000; // Total price
+        let quantity = 300; // Total quantity
+
+        console.log( menu, seats );
+
+        $.ajax({
+            type: 'POST',
+            url: mptrs_ajax.ajax_url,
             data: {
-                action: "mptrs_add_food_items_to_cart",
-                mptrs_item_id: itemID,
-                mptrs_item_name: itemName,
-                mptrs_item_price: itemPrice,
-                mptrs_item_image: itemImage,
-                nonce: mptrs_ajax.nonce,
+                action: 'mptrs_add_food_items_to_cart',
+                post_id: post_id,
+                menu: addToCartData,
+                seats: seatBooked,
+                price: price,
+                quantity: quantity,
             },
-            success: function(response) {
+            beforeSend: function () {
+                button.text('Adding...');
+            },
+            success: function (response) {
                 if (response.success) {
-                    alert(response.data.message);
-                    window.location.href = "/mage_people/checkout/"; // Redirect to WooCommerce Checkout Page
+                    button.text('Added to Cart ✅');
                 } else {
-                    alert(response.data.message);
+                    alert(response.data);
+                    button.text('Add to Cart');
                 }
             }
-        });*/
+        });
     });
 
 
@@ -493,20 +503,22 @@ jQuery(document).ready(function ($) {
         `;
         $(this).parent().append( addedMenu );
 
-
-        // let animationDiv = $(".mptrs_foodMenuContent");
         let animationDiv =  $(this).parent().parent();
         let parentItem = $(this).parent();
         let foodMenuCategory = parentItem.attr('data-menuCategory');
         let menuImgUrl = parentItem.attr('data-menuImgUrl');
         let menuName = parentItem.attr('data-menuName');
-        let menuPrice = parentItem.attr('data-menuImgPrice');
+        let menuPrice = parentItem.attr('data-menuPrice');
+         menuPrice = parseFloat(menuPrice.replace(/[^0-9.]/g, ''));
         let numOfPerson = parentItem.attr('data-numOfPerson');
+        let mptrs_CurrencySymbol = jQuery('.woocommerce-Price-currencySymbol:first').text().trim();
+
 
         let item = {
             menuImgUrl: menuImgUrl,
             menuName: menuName,
             menuPrice: menuPrice,
+            mptrs_CurrencySymbol: mptrs_CurrencySymbol,
             numOfPerson: numOfPerson,
             foodMenuCategory: foodMenuCategory,
             menuAddedKey: menuAddedKey,
@@ -542,7 +554,6 @@ jQuery(document).ready(function ($) {
     });
 
     function mptrs_append_order_food_menu(item) {
-        let id = '';
         let container = $("#mptrs_orderedFoodMenuHolder");
 
         let menuItem = `
@@ -550,7 +561,7 @@ jQuery(document).ready(function ($) {
             <img class="mptrs_menuImg" src="${item.menuImgUrl}" alt="${item.menuName}">
             <div class="mptrs_menuDetails">
                 <div class="mptrs_addedMenuName">${item.menuName}</div>
-                <div class="mptrs_menuPrice">৳ ${item.menuPrice}</div>
+                <div class="mptrs_menuPrice">${item.mptrs_CurrencySymbol} ${item.menuPrice}</div>
             </div>
             
             <div class="mptrs_quantityControls" id="mptrs_quantityControls-${item.menuAddedKey}">

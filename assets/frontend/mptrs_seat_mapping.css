@@ -493,7 +493,7 @@
     width: calc(100% - 10px);
     margin: 10px 7px 3px 7px;
     border-radius: 5px;
-    height: 95px;
+    height: 90px;
     background-color: #fff;
     box-shadow: 0px 0px 1px #a6a8ac;
     -webkit-transition: all 0.40ms linear;
@@ -506,14 +506,13 @@
     display: block;
     float: left;
     position: relative;
-    width: 74px;
-    height: 122px;
-    margin-right: 4px;
-    margin-left: 2px;
+    width: 85px;
+    margin-right: 8px;
+    margin-top: 2px;
 }
 .mptrs_menuImage{
-    width: 70px !important;
-    height: 90px !important;
+    width: 85px !important;
+    height: 80px !important;
     margin: 2px;
     border-radius: 3px;
     cursor: pointer;
@@ -522,13 +521,13 @@
     display: block;
     float: left;
     position: relative;
-    width: calc(100% - 125px);
+    width: calc(100% - 130px);
 }
 .mptrs_menuName{
     display: block;
-    font-size: 16px;
-    font-weight: 600;
-    padding: 10px 1px;
+    /*font-size: 16px;*/
+    /*font-weight: 600;*/
+    padding: 5px 1px;
     line-height: 17px;
     display: -webkit-box;
     text-align: left;
@@ -554,7 +553,7 @@
 }
 .mptrs_BottomMenuInFo{
     display: flex;
-    gap: 10px;
+    gap: 5px;
     margin-top: 5px;
 }
 
@@ -778,31 +777,35 @@
     text-align: left;
 }
 .mptrs_menuName {
-    font-size: 16px;
-    font-weight: bold;
+    /*font-size: 16px;
+    font-weight: bold;*/
     margin-bottom: 3px;
 }
 .mptrs_menuPrice {
     color: #e74c3c;
     font-size: 14px;
     font-weight: bold;
+    margin-top: 4px;
 }
 .mptrs_quantityControls {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     gap: 5px;
 }
 .mptrs_addedQuantityControls {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     gap: 5px;
+    position: absolute;
+    right: 6px;
+    top: 38px;
 }
 .mptrs_quantityControls button {
     border: none;
-    background: #e74c3c;
-    color: #fff;
+    /*background: #e74c3c;*/
+    /*color: #fff;*/
     padding: 0px 5px;
     border-radius: 50%;
     font-size: 18px;
@@ -810,6 +813,12 @@
     width: 20px;
     height: 20px;
 }
+
+.mptrs_topMenuInFo{
+    max-height: 37px;
+    overflow: hidden;
+}
+
 .mptrs_quantity {
     font-size: 16px;
     min-width: 20px;
@@ -902,20 +911,28 @@
     gap: 5px;
 }
 .mptrs_numberOfPerson {
-    font-weight: bold;
+    font-weight: normal;
     color: #555;
+    font-size: 12px;
 }
 
 .mptrs_totalPriceHolder {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 12px;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    /*padding: 12px;*/
+    background: rgba(255, 255, 255, 1);
     border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 10px rgba(255, 51, 51, 0.2);
     max-width: 300px;
     margin: 20px auto;
+}
+
+.mptrs_totalPricetext{
+    display: flex;
+    position: absolute;
+    left: 20px;
+    color: #f54040;
 }
 
 .mptrs_totalPrice {

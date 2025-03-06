@@ -36,6 +36,7 @@
                         <button class="mptrs_removeSelected" id="mptrs_removeSelected"><?php esc_html_e('Erase', 'tablely'); ?></button>
                         <button class="mptrs_undo" id="mptrs_undo" ><?php esc_html_e('Undo', 'tablely'); ?></button>
                         <button class="mptrs_copyPaste" id="mptrs_copyPaste" ><?php esc_html_e('Paste', 'tablely'); ?></button>
+                        <button class="mptrs_bindTableWidthChair" id="mptrs_bindTableWidthChair" ><?php esc_html_e('Bind table', 'tablely'); ?></button>
                     </div>
                 </div>
 
@@ -150,6 +151,7 @@
                                 $degree = 0;
                                 $background_img_url = '';
                                 $seat_icon_name = '';
+                                $tableBind = '';
 
                                 if ( is_array( $plan_seats ) && count( $plan_seats ) > 0 ) {
                                     foreach ( $plan_seats as $plan_seat ) {
@@ -193,7 +195,8 @@
                                     data-col="' . esc_attr( $row ) . '" 
                                     data-seat-num=" ' . esc_attr( $seat_num ) . ' " 
                                     data-price=" ' . esc_attr( $seat_price ) . ' " 
-                                    data-degree=' . esc_attr( $degree ) . '
+                                    data-degree="' . esc_attr( $degree ) . '"
+                                    data-tableBind="' . esc_attr( $tableBind ) . '"
                                     data-background-image="' . esc_attr( $seat_icon_name ) . '"
                                     style="
                                     left: ' . esc_attr( $left ) . 'px; 
@@ -376,7 +379,7 @@
                         <span><?php esc_html_e('Seat Mapping', 'tablely'); ?></span>
                     </section>
 
-                    <section class="mptrs-seat-mapping-section">
+                    <section class="mptrs-seat-mapping-section mptrs-seatMappingSection" id="mptrs-seat-mapping-section">
                     <?php echo  $this->render_meta_box( $post_id );?>
                     </section>
                 </div>

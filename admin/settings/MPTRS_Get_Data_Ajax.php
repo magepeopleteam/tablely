@@ -29,36 +29,42 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
         }
 
         function mptrs_add_food_items_to_cart() {
-            if (!WC()->cart) {
-                wp_send_json_error(['message' => 'WooCommerce cart is not initialized.']);
-                return;
+
+            error_log( print_r( $_POST, true ) );
+            if (!isset($_POST['post_id'], $_POST['menu'], $_POST['seats'], $_POST['price'], $_POST['quantity'])) {
+                wp_send_json_error('Missing required data.');
             }
 
-            if (!isset($_POST['mptrs_item_id']) || !isset($_POST['mptrs_item_name']) || !isset($_POST['mptrs_item_price'])) {
-                wp_send_json_error(['message' => 'Missing required parameters']);
-                return;
-            }
-            if (!WC()->cart) {
-                wc_load_cart();
+            $post_id = intval($_POST['post_id']);
+            $menu = json_decode(stripslashes($_POST['menu']), true);
+            $seats = json_decode(stripslashes($_POST['seats']), true);
+            $price = floatval($_POST['price']);
+            $quantity = intval($_POST['quantity']);
+
+            // Check if WooCommerce is active
+            if (!class_exists('WC_Cart')) {
+                wp_send_json_error('WooCommerce is not active.');
             }
 
-            $custom_product_id = 127; // A dummy product ID (must exist in WooCommerce)
-
+            // Create cart item data
             $cart_item_data = [
-                'mptrs_item_id'    => sanitize_text_field($_POST['mptrs_item_id']),
-                'mptrs_item_name'  => sanitize_text_field($_POST['mptrs_item_name']),
-                'mptrs_item_price' => floatval($_POST['mptrs_item_price']),
-                'mptrs_item_image' => esc_url($_POST['mptrs_item_image']),
+                'mptrs_item_id' => $post_id,
+                'food_menu' => $menu,
+                'booking_seats' => $seats,
+                'price' => $price,
             ];
 
-            // Add the item to the WooCommerce cart
-            $cart_item_key = WC()->cart->add_to_cart($custom_product_id, 1, 0, [], $cart_item_data);
+            error_log( print_r( [ '$cart_item_data' => $cart_item_data ], true ) );
+
+            // Add to WooCommerce cart
+            $cart_item_key = WC()->cart->add_to_cart($post_id, $quantity, 0, [], $cart_item_data);
 
             if ($cart_item_key) {
-                wp_send_json_success(['message' => 'Item added to cart']);
+                wp_send_json_success('Item added to cart.');
             } else {
-                wp_send_json_error(['message' => 'Failed to add item to cart']);
+                wp_send_json_error('Failed to add to cart.');
             }
+
         }
 
 

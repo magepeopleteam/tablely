@@ -60,6 +60,20 @@ jQuery(document).ready(function ($) {
         });
     });*/
 
+
+    let uniqueCounter = 0;
+    function mptrs_generateUniqueString(length) {
+        let dateTime = new Date().getTime().toString(36);
+        let randomPart = Math.random().toString(36).slice(2, 2 + length);
+        uniqueCounter++;
+        let cleanString = (dateTime + randomPart + uniqueCounter.toString(36)).replace(/[^a-zA-Z0-9]/g, '');
+
+        return 'mptrs_'+cleanString;
+    }
+
+    // let uniqueString = mptrs_generateUniqueString( 3 );
+    // alert(uniqueString);
+
     let templates = [];
     $(document).on('click', '.mptrs_templates', function ( e ) {
         e.preventDefault();
@@ -280,6 +294,7 @@ jQuery(document).ready(function ($) {
         undo_data_display( removedData );
 
     });
+
     $(document).on("click", ".mptrs_copyPaste", function (e) {
         e.preventDefault();
         $(this).toggleClass('mptrs_selectedPaste');
@@ -290,6 +305,14 @@ jQuery(document).ready(function ($) {
         $('#mptrs_mapping_setText').removeClass('enable_set_text');
         $('#mptrs_mapping_set_shape').removeClass('enable_set_shape');
     });
+
+
+    $(document).on("click", ".mptrs_bindTableWidthChair", function (e) {
+        e.preventDefault();
+        $(this).toggleClass('mptrs_selectedbind');
+        // $('.mptrs_dynamicShape').removeClass('mptrs_selectedShape');
+    });
+
 
     let shapeIconName = '';
     let shapeIconImageUrl = '';
@@ -450,7 +473,10 @@ jQuery(document).ready(function ($) {
     });
     function hide_remove_shape_text_sellection(){
         $("#mptrs_parentDiv").find('.mptrs_text-wrapper').removeClass('mptrs_textSelected');
-        $("#mptrs_parentDiv").find('.mptrs_dynamicShape').removeClass('mptrs_selectedShape');
+        if( !$("#mptrs_bindTableWidthChair").hasClass('mptrs_selectedbind' ) ){
+            $("#mptrs_parentDiv").find('.mptrs_dynamicShape').removeClass('mptrs_selectedShape');
+        }
+
         $(".mptrs_dynamicShapeColorHolder").hide();
         $(".mptrs_dynamicTextControlHolder").hide();
     }
@@ -463,7 +489,7 @@ jQuery(document).ready(function ($) {
         let clickId = seatDivId.replace("div", "");
         let seatTextId = 'seatText'+clickId;
         if( $('#mptrs_mapping_singleSelect').hasClass('enable_single_seat_selection' ) && $this.hasClass('save') ){
-            $this.siblings().removeClass('selected'); // Remove selection from other items in the group
+            $this.siblings().removeClass('selected');
             $this.toggleClass("selected");
             selectedDivs = [];
             selectedDraggableDivs = [];
@@ -472,6 +498,13 @@ jQuery(document).ready(function ($) {
             selectionOrder = [];
             forReverse = [];
             make_rotate( $(this).attr('id') );
+
+           /* if( $("#mptrs_bindTableWidthChair").hasClass('mptrs_selectedbind' ) ){
+                let mptrs_tableBindId = $("#mptrs_parentDiv")
+                    .find('.mptrs_dynamicShape.mptrs_selectedShape')
+                    .attr('id');
+                alert(mptrs_tableBindId);
+            }*/
         }
         else{
             if( $this.hasClass('save') && $('#mptrs_mapping_multiselect').hasClass('enable_set_multiselect' ) && !$('#mptrs_mapping_set_seat').hasClass('enable_set_seat' ) ){
@@ -1261,6 +1294,8 @@ jQuery(document).ready(function ($) {
         const x = e.pageX - parentOffset.left;
         const y = e.pageY - parentOffset.top;
 
+        let randStrId = mptrs_generateUniqueString(3);
+
         let width = 100;
         let height = 100;
         let borderRadius = '0';
@@ -1321,7 +1356,7 @@ jQuery(document).ready(function ($) {
                 console.warn('Invalid shape_type:', shape_type);
                 return;
         }
-        const shape = $('<div class="mptrs_dynamicShape" data-shape-rotate="0"></div>').css({
+        const shape = $('<div class="mptrs_dynamicShape" id="'+randStrId+'" data-shape-rotate="0"></div>').css({
             left: x + 'px',
             top: y + 'px',
             width: width + 'px',
@@ -1349,14 +1384,21 @@ jQuery(document).ready(function ($) {
         // }
     }
 
+
+    let mptrsBindTableChair = [];
     let isShapeDragging = false;
     let addEnableSeat = true;
     $(document).on("click", ".mptrs_dynamicShape", function (e) {
+        let mptrsShapId = $(this).attr('id');
+        // alert(mptrsShapId);
         const isAlreadySelected = $(this).hasClass('mptrs_selectedShape');
         $("#mptrs_parentDiv").find('.mptrs_dynamicShape').removeClass('mptrs_selectedShape');
         $("#mptrs_parentDiv").find('.mptrs_text-wrapper').removeClass('mptrs_textSelected');
         $(".mptrs_dynamicTextControlHolder").hide();
         $("#mptrs_setPriceColorHolder").hide();
+
+
+
         if (!isAlreadySelected) {
             $(this).addClass('mptrs_selectedShape');
             $(".mptrs_dynamicShapeColorHolder").show();

@@ -8,7 +8,7 @@
     display: flex;
     position: relative;
     width: calc( 100% - 150px );
-    height: 500px;
+    height: 450px;
     overflow: scroll;
 }
 .mptrs_seatPlanHolder::-webkit-scrollbar { width: 4px; }
@@ -22,7 +22,7 @@
     width: 150px;
     margin-left: 10px;
     max-height: 500px;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 #mptrs_parentDiv {
     border: 1px solid #e9e4e4;
@@ -102,7 +102,7 @@
     width: 100%;
 }
 
-.mptrs_selectedPaste{
+.mptrs_selectedPaste, .mptrs_selectedbind{
     background-color: #999900;
     color: #fff;
 }
@@ -294,6 +294,17 @@
     width: 100%;
     font-size: 14px;
     font-weight: 600;
+}
+
+.mptrs-seatMappingSection{
+    position: fixed;
+    top: 34px;
+    left: 330px;
+    background-color: #fbf9f9;
+    z-index: 9999;
+    bottom: 0;
+    right: 0;
+
 }
 
 .mptrs_mapping_controls .mptrs_setSeatNumber {
@@ -880,4 +891,10 @@ button.mptrs_textZoomIn:hover, button.mptrs_textZoomOut:hover {
 }
 .mptrs_openAsTemplate{
     padding: 5px 10px;
+}
+
+@media screen and (max-width: 960px) {
+    .mptrs-seatMappingSection {
+        left: 200px;
+    }
 }
