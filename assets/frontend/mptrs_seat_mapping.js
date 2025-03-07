@@ -117,7 +117,21 @@ jQuery(document).ready(function ($) {
     }
 
     let seatBooked = [];
-    $(document).on( 'click', '.mptrs_mappedSeat', function () {
+    $(document).on( 'click', '.mptrs_dynamicShape', function (e) {
+        e.preventDefault();
+        let shapeClickedId = $(this).attr('id').trim();
+        $('.mptrs_mappedSeat[data-tablebind="' + shapeClickedId + '"]').each(function() {
+            let selectedSeatId = $(this).attr("id");
+            if ( !seatBooked.includes( selectedSeatId ) ) {
+                $("#"+selectedSeatId).children().css('background-color', '#cacd1e');
+                seatBooked.push( selectedSeatId );
+            }
+        });
+
+    });
+
+    $(document).on( 'click', '.mptrs_mappedSeat', function (e) {
+        e.preventDefault();
         const seatId = $(this).attr('id');
         const price = $(this).data('price');
         const seatNum = $(this).data('seat-num');
@@ -177,6 +191,7 @@ jQuery(document).ready(function ($) {
             dataType: 'json',
             success: function (response) {
                 console.log('Success:', response);
+                seatBooked = [];
                 alert( response.data.message);
             },
             error: function (xhr, status, error) {

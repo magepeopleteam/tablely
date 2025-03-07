@@ -100,7 +100,7 @@
                             if ( is_array( $dynamic_shapes ) && count( $dynamic_shapes ) > 0 ) {
                                 foreach ( $dynamic_shapes as $dynamic_shape ) {
                                     $shape_rotate_deg = isset( $dynamic_shape['shapeRotateDeg'] ) ? $dynamic_shape['shapeRotateDeg'] : 0;
-                                    echo '<div class="mptrs_dynamicShape ui-resizable ui-draggable ui-draggable-handle" data-shape-rotate="' . esc_attr( $shape_rotate_deg ) . '" style=" 
+                                    echo '<div id="'. esc_attr( $dynamic_shape['tableBindID'] ) .'" class="mptrs_dynamicShape ui-resizable ui-draggable ui-draggable-handle" data-shape-rotate="' . esc_attr( $shape_rotate_deg ) . '" style=" 
                                         left: ' . esc_attr( $dynamic_shape['textLeft'] ) . 'px; 
                                         top: ' . esc_attr( $dynamic_shape['textTop'] ) . 'px; 
                                         width: ' . esc_attr( $dynamic_shape['width'] ) . 'px;
@@ -160,6 +160,7 @@
                                             $isSelected = true;
                                             $background_color = sanitize_text_field( $plan_seat['color'] ) ;
                                             $seat_num = isset( $plan_seat['seat_number'] ) ? sanitize_text_field( $plan_seat['seat_number'] ) : '';
+                                            $tableBind = isset( $plan_seat['data_tableBind'] ) ? sanitize_text_field( $plan_seat['data_tableBind'] ) : '';
                                             $seat_price = floatval( $plan_seat['price'] );
                                             $width = absint( $plan_seat['width'] );
                                             $height = absint( $plan_seat['height'] );
@@ -365,7 +366,6 @@
 			public function seat_mapping_tab_content($post_id) {
 
                 $post = get_post($post_id);
-//                error_log( print_r( $post, true ) );
 
 				?>
                 

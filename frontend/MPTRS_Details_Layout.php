@@ -55,7 +55,7 @@
 
                                 foreach ( $dynamic_shapes as $dynamic_shape ) {
                                     $shape_rotate_deg = isset( $dynamic_shape['shapeRotateDeg'] ) ? $dynamic_shape['shapeRotateDeg'] : 0;
-                                    $custom_content .= '<div class="mptrs_dynamicShape" style=" 
+                                    $custom_content .= '<div id="'.esc_attr( $dynamic_shape['tableBindID'] ).'" class="mptrs_dynamicShape" style=" 
                                                             left: ' . esc_attr( $dynamic_shape['textLeft']  - $leastLeft ) . 'px; 
                                                             top: ' . esc_attr( $dynamic_shape['textTop']  - $leastTop ) . 'px; 
                                                             width: ' . esc_attr( $dynamic_shape['width'] ) . 'px;
@@ -107,9 +107,6 @@
                                         $parent_class_name = 'mptrs_reservedMappedSeat';
                                     }
 
-
-
-
                                     $icon_url = '';
                                     $width = isset($seat['width']) ? (int)$seat['width'] : 0;
                                     $height = isset($seat['height']) ? (int)$seat['height'] : 0;
@@ -120,10 +117,13 @@
                                         $icon_url = MPTRS_Plan_ASSETS."images/icons/seatIcons/".$seat['backgroundImage'].".png";
                                     }
 
+                                    $tableBind = isset( $seat['data_tableBind'] ) ? $seat['data_tableBind'] : '';
+
                                     $custom_content .= '<div class="'.esc_attr( $parent_class_name ).'" 
                                                         id="' . esc_attr($uniqueId) . '" 
                                                         data-price="' . esc_attr($seat['price']) . '" 
                                                         data-seat-num="' . esc_attr($seat['seat_number']) . '" 
+                                                        data-tableBind="' . esc_attr( $tableBind ) . '"
                                                         style="
                                                             width: ' . $width . 'px;
                                                             height: ' . $height . 'px;

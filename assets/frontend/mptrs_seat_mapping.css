@@ -154,7 +154,7 @@
 .mptrs_dynamicShape {
     position: absolute;
     z-index: 99;
-    cursor: move;
+    cursor: pointer;
     /*border: 1px solid #000; !* Optional: for visibility *!*/
 }
 .mptrs_selectedSeatInfoHolder{

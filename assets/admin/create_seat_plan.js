@@ -499,11 +499,12 @@ jQuery(document).ready(function ($) {
             forReverse = [];
             make_rotate( $(this).attr('id') );
 
-           /* if( $("#mptrs_bindTableWidthChair").hasClass('mptrs_selectedbind' ) ){
+            /*if( $("#mptrs_bindTableWidthChair").hasClass('mptrs_selectedbind' ) ){
                 let mptrs_tableBindId = $("#mptrs_parentDiv")
                     .find('.mptrs_dynamicShape.mptrs_selectedShape')
                     .attr('id');
-                alert(mptrs_tableBindId);
+
+                $(this).attr('data-tableBind', mptrs_tableBindId);
             }*/
         }
         else{
@@ -531,6 +532,15 @@ jQuery(document).ready(function ($) {
             });
             $("#"+seatNumberId).text(seat_num);
             $("#"+seatNumberId).show();
+        }
+
+//Chair bind table for select table
+        if( $("#mptrs_bindTableWidthChair").hasClass('mptrs_selectedbind' ) ){
+            let mptrs_tableBindId = $("#mptrs_parentDiv")
+                .find('.mptrs_dynamicShape.mptrs_selectedShape')
+                .attr('id');
+
+            $(this).attr('data-tableBind', mptrs_tableBindId );
         }
 
         if ($this.hasClass("selected")) {
@@ -1110,6 +1120,7 @@ jQuery(document).ready(function ($) {
             }
         });
         $(document).on('mouseup', function (e) {
+            console.log('Done');
             e.preventDefault();
             if (createMultiSeats) {
                 createMultiSeats = false;
@@ -1130,6 +1141,15 @@ jQuery(document).ready(function ($) {
                     $("#"+seatNumberId).show();
                     const rotate_id = $(this).attr('id');
                     $this.css('z-index', 10);
+
+                    if( $("#mptrs_bindTableWidthChair").hasClass('mptrs_selectedbind' ) ){
+                        let mptrs_tableBindId = $("#mptrs_parentDiv")
+                            .find('.mptrs_dynamicShape.mptrs_selectedShape')
+                            .attr('id');
+
+                        $(this).attr('data-tableBind', mptrs_tableBindId );
+                    }
+
                 });
 
                 // Remove the selection box
@@ -1649,6 +1669,7 @@ jQuery(document).ready(function ($) {
         const col = div.data('col');
         const backgroundImage = div.data('background-image');
         const seat_number = div.data('seat-num');
+        const seat_tableBind = div.attr('data-tablebind');
         const data_degree = div.data('degree');
         const color = div.css('background-color');
         const price = div.data('price') || 0;
@@ -1661,14 +1682,15 @@ jQuery(document).ready(function ($) {
         const seatText =div.find('.seatText').text();
         const boxType = 'seats';
         if( is_erase === 'copy' ){
-            copyData.push({ id, row, col, color, price, width, height, seat_number, left, top, z_index, data_degree, border_radius, seatText, backgroundImage, boxType });
+            copyData.push({ id, row, col, color, price, width, height, seat_number, left, top, z_index, data_degree, border_radius, seatText, backgroundImage, boxType, seat_tableBind });
         }else{
             $("#mptrs_undo").show();
-            removedData.push({ id, row, col, color, price, width, height, seat_number, left, top, z_index, data_degree, border_radius, seatText, backgroundImage, boxType });
+            removedData.push({ id, row, col, color, price, width, height, seat_number, left, top, z_index, data_degree, border_radius, seatText, backgroundImage, boxType, seat_tableBind });
         }
     }
     function removed_shape_data( div, is_erase = '' ){
         const shapeLeft = parseInt(div.css('left')) || 0;
+        const shapeId = div.attr('id') || '';
         const shapeTop = parseInt(div.css('top')) || 0;
         const shapeWidth = parseInt(div.css('width')) || 0;
         const shapeHeight = parseInt(div.css('height')) || 0;
@@ -1681,7 +1703,7 @@ jQuery(document).ready(function ($) {
             copyData.push({ shapeLeft, shapeTop, shapeWidth, shapeHeight, shapeBackgroundColor, shapeBorderRadius, shapeClipPath, shapeRotateDeg, boxType });
         }else{
             $("#mptrs_undo").show();
-            removedData.push({ shapeLeft, shapeTop, shapeWidth, shapeHeight, shapeBackgroundColor, shapeBorderRadius, shapeClipPath, shapeRotateDeg, boxType });
+            removedData.push({ shapeLeft, shapeTop, shapeWidth, shapeHeight, shapeBackgroundColor, shapeBorderRadius, shapeClipPath, shapeRotateDeg, boxType, shapeId });
         }
 
     }
@@ -1703,6 +1725,7 @@ jQuery(document).ready(function ($) {
 
     }
     function undo_data_display( removedData ){
+
         var lastElementData = {};
         let html = '';
         if( removedData.length > 0 ){
@@ -1717,6 +1740,7 @@ jQuery(document).ready(function ($) {
                           data-col="${lastElementData.col}" 
                           data-seat-num="${lastElementData.seat_number}" 
                           data-price="${lastElementData.price}" 
+                          data-tableBind="${lastElementData.seat_tableBind}"
                           data-degree="${lastElementData.data_degree}" 
                           data-background-image="${lastElementData.backgroundImage}" 
                           style="
@@ -1734,7 +1758,12 @@ jQuery(document).ready(function ($) {
                           <div class="mptrs_seatNumber" id="seatNumber_${lastElementData.id}" style="display: block;">${lastElementData.seat_number}</div>
                       </div>`;
             }else if( lastElementData.boxType === 'shapes' ){
-                html = `<div class="mptrs_dynamicShape ui-draggable ui-draggable-handle ui-resizable" 
+                let mptrs_shapeUndoId = lastElementData.shapeId;
+                if( lastElementData.shapeId === '' ){
+                    mptrs_shapeUndoId = mptrs_generateUniqueString(3);
+                }
+
+                html = `<div id="${mptrs_shapeUndoId}" class="mptrs_dynamicShape ui-draggable ui-draggable-handle ui-resizable" 
                             data-shape-rotate="${lastElementData.shapeRotateDeg}" 
                             style="
                                 left: ${lastElementData.shapeLeft}px; 
@@ -1796,6 +1825,7 @@ jQuery(document).ready(function ($) {
                           data-seat-num="${lastElementData.seat_number}" 
                           data-price="${lastElementData.price}" 
                           data-degree="${lastElementData.data_degree}" 
+                          data-tableBind=""
                           data-background-image="${lastElementData.backgroundImage}" 
                           style="
                               left: ${x_axis}px; 
@@ -1813,7 +1843,8 @@ jQuery(document).ready(function ($) {
                       </div>`;
             }
             else if( lastElementData.boxType === 'shapes' ){
-                copy_paste_html = `<div class="mptrs_dynamicShape ui-draggable ui-draggable-handle ui-resizable" 
+                let mptrs_ShapeId = mptrs_generateUniqueString(3);
+                copy_paste_html = `<div id="${mptrs_ShapeId}" class="mptrs_dynamicShape ui-draggable ui-draggable-handle ui-resizable" 
                             data-shape-rotate="${lastElementData.shapeRotateDeg}" 
                             style="
                                 left: ${x_axis}px; 
@@ -1880,6 +1911,7 @@ jQuery(document).ready(function ($) {
                 const backgroundImage = $(this).data('background-image');
                 const seat_number = $(this).data('seat-num');
                 const data_degree = $(this).data('degree');
+                const data_tableBind = $(this).attr('data-tablebind');
                 const color = $(this).css('background-color');
                 const price = $(this).data('price') || 0;
                 const width =$(this).css('width') || 0;
@@ -1890,9 +1922,11 @@ jQuery(document).ready(function ($) {
                 const border_radius = $(this).css('border-radius') || 0;
                 const seatText = $(this).find('.seatText').text();
 
-                selectedSeats.push({ id, row, col, color, price, width, height, seat_number, left, top, z_index, data_degree, border_radius, seatText, backgroundImage });
+
+                selectedSeats.push({ id, row, col, color, price, width, height, seat_number, left, top, z_index, data_degree, data_tableBind, border_radius, seatText, backgroundImage });
             }
         });
+        console.log( selectedSeats );
 
         $('.mptrs_text-wrapper').each(function () {
             const textLeft = parseInt($(this).css('left')) || 0;
@@ -1914,7 +1948,8 @@ jQuery(document).ready(function ($) {
             const borderRadius = $(this).css('border-radius') || '';
             const clipPath = $(this).css('clip-path') || '';
             const shapeRotateDeg = $(this).data('shape-rotate') || 0;
-            dynamicShapes.push({ textLeft, textTop, width, height,  backgroundColor, borderRadius, clipPath, shapeRotateDeg});
+            const tableBindID = $(this).attr('id').trim() || '';
+            dynamicShapes.push({ textLeft, textTop, width, height,  backgroundColor, borderRadius, clipPath, shapeRotateDeg,tableBindID });
         });
 
         if ( selectedSeats.length === 0 ) {
