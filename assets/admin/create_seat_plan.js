@@ -1009,6 +1009,15 @@ jQuery(document).ready(function ($) {
                 }
 
                 if ($("#mptrs_mapping_multiselect").hasClass('enable_set_multiselect')) {
+
+                    if( $("#mptrs_bindTableWidthChair").hasClass('mptrs_selectedbind' ) ){
+                        let mptrs_tableBindId = $("#mptrs_parentDiv")
+                            .find('.mptrs_dynamicShape.mptrs_selectedShape')
+                            .attr('id');
+
+                        $(this).attr('data-tableBind', mptrs_tableBindId );
+                    }
+
                 $(this).draggable({
                     containment: "#mptrs_parentDiv",
                     drag: function (event, ui) {

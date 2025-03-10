@@ -157,11 +157,33 @@
     cursor: pointer;
     /*border: 1px solid #000; !* Optional: for visibility *!*/
 }
+.mptrs_selectedDynamicShape {
+    position: absolute;
+    z-index: 99;
+    cursor: pointer;
+    /*border: 1px solid #000; !* Optional: for visibility *!*/
+}
 .mptrs_selectedSeatInfoHolder{
     display: block;
     float: left;
     position: relative;
     width: 100%;
+}
+
+.mptrs_checkoutManage{
+    display: block;
+    width: calc(100% - 20px);
+    text-align: center;
+    padding: 5px 10px;
+    border: 1px solid #666666;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.mptrs_checkoutManage:hover{
+    background-color: #0a7aff;
+    color: #fff;
 }
 
 .mptrs_table {

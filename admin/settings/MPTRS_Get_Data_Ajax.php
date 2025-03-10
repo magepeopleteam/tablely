@@ -25,19 +25,68 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             add_action('wp_ajax_mptrs_add_food_items_to_cart', [$this, 'mptrs_add_food_items_to_cart'] );
             add_action('wp_ajax_nopriv_mptrs_add_food_items_to_cart', [$this, 'mptrs_add_food_items_to_cart'] );
 
+            add_filter('woocommerce_add_cart_item_data', [$this, 'mptrs_set_custom_price_cart_item'], 10, 2);
+            add_action('woocommerce_before_calculate_totals', [$this, 'mptrs_update_cart_item_price'], 10, 1);
 
+            add_filter('woocommerce_get_item_data', [$this,'mptrs_display_custom_cart_item_data'], 10, 2);
+            add_action('woocommerce_checkout_create_order_line_item', [$this,'mptrs_add_order_item_meta'], 10, 4);
+
+
+        }
+
+        function mptrs_add_order_item_meta($item, $cart_item_key, $values, $order) {
+//            error_log( print_r($values, true) );
+            if (isset($values['food_menu'])) {
+                $item->add_meta_data('Food Menu', $values['food_menu'], true);
+            }
+            if (isset($values['booking_seats'])) {
+                $item->add_meta_data('Seats', is_array($values['booking_seats']) ? implode(', ', $values['booking_seats']) : $values['booking_seats'], true);
+            }
+        }
+        function mptrs_display_custom_cart_item_data($item_data, $cart_item) {
+            /*if (isset($cart_item['food_menu'])) {
+                $item_data[] = [
+                    'name'  => 'Food Menu',
+                    'value' => wc_clean($cart_item['food_menu']),
+                ];
+            }*/
+            if (isset($cart_item['booking_seats'])) {
+                $item_data[] = [
+                    'name'  => 'Seats',
+                    'value' => is_array($cart_item['booking_seats']) ? implode(', ', $cart_item['booking_seats']) : $cart_item['booking_seats'],
+                ];
+            }
+            return $item_data;
+        }
+        function mptrs_update_cart_item_price($cart) {
+            if (is_admin() && !defined('DOING_AJAX')) return;
+
+            foreach ($cart->get_cart() as $cart_item) {
+                if (isset($cart_item['custom_price'])) {
+                    $cart_item['data']->set_price($cart_item['custom_price']); // Set custom price
+                }
+            }
+        }
+        function mptrs_set_custom_price_cart_item($cart_item_data, $product_id) {
+            if (isset($_POST['price'])) {
+                $cart_item_data['custom_price'] = floatval($_POST['price']); // Store custom price
+            }
+            return $cart_item_data;
         }
 
         function mptrs_add_food_items_to_cart() {
 
-            error_log( print_r( $_POST, true ) );
+            error_log( print_r( [ '$_POST' => $_POST ], true ) );
             if (!isset($_POST['post_id'], $_POST['menu'], $_POST['seats'], $_POST['price'], $_POST['quantity'])) {
                 wp_send_json_error('Missing required data.');
             }
 
             $post_id = intval($_POST['post_id']);
-            $menu = json_decode(stripslashes($_POST['menu']), true);
-            $seats = json_decode(stripslashes($_POST['seats']), true);
+            $post_id = get_post_meta( $post_id, 'link_wc_product', true ) ;
+
+            $menu = $_POST['menu'];
+//            $seats = json_decode(stripslashes($_POST['seats']), true);
+            $seats = $_POST['seats'];
             $price = floatval($_POST['price']);
             $quantity = intval($_POST['quantity']);
 
@@ -53,12 +102,9 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                 'booking_seats' => $seats,
                 'price' => $price,
             ];
+            WC()->cart->empty_cart();
 
-            error_log( print_r( [ '$cart_item_data' => $cart_item_data ], true ) );
-
-            // Add to WooCommerce cart
-            $cart_item_key = WC()->cart->add_to_cart($post_id, $quantity, 0, [], $cart_item_data);
-
+            $cart_item_key = WC()->cart->add_to_cart( $post_id, $quantity, 0, [], $cart_item_data );
             if ($cart_item_key) {
                 wp_send_json_success('Item added to cart.');
             } else {

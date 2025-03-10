@@ -163,7 +163,7 @@
                         <button id="mptrs_search" class="mptrs_button">Find a time</button>
                         <div class="mptrs_time_container"></div>
 
-                        <div class="mptrs_checkoutManage" id="mptrs_checkoutManage<?php echo esc_attr( $post_id )?>">Process Checkout</div>
+                        <div class="mptrs_checkoutManage" name="add-to-cart" value="<?php echo esc_attr( $post_id )?>" id="mptrs_checkoutManage<?php echo esc_attr( $post_id )?>">Process Checkout</div>
                     </div>
                 </div>
                 <div class="mptrs_seatMappedHolder" id="mptrs_deliveryTabHolder" style="display: none">

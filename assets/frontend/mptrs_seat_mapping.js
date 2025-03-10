@@ -118,15 +118,40 @@ jQuery(document).ready(function ($) {
 
     let seatBooked = [];
     $(document).on( 'click', '.mptrs_dynamicShape', function (e) {
+
         e.preventDefault();
         let shapeClickedId = $(this).attr('id').trim();
-        $('.mptrs_mappedSeat[data-tablebind="' + shapeClickedId + '"]').each(function() {
-            let selectedSeatId = $(this).attr("id");
-            if ( !seatBooked.includes( selectedSeatId ) ) {
-                $("#"+selectedSeatId).children().css('background-color', '#cacd1e');
-                seatBooked.push( selectedSeatId );
+
+
+        let data_tableBindIds = [];
+
+        $(".mptrs_reservedMappedSeat").each(function () {
+            let tableBindID = $(this).attr("data-tablebind"); // Get data attribute
+            if (tableBindID) {
+                data_tableBindIds.push(tableBindID); // Add to array
             }
         });
+
+        if( data_tableBindIds.includes( shapeClickedId ) ){
+            alert("Some seats are already selected. To book a table, please choose one where all seats are completely available.");
+        }else{
+            $('.mptrs_mappedSeat[data-tablebind="' + shapeClickedId + '"]').each(function() {
+                let selectedSeatId = $(this).attr("id");
+                /*  if ( !seatBooked.includes( selectedSeatId ) ) {
+                      $("#"+selectedSeatId).children().css('background-color', '#cacd1e');
+                      seatBooked.push( selectedSeatId );
+                  }*/
+
+                if (seatBooked.includes(selectedSeatId)) {
+                    seatBooked = seatBooked.filter(seat => seat !== selectedSeatId); // Remove if exists
+                    $("#"+selectedSeatId).children().css('background-color', 'rgb(52, 152, 219)');
+                } else {
+                    seatBooked.push(selectedSeatId);
+                    $("#"+selectedSeatId).children().css('background-color', '#cacd1e');
+                }
+
+            });
+        }
 
     });
 
@@ -135,20 +160,27 @@ jQuery(document).ready(function ($) {
         const seatId = $(this).attr('id');
         const price = $(this).data('price');
         const seatNum = $(this).data('seat-num');
-        let todayDate = new Date().toISOString().split('T')[0];
-        const time = 10;
-        seatBooked.push(seatId);
+
+        if (seatBooked.includes(seatId)) {
+            seatBooked = seatBooked.filter(seat => seat !== seatId);
+            $("#"+seatId).children().css('background-color', 'rgb(52, 152, 219)');
+        } else {
+            seatBooked.push(seatId);
+            $("#"+seatId).children().css('background-color', '#cacd1e');
+        }
         if( seatBooked.length > 0 ){
             $("#mptrs_selectedSeatInfoHolder").show();
         }else{
             $("#mptrs_selectedSeatInfoHolder").hide();
         }
+        $('#info').text(`Seat ID: ${seatId}, Price: $${price}, Seat number: ${seatNum}`);
+        let todayDate = new Date().toISOString().split('T')[0];
+        const time = 10;
+        // updateTotalPrice();
 
-        updateTotalPrice();
+        // $(this).css('background-color', '#cacd1e');
 
-        $(this).css('background-color', '#cacd1e');
-
-        let disabledDates = ["2025-02-20", "2025-02-25", "2025-02-26"];
+       /* let disabledDates = ["2025-02-20", "2025-02-25", "2025-02-26"];
         let disabledValues = [2, 7, 6];
         $('#mptrs-timepicker').empty();
         $('#mptrs-datepicker').empty();
@@ -162,7 +194,7 @@ jQuery(document).ready(function ($) {
                                        <td>${price}</td>
                                        <td class="mptrs_removeSelectedSeat" id="mptrsRemoveSeat_${seatId}">Delete</td>
                                    </tr>`;
-        $("#mptrs_selectedSeatInfo").append( selectedSeat );
+        $("#mptrs_selectedSeatInfo").append( selectedSeat );*/
     });
 
 
@@ -202,23 +234,25 @@ jQuery(document).ready(function ($) {
     });
 
     $(document).on('click',".mptrs_checkoutManage",function () {
-        // console.log( seatBooked );
-        // let mptrs_totalPrices = $("#mptrs_totalPrice").val().trim();
+
+        let mptrs_totalPrices = $("#mptrs_totalPrice").val().trim();
+        let mptrs_order_time = $('.mptrs_time_button.active').data('time');
+        let mptrs_order_date = $("#mptrs_date").val().trim();
+        let postId = $("#mptrs_getPost").val().trim();
+        console.log( postId, seatBooked, addToCartData, mptrs_totalPrices, mptrs_order_date, mptrs_order_time );
 
         let itemID = 100;
-        let itemName = 'new name'
+        let itemName = 'new name';
         let itemPrice = 200 ;
         let itemImage = '';
 
 
         let button = $(this);
         let post_id = 1072;
-        let menu = JSON.stringify( addToCartData ) ; // Array of selected food menu items
+        let menu = JSON.stringify( addToCartData ) ;
         let seats = JSON.stringify( seatBooked ) ;
         let price = 6000; // Total price
         let quantity = 300; // Total quantity
-
-        console.log( menu, seats );
 
         $.ajax({
             type: 'POST',
@@ -228,8 +262,10 @@ jQuery(document).ready(function ($) {
                 post_id: post_id,
                 menu: addToCartData,
                 seats: seatBooked,
-                price: price,
+                price: mptrs_totalPrices,
                 quantity: quantity,
+                mptrs_order_date: mptrs_order_date,
+                mptrs_order_time: mptrs_order_time,
             },
             beforeSend: function () {
                 button.text('Adding...');
@@ -237,6 +273,7 @@ jQuery(document).ready(function ($) {
             success: function (response) {
                 if (response.success) {
                     button.text('Added to Cart ✅');
+                    window.location.href = '/mage_people/checkout/';
                 } else {
                     alert(response.data);
                     button.text('Add to Cart');
@@ -295,7 +332,6 @@ jQuery(document).ready(function ($) {
             $("#mptrs_selectedSeatInfoHolder").hide();
         }
         updateTotalPrice();
-        console.log( seatBooked );
 
     });
     $(document).on( 'click', '.mptrs_orderBtn', function ( e ) {
@@ -305,7 +341,6 @@ jQuery(document).ready(function ($) {
         let idParts = orderClickedId.split('-');
         let postId = idParts[1];
         // alert(postId);
-        console.log( seatBooked );
         /*$.ajax({
             url: mptrs_ajax.ajax_url,
             type: 'POST',
@@ -378,7 +413,6 @@ jQuery(document).ready(function ($) {
     };
     
     $.each( timeSlots, function ( key, time ) {
-        console.log( time );
         let button = $("<button>")
             .addClass("mptrs_time_button")
             .text(time)
@@ -496,7 +530,7 @@ jQuery(document).ready(function ($) {
         });
     }
 
-    let addToCartData = [];
+    let addToCartData = {};
     // Add Button Click
     $(document).on('click', ".mptrs_addBtn", function () {
         $(this).fadeOut();
@@ -616,6 +650,7 @@ jQuery(document).ready(function ($) {
                 success: function (response) {
                     // mptrs_display_food_menu_for_order( response.data.get_food_menu )
 
+                    seatBooked = [];
                     $("#mptrs_seatMapDisplay").append( response.data.mptrs_seat_maps );
                 },
                 error: function () {
