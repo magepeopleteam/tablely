@@ -117,6 +117,7 @@ jQuery(document).ready(function ($) {
     }
 
     let seatBooked = [];
+    let seatBookedName = [];
     $(document).on( 'click', '.mptrs_dynamicShape', function (e) {
 
         e.preventDefault();
@@ -137,11 +138,7 @@ jQuery(document).ready(function ($) {
         }else{
             $('.mptrs_mappedSeat[data-tablebind="' + shapeClickedId + '"]').each(function() {
                 let selectedSeatId = $(this).attr("id");
-                /*  if ( !seatBooked.includes( selectedSeatId ) ) {
-                      $("#"+selectedSeatId).children().css('background-color', '#cacd1e');
-                      seatBooked.push( selectedSeatId );
-                  }*/
-
+                let selectedSeatname = $(this).attr('data-seat-num');
                 if (seatBooked.includes(selectedSeatId)) {
                     seatBooked = seatBooked.filter(seat => seat !== selectedSeatId); // Remove if exists
                     $("#"+selectedSeatId).children().css('background-color', 'rgb(52, 152, 219)');
@@ -149,6 +146,14 @@ jQuery(document).ready(function ($) {
                     seatBooked.push(selectedSeatId);
                     $("#"+selectedSeatId).children().css('background-color', '#cacd1e');
                 }
+
+                if (seatBookedName.includes(selectedSeatname)) {
+                    seatBookedName = seatBookedName.filter(seatName => seatName !== selectedSeatname); // Remove if exists
+                } else {
+                    seatBookedName.push(selectedSeatname);
+                }
+
+                // console.log( seatBookedName );
 
             });
         }
@@ -159,7 +164,7 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
         const seatId = $(this).attr('id');
         const price = $(this).data('price');
-        const seatNum = $(this).data('seat-num');
+        const seatNum = $(this).attr('data-seat-num');
 
         if (seatBooked.includes(seatId)) {
             seatBooked = seatBooked.filter(seat => seat !== seatId);
@@ -168,6 +173,13 @@ jQuery(document).ready(function ($) {
             seatBooked.push(seatId);
             $("#"+seatId).children().css('background-color', '#cacd1e');
         }
+
+        if (seatBookedName.includes(seatNum)) {
+            seatBookedName = seatBookedName.filter(seatName => seatName !== seatNum); // Remove if exists
+        } else {
+            seatBookedName.push(seatNum);
+        }
+
         if( seatBooked.length > 0 ){
             $("#mptrs_selectedSeatInfoHolder").show();
         }else{
@@ -208,6 +220,7 @@ jQuery(document).ready(function ($) {
         let order_date = $("#mptrs_date").val().trim();
 
         let bookedSeats =  JSON.stringify( seatBooked );
+        // let seatBookedName =  JSON.stringify( seatBookedName );
 
         $.ajax({
             url: mptrs_ajax.ajax_url,
@@ -224,6 +237,7 @@ jQuery(document).ready(function ($) {
             success: function (response) {
                 console.log('Success:', response);
                 seatBooked = [];
+                seatBookedName = [];
                 alert( response.data.message);
             },
             error: function (xhr, status, error) {
@@ -239,7 +253,6 @@ jQuery(document).ready(function ($) {
         let mptrs_order_time = $('.mptrs_time_button.active').data('time');
         let mptrs_order_date = $("#mptrs_date").val().trim();
         let postId = $("#mptrs_getPost").val().trim();
-        console.log( postId, seatBooked, addToCartData, mptrs_totalPrices, mptrs_order_date, mptrs_order_time );
 
         let itemID = 100;
         let itemName = 'new name';
@@ -251,6 +264,8 @@ jQuery(document).ready(function ($) {
         let post_id = 1072;
         let menu = JSON.stringify( addToCartData ) ;
         let seats = JSON.stringify( seatBooked ) ;
+        let bookedSeatName =  JSON.stringify( seatBookedName );
+
         let price = 6000; // Total price
         let quantity = 300; // Total quantity
 
@@ -260,8 +275,9 @@ jQuery(document).ready(function ($) {
             data: {
                 action: 'mptrs_add_food_items_to_cart',
                 post_id: post_id,
-                menu: addToCartData,
-                seats: seatBooked,
+                menu: menu ,
+                seats: seats,
+                bookedSeatName: bookedSeatName,
                 price: mptrs_totalPrices,
                 quantity: quantity,
                 mptrs_order_date: mptrs_order_date,
@@ -470,7 +486,7 @@ jQuery(document).ready(function ($) {
         $("#"+menuAddedQtyKey).text(quantity);
         $("#"+menuQtyKey).text(quantity);
 
-        addToCartData[menuKey].menuCount = quantity;
+        addToCartData[menuKey] = quantity;
 
         calculateTotal();
     });
@@ -502,11 +518,14 @@ jQuery(document).ready(function ($) {
 
         } else {
 
-            addToCartData[menuKey].menuCount = quantity;
+            addToCartData[menuKey] = quantity;
 
             $("#"+menuAddedQtyKey).text(quantity);
             $("#"+menuQtyKey).text(quantity);
         }
+
+        // console.log( addToCartData );
+
         calculateTotal();
     });
     function mptrs_display_food_menu_for_order( food_menu_data ){
@@ -626,7 +645,7 @@ jQuery(document).ready(function ($) {
     }
 
     // Handle time selection
-    $(".mptrs_time_button").on("click", function () {
+    $(document).on('click',".mptrs_time_button", function () {
         $(".mptrs_time_button").removeClass("active");
         $(this).addClass("active");
         $("#seatPopup").fadeIn();
@@ -651,6 +670,7 @@ jQuery(document).ready(function ($) {
                     // mptrs_display_food_menu_for_order( response.data.get_food_menu )
 
                     seatBooked = [];
+                    seatBookedName = [];
                     $("#mptrs_seatMapDisplay").append( response.data.mptrs_seat_maps );
                 },
                 error: function () {

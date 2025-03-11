@@ -25,82 +25,56 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             add_action('wp_ajax_mptrs_add_food_items_to_cart', [$this, 'mptrs_add_food_items_to_cart'] );
             add_action('wp_ajax_nopriv_mptrs_add_food_items_to_cart', [$this, 'mptrs_add_food_items_to_cart'] );
 
-            add_filter('woocommerce_add_cart_item_data', [$this, 'mptrs_set_custom_price_cart_item'], 10, 2);
-            add_action('woocommerce_before_calculate_totals', [$this, 'mptrs_update_cart_item_price'], 10, 1);
 
-            add_filter('woocommerce_get_item_data', [$this,'mptrs_display_custom_cart_item_data'], 10, 2);
-            add_action('woocommerce_checkout_create_order_line_item', [$this,'mptrs_add_order_item_meta'], 10, 4);
-
-
-        }
-
-        function mptrs_add_order_item_meta($item, $cart_item_key, $values, $order) {
-//            error_log( print_r($values, true) );
-            if (isset($values['food_menu'])) {
-                $item->add_meta_data('Food Menu', $values['food_menu'], true);
-            }
-            if (isset($values['booking_seats'])) {
-                $item->add_meta_data('Seats', is_array($values['booking_seats']) ? implode(', ', $values['booking_seats']) : $values['booking_seats'], true);
-            }
-        }
-        function mptrs_display_custom_cart_item_data($item_data, $cart_item) {
-            /*if (isset($cart_item['food_menu'])) {
-                $item_data[] = [
-                    'name'  => 'Food Menu',
-                    'value' => wc_clean($cart_item['food_menu']),
-                ];
-            }*/
-            if (isset($cart_item['booking_seats'])) {
-                $item_data[] = [
-                    'name'  => 'Seats',
-                    'value' => is_array($cart_item['booking_seats']) ? implode(', ', $cart_item['booking_seats']) : $cart_item['booking_seats'],
-                ];
-            }
-            return $item_data;
-        }
-        function mptrs_update_cart_item_price($cart) {
-            if (is_admin() && !defined('DOING_AJAX')) return;
-
-            foreach ($cart->get_cart() as $cart_item) {
-                if (isset($cart_item['custom_price'])) {
-                    $cart_item['data']->set_price($cart_item['custom_price']); // Set custom price
-                }
-            }
-        }
-        function mptrs_set_custom_price_cart_item($cart_item_data, $product_id) {
-            if (isset($_POST['price'])) {
-                $cart_item_data['custom_price'] = floatval($_POST['price']); // Store custom price
-            }
-            return $cart_item_data;
         }
 
         function mptrs_add_food_items_to_cart() {
 
-            error_log( print_r( [ '$_POST' => $_POST ], true ) );
-            if (!isset($_POST['post_id'], $_POST['menu'], $_POST['seats'], $_POST['price'], $_POST['quantity'])) {
+            if ( !isset($_POST['post_id'], $_POST['menu'], $_POST['seats'], $_POST['bookedSeatName'], $_POST['price'], $_POST['quantity'])) {
                 wp_send_json_error('Missing required data.');
             }
 
-            $post_id = intval($_POST['post_id']);
+            $post_id = intval( sanitize_text_field( $_POST['post_id'] ) );
+
             $post_id = get_post_meta( $post_id, 'link_wc_product', true ) ;
 
-            $menu = $_POST['menu'];
-//            $seats = json_decode(stripslashes($_POST['seats']), true);
-            $seats = $_POST['seats'];
-            $price = floatval($_POST['price']);
-            $quantity = intval($_POST['quantity']);
+            $get_food_menu = get_option( '_mptrs_food_menu' );
+            $ordered_menu_key = sanitize_text_field( $_POST['menu'] );
 
-            // Check if WooCommerce is active
+            $ordered_menu_key = json_decode( stripslashes( $ordered_menu_key ), true);
+            $transformed_menu = [];
+
+            $menu = '';
+            foreach ($ordered_menu_key as $key => $value) {
+
+                if( isset( $get_food_menu[ $key ] ) ) {
+                    $menu .= 'Name: '.$get_food_menu[ $key ]['menuName']. ' Person:'.$get_food_menu[ $key ]['numPersons'].' Quantity:'.$value['menuCount'].' ';
+                    $menu .= ', ';
+                }
+            }
+
+            $mptrs_order_date = isset( $_POST['mptrs_order_date'] ) ?  sanitize_text_field( $_POST['mptrs_order_date'] ) : '';
+            $mptrs_order_time = isset( $_POST['mptrs_order_time'] ) ? sanitize_text_field( $_POST['mptrs_order_time'] ) : '';
+
+            $seats = json_decode( stripslashes( sanitize_text_field( $_POST['seats'] ) ), true);
+            $bookedSeatName = json_decode( stripslashes( sanitize_text_field( $_POST['bookedSeatName'] ) ), true);
+            $price = floatval( sanitize_text_field($_POST['price'] ) );
+            $quantity = intval( sanitize_text_field($_POST['quantity'] ) );
+            $mptrs_user_details = '';
+
             if (!class_exists('WC_Cart')) {
                 wp_send_json_error('WooCommerce is not active.');
             }
 
-            // Create cart item data
             $cart_item_data = [
                 'mptrs_item_id' => $post_id,
                 'food_menu' => $menu,
-                'booking_seats' => $seats,
+                'booking_seat_ids' => $seats,
+                'booking_seats' => $bookedSeatName,
                 'price' => $price,
+                'mptrs_order_date' => $mptrs_order_date,
+                'mptrs_order_time' => $mptrs_order_time,
+                'mptrs_user_details' => $mptrs_user_details,
             ];
             WC()->cart->empty_cart();
 
@@ -112,8 +86,6 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             }
 
         }
-
-
         public function mptrs_set_order(){
             $result = 0;
 //            $seat_booking_data = $seat_booking_data = array();
