@@ -36,6 +36,7 @@
                         <button class="mptrs_removeSelected" id="mptrs_removeSelected"><?php esc_html_e('Erase', 'tablely'); ?></button>
                         <button class="mptrs_undo" id="mptrs_undo" ><?php esc_html_e('Undo', 'tablely'); ?></button>
                         <button class="mptrs_copyPaste" id="mptrs_copyPaste" ><?php esc_html_e('Paste', 'tablely'); ?></button>
+                        <button class="mptrs_bindTableWidthChair" id="mptrs_bindTableWidthChair" ><?php esc_html_e('Bind table', 'tablely'); ?></button>
                     </div>
                 </div>
 
@@ -99,7 +100,7 @@
                             if ( is_array( $dynamic_shapes ) && count( $dynamic_shapes ) > 0 ) {
                                 foreach ( $dynamic_shapes as $dynamic_shape ) {
                                     $shape_rotate_deg = isset( $dynamic_shape['shapeRotateDeg'] ) ? $dynamic_shape['shapeRotateDeg'] : 0;
-                                    echo '<div class="mptrs_dynamicShape ui-resizable ui-draggable ui-draggable-handle" data-shape-rotate="' . esc_attr( $shape_rotate_deg ) . '" style=" 
+                                    echo '<div id="'. esc_attr( $dynamic_shape['tableBindID'] ) .'" class="mptrs_dynamicShape ui-resizable ui-draggable ui-draggable-handle" data-shape-rotate="' . esc_attr( $shape_rotate_deg ) . '" style=" 
                                         left: ' . esc_attr( $dynamic_shape['textLeft'] ) . 'px; 
                                         top: ' . esc_attr( $dynamic_shape['textTop'] ) . 'px; 
                                         width: ' . esc_attr( $dynamic_shape['width'] ) . 'px;
@@ -150,6 +151,7 @@
                                 $degree = 0;
                                 $background_img_url = '';
                                 $seat_icon_name = '';
+                                $tableBind = '';
 
                                 if ( is_array( $plan_seats ) && count( $plan_seats ) > 0 ) {
                                     foreach ( $plan_seats as $plan_seat ) {
@@ -158,6 +160,7 @@
                                             $isSelected = true;
                                             $background_color = sanitize_text_field( $plan_seat['color'] ) ;
                                             $seat_num = isset( $plan_seat['seat_number'] ) ? sanitize_text_field( $plan_seat['seat_number'] ) : '';
+                                            $tableBind = isset( $plan_seat['data_tableBind'] ) ? sanitize_text_field( $plan_seat['data_tableBind'] ) : '';
                                             $seat_price = floatval( $plan_seat['price'] );
                                             $width = absint( $plan_seat['width'] );
                                             $height = absint( $plan_seat['height'] );
@@ -193,7 +196,8 @@
                                     data-col="' . esc_attr( $row ) . '" 
                                     data-seat-num=" ' . esc_attr( $seat_num ) . ' " 
                                     data-price=" ' . esc_attr( $seat_price ) . ' " 
-                                    data-degree=' . esc_attr( $degree ) . '
+                                    data-degree="' . esc_attr( $degree ) . '"
+                                    data-tableBind="' . esc_attr( $tableBind ) . '"
                                     data-background-image="' . esc_attr( $seat_icon_name ) . '"
                                     style="
                                     left: ' . esc_attr( $left ) . 'px; 
@@ -362,7 +366,6 @@
 			public function seat_mapping_tab_content($post_id) {
 
                 $post = get_post($post_id);
-//                error_log( print_r( $post, true ) );
 
 				?>
                 
@@ -376,7 +379,7 @@
                         <span><?php esc_html_e('Seat Mapping', 'tablely'); ?></span>
                     </section>
 
-                    <section class="mptrs-seat-mapping-section">
+                    <section class="mptrs-seat-mapping-section mptrs-seatMappingSection" id="mptrs-seat-mapping-section">
                     <?php echo  $this->render_meta_box( $post_id );?>
                     </section>
                 </div>

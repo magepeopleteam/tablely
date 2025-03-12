@@ -13,6 +13,7 @@
 			}
 
             public static function display_seat_mapping( $post_id, $not_available_seats = [] ): string{
+
                 $content = '';
                 global $post;
 //                $post_id = $post->ID;
@@ -20,7 +21,6 @@
                 $plan_seats = isset( $plan_data['seat_data'] ) ? $plan_data['seat_data'] : array();
                 $plan_seat_texts = isset( $plan_data['seat_text_data'] ) ? $plan_data['seat_text_data'] : array();
                 $dynamic_shapes = isset( $plan_data['dynamic_shapes'] ) ? $plan_data['dynamic_shapes'] : '';
-
 
 
                 if (!empty($plan_seats) && is_array( $plan_seats )) {
@@ -41,6 +41,7 @@
                         }
                     }
 
+                    $data_tableBindIds = [];
                     $height = $leastTop + 200;
                     $seat_grid_width = $leastLeft + 1;
                     $seat_grid_height = $leastTop + 1;
@@ -51,23 +52,6 @@
                         </div>
                         <div id="mptrs_seatGrid" /*style="height: '.$height.'px"*/>
                         <div id="mptrs_seatMapHolder-'.$post_id.'" class="mptrs_seatMapHolder">';
-                            if ( is_array( $dynamic_shapes ) && count( $dynamic_shapes ) > 0 ) {
-
-                                foreach ( $dynamic_shapes as $dynamic_shape ) {
-                                    $shape_rotate_deg = isset( $dynamic_shape['shapeRotateDeg'] ) ? $dynamic_shape['shapeRotateDeg'] : 0;
-                                    $custom_content .= '<div class="mptrs_dynamicShape" style=" 
-                                                            left: ' . esc_attr( $dynamic_shape['textLeft']  - $leastLeft ) . 'px; 
-                                                            top: ' . esc_attr( $dynamic_shape['textTop']  - $leastTop ) . 'px; 
-                                                            width: ' . esc_attr( $dynamic_shape['width'] ) . 'px;
-                                                            height: ' . esc_attr( $dynamic_shape['height'] ) . 'px;
-                                                            background-color: ' . esc_attr( $dynamic_shape['backgroundColor'] ).'; 
-                                                            border-radius: ' . esc_attr( $dynamic_shape['borderRadius'] ).';
-                                                            clip-path: ' . esc_attr( $dynamic_shape['clipPath'] ).';
-                                                            transform: rotate(' . $shape_rotate_deg . 'deg);
-                                                        ">
-                                                        </div>';
-                                }
-                            }
                             if( is_array( $plan_seat_texts ) && count( $plan_seat_texts ) > 0 ) {
                                 foreach ($plan_seat_texts as $plan_seat_text) {
                                     $text_rotate_deg = isset($plan_seat_text['textRotateDeg']) ? $plan_seat_text['textRotateDeg'] : 0;
@@ -93,6 +77,11 @@
                             foreach ($plan_seats as $seat) {
                                 if ( isset($seat["left"] ) ) {
 
+//                                    error_log( print_r( [ 'data_tableBind' => $seat['data_tableBind'] ], true ) );
+                                    if( $seat['data_tableBind'] !== '' ){
+                                        $data_tableBindIds[] = $seat['data_tableBind'];
+                                    }
+
                                     $seat_id = isset( $seat['id'] ) ? $seat['id'] : 0;
                                     if( $seat_id !== 0 ){
                                         $seat_id = 'seat_'.$seat['id'];
@@ -107,9 +96,6 @@
                                         $parent_class_name = 'mptrs_reservedMappedSeat';
                                     }
 
-
-
-
                                     $icon_url = '';
                                     $width = isset($seat['width']) ? (int)$seat['width'] : 0;
                                     $height = isset($seat['height']) ? (int)$seat['height'] : 0;
@@ -120,10 +106,13 @@
                                         $icon_url = MPTRS_Plan_ASSETS."images/icons/seatIcons/".$seat['backgroundImage'].".png";
                                     }
 
+                                    $tableBind = isset( $seat['data_tableBind'] ) ? $seat['data_tableBind'] : '';
+
                                     $custom_content .= '<div class="'.esc_attr( $parent_class_name ).'" 
                                                         id="' . esc_attr($uniqueId) . '" 
                                                         data-price="' . esc_attr($seat['price']) . '" 
                                                         data-seat-num="' . esc_attr($seat['seat_number']) . '" 
+                                                        data-tableBind="' . esc_attr( $tableBind ) . '"
                                                         style="
                                                             width: ' . $width . 'px;
                                                             height: ' . $height . 'px;
@@ -143,6 +132,34 @@
                                                     </div>';
                                 }
                             }
+
+                    if ( is_array( $dynamic_shapes ) && count( $dynamic_shapes ) > 0 ) {
+//                        error_log( print_r( [ '$data_tableBindIds' =>$data_tableBindIds ], true ) );
+
+
+                        foreach ( $dynamic_shapes as $dynamic_shape ) {
+                           /* if( in_array( $dynamic_shape['tableBindID'], $data_tableBindIds)){
+                                $shape_class = 'mptrs_selectedDynamicShape';
+                            }else{
+                                $shape_class = 'mptrs_dynamicShape';
+                            }*/
+
+                            $shape_class = 'mptrs_dynamicShape';
+
+                            $shape_rotate_deg = isset( $dynamic_shape['shapeRotateDeg'] ) ? $dynamic_shape['shapeRotateDeg'] : 0;
+                            $custom_content .= '<div id="'.esc_attr( $dynamic_shape['tableBindID'] ).'" class="'.$shape_class.'" style=" 
+                                                            left: ' . esc_attr( $dynamic_shape['textLeft']  - $leastLeft ) . 'px; 
+                                                            top: ' . esc_attr( $dynamic_shape['textTop']  - $leastTop ) . 'px; 
+                                                            width: ' . esc_attr( $dynamic_shape['width'] ) . 'px;
+                                                            height: ' . esc_attr( $dynamic_shape['height'] ) . 'px;
+                                                            background-color: ' . esc_attr( $dynamic_shape['backgroundColor'] ).'; 
+                                                            border-radius: ' . esc_attr( $dynamic_shape['borderRadius'] ).';
+                                                            clip-path: ' . esc_attr( $dynamic_shape['clipPath'] ).';
+                                                            transform: rotate(' . $shape_rotate_deg . 'deg);
+                                                        ">
+                                                        </div>';
+                        }
+                    }
 
                             $custom_content .= '
                         </div>

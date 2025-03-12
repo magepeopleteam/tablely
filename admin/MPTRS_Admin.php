@@ -25,6 +25,7 @@
 				//*************Global Settings*****************//
 				require_once MPTRS_PLUGIN_DIR . '/admin/global/MPTRS_Setting_API.php';
 				require_once MPTRS_PLUGIN_DIR . '/admin/global/MPTRS_Settings_Global.php';
+//                require_once MPTRS_PLUGIN_DIR . '/admin/global/MPTRS_Cart_Order_Data_Display.php';
 				//*************Service Settings*****************//
 				require_once MPTRS_PLUGIN_DIR . '/admin/settings/MPTRS_Settings.php';
 				require_once MPTRS_PLUGIN_DIR . '/admin/settings/MPTRS_General_Settings.php';
@@ -35,6 +36,8 @@
 				require_once MPTRS_PLUGIN_DIR . '/admin/settings/MPTRS_Faq_Settings.php';
 				require_once MPTRS_PLUGIN_DIR . '/admin/settings/MPTRS_Seat_Mapping_Settings.php';
 				require_once MPTRS_PLUGIN_DIR . '/admin/settings/MPTRS_Get_Data_Ajax.php';
+                require_once MPTRS_PLUGIN_DIR . '/admin/settings/MPTRS_Cart_Order_Data_Display.php';
+
 			}
 			public function add_dummy_data() {
 				new MPTRS_Dummy_Import();

@@ -29,39 +29,63 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
         }
 
         function mptrs_add_food_items_to_cart() {
-            if (!WC()->cart) {
-                wp_send_json_error(['message' => 'WooCommerce cart is not initialized.']);
-                return;
+
+            if ( !isset($_POST['post_id'], $_POST['menu'], $_POST['seats'], $_POST['bookedSeatName'], $_POST['price'], $_POST['quantity'])) {
+                wp_send_json_error('Missing required data.');
             }
 
-            if (!isset($_POST['mptrs_item_id']) || !isset($_POST['mptrs_item_name']) || !isset($_POST['mptrs_item_price'])) {
-                wp_send_json_error(['message' => 'Missing required parameters']);
-                return;
-            }
-            if (!WC()->cart) {
-                wc_load_cart();
+            $post_id = intval( sanitize_text_field( $_POST['post_id'] ) );
+
+            $post_id = get_post_meta( $post_id, 'link_wc_product', true ) ;
+
+            $get_food_menu = get_option( '_mptrs_food_menu' );
+            $ordered_menu_key = sanitize_text_field( $_POST['menu'] );
+
+            $ordered_menu_key = json_decode( stripslashes( $ordered_menu_key ), true);
+            $transformed_menu = [];
+
+            $menu = '';
+            foreach ($ordered_menu_key as $key => $value) {
+
+                if( isset( $get_food_menu[ $key ] ) ) {
+                    $menu .= 'Name: '.$get_food_menu[ $key ]['menuName']. ' Person:'.$get_food_menu[ $key ]['numPersons'].' Quantity:'.$value['menuCount'].' ';
+                    $menu .= ', ';
+                }
             }
 
-            $custom_product_id = 127; // A dummy product ID (must exist in WooCommerce)
+            $mptrs_order_date = isset( $_POST['mptrs_order_date'] ) ?  sanitize_text_field( $_POST['mptrs_order_date'] ) : '';
+            $mptrs_order_time = isset( $_POST['mptrs_order_time'] ) ? sanitize_text_field( $_POST['mptrs_order_time'] ) : '';
+
+            $seats = json_decode( stripslashes( sanitize_text_field( $_POST['seats'] ) ), true);
+            $bookedSeatName = json_decode( stripslashes( sanitize_text_field( $_POST['bookedSeatName'] ) ), true);
+            $price = floatval( sanitize_text_field($_POST['price'] ) );
+            $quantity = intval( sanitize_text_field($_POST['quantity'] ) );
+            $mptrs_user_details = '';
+
+            if (!class_exists('WC_Cart')) {
+                wp_send_json_error('WooCommerce is not active.');
+            }
 
             $cart_item_data = [
-                'mptrs_item_id'    => sanitize_text_field($_POST['mptrs_item_id']),
-                'mptrs_item_name'  => sanitize_text_field($_POST['mptrs_item_name']),
-                'mptrs_item_price' => floatval($_POST['mptrs_item_price']),
-                'mptrs_item_image' => esc_url($_POST['mptrs_item_image']),
+                'mptrs_item_id' => $post_id,
+                'food_menu' => $menu,
+                'booking_seat_ids' => $seats,
+                'booking_seats' => $bookedSeatName,
+                'price' => $price,
+                'mptrs_order_date' => $mptrs_order_date,
+                'mptrs_order_time' => $mptrs_order_time,
+                'mptrs_user_details' => $mptrs_user_details,
             ];
+            WC()->cart->empty_cart();
 
-            // Add the item to the WooCommerce cart
-            $cart_item_key = WC()->cart->add_to_cart($custom_product_id, 1, 0, [], $cart_item_data);
-
+            $cart_item_key = WC()->cart->add_to_cart( $post_id, $quantity, 0, [], $cart_item_data );
             if ($cart_item_key) {
-                wp_send_json_success(['message' => 'Item added to cart']);
+                wp_send_json_success('Item added to cart.');
             } else {
-                wp_send_json_error(['message' => 'Failed to add item to cart']);
+                wp_send_json_error('Failed to add to cart.');
             }
+
         }
-
-
         public function mptrs_set_order(){
             $result = 0;
 //            $seat_booking_data = $seat_booking_data = array();
