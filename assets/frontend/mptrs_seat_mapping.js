@@ -212,7 +212,7 @@ jQuery(document).ready(function ($) {
 
     let disabledDates = ["2025-03-20", "2025-03-25", "2025-02-26"];
     mptrs_datePicker( disabledDates );
-    $(document).on('click',".mptrs_OrderPlaceBtn",function () {
+    $(document).on('click',".mptrs_OrderPlaceBtn_old",function () {
         let orderPostClickedId = $(this).attr('id').trim();
         let orderPostId = orderPostClickedId.split('-');
         orderPostId = orderPostId[1];
@@ -247,26 +247,18 @@ jQuery(document).ready(function ($) {
 
     });
 
-    $(document).on('click',".mptrs_checkoutManage",function () {
+    $(document).on('click',".mptrs_dineInOrderPlaceBtn",function () {
 
         let mptrs_totalPrices = $("#mptrs_totalPrice").val().trim();
         let mptrs_order_time = $('.mptrs_time_button.active').data('time');
         let mptrs_order_date = $("#mptrs_date").val().trim();
         let postId = $("#mptrs_getPost").val().trim();
 
-        let itemID = 100;
-        let itemName = 'new name';
-        let itemPrice = 200 ;
-        let itemImage = '';
-
-
         let button = $(this);
         let post_id = postId;
         let menu = JSON.stringify( addToCartData ) ;
         let seats = JSON.stringify( seatBooked ) ;
         let bookedSeatName =  JSON.stringify( seatBookedName );
-
-        let price = 6000; // Total price
         let quantity = 300; // Total quantity
 
         $.ajax({
@@ -289,7 +281,11 @@ jQuery(document).ready(function ($) {
             success: function (response) {
                 if (response.success) {
                     button.text('Added to Cart ✅');
-                    window.location.href = '/mage_people/checkout/';
+                    setTimeout(  function () {
+                        button.text('Process Checkout')
+                    },1000);
+
+                    window.location.href = mptrs_ajax.site_url+'/checkout/';
                 } else {
                     alert(response.data);
                     button.text('Add to Cart');
@@ -592,9 +588,7 @@ jQuery(document).ready(function ($) {
             menuAddedKey: menuAddedKey,
         };
 
-        addToCartData[menuAddedKey] = {
-            menuCount: 1
-        };
+        addToCartData[menuAddedKey] = 1;
 
         // Create flying effect
         let flyItem = animationDiv.clone().css({

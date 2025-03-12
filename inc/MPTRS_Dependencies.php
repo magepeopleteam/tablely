@@ -98,7 +98,8 @@
 				wp_enqueue_script( 'mptrs_registration', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_registration.js', [ 'jquery' ], time(), true );
 				wp_localize_script( 'mptrs_registration', 'mptrs_ajax', array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
-					'nonce'    => wp_create_nonce( 'mptrs_nonce' )
+					'nonce'    => wp_create_nonce( 'mptrs_nonce' ),
+                    'site_url' => get_site_url(),
 				) );
 				do_action( 'add_mptrs_frontend_script' );
 			}

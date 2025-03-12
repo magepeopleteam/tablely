@@ -18,10 +18,10 @@
             <div class="popup-content">
                 <span class="close-btn">&times;</span>
                 <div class="mptrs_seatMappedHolder">
-                    <span class="mptrs_selectSeatText">Choose a Seat, What's Your Choice?</span>
+                    <span class="mptrs_selectSeatText"><?php esc_html_e( 'Choose a Seat, What\'s Your Choice?', 'tablely' ); ?></span>
                     <div class="mptrs_seatMapDisplay" id="mptrs_seatMapDisplay"></div>
                 </div>
-                <div class="mptrs_OrderPlaceBtn" id="mptrs_OrderPlaceBtn-<?php echo esc_attr( $post_id )?>">Done</div>
+                <div class="mptrs_dineInOrderPlaceBtn" id="mptrs_OrderPlaceBtn-<?php echo esc_attr( $post_id )?>"><?php esc_html_e( 'Process Checkout', 'tablely' )?></div>
             </div>
         </div>
 
@@ -162,8 +162,6 @@
                         </div>
                         <button id="mptrs_search" class="mptrs_button">Find a time</button>
                         <div class="mptrs_time_container"></div>
-
-                        <div class="mptrs_checkoutManage" name="add-to-cart" value="<?php echo esc_attr( $post_id )?>" id="mptrs_checkoutManage<?php echo esc_attr( $post_id )?>">Process Checkout</div>
                     </div>
                 </div>
                 <div class="mptrs_seatMappedHolder" id="mptrs_deliveryTabHolder" style="display: none">
@@ -172,6 +170,8 @@
                         <input type="text" class="mptrs_input-field" id="street-address" placeholder="Enter your street address">
                         <input type="text" class="mptrs_input-field" id="postal-code" placeholder="Postal Code">
                     </div>
+                    <div class="mptrs_checkoutManage" name="add-to-cart" value="<?php echo esc_attr( $post_id )?>" id="mptrs_checkoutManage<?php echo esc_attr( $post_id )?>">Process Checkout</div>
+
                 </div>
                 <div class="mptrs_seatMappedHolder" id="mptrs_takeawayTabHolder" style="display: none">
                     <div class="mptrs_orderCardTakeawayHolder">

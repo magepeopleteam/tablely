@@ -747,15 +747,14 @@
     border: 1px solid #ccc;
     border-radius: 5px;
 }
-.mptrs_OrderPlaceBtn{
+.mptrs_OrderPlaceBtn, .mptrs_dineInOrderPlaceBtn{
     display: block;
     padding: 5px 15px;
     background-color: #444444;
     cursor: pointer;
     color: #fff;
-    width: 50px;
     float: left;
-    margin-left: calc(50% - 25px);
+    margin-left: calc(50% - 80px);
     border-radius: 5px;
 }
 

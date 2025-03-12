@@ -34,21 +34,20 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                 wp_send_json_error('Missing required data.');
             }
 
-            $post_id = intval( sanitize_text_field( $_POST['post_id'] ) );
+            $original_post_id = intval( sanitize_text_field( $_POST['post_id'] ) );
 
-            $post_id = get_post_meta( $post_id, 'link_wc_product', true ) ;
+            $post_id = get_post_meta( $original_post_id, 'link_wc_product', true ) ;
 
             $get_food_menu = get_option( '_mptrs_food_menu' );
             $ordered_menu_key = sanitize_text_field( $_POST['menu'] );
 
             $ordered_menu_key = json_decode( stripslashes( $ordered_menu_key ), true);
-            $transformed_menu = [];
 
             $menu = '';
             foreach ($ordered_menu_key as $key => $value) {
 
                 if( isset( $get_food_menu[ $key ] ) ) {
-                    $menu .= 'Name: '.$get_food_menu[ $key ]['menuName']. ' Person:'.$get_food_menu[ $key ]['numPersons'].' Quantity:'.$value['menuCount'].' ';
+                    $menu .= 'Name: '.$get_food_menu[ $key ]['menuName']. ' Person:'.$get_food_menu[ $key ]['numPersons'].' Quantity:'.$value.' ';
                     $menu .= ', ';
                 }
             }
@@ -67,6 +66,7 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             }
 
             $cart_item_data = [
+                'mptrs_original_post_id' => $original_post_id,
                 'mptrs_item_id' => $post_id,
                 'food_menu' => $menu,
                 'booking_seat_ids' => $seats,
@@ -132,6 +132,8 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                 $get_date = isset( $_POST['get_date']) ? sanitize_text_field( $_POST['get_date'] ) : '';
                 $orderDateFormatted = date('d_m_y', strtotime( $get_date ) );
 
+
+                $orderPostId = get_post_meta( $orderPostId, 'link_wc_product', true ) ;
                 $seat_booking_data = get_post_meta( $orderPostId, '_mptrs_seat_booking', true );
                 if( !is_array( $seat_booking_data ) && empty( $seat_booking_data ) ){
                     $seat_booking_data = [];
