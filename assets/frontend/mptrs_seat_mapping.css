@@ -72,6 +72,30 @@
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.mptrs_orderDetailsPopup{
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}
+.mptrs_orderDetails {
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+.mptrs_orderAddedTable {
+    width: 50%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+.mptrs_orderAddedTable th, .mptrs_orderAddedTable td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+.mptrs_orderAddedTable th {
+    background-color: #f4f4f4;
+}
+
 /* Close Button */
 .close-btn {
     position: absolute;
@@ -91,6 +115,27 @@
     width: 100%;
     margin: auto;
 }
+
+.mptrs_popUpInfoHolder {
+    display: flex;
+    flex-direction: column; /* Arrange children in a row */
+    width: 100%;
+    gap: 10px; /* Optional spacing between children */
+}
+
+.mptrs_seatMapDisplay {
+    flex-grow: 1;
+    max-width: 100%;
+    background-color: #f0f0f0;
+}
+
+.mptrs_orderInfoHolder {
+    display: flex;
+    width: 100%;
+    /*background-color: #ddd;*/
+    margin-bottom: 20px;
+}
+
 #mptrs_seatGrid {
     position: relative;
     width: 100%;

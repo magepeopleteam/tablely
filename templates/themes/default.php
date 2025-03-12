@@ -19,7 +19,39 @@
                 <span class="close-btn">&times;</span>
                 <div class="mptrs_seatMappedHolder">
                     <span class="mptrs_selectSeatText"><?php esc_html_e( 'Choose a Seat, What\'s Your Choice?', 'tablely' ); ?></span>
-                    <div class="mptrs_seatMapDisplay" id="mptrs_seatMapDisplay"></div>
+                    <div class="mptrs_popUpInfoHolder">
+                        <div class="mptrs_seatMapDisplay" id="mptrs_seatMapDisplay"></div>
+                        <div class="mptrs_orderInfoHolder">
+<!--                            <span class="mptrs_orderDetailsShow">Order Details</span>-->
+                            <div class="mptrs_orderDetailsPopup" id="mptrs_orderDetailsPopup">
+                                <table class="mptrs_orderAddedTable" id="mptrs_orderAddedTable">
+                                    <thead>
+                                    <tr>
+                                        <th>Menu Item</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                                <!--<div class="mptrs_orderDetails">
+                                    <p>Order Date: <span class="mptrs_orderDate"></span></p>
+                                    <p>Ordered Time: <span class="mptrs_orderTime"></span></p>
+                                    <p>Total Price: <span class="mptrs_totalPrice"></span></p>
+                                </div>-->
+                                <table class="mptrs_orderAddedTable" id="mptrs_orderAddedDetails">
+                                    <thead>
+                                    <tr>
+                                        <th>Order Date</th>
+                                        <th>Ordered Time</th>
+                                        <th>Total Price</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="mptrs_dineInOrderPlaceBtn" id="mptrs_OrderPlaceBtn-<?php echo esc_attr( $post_id )?>"><?php esc_html_e( 'Process Checkout', 'tablely' )?></div>
             </div>

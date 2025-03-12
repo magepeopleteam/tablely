@@ -638,17 +638,60 @@ jQuery(document).ready(function ($) {
         $menuItem.hide().fadeIn(1000);
     }
 
+    function mptrs_display_ordered_menu( get_time ){
+        let menuItems = [];
+        let quantities = [];
+        $(".mptrs_addedMenuName").each(function () {
+            let text = $(this).text().trim(); // Get text and trim spaces
+            if (text) {
+                menuItems.push(text); // Add to array
+            }
+        });
+        $(".mptrs_menuAddedCartItem").each(function () {
+            let parentCartItem = $(this).closest(".mptrs_menuAddedCartItem"); // Find the closest parent
+            let quantity = parentCartItem.find(".mptrs_quantity").text().trim(); // Get quantity text
+
+            quantities.push(quantity);
+        });
+
+        let tableBody = $("#mptrs_orderAddedTable tbody");
+        tableBody.empty();
+        for (let i = 0; i < menuItems.length; i++) {
+            let row = `<tr>
+                    <td>${menuItems[i]}</td>
+                    <td>${quantities[i]}</td>
+                </tr>`;
+
+            tableBody.append(row);
+        }
+        let details = $("#mptrs_orderAddedDetails");
+
+        let totalPrices = $("#mptrs_totalPrice").val().trim();
+        // let order_time = $('.mptrs_time_button.active').data('time');
+        let order_date = $("#mptrs_date").val().trim();
+        let detailsRow = `<tr>
+                            <td>${order_date}</td>
+                            <td>${get_time}</td>
+                            <td>${totalPrices}</td>
+                        </tr>`;
+        details.append(detailsRow);
+    }
+
+
     // Handle time selection
     $(document).on('click',".mptrs_time_button", function () {
+
         $(".mptrs_time_button").removeClass("active");
-        $(this).addClass("active");
-        $("#seatPopup").fadeIn();
         let get_postId =  $("#mptrs_getPost").val().trim();
         let get_time = $(this).data('time');
         let get_date = $("#mptrs_date").val().trim();
-        if( get_time === '' ){
+        if( !get_date ){
             alert('Select Date First!');
         }else{
+            mptrs_display_ordered_menu( get_time );
+            // console.log( mptrs_menuNamesPopup, mptrs_menuQuantityPopup );
+            $(this).addClass("active");
+            $("#seatPopup").fadeIn();
             $.ajax({
                 url: mptrs_ajax.ajax_url,
                 type: 'POST',
@@ -661,6 +704,7 @@ jQuery(document).ready(function ($) {
                 },
                 dataType: 'json',
                 success: function (response) {
+                    $(this).addClass("active");
                     // mptrs_display_food_menu_for_order( response.data.get_food_menu )
 
                     seatBooked = [];
