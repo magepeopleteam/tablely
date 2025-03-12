@@ -261,7 +261,7 @@ jQuery(document).ready(function ($) {
 
 
         let button = $(this);
-        let post_id = 1072;
+        let post_id = postId;
         let menu = JSON.stringify( addToCartData ) ;
         let seats = JSON.stringify( seatBooked ) ;
         let bookedSeatName =  JSON.stringify( seatBookedName );

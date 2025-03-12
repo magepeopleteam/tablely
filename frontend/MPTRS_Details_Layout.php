@@ -78,7 +78,8 @@
                                 if ( isset($seat["left"] ) ) {
 
 //                                    error_log( print_r( [ 'data_tableBind' => $seat['data_tableBind'] ], true ) );
-                                    if( $seat['data_tableBind'] !== '' ){
+                                   $data_tableBind = isset( $seat['data_tableBind'] ) ? $seat['data_tableBind'] : '';
+                                    if( $data_tableBind !== '' ){
                                         $data_tableBindIds[] = $seat['data_tableBind'];
                                     }
 
