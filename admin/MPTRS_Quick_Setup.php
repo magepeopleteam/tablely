@@ -17,6 +17,7 @@
 					add_submenu_page( 'edit.php?post_type=mptrs_item', esc_html__( 'Quick Setup', 'tablely' ), '<span style="color:#10dd10">' . esc_html__( 'Quick Setup', 'tablely' ) . '</span>', 'manage_options', 'mptrs_quick_setup', array( $this, 'quick_setup' ) );
 					add_submenu_page( 'mptrs_item', esc_html__( 'Quick Setup', 'tablely' ), '<span style="color:#10dd10">' . esc_html__( 'Quick Setup', 'tablely' ) . '</span>', 'manage_options', 'mptrs_quick_setup', array( $this, 'quick_setup' ) );
                     add_submenu_page( 'edit.php?post_type=mptrs_item', esc_html__( 'New Food Menu', 'tablely' ), esc_html__( 'New Food Menu', 'tablely' ), 'manage_options', 'mptrs_new_food_menu', array( $this, 'mptrs_new_food_menu_callback' ) );
+                    add_submenu_page( 'edit.php?post_type=mptrs_item', esc_html__( 'Order Lists', 'tablely' ), esc_html__( 'Order Lists', 'tablely' ), 'manage_options', 'mptrs_order', array( $this, 'mptrs_all_order_callback' ) );
 
                 } else {
 					add_menu_page( esc_html__( 'Tablely', 'tablely' ), esc_html__( 'Tablely', 'tablely' ), 'manage_options', 'mptrs_item', array( $this, 'quick_setup' ), 'dashicons-admin-site-alt2', 6 );
@@ -26,6 +27,126 @@
                 }
 			}
 
+
+            public function mptrs_all_order_callback() {
+                $args                 = array(
+                    'post_type'      => 'mptrs_order',
+                    'order'          => 'DESC',
+                    'posts_per_page' => - 1
+                );
+                $query                = new WP_Query( $args );
+                ?>
+                <div class="rbfw_order_page_wrap wrap">
+                    <h1 class="awesome-heading"><?php esc_html_e( 'Order List', 'booking-and-rental-manager-for-woocommerce' ); ?></h1>
+                    <input type="text" id="search" class="search-input awesome-search" placeholder="<?php esc_attr_e( 'Search by order id or customer name..', 'booking-and-rental-manager-for-woocommerce' ); ?>"/>
+                    <table class="rbfw_order_page_table">
+                        <thead>
+                        <tr>
+                            <th><?php esc_html_e( 'Order', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                            <th><?php esc_html_e( 'Order Type', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                            <th><?php esc_html_e( 'Billing Name', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                            <th><?php esc_html_e( 'Order Created Date', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                            <th><?php esc_html_e( 'Booking Date', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                            <th><?php esc_html_e( 'Booking Time', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                            <th><?php esc_html_e( 'Status', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                            <th><?php esc_html_e( 'Total', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                            <th style="display: none"><?php esc_html_e( 'Action', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                        </tr>
+                        </thead>
+                        <tbody id="order-list">
+                        <?php if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post();
+                            global $post;
+                            $post_id             = $post->ID;
+                            $billing_name        = get_post_meta( $post_id, '_mptrs_customer_name', true );
+                            $ordered_type        = get_post_meta( $post_id, '_mptrs_order_type', true );
+                            $rbfw_order_id       = get_post_meta( $post_id, '_mptrs_order_id', true );
+                            $order = wc_get_order($rbfw_order_id);
+                            $status              = ( $order && $order->get_status() === 'trash')? $order->get_status() : get_post_meta( $post_id, '_mptrs_order_status', true );
+                            $total_price         = get_post_meta( $post_id, '_mptrs_order_total', true );
+                            $ticket_infos        = get_post_meta( $post_id, '_mptrs_ordered_food_menu', true );
+                            $ticket_info_array   = maybe_unserialize( $ticket_infos );
+                            $rbfw_start_datetime = get_post_meta( $post_id, '_mptrs_order_date', true );
+                            $rbfw_end_datetime = get_post_meta( $post_id, '_mptrs_order_time', true );
+
+                            ?>
+                            <tr class="order-row">
+                                <td><?php echo esc_html( $rbfw_order_id ); ?></td>
+                                <td><?php echo esc_html( $ordered_type ); ?></td>
+                                <td><?php echo esc_html( $billing_name ); ?></td>
+                                <td><?php echo esc_html( get_the_date( 'F j, Y' ) . ' ' . get_the_time() ); ?></td>
+                                <td><?php echo esc_html( ! empty( $rbfw_start_datetime ) ? date_i18n( 'F j, Y g:i a', strtotime( $rbfw_start_datetime ) ) : '' ); ?></td>
+                                <td><?php echo esc_html( ! empty( $rbfw_end_datetime ) ? date_i18n( 'F j, Y g:i a', strtotime( $rbfw_end_datetime ) ) : '' ); ?></td>
+                                <td><span class="rbfw_order_status <?php echo esc_attr( $status ); ?>"><?php echo esc_html( $status ) ;  ?></span></td>
+                                <td><?php echo wp_kses_post( wc_price( $total_price ) ); ?></td>
+                                <?php if ( function_exists( 'rbfw_pro_tab_menu_list' ) ) { ?>
+                                    <td style="display: none">
+                                        <a href="javascript:void(0);" class="rbfw_order_view_btn" data-post-id="<?php echo esc_attr( $post_id ); ?>">
+                                            <i class="fas fa-pen-to-square"></i>
+                                            <?php esc_html_e( 'View Details', 'booking-and-rental-manager-for-woocommerce' ); ?>
+                                        </a>
+                                        <a href="<?php echo esc_url( admin_url( 'post.php?post=' . $post_id . '&action=edit' ) ); ?>" class="rbfw_order_edit_btn">
+                                            <i class="fas fa-pen-to-square"></i>
+                                            <?php esc_html_e( 'Order status changes', 'booking-and-rental-manager-for-woocommerce' ); ?>
+                                        </a>
+                                    </td>
+                                <?php
+                                } else {
+                                ?>
+                                    <td style="display: none">
+                                        <a href="javascript:void(0);" class="rbfw_order_view_btn pro-overlay">
+                                            <i class="fas fa-pen-to-square"></i>
+                                            <?php esc_html_e( 'View Details', 'booking-and-rental-manager-for-woocommerce' ); ?>
+                                        </a>
+                                        <a href="javascript:void(0);" class="rbfw_order_edit_btn pro-overlay">
+                                            <i class="fas fa-pen-to-square"></i>
+                                            <?php esc_html_e( 'Order status changes', 'booking-and-rental-manager-for-woocommerce' ); ?>
+                                        </a>
+                                    </td>
+                                    <script>
+                                        document.querySelectorAll('.pro-overlay').forEach(function (button) {
+                                            button.replaceWith(button.cloneNode(true));
+                                        });
+
+                                        document.querySelectorAll('.pro-overlay').forEach(function (button) {
+                                            button.addEventListener('click', function (event) {
+                                                event.preventDefault(); // Prevent default link behavior
+                                                window.open('<?php echo esc_js( esc_url( 'https://mage-people.com/product/booking-and-rental-manager-for-woocommerce/' ) ); ?>', '_blank');
+                                            });
+                                        });
+                                    </script>
+                                    <?php
+                                }
+                                ?>
+                            </tr>
+                            <tr id="order-details-<?php echo esc_attr( $post_id ); ?>" class="order-details" style="display: none;">
+                                <td colspan="12">
+                                    <div class="order-details-content"></div>
+                                </td>
+                            </tr>
+                        <?php endwhile; else : ?>
+                            <tr>
+                                <td colspan="12"><?php esc_html_e( 'Sorry, No data found!', 'booking-and-rental-manager-for-woocommerce' ); ?></td>
+                            </tr>
+                        <?php endif;
+                        wp_reset_postdata(); ?>
+                        </tbody>
+                    </table>
+                    <div id="loader" style="display: none;">
+                        <div class="loader"></div> <!-- Loader element -->
+                    </div>
+                    <label for="posts-per-page"><?php esc_html_e( 'Posts per Page:', 'booking-and-rental-manager-for-woocommerce' ); ?></label>
+                    <!--<select id="posts-per-page">
+                            <option value="2" <?php /*selected( $this->posts_per_page, 2 ); */?>>2</option>
+                            <option value="5" <?php /*selected( $this->posts_per_page, 5 ); */?>>5</option>
+                            <option value="10" <?php /*selected( $this->posts_per_page, 10 ); */?>>10</option>
+                            <option value="20" <?php /*selected( $this->posts_per_page, 20 ); */?>>20</option>
+                            <option value="25" <?php /*selected( $this->posts_per_page, 25 ); */?>>25</option>
+                            <option value="30" <?php /*selected( $this->posts_per_page, 30 ); */?>>30</option>
+                        </select>-->
+                    <div id="pagination" class="pagination"></div>
+                </div>
+                <?php
+            }
 
             public function mptrs_new_food_menu_callback(){
                 $existing_menus = get_option( '_mptrs_food_menu' );

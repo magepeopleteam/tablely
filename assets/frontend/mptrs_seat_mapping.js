@@ -249,15 +249,36 @@ jQuery(document).ready(function ($) {
 
     $(document).on('click',".mptrs_dineInOrderPlaceBtn",function () {
 
+        let orderId = $(this).attr('id').trim();
         let mptrs_totalPrices = $("#mptrs_totalPrice").val().trim();
         let mptrs_order_time = $('.mptrs_time_button.active').data('time');
         let mptrs_order_date = $("#mptrs_date").val().trim();
         let postId = $("#mptrs_getPost").val().trim();
 
+        let seats = '';
+        let mptrs_locations = '';
+        let mptrs_location = [];
+        let mptrs_orderType = '';
+
+        if( orderId === 'mptrs_dineInOrderPlaceBtn' ){
+            seats = JSON.stringify( seatBooked );
+            mptrs_orderType = 'dine_in';
+        }else if( orderId === 'mptrs_deliveryOrderPlaceBtn' ){
+            let mptrs_Location = $("#mptrsLocation").val().trim();
+            let mptrs_StreetAddress = $("#mptrsStreetAddress").val().trim();
+            mptrs_location.push( mptrs_Location, mptrs_StreetAddress);
+            mptrs_locations = JSON.stringify( mptrs_location );
+            // console.log( mptrs_location );
+
+            mptrs_orderType = 'delivery';
+        }else{
+            mptrs_orderType = 'take_away';
+        }
+
+
         let button = $(this);
         let post_id = postId;
         let menu = JSON.stringify( addToCartData ) ;
-        let seats = JSON.stringify( seatBooked ) ;
         let bookedSeatName =  JSON.stringify( seatBookedName );
         let quantity = 300; // Total quantity
 
@@ -267,8 +288,10 @@ jQuery(document).ready(function ($) {
             data: {
                 action: 'mptrs_add_food_items_to_cart',
                 post_id: post_id,
+                mptrs_orderType: mptrs_orderType,
                 menu: menu ,
                 seats: seats,
+                mptrs_locations: mptrs_locations,
                 bookedSeatName: bookedSeatName,
                 price: mptrs_totalPrices,
                 quantity: quantity,

@@ -53,7 +53,7 @@
                     </div>
 
                 </div>
-                <div class="mptrs_dineInOrderPlaceBtn" id="mptrs_OrderPlaceBtn-<?php echo esc_attr( $post_id )?>"><?php esc_html_e( 'Process Checkout', 'tablely' )?></div>
+                <div class="mptrs_dineInOrderPlaceBtn" id="mptrs_dineInOrderPlaceBtn"><?php esc_html_e( 'Process Checkout', 'tablely' )?></div>
             </div>
         </div>
 
@@ -197,17 +197,48 @@
                     </div>
                 </div>
                 <div class="mptrs_seatMappedHolder" id="mptrs_deliveryTabHolder" style="display: none">
-                    <div class="mptrs_orderCardDeliveryHolder">
-                        <input type="text" class="mptrs_input-field" id="location" placeholder="Location">
-                        <input type="text" class="mptrs_input-field" id="street-address" placeholder="Enter your street address">
-                        <input type="text" class="mptrs_input-field" id="postal-code" placeholder="Postal Code">
+                    <div class="mptrs_orderCardHolder" id="mptrs_orderCardHolder">
+                        <h2 class="mptrs_title">Make a reservation</h2>
+                        <div class="mptrs_formGroup">
+                            <label for="mptrs_date">Check in</label>
+                            <div class="mptrs_input_wrapper">
+                                <div class="mptrs_DatePickerContainer" style="display: block">
+                                    <input type="text" id="mptrs_date" placeholder="Select a Date">
+                                    <span class="mptrs_calendarIcon">&#128197;</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="mptrs_search" class="mptrs_button">Find a time</button>
+                        <div class="mptrs_time_container"></div>
                     </div>
-                    <div class="mptrs_checkoutManage" name="add-to-cart" value="<?php echo esc_attr( $post_id )?>" id="mptrs_checkoutManage<?php echo esc_attr( $post_id )?>">Process Checkout</div>
+                    <div class="mptrs_orderCardDeliveryHolder">
+                        <input type="text" class="mptrs_input-field" id="mptrsLocation" placeholder="Location">
+                        <input type="text" class="mptrs_input-field" id="mptrsStreetAddress" placeholder="Enter your street address">
+                        <div class="mptrs_dineInOrderPlaceBtn" id="mptrs_deliveryOrderPlaceBtn">Process Checkout</div>
+                    </div>
+
 
                 </div>
                 <div class="mptrs_seatMappedHolder" id="mptrs_takeawayTabHolder" style="display: none">
+                    <div class="mptrs_orderCardHolder" id="mptrs_orderCardHolder">
+                        <h2 class="mptrs_title">Make a reservation</h2>
+                        <div class="mptrs_formGroup">
+                            <label for="mptrs_date">Check in</label>
+                            <div class="mptrs_input_wrapper">
+                                <div class="mptrs_DatePickerContainer" style="display: block">
+                                    <input type="text" id="mptrs_date" placeholder="Select a Date">
+                                    <span class="mptrs_calendarIcon">&#128197;</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="mptrs_search" class="mptrs_button">Find a time</button>
+                        <div class="mptrs_time_container"></div>
+                    </div>
                     <div class="mptrs_orderCardTakeawayHolder">
-                        <div class="">Takeaway</div>
+                        <div class="mptrs_orderCardDeliveryHolder">
+                            <input type="text" class="mptrs_input-field" id="mptrsLocation" placeholder="Location">
+                            <div class="mptrs_dineInOrderPlaceBtn" id="mptrs_takeawayOrderPlaceBtn">Process Checkout</div>
+                        </div>
                     </div>
 
                 </div>
