@@ -633,6 +633,8 @@
 .mptrs_orderCardDeliveryHolder,
 .mptrs_orderCardTakeawayHolder
 {
+    display: flex;
+    flex-direction: column;
     background: white;
     margin-bottom: 10px;
     padding: 10px;
@@ -996,7 +998,7 @@
 .mptrs_totalPricetext{
     display: flex;
     position: absolute;
-    left: 20px;
+    left: 35px;
     color: #f54040;
 }
 

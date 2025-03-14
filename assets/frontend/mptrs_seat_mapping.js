@@ -334,7 +334,7 @@ jQuery(document).ready(function ($) {
                 return [true, ""];
             }
         });
-        $(".mptrs_calendarIcon").click(function () {
+        $(document).on('click',".mptrs_calendarIcon",function () {
             $("#mptrs_date").focus();
         });
     }

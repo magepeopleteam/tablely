@@ -79,6 +79,7 @@
 				) );
 				do_action( 'add_mptrs_admin_script' );
                 wp_enqueue_style( 'mptrs_food_menu_data', MPTRS_PLUGIN_URL . '/assets/admin/mptrs_food_menu_data.css', [], time() );
+                wp_enqueue_style( 'mptrs_order_lists', MPTRS_PLUGIN_URL . '/assets/admin/mptrs_order_lists.css', [], time() );
 
                 wp_enqueue_style('create_seat_plan', MPTRS_PLUGIN_URL . '/assets/admin/create_seat_plan.css', [], time());
                 wp_enqueue_script('create_seat_plan', MPTRS_PLUGIN_URL . '/assets/admin/create_seat_plan.js', ['jquery'], time(), true);

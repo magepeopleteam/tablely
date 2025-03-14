@@ -167,4 +167,47 @@ function mptrs_load_sortable_datepicker(parent, item) {
         parent.find('.image_item').slideUp('fast');
         parent.find('.add_icon_image_button_area').slideDown('fast');
     });
+
+    $(document).on('change', '.mptrs_service_status', function () {
+        let mptrs_service_status_id = $(this).attr('id');
+        mptrs_service_status_id = mptrs_service_status_id.split('-');
+        let orderPostId = mptrs_service_status_id[1];
+        let selectedVal = $(this).val().trim();
+        $.ajax({
+            url: mptrs_admin_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_save_service_status_update',
+                nonce: mptrs_admin_ajax.nonce,
+                post_id: orderPostId,
+                selectedVal: selectedVal,
+            },
+            success: function (response) {
+                if ( response.data.success ) {
+                    alert(  response.data.message );
+                    // $('#post').off('submit').submit();
+                } else {
+                    alert('Error: ' + response.data.message);
+                }
+            },
+            error: function () {
+                alert('An unexpected error occurred.');
+            }
+        });
+    });
+
+    $(document).on("click", ".mptrs_order_type_item",function () {
+        $(".mptrs_order_type_item").removeClass('mptrs_active');
+        $(this).addClass('mptrs_active');
+        let filterValue = $(this).data("filter");
+
+
+        if (filterValue === "all") {
+            $(".mptrs_order_row").fadeIn();
+        } else {
+            $(".mptrs_order_row").hide().filter(`[ data-order_type_filter='${filterValue}']`).fadeIn();
+        }
+    });
+
+
 }(jQuery));

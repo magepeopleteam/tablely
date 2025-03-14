@@ -25,6 +25,9 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             add_action('wp_ajax_mptrs_add_food_items_to_cart', [$this, 'mptrs_add_food_items_to_cart'] );
             add_action('wp_ajax_nopriv_mptrs_add_food_items_to_cart', [$this, 'mptrs_add_food_items_to_cart'] );
 
+            add_action('wp_ajax_mptrs_save_service_status_update', [$this, 'mptrs_save_service_status_update'] );
+            add_action('wp_ajax_nopriv_mptrs_save_service_status_update', [$this, 'mptrs_save_service_status_update'] );
+
 
         }
 
@@ -265,6 +268,22 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                 'message' => 'Categories Data getting successfully.!',
                 'success' => $result,
                 'mptrs_categories' => $categories,
+            ]);
+        }
+
+        public function mptrs_save_service_status_update(){
+            $result = 0;
+
+            if ( isset($_POST['nonce']) && wp_verify_nonce( sanitize_text_field( $_POST['nonce'] ), 'mptrs_admin_nonce')) {
+                $post_id = isset( $_POST['post_id'] ) ? sanitize_text_field($_POST['post_id']) : '';
+                $service_status = isset( $_POST['selectedVal'] ) ? sanitize_text_field($_POST['selectedVal']) : '';
+                if(  $post_id !== '' && $service_status !== '' ){
+                    $result = update_post_meta( $post_id, '_mptrs_service_status', $service_status );
+                }
+            }
+            wp_send_json_success([
+                'message' => 'Service Status updated successfully.!',
+                'success' => $result,
             ]);
         }
 

@@ -28,7 +28,13 @@
 			}
 
 
-            public function mptrs_all_order_callback() {
+            public function mptrs_all_order_callback( $key ) {
+                $order_types = array(
+                        'dine_in' => 'Dine In',
+                        'delivery' => 'Delivery',
+                        'take_away' => 'Takeaway',
+                );
+
                 $args                 = array(
                     'post_type'      => 'mptrs_order',
                     'order'          => 'DESC',
@@ -36,10 +42,20 @@
                 );
                 $query                = new WP_Query( $args );
                 ?>
-                <div class="rbfw_order_page_wrap wrap">
-                    <h1 class="awesome-heading"><?php esc_html_e( 'Order List', 'booking-and-rental-manager-for-woocommerce' ); ?></h1>
-                    <input type="text" id="search" class="search-input awesome-search" placeholder="<?php esc_attr_e( 'Search by order id or customer name..', 'booking-and-rental-manager-for-woocommerce' ); ?>"/>
-                    <table class="rbfw_order_page_table">
+                <div class="mptrs_order_page_wrap wrap">
+                    <h1 class="mptrs_awesome-heading"><?php esc_html_e( 'Order List', 'booking-and-rental-manager-for-woocommerce' ); ?></h1>
+<!--                    <input type="text" id="search" class="search-input awesome-search" placeholder="--><?php //esc_attr_e( 'Search by order id or customer name..', 'booking-and-rental-manager-for-woocommerce' ); ?><!--"/>-->
+                    <div class="mptrs_orderTypeContainer">
+                        <?php
+                        if( is_array( $order_types ) && count( $order_types ) > 0 ){ ?>
+                            <div class="mptrs_order_type_item mptrs_active" data-filter="<?php echo __( 'all', 'tablely' )?>"><?php echo __( 'All', 'tablely' )?></div>
+                            <?php foreach( $order_types as $key => $order_type ){ ?>
+                                <div class="mptrs_order_type_item" data-filter="<?php echo esc_attr( $order_type )?>"><?php echo esc_attr( $order_type )?></div>
+                            <?php }
+                        }
+                        ?>
+                    </div>
+                    <table class="mptrs_order_page_table">
                         <thead>
                         <tr>
                             <th><?php esc_html_e( 'Order', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
@@ -48,7 +64,8 @@
                             <th><?php esc_html_e( 'Order Created Date', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
                             <th><?php esc_html_e( 'Booking Date', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
                             <th><?php esc_html_e( 'Booking Time', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
-                            <th><?php esc_html_e( 'Status', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                            <th><?php esc_html_e( 'Service Status', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                            <th><?php esc_html_e( 'Order Status', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
                             <th><?php esc_html_e( 'Total', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
                             <th style="display: none"><?php esc_html_e( 'Action', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
                         </tr>
@@ -56,35 +73,48 @@
                         <tbody id="order-list">
                         <?php if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post();
                             global $post;
+
                             $post_id             = $post->ID;
-                            $billing_name        = get_post_meta( $post_id, '_mptrs_customer_name', true );
-                            $ordered_type        = get_post_meta( $post_id, '_mptrs_order_type', true );
                             $rbfw_order_id       = get_post_meta( $post_id, '_mptrs_order_id', true );
                             $order = wc_get_order($rbfw_order_id);
-                            $status              = ( $order && $order->get_status() === 'trash')? $order->get_status() : get_post_meta( $post_id, '_mptrs_order_status', true );
+                            $billing_name        = get_post_meta( $post_id, '_mptrs_customer_name', true );
+                            $ordered_type        = get_post_meta( $post_id, '_mptrs_order_type', true );
+                            $ordered_type        = $order_types[$ordered_type];
+//                            $status              = ( $order && $order->get_status() === 'trash')? $order->get_status() : get_post_meta( $post_id, '_mptrs_order_status', true );
+                            $status              = ( $order )? $order->get_status() : get_post_meta( $post_id, '_mptrs_order_status', true );
                             $total_price         = get_post_meta( $post_id, '_mptrs_order_total', true );
                             $ticket_infos        = get_post_meta( $post_id, '_mptrs_ordered_food_menu', true );
                             $ticket_info_array   = maybe_unserialize( $ticket_infos );
                             $rbfw_start_datetime = get_post_meta( $post_id, '_mptrs_order_date', true );
                             $rbfw_end_datetime = get_post_meta( $post_id, '_mptrs_order_time', true );
+                            $rbfw_service_status = get_post_meta( $post_id, '_mptrs_service_status', true );
+                            $rbfw_service_status = empty( $rbfw_service_status ) ? 'In progress' : $rbfw_service_status;
+                            $rbfw_service_status_val = strtolower(str_replace(' ', '_', $rbfw_service_status ) );
 
                             ?>
-                            <tr class="order-row">
+                            <tr class="mptrs_order_row" data-order_type_filter="<?php echo esc_html( $ordered_type ); ?>">
                                 <td><?php echo esc_html( $rbfw_order_id ); ?></td>
                                 <td><?php echo esc_html( $ordered_type ); ?></td>
                                 <td><?php echo esc_html( $billing_name ); ?></td>
                                 <td><?php echo esc_html( get_the_date( 'F j, Y' ) . ' ' . get_the_time() ); ?></td>
                                 <td><?php echo esc_html( ! empty( $rbfw_start_datetime ) ? date_i18n( 'F j, Y g:i a', strtotime( $rbfw_start_datetime ) ) : '' ); ?></td>
                                 <td><?php echo esc_html( ! empty( $rbfw_end_datetime ) ? date_i18n( 'F j, Y g:i a', strtotime( $rbfw_end_datetime ) ) : '' ); ?></td>
-                                <td><span class="rbfw_order_status <?php echo esc_attr( $status ); ?>"><?php echo esc_html( $status ) ;  ?></span></td>
+                                <td>
+                                    <select name="mptrs_service_status" id="mptrsServiceStatus-<?php echo esc_attr( $post_id ); ?>" class="mptrs_service_status">
+                                        <option value="in_progress" <?php echo ($rbfw_service_status_val == "in_progress") ? 'selected' : ''; ?>><?php esc_attr_e( 'In Progress', 'tablely');?></option>
+                                        <option value="done" <?php echo ($rbfw_service_status_val == "done") ? 'selected' : ''; ?>><?php esc_attr_e( 'Done', 'tablely');?></option>
+                                        <option value="service_out" <?php echo ($rbfw_service_status_val == "service_out") ? 'selected' : ''; ?>><?php esc_attr_e( 'Service Out', 'tablely');?></option>
+                                    </select>
+                                </td>
+                                <td><span class="mptrs_order_status <?php echo esc_attr( $status ); ?>"><?php echo esc_html( $status ) ;  ?></span></td>
                                 <td><?php echo wp_kses_post( wc_price( $total_price ) ); ?></td>
                                 <?php if ( function_exists( 'rbfw_pro_tab_menu_list' ) ) { ?>
                                     <td style="display: none">
-                                        <a href="javascript:void(0);" class="rbfw_order_view_btn" data-post-id="<?php echo esc_attr( $post_id ); ?>">
+                                        <a href="javascript:void(0);" class="mptrs_order_view_btn" data-post-id="<?php echo esc_attr( $post_id ); ?>">
                                             <i class="fas fa-pen-to-square"></i>
                                             <?php esc_html_e( 'View Details', 'booking-and-rental-manager-for-woocommerce' ); ?>
                                         </a>
-                                        <a href="<?php echo esc_url( admin_url( 'post.php?post=' . $post_id . '&action=edit' ) ); ?>" class="rbfw_order_edit_btn">
+                                        <a href="<?php echo esc_url( admin_url( 'post.php?post=' . $post_id . '&action=edit' ) ); ?>" class="mptrs_order_edit_btn">
                                             <i class="fas fa-pen-to-square"></i>
                                             <?php esc_html_e( 'Order status changes', 'booking-and-rental-manager-for-woocommerce' ); ?>
                                         </a>
@@ -93,11 +123,11 @@
                                 } else {
                                 ?>
                                     <td style="display: none">
-                                        <a href="javascript:void(0);" class="rbfw_order_view_btn pro-overlay">
+                                        <a href="javascript:void(0);" class="mptrs_order_view_btn pro-overlay">
                                             <i class="fas fa-pen-to-square"></i>
                                             <?php esc_html_e( 'View Details', 'booking-and-rental-manager-for-woocommerce' ); ?>
                                         </a>
-                                        <a href="javascript:void(0);" class="rbfw_order_edit_btn pro-overlay">
+                                        <a href="javascript:void(0);" class="mptrs_order_edit_btn pro-overlay">
                                             <i class="fas fa-pen-to-square"></i>
                                             <?php esc_html_e( 'Order status changes', 'booking-and-rental-manager-for-woocommerce' ); ?>
                                         </a>

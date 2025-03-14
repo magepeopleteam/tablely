@@ -39,6 +39,8 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
                 $order_time = isset( $mptrs_booking_data['ordered_time'] ) ? $mptrs_booking_data['ordered_time'] : '';
                 $mptrs_food_menu = isset( $mptrs_booking_data['mptrs_food_menu'] ) ? $mptrs_booking_data['mptrs_food_menu'] : '';
                 $mptrs_order_type = isset( $mptrs_booking_data['mptrs_order_type'] ) ? $mptrs_booking_data['mptrs_order_type'] : '';
+                $mptrs_service_status = 'In Progress';
+
 
                 $order_title = 'Custom Order #' . $order_id;
                 $order_created_date = $order->get_date_created()->date('Y-m-d H:i:s');
@@ -69,6 +71,7 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
                     update_post_meta($custom_order_id, '_mptrs_booked_seats', $booked_seat_ids);
                     update_post_meta($custom_order_id, '_mptrs_ordered_food_menu', $mptrs_food_menu);
                     update_post_meta($custom_order_id, '_mptrs_order_type', $mptrs_order_type);
+                    update_post_meta($custom_order_id, '_mptrs_service_status', $mptrs_service_status);
                 }
             }
         }
