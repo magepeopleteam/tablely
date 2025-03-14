@@ -211,7 +211,10 @@ jQuery(document).ready(function ($) {
 
 
     let disabledDates = ["2025-03-20", "2025-03-25", "2025-02-26"];
-    mptrs_datePicker( disabledDates );
+    mptrs_datePicker( disabledDates, 'mptrs_date' );
+    mptrs_datePicker( disabledDates, 'mptrs_dalivery_date' );
+    mptrs_datePicker( disabledDates, 'mptrs_takeaway_date' );
+
     $(document).on('click',".mptrs_OrderPlaceBtn_old",function () {
         let orderPostClickedId = $(this).attr('id').trim();
         let orderPostId = orderPostClickedId.split('-');
@@ -252,7 +255,7 @@ jQuery(document).ready(function ($) {
         let orderId = $(this).attr('id').trim();
         let mptrs_totalPrices = $("#mptrs_totalPrice").val().trim();
         let mptrs_order_time = $('.mptrs_time_button.active').data('time');
-        let mptrs_order_date = $("#mptrs_date").val().trim();
+        let mptrs_order_date = '';
         let postId = $("#mptrs_getPost").val().trim();
 
         let seats = '';
@@ -261,6 +264,7 @@ jQuery(document).ready(function ($) {
         let mptrs_orderType = '';
 
         if( orderId === 'mptrs_dineInOrderPlaceBtn' ){
+            mptrs_order_date = $("#mptrs_date").val().trim();
             seats = JSON.stringify( seatBooked );
             mptrs_orderType = 'dine_in';
         }else if( orderId === 'mptrs_deliveryOrderPlaceBtn' ){
@@ -268,13 +272,14 @@ jQuery(document).ready(function ($) {
             let mptrs_StreetAddress = $("#mptrsStreetAddress").val().trim();
             mptrs_location.push( mptrs_Location, mptrs_StreetAddress);
             mptrs_locations = JSON.stringify( mptrs_location );
-            // console.log( mptrs_location );
+            mptrs_order_date = $("#mptrs_dalivery_date").val().trim();
+
 
             mptrs_orderType = 'delivery';
         }else{
             mptrs_orderType = 'take_away';
+            mptrs_order_date = $("#mptrs_takeaway_date").val().trim();
         }
-
 
         let button = $(this);
         let post_id = postId;
@@ -318,9 +323,9 @@ jQuery(document).ready(function ($) {
     });
 
 
-    function mptrs_datePicker( disabledDates ) {
+    function mptrs_datePicker( disabledDates, id ) {
         $(".mptrs_DatePickerContainer").fadeIn();
-        $("#mptrs_date").datepicker({
+        $("#"+id).datepicker({
             dateFormat: "yy-mm-dd",
             changeMonth: true,
             changeYear: true,
@@ -704,41 +709,63 @@ jQuery(document).ready(function ($) {
     // Handle time selection
     $(document).on('click',".mptrs_time_button", function () {
 
+        let activeText = $('.mptrs_orderOptionTab.mptrs_orderTabActive').text().trim();
+        // console.log( activeText );
         $(".mptrs_time_button").removeClass("active");
-        let get_postId =  $("#mptrs_getPost").val().trim();
-        let get_time = $(this).data('time');
-        let get_date = $("#mptrs_date").val().trim();
-        if( !get_date ){
-            alert('Select Date First!');
-        }else{
-            mptrs_display_ordered_menu( get_time );
-            // console.log( mptrs_menuNamesPopup, mptrs_menuQuantityPopup );
-            $(this).addClass("active");
-            $("#seatPopup").fadeIn();
-            $.ajax({
-                url: mptrs_ajax.ajax_url,
-                type: 'POST',
-                data: {
-                    action: 'mptrs_get_available_seats_for_reservations',
-                    nonce: mptrs_ajax.nonce,
-                    get_time: get_time,
-                    get_date: get_date,
-                    post_id: get_postId,
-                },
-                dataType: 'json',
-                success: function (response) {
-                    $(this).addClass("active");
-                    // mptrs_display_food_menu_for_order( response.data.get_food_menu )
+        if( activeText === 'Dine-In' ){
+            let get_postId =  $("#mptrs_getPost").val().trim();
+            let get_time = $(this).data('time');
+            let get_date = $("#mptrs_date").val().trim();
+            if( !get_date ){
+                alert('Select Date First!');
+            }
+            else{
+                mptrs_display_ordered_menu( get_time );
+                // console.log( mptrs_menuNamesPopup, mptrs_menuQuantityPopup );
+                $(this).addClass("active");
+                $("#seatPopup").fadeIn();
+                $.ajax({
+                    url: mptrs_ajax.ajax_url,
+                    type: 'POST',
+                    data: {
+                        action: 'mptrs_get_available_seats_for_reservations',
+                        nonce: mptrs_ajax.nonce,
+                        get_time: get_time,
+                        get_date: get_date,
+                        post_id: get_postId,
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        $(this).addClass("active");
+                        // mptrs_display_food_menu_for_order( response.data.get_food_menu )
 
-                    seatBooked = [];
-                    seatBookedName = [];
-                    $("#mptrs_seatMapDisplay").append( response.data.mptrs_seat_maps );
-                },
-                error: function () {
-                    alert( 'Error occurred');
-                }
-            });
+                        seatBooked = [];
+                        seatBookedName = [];
+                        $("#mptrs_seatMapDisplay").append( response.data.mptrs_seat_maps );
+                    },
+                    error: function () {
+                        alert( 'Error occurred');
+                    }
+                });
+            }
+        }else if( activeText === 'Delivery' ){
+            let get_date = $("#mptrs_dalivery_date").val().trim();
+            if( !get_date ){
+                alert('Select Date First!');
+            }else{
+                $(this).addClass("active");
+            }
+
+        }else{
+            let get_date = $("#mptrs_takeaway_date").val().trim();
+            if( !get_date ){
+                alert('Select Date First!');
+            }else{
+                $(this).addClass("active");
+            }
+
         }
+
 
 
     });

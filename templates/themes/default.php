@@ -203,7 +203,7 @@
                             <label for="mptrs_date"><?php esc_html_e( 'Check in', 'tablely' ); ?></label>
                             <div class="mptrs_input_wrapper">
                                 <div class="mptrs_DatePickerContainer" style="display: block">
-                                    <input type="text" id="mptrs_date" placeholder="Select a Date">
+                                    <input type="text" id="mptrs_dalivery_date" placeholder="Select a Date">
                                     <span class="mptrs_calendarIcon">&#128197;</span>
                                 </div>
                             </div>
@@ -226,7 +226,7 @@
                             <label for="mptrs_date"><?php esc_html_e( 'Check in', 'tablely' ); ?></label>
                             <div class="mptrs_input_wrapper">
                                 <div class="mptrs_DatePickerContainer" style="display: block">
-                                    <input type="text" id="mptrs_date" placeholder="Select a Date">
+                                    <input type="text" id="mptrs_takeaway_date" placeholder="Select a Date">
                                     <span class="mptrs_calendarIcon">&#128197;</span>
                                 </div>
                             </div>

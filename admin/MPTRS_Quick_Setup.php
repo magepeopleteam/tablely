@@ -97,8 +97,17 @@
                                 <td><?php echo esc_html( $ordered_type ); ?></td>
                                 <td><?php echo esc_html( $billing_name ); ?></td>
                                 <td><?php echo esc_html( get_the_date( 'F j, Y' ) . ' ' . get_the_time() ); ?></td>
-                                <td><?php echo esc_html( ! empty( $rbfw_start_datetime ) ? date_i18n( 'F j, Y g:i a', strtotime( $rbfw_start_datetime ) ) : '' ); ?></td>
-                                <td><?php echo esc_html( ! empty( $rbfw_end_datetime ) ? date_i18n( 'F j, Y g:i a', strtotime( $rbfw_end_datetime ) ) : '' ); ?></td>
+                                <td><?php echo esc_html( ! empty( $rbfw_start_datetime ) ? date_i18n( 'F j, Y', strtotime( $rbfw_start_datetime ) ) : '' ); ?></td>
+                                <td>
+                                    <?php
+                                    if ( ! empty( $rbfw_end_datetime ) ) {
+                                        // Assuming $rbfw_end_datetime is just the hour (1, 2, or 24), append ":00:00" to simulate full time.
+                                        $fullDateTime = $rbfw_end_datetime . ":00:00";
+                                        $formattedTime = date_i18n( 'g A', strtotime( $fullDateTime ) );
+                                        echo esc_html( $formattedTime );
+                                    }
+                                    ?>
+                                </td>
                                 <td>
                                     <select name="mptrs_service_status" id="mptrsServiceStatus-<?php echo esc_attr( $post_id ); ?>" class="mptrs_service_status">
                                         <option value="in_progress" <?php echo ($rbfw_service_status_val == "in_progress") ? 'selected' : ''; ?>><?php esc_attr_e( 'In Progress', 'tablely');?></option>

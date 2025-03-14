@@ -269,7 +269,7 @@
     display: inline-block;
 }
 
-#mptrs-datepicker, #mptrs_date {
+#mptrs-datepicker, #mptrs_date, #mptrs_dalivery_date, #mptrs_takeaway_date {
     padding: 10px;
     font-size: 16px;
     width: 180px;
