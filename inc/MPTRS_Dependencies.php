@@ -96,11 +96,16 @@
 				wp_enqueue_script( 'mptrs_seat_mapping', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_seat_mapping.js', [ 'jquery' ], time(), true );
 				wp_enqueue_style( 'mptrs_registration', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_registration.css', [], time() );
 				wp_enqueue_style( 'mptrs_seat_mapping', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_seat_mapping.css', [], time() );
+				wp_enqueue_style( 'mptrs_food_menu_add_cart', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_food_menu_add_cart.css', [], time() );
 				wp_enqueue_script( 'mptrs_registration', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_registration.js', [ 'jquery' ], time(), true );
+				wp_enqueue_script( 'mptrs_food_menu_add_cart', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_food_menu_add_cart.js', [ 'jquery' ], time(), true );
 				wp_localize_script( 'mptrs_registration', 'mptrs_ajax', array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
 					'nonce'    => wp_create_nonce( 'mptrs_nonce' ),
                     'site_url' => get_site_url(),
+				) );
+                wp_localize_script( 'mptrs_food_menu_add_cart', 'mptrs_food_menu', array(
+                    get_option( '_mptrs_food_menu', true )
 				) );
 				do_action( 'add_mptrs_frontend_script' );
 			}

@@ -153,8 +153,6 @@ jQuery(document).ready(function ($) {
                     seatBookedName.push(selectedSeatname);
                 }
 
-                // console.log( seatBookedName );
-
             });
         }
 
@@ -548,8 +546,6 @@ jQuery(document).ready(function ($) {
             $("#"+menuQtyKey).text(quantity);
         }
 
-        // console.log( addToCartData );
-
         calculateTotal();
     });
     function mptrs_display_food_menu_for_order( food_menu_data ){
@@ -575,7 +571,7 @@ jQuery(document).ready(function ($) {
 
     let addToCartData = {};
     // Add Button Click
-    $(document).on('click', ".mptrs_addBtn", function () {
+    $(document).on('click', ".mptrs_addBtn_old", function () {
         $(this).fadeOut();
         $("#mptrs_orderedFoodMenuInfoHolder").fadeIn();
         $("#mptrs_dineInTabHolder").fadeIn();
@@ -710,7 +706,6 @@ jQuery(document).ready(function ($) {
     $(document).on('click',".mptrs_time_button", function () {
 
         let activeText = $('.mptrs_orderOptionTab.mptrs_orderTabActive').text().trim();
-        // console.log( activeText );
         $(".mptrs_time_button").removeClass("active");
         if( activeText === 'Dine-In' ){
             let get_postId =  $("#mptrs_getPost").val().trim();
@@ -721,7 +716,6 @@ jQuery(document).ready(function ($) {
             }
             else{
                 mptrs_display_ordered_menu( get_time );
-                // console.log( mptrs_menuNamesPopup, mptrs_menuQuantityPopup );
                 $(this).addClass("active");
                 $("#seatPopup").fadeIn();
                 $.ajax({
