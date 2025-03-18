@@ -219,7 +219,7 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
         public function mptrs_price_change_food_menu_restaurant(){
 
             if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field($_POST['nonce']), 'mptrs_admin_nonce')) {
-                wp_send_json_error(['message' => 'Security check failed.'], 403);
+                wp_send_json_error( [ 'message' => 'Security check failed.' ], 403 );
             }
 
             if (!current_user_can('manage_options')) {

@@ -159,67 +159,46 @@ jQuery(document).ready(function ($) {
         });
     });
 
-    function mptrs_menuPopup_old(data, categories) {
-        /*const categories = {
-            "starter": "Starter",
-            "main_course": "Main Course",
-            "dessert": "Dessert",
-            "beverage": "Beverage"
-        };*/
 
-        let displayCategory = '';
-        $.each(categories, (key, value) => {
-            if (key === data.category) {
-                displayCategory += `<option value="${key}" selected>${value}</option>`;
-            } else {
-                displayCategory += `<option value="${key}" >${value}</option>`;
-            }
-        });
-
-        return `
-        <h2 class="mptrs_addEditMenuTitleText">${data.popUpTitleText}</h2>
-        <form id="mptrs_foodMenuForm" class="mptrs_food_menu_form">
-            <div class="mptrs_form_group">
-                <label for="mptrs_menuName">Menu Name</label>
-                <input type="text" id="mptrs_menuName" name="mptrs_menuName" class="mptrs_input" required value="${data.name}">
-            </div>
-
-            <div class="mptrs_form_group">
-                <label for="mptrs_menuCategory">Category</label>
-                <select id="mptrs_menuCategory" name="mptrs_menuCategory" class="mptrs_select" required>
-                    ${displayCategory}
-                </select>
-            </div>
-
-            <div class="mptrs_form_group">
-                <label for="mptrs_menuPrice">Price ($)</label>
-                <input type="number" id="mptrs_menuPrice" name="mptrs_menuPrice" class="mptrs_input" required value="${data.price}">
-            </div>
-
-            <div class="mptrs_form_group">
-                <label for="mptrs_numPersons">Number of Persons</label>
-                <input type="number" id="mptrs_numPersons" name="mptrs_numPersons" class="mptrs_input" min="1" required value="${data.person}">
-            </div>
-
-            <div class="mptrs_form_group">
-                <label for="mptrs_menuImage">Menu Image</label>
-                <input type="file" id="mptrs_menuImage" name="mptrs_menuImage" class="mptrs_input">
-                <input type="hidden" id="mptrs_menuImage_url" name="mptrs_menuImage_url" value="${data.imgUrl}">
-                <div class="custom-foodMenu-image-preview"></div>
-            </div>
-
-            <button type="submit" class="${data.btnIdClass}" id="mptrs_AddEdit-${data.key}">${data.btnText}</button>
-        </form>
-    `;
-    }
 
     function mptrs_menuPopup( data, categories ) {
-        console.log( categories );
+
         let displayCategory = '';
         $.each(categories, (key, value) => {
             displayCategory += `<option value="${key}" ${key === data.category ? 'selected' : ''}>${value}</option>`;
         });
 
+        let variations = data.variations;
+        let variationsHTML = '';
+        $.each(variations, function (index, variationData) {
+            let categoryId = `category_${new Date().getTime()}_${index}`;
+            let itemsHTML = '';
+
+            $.each(variationData.items, function (key, item) {
+                itemsHTML += `
+                <div class="mptrs_variationItem">
+                    <input type="text" name="variation_item_name[]" class="mptrs_input" placeholder="Item Name" value="${item.name}">
+                    <input type="number" name="variation_item_price[]" class="mptrs_input" placeholder="Price" value="${item.price}">
+                    <input type="number" name="variation_item_qty[]" class="mptrs_qty" min="1" value="${item.qty}">
+                    <button type="button" class="mptrs_removeVariationItem">Remove</button>
+                </div>
+            `;
+            });
+
+            variationsHTML += `
+            <div class="mptrs_variationCategory" id="${categoryId}">
+                <input type="text" class="mptrs_variationCategoryName" placeholder="Variation Name" value="${variationData.category}">
+                <select class="mptrs_singleMultiSelect" name="mptrs_singleMultiSelect">
+                    <option class="mptrs_select" value="single" ${variationData.radioOrCheckbox === 'single' ? 'selected' : ''}>Single Select (Radio)</option>
+                    <option class="mptrs_select" value="multiple" ${variationData.radioOrCheckbox === 'multiple' ? 'selected' : ''}>Multiple (Check Box)</option>
+                </select>
+                <button type="button" class="mptrs_addVariationItem">+ Add Item</button>
+                <button type="button" class="mptrs_removeVariationCategory">Remove Category</button>
+                <div class="mptrs_variationItems">${itemsHTML}</div>
+            </div>
+        `;
+        });
+
         return `
         <h2 class="mptrs_addEditMenuTitleText">${data.popUpTitleText}</h2>
         <form id="mptrs_foodMenuForm" class="mptrs_food_menu_form">
@@ -235,14 +214,30 @@ jQuery(document).ready(function ($) {
                 </select>
             </div>
 
-            <div class="mptrs_form_group">
-                <label for="mptrs_menuPrice">Price ($)</label>
-                <input type="number" id="mptrs_menuPrice" name="mptrs_menuPrice" class="mptrs_input" required value="${data.price}">
+            <div class="mptrs_form_group mptrs_menuPriceHolder">
+                <div class="mptrs_regularSalePrice">
+                    <label for="mptrs_menuPrice">Regular Price</label>
+                    <input type="number" id="mptrs_menuPrice" name="mptrs_menuPrice" class="mptrs_input" required value="${data.price}">
+            
+                </div>
+                 <div class="mptrs_regularSalePrice">
+                    <label for="mptrs_menuSalePrice">Sale Price</label>
+                    <input type="number" id="mptrs_menuSalePrice" name="mptrs_menuSalePrice" class="mptrs_input" value="${data.menuSalePrice}">
+                 </div>
             </div>
 
             <div class="mptrs_form_group">
                 <label for="mptrs_numPersons">Number of Persons</label>
                 <input type="number" id="mptrs_numPersons" name="mptrs_numPersons" class="mptrs_input" min="1" required value="${data.person}">
+            </div>
+
+            <div class="mptrs_form_group">
+                <label for="mptrs_numPersons">Short Description</label>
+                <textarea class="mptrs_menuDescription mptrs_input" 
+                  id="mptrs_menuDescription" 
+                  name="mptrs_menuDescription"
+                  required>${data.menuDescription}
+               </textarea>
             </div>
 
             <div class="mptrs_form_group">
@@ -254,6 +249,7 @@ jQuery(document).ready(function ($) {
 
             <div id="mptrs_variationsContainer">
                 <button type="button" id="mptrs_addVariationCategory">+ Add Variation Category</button>
+                ${variationsHTML}
             </div>
 
             <button type="submit" class="${data.btnIdClass}" id="mptrs_AddEdit-${data.key}">${data.btnText}</button>
@@ -358,6 +354,9 @@ jQuery(document).ready(function ($) {
         let key = 'addMenu';
         let price = 0;
         let person = 0;
+        let menuDescription = '';
+        let variations = [];
+        let menuSalePrice = 0;
         let imgUrl = '';
         let category = '';
         let btnText = 'Add Menu';
@@ -365,7 +364,7 @@ jQuery(document).ready(function ($) {
         let popUpTitleText = 'Add New Food Menu!';
 
         let data = {
-            name, price, person, imgUrl, category, btnText, btnIdClass, popUpTitleText, key
+            name, price, person, imgUrl, category, btnText, btnIdClass, popUpTitleText, key, variations, menuDescription, menuSalePrice
         }
 
         $.ajax({
@@ -407,6 +406,8 @@ jQuery(document).ready(function ($) {
         let category = '';
         let person = '';
         let price = '';
+        let menuDescription = '';
+        let menuSalePrice = '';
         let variations = '';
         let btnText = 'Update Food Menu Data';
         let btnIdClass = 'mptrs_edit_food_menu_data'
@@ -430,10 +431,12 @@ jQuery(document).ready(function ($) {
                     person = mptrs_edited_menu['numPersons'];
                     imgUrl = mptrs_edited_menu['menuImgUrl'];
                     category = mptrs_edited_menu['menuCategory'];
+                    menuDescription = mptrs_edited_menu['menuDescription'];
+                    menuSalePrice = mptrs_edited_menu['menuSalePrice'];
                     variations = mptrs_edited_menu['variations'];
 
                     let data = {
-                        name, price, person, imgUrl, category, btnText, btnIdClass, popUpTitleText, key, variations
+                        name, price, person, imgUrl, category, btnText, btnIdClass, popUpTitleText, key, variations, menuDescription, menuSalePrice
                     }
 
                     let formContent = mptrs_menuPopup( data, categories );
@@ -455,6 +458,8 @@ jQuery(document).ready(function ($) {
     $(document).on('click', '.mptrs_edit_food_menu_data', function (e) {
         e.preventDefault();
 
+        let editVariations = getVariationData();
+
         $(this).text('Updating...');
         let get_keys = $(this).attr('id');
         let menuKeys = get_keys.split('-');
@@ -463,9 +468,13 @@ jQuery(document).ready(function ($) {
         menuEditData.menuName = $("#mptrs_menuName").val().trim();
         menuEditData.menuCategory = $("#mptrs_menuCategory").val().trim();
         menuEditData.menuPrice = $("#mptrs_menuPrice").val().trim();
+        menuEditData.menuSalePrice = $("#mptrs_menuSalePrice").val().trim();
         menuEditData.menunumPersons = $("#mptrs_numPersons").val().trim();
+        menuEditData.menuDescription = $("#mptrs_menuDescription").val().trim();
         menuEditData.menuImgUrl = $("#mptrs_menuImage_url").val().trim();
         menuEditData.menuKey = menuKey;
+
+        menuEditData.variations = JSON.stringify( editVariations );
 
         $.ajax({
             url: mptrs_admin_ajax.ajax_url,
@@ -508,8 +517,13 @@ jQuery(document).ready(function ($) {
         let categoryHTML = `
             <div class="mptrs_variationCategory" id="${categoryId}">
                 <input type="text" class="mptrs_variationCategoryName" placeholder="Variation Name">
+                <select class="mptrs_singleMultiSelect" name="mptrs_singleMultiSelect">
+                    <option class="mptrs_select" value="single">Single Select(Radio)</option>
+                    <option class="mptrs_select" value="multiple">Multiple(Check Box)</option>
+                </select>
                 <button type="button" class="mptrs_addVariationItem">+ Add Item</button>
                 <button type="button" class="mptrs_removeVariationCategory">Remove Category</button>
+                
                 <div class="mptrs_variationItems"></div>
             </div>
         `;
@@ -541,10 +555,11 @@ jQuery(document).ready(function ($) {
     });
     function getVariationData() {
         let variations = [];
-
         $(".mptrs_variationCategory").each(function () {
-            let categoryName = $(this).find(".mptrs_variationCategoryName").val();
+            let categoryName = $(this).find(".mptrs_variationCategoryName").val().trim();
+
             let items = [];
+            let radioOrCheckbox = $(this).find("select[name='mptrs_singleMultiSelect']").val().trim();
 
             $(this).find(".mptrs_variationItem").each(function () {
                 let itemName = $(this).find("input[name='variation_item_name[]']").val();
@@ -560,11 +575,11 @@ jQuery(document).ready(function ($) {
 
             variations.push({
                 category: categoryName,
+                radioOrCheckbox: radioOrCheckbox,
                 items: items
             });
         });
 
-        console.log(variations);
         return variations;
     }
 
@@ -575,9 +590,10 @@ jQuery(document).ready(function ($) {
         formData.menuName = $("#mptrs_menuName").val().trim();
         formData.menuCategory = $("#mptrs_menuCategory").val().trim();
         formData.menuPrice = $("#mptrs_menuPrice").val().trim();
+        formData.menuDescription = $("#mptrs_menuDescription").val().trim();
+        formData.menuSalePrice = $("#mptrs_menuSalePrice").val().trim();
         formData.menunumPersons = $("#mptrs_numPersons").val().trim();
         formData.menuImgUrl = $("#mptrs_menuImage_url").val().trim();
-
 
        /* $('.mptrs_variation_group').each(function() {
             let size = $(this).find('input[name="variation_size[]"]').val();
@@ -587,8 +603,7 @@ jQuery(document).ready(function ($) {
 
         variations = getVariationData();
 
-        formData.variations = variations;
-        // console.log("formData:", formData);
+        formData.variations = JSON.stringify( variations );
 
         $.ajax({
             url: mptrs_admin_ajax.ajax_url,
@@ -606,6 +621,8 @@ jQuery(document).ready(function ($) {
                 $("#mptrs_menuName").val('');
                 $("#mptrs_menuCategory").val('');
                 $("#mptrs_menuPrice").val('');
+                $("#mptrs_menuDescription").val('');
+                $("#mptrs_menuSalePrice").val('');
                 $("#mptrs_numPersons").val('');
                 $("#mptrs_menuImage_url").val('');
             },
@@ -623,7 +640,6 @@ jQuery(document).ready(function ($) {
         let menuCategory = $(this).parent().parent().attr('data-category').trim();
 
         let menuAddText = $("#" + getClickedId).text().trim();
-        // console.log( menuAddText );
         let imgContentId = 'mptrs_MenuImg-' + menuId;
         let nameContentId = 'mptrs-menuName-' + menuId;
         let priceContentId = 'mptrs-menuPrice-' + menuId;

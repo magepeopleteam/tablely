@@ -12,6 +12,17 @@ body.mptrs_no_scroll {
     /*box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);*/
 }
 
+.mptrs_menuPriceHolder{
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    flex-grow: 1;
+}
+.mptrs_regularSalePrice{
+    display: block;
+    width: 50%;
+}
+
 .mptrs_form_group {
     margin-bottom: 15px;
 }
