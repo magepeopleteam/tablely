@@ -163,7 +163,10 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
                 'menuPrice'    => floatval($_POST['menuData']['menuPrice']),
                 'numPersons'   => intval($_POST['menuData']['menunumPersons']),
                 'menuImgUrl'   => esc_url_raw($_POST['menuData']['menuImgUrl']),
+                'variations'   => $_POST['menuData']['variations'],
             ];
+
+//            error_log( print_r( [ '$new_menu_data' => $new_menu_data ], true ) );
 
             if (empty($new_menu_data['menuName']) || empty($new_menu_data['menuCategory']) || $new_menu_data['menuPrice'] <= 0 || $new_menu_data['numPersons'] <= 0) {
                 wp_send_json_error(['message' => 'All fields are required and must be valid.'], 400);
@@ -174,7 +177,7 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             }
             $existing_menus[ $uniqueKey ] = $new_menu_data;
             $saved = update_option( '_mptrs_food_menu', $existing_menus );
-            if (!$saved) {
+            if ( !$saved ) {
                 wp_send_json_error(['message' => 'Failed to save menu data.'], 500);
             }
 

@@ -254,20 +254,29 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             if( !current_user_can('manage_options')) {
                 wp_send_json_error(['message' => 'Permission denied']);
             }
-
+            $key = isset( $_POST['menuKey'] ) ? sanitize_text_field( $_POST['menuKey'] ) : '';
             $result = 0;
             $categories = [];
+            $edited_menu = [];
+            $message = 'Categories Data getting successfully.!';
+
             $mptrs_categories = get_option( 'mptrs_categories' );
 
+            if( !empty( $key ) ){
+                $existing_menus = get_option( '_mptrs_food_menu' );
+                $edited_menu = isset( $existing_menus[$key] ) ? $existing_menus[$key] : [];
+                $result = 1;
+            }
             if( is_array( $mptrs_categories ) && !empty( $mptrs_categories ) ) {
                 $result = 1;
                 $categories = $mptrs_categories;
             }
 
             wp_send_json_success([
-                'message' => 'Categories Data getting successfully.!',
+                'message' => $message,
                 'success' => $result,
                 'mptrs_categories' => $categories,
+                'mptrs_edited_menu' => $edited_menu,
             ]);
         }
 

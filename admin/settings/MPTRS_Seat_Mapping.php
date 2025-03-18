@@ -162,12 +162,12 @@
                                             $seat_num = isset( $plan_seat['seat_number'] ) ? sanitize_text_field( $plan_seat['seat_number'] ) : '';
                                             $tableBind = isset( $plan_seat['data_tableBind'] ) ? sanitize_text_field( $plan_seat['data_tableBind'] ) : '';
                                             $seat_price = floatval( $plan_seat['price'] );
-                                            $width = absint( $plan_seat['width'] );
-                                            $height = absint( $plan_seat['height'] );
-                                            $zindex = absint( $plan_seat['z_index'] );
-                                            $to = absint( $plan_seat['top'] );
-                                            $le = absint( $plan_seat['left'] );
-                                            $degree = absint( $plan_seat['data_degree'] );
+                                            $width = isset( $plan_seat['width'] ) ? absint( $plan_seat['width'] ) : '' ;
+                                            $height = isset( $plan_seat['height'] ) ? absint( $plan_seat['height'] ) : '' ;
+                                            $zindex = isset( $plan_seat['z_index'] ) ? absint( $plan_seat['z_index'] ) : '' ;
+                                            $to = isset( $plan_seat['top'] ) ? absint( $plan_seat['top'] ) : '' ;
+                                            $le = isset( $plan_seat['left'] ) ? absint( $plan_seat['left'] ) : '' ;
+                                            $degree = isset( $plan_seat['data_degree'] ) ? absint( $plan_seat['data_degree'] ) : '';
                                             if ( isset( $plan_seat['backgroundImage'] ) && $plan_seat['backgroundImage'] !== '' ) {
                                                 $seat_icon_name = sanitize_file_name( $plan_seat['backgroundImage'] );
                                                 $background_img_url = esc_url( MPTRS_Plan_ASSETS . 'images/icons/seatIcons/' . $plan_seat['backgroundImage'] . '.png' );

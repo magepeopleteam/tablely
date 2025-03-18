@@ -190,6 +190,8 @@
             public function mptrs_new_food_menu_callback(){
                 $existing_menus = get_option( '_mptrs_food_menu' );
                 $menu_categories = get_option( 'mptrs_categories' );
+
+//                error_log( print_r( [ '$existing_menus' => $existing_menus['variations'] ], true ) );
                 ?>
                 <div id="mptrs_foodMenuPopup" class="mptrs_foodMenuPopupContainer" style="display: none;">
                     <div class="mptrs_foodMenuContentPopup">
@@ -233,6 +235,7 @@
                                         <?php
                                         if( is_array( $existing_menus ) && !empty( $existing_menus ) ) {
                                             foreach ( $existing_menus as $key => $existing_menu ){
+//                                                error_log( print_r( [ '$existing_menus' => $existing_menu ], true ) );
                                                 $category = isset( $menu_categories[$existing_menu['menuCategory']]) ? $menu_categories[$existing_menu['menuCategory']] : '';
                                                 ?>
                                                 <tr class="mptrsTableRow" data-category ="<?php echo esc_attr( $existing_menu['menuCategory'] )?>" id="mptrs_foodMenuContent<?php echo esc_attr( $key )?>">
