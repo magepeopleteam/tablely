@@ -11,7 +11,7 @@
 	$post_id = get_the_id();
     $thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
     $existing_menus = get_option( '_mptrs_food_menu' );
-    error_log( print_r( [ '$existing_menus' => $existing_menus ], true ) );
+//    error_log( print_r( [ '$existing_menus' => $existing_menus ], true ) );
     $categories = get_option( 'mptrs_categories' );
     ?>
     <div class="mptrs_postHolder">
@@ -164,7 +164,7 @@
 
             <div class="mptrs_orderedFoodMenuInfoHolder" id="mptrs_orderedFoodMenuInfoHolder" style="display: none">
                 <div class="mptrs_orderedMenuHolder">
-                    <span class=""><?php esc_html_e( 'Your Ordered Food menu', 'tablely' ); ?></span>
+                    <span class=""><?php esc_html_e( 'Your Orders', 'tablely' ); ?></span>
                 </div>
                 <div class="mptrs_orderedFoodMenuHolder" id="mptrs_orderedFoodMenuHolder"></div>
                 <div class="mptrs_totalPriceHolder" id="mptrs_totalPriceHolder">
