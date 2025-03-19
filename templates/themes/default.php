@@ -11,6 +11,7 @@
 	$post_id = get_the_id();
     $thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
     $existing_menus = get_option( '_mptrs_food_menu' );
+    error_log( print_r( [ '$existing_menus' => $existing_menus ], true ) );
     $categories = get_option( 'mptrs_categories' );
     ?>
     <div class="mptrs_postHolder">
@@ -18,10 +19,42 @@
             <div class="popup-content">
                 <span class="close-btn">&times;</span>
                 <div class="mptrs_seatMappedHolder">
-                    <span class="mptrs_selectSeatText">Choose a Seat, What's Your Choice?</span>
-                    <div class="mptrs_seatMapDisplay" id="mptrs_seatMapDisplay"></div>
+                    <span class="mptrs_selectSeatText"><?php esc_html_e( 'Choose a Seat, What\'s Your Choice?', 'tablely' ); ?></span>
+                    <div class="mptrs_popUpInfoHolder">
+                        <div class="mptrs_seatMapDisplay" id="mptrs_seatMapDisplay"></div>
+                        <div class="mptrs_orderInfoHolder">
+<!--                            <span class="mptrs_orderDetailsShow">Order Details</span>-->
+                            <div class="mptrs_orderDetailsPopup" id="mptrs_orderDetailsPopup">
+                                <table class="mptrs_orderAddedTable" id="mptrs_orderAddedTable">
+                                    <thead>
+                                    <tr>
+                                        <th>Menu Item</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                                <!--<div class="mptrs_orderDetails">
+                                    <p>Order Date: <span class="mptrs_orderDate"></span></p>
+                                    <p>Ordered Time: <span class="mptrs_orderTime"></span></p>
+                                    <p>Total Price: <span class="mptrs_totalPrice"></span></p>
+                                </div>-->
+                                <table class="mptrs_orderAddedTable" id="mptrs_orderAddedDetails">
+                                    <thead>
+                                    <tr>
+                                        <th>Order Date</th>
+                                        <th>Ordered Time</th>
+                                        <th>Total Price</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="mptrs_OrderPlaceBtn" id="mptrs_OrderPlaceBtn-<?php echo esc_attr( $post_id )?>">Done</div>
+                <div class="mptrs_dineInOrderPlaceBtn" id="mptrs_dineInOrderPlaceBtn"><?php esc_html_e( 'Process Checkout', 'tablely' )?></div>
             </div>
         </div>
 
@@ -38,10 +71,10 @@
             <div class="mptrs_restaurantInfoRightHolder">
                 <div class="mptrs_restaurantName"><?php echo esc_attr( get_the_title() );?></div>
                 <div class="mptrs_restaurantOpening">
-                    <span class="mptrs_restaurantOpeningText">Opening Time</span>
-                    <span class="mptrs_restaurantOpeningTime">11:00 AM - 11:00 PM</span>
+                    <span class="mptrs_restaurantOpeningText"><?php esc_html_e( 'Opening Time', 'tablely' ); ?></span>
+                    <span class="mptrs_restaurantOpeningTime"><?php esc_html_e( '11:00 AM - 11:00 PM', 'tablely' ); ?></span>
                 </div>
-                <div class="mptrs_restaurantOpeninglocation">5th floor, Concord MK Heritage, Dhaka, Dhanmondi Dhaka</div>
+                <div class="mptrs_restaurantOpeninglocation"><?php esc_html_e( '5th floor, Concord MK Heritage, Dhaka, Dhanmondi Dhaka', 'tablely' ); ?></div>
             </div>
         </div>
 
@@ -51,7 +84,7 @@
                 <div class="mptrs_restaurantDes">
                     <?php the_content(); ?>
                 </div>
-                <button class="mptrs_toggleBtn">See More</button>
+                <button class="mptrs_toggleBtn"><?php esc_html_e( 'See More', 'tablely' ); ?></button>
             </div>
 
             <?php
@@ -59,7 +92,7 @@
             if( is_array( $existing_menus ) && count( $existing_menus ) > 0 ){?>
 
             <div class="mptrs_FoodMenuHolder">
-                <h3 class="mptrs_FoodMenuHolderTitle">Menu(<?php echo esc_attr( count( $existing_menus ) ) ?>)</h3>
+                <h3 class="mptrs_FoodMenuHolderTitle"><?php esc_html_e( 'Menu', 'tablely' ); ?>(<?php echo esc_attr( count( $existing_menus ) ) ?>)</h3>
 
                 <div class="mptrs_category_container">
                     <?php
@@ -115,7 +148,7 @@
             <?php }?>
 
             <div class="mptrs_openingHours">
-                <h3 class="mptrs_openingTitle">Opening Hours</h3>
+                <h3 class="mptrs_openingTitle"><?php esc_html_e( 'Opening Hours', 'tablely' ); ?></h3>
                 <ul class="mptrs_openingList">
                     <li><span class="mptrs_day">Saturday</span> <span class="mptrs_time">11:00 AM - 11:00 PM</span></li>
                     <li><span class="mptrs_day">Sunday</span> <span class="mptrs_time">11:00 AM - 11:00 PM</span></li>
@@ -131,18 +164,18 @@
 
             <div class="mptrs_orderedFoodMenuInfoHolder" id="mptrs_orderedFoodMenuInfoHolder" style="display: none">
                 <div class="mptrs_orderedMenuHolder">
-                    <span class="">Your Ordered Food menu</span>
+                    <span class=""><?php esc_html_e( 'Your Ordered Food menu', 'tablely' ); ?></span>
                 </div>
                 <div class="mptrs_orderedFoodMenuHolder" id="mptrs_orderedFoodMenuHolder"></div>
                 <div class="mptrs_totalPriceHolder" id="mptrs_totalPriceHolder">
                     <span class="mptrs_totalPricetext">Total</span>
-                    <input class="mptrs_totalPrice" id="mptrs_totalPrice" name="mptrs_totalPrice" value="" readonly placeholder="total price">
+                    <input class="mptrs_totalPrice" id="mptrs_totalPrice" name="mptrs_totalPrice" value="" readonly placeholder="total price" disabled>
                 </div>
                 <div id="mptrs_foodDeliveryOptions" class="mptrs_foodDeliveryOptions">
                     <div class="mptrs_orderOptionsTab">
-                        <div class="mptrs_orderOptionTab mptrs_orderTabActive" id="mptrs_dineInTab">Dine-In</div>
-                        <div class="mptrs_orderOptionTab" id="mptrs_deliveryTab">Delivery</div>
-                        <div class="mptrs_orderOptionTab" id="mptrs_takeawayTab">Takeaway</div>
+                        <div class="mptrs_orderOptionTab mptrs_orderTabActive" id="mptrs_dineInTab"><?php esc_html_e( 'Dine-In', 'tablely' ); ?></div>
+                        <div class="mptrs_orderOptionTab" id="mptrs_deliveryTab"><?php esc_html_e( 'Delivery', 'tablely' ); ?></div>
+                        <div class="mptrs_orderOptionTab" id="mptrs_takeawayTab"><?php esc_html_e( 'Takeaway', 'tablely' ); ?></div>
                     </div>
                 </div>
             </div>
@@ -150,9 +183,9 @@
             <div class="mptrs_foodOrderContentholder">
                 <div class="mptrs_seatMappedHolder" id="mptrs_dineInTabHolder" style="display: none">
                     <div class="mptrs_orderCardHolder" id="mptrs_orderCardHolder">
-                        <h2 class="mptrs_title">Make a reservation</h2>
+                        <h2 class="mptrs_title"><?php esc_html_e( 'Make a reservation', 'tablely' ); ?></h2>
                         <div class="mptrs_formGroup">
-                            <label for="mptrs_date">Check in</label>
+                            <label for="mptrs_date"><?php esc_html_e( 'Check in', 'tablely' ); ?></label>
                             <div class="mptrs_input_wrapper">
                                 <div class="mptrs_DatePickerContainer" style="display: block">
                                     <input type="text" id="mptrs_date" placeholder="Select a Date">
@@ -160,22 +193,53 @@
                                 </div>
                             </div>
                         </div>
-                        <button id="mptrs_search" class="mptrs_button">Find a time</button>
+                        <button id="mptrs_search" class="mptrs_button"><?php esc_html_e( 'Find a time', 'tablely' ); ?></button>
                         <div class="mptrs_time_container"></div>
-
-                        <div class="mptrs_checkoutManage" name="add-to-cart" value="<?php echo esc_attr( $post_id )?>" id="mptrs_checkoutManage<?php echo esc_attr( $post_id )?>">Process Checkout</div>
                     </div>
                 </div>
                 <div class="mptrs_seatMappedHolder" id="mptrs_deliveryTabHolder" style="display: none">
-                    <div class="mptrs_orderCardDeliveryHolder">
-                        <input type="text" class="mptrs_input-field" id="location" placeholder="Location">
-                        <input type="text" class="mptrs_input-field" id="street-address" placeholder="Enter your street address">
-                        <input type="text" class="mptrs_input-field" id="postal-code" placeholder="Postal Code">
+                    <div class="mptrs_orderCardHolder" id="mptrs_orderCardHolder">
+                        <h2 class="mptrs_title"><?php esc_html_e( 'Make a reservation', 'tablely' ); ?></h2>
+                        <div class="mptrs_formGroup">
+                            <label for="mptrs_date"><?php esc_html_e( 'Check in', 'tablely' ); ?></label>
+                            <div class="mptrs_input_wrapper">
+                                <div class="mptrs_DatePickerContainer" style="display: block">
+                                    <input type="text" id="mptrs_dalivery_date" placeholder="Select a Date">
+                                    <span class="mptrs_calendarIcon">&#128197;</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="mptrs_search" class="mptrs_button"><?php esc_html_e( 'Find a time', 'tablely' ); ?></button>
+                        <div class="mptrs_time_container"></div>
                     </div>
+                    <div class="mptrs_orderCardDeliveryHolder">
+                        <input type="text" class="mptrs_input-field" id="mptrsLocation" placeholder="Location">
+                        <input type="text" class="mptrs_input-field" id="mptrsStreetAddress" placeholder="Enter your street address">
+                        <div class="mptrs_dineInOrderPlaceBtn" id="mptrs_deliveryOrderPlaceBtn">Process Checkout</div>
+                    </div>
+
+
                 </div>
                 <div class="mptrs_seatMappedHolder" id="mptrs_takeawayTabHolder" style="display: none">
+                    <div class="mptrs_orderCardHolder" id="mptrs_orderCardHolder">
+                        <h2 class="mptrs_title"><?php esc_html_e( 'Make a reservation', 'tablely' ); ?></h2>
+                        <div class="mptrs_formGroup">
+                            <label for="mptrs_date"><?php esc_html_e( 'Check in', 'tablely' ); ?></label>
+                            <div class="mptrs_input_wrapper">
+                                <div class="mptrs_DatePickerContainer" style="display: block">
+                                    <input type="text" id="mptrs_takeaway_date" placeholder="Select a Date">
+                                    <span class="mptrs_calendarIcon">&#128197;</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="mptrs_search" class="mptrs_button"><?php esc_html_e( 'Find a time', 'tablely' ); ?></button>
+                        <div class="mptrs_time_container"></div>
+                    </div>
                     <div class="mptrs_orderCardTakeawayHolder">
-                        <div class="">Takeaway</div>
+                        <div class="mptrs_orderCardDeliveryHolder">
+                            <input type="text" class="mptrs_input-field" id="mptrsLocation" placeholder="Location">
+                            <div class="mptrs_dineInOrderPlaceBtn" id="mptrs_takeawayOrderPlaceBtn">Process Checkout</div>
+                        </div>
                     </div>
 
                 </div>

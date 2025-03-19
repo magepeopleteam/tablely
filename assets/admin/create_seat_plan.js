@@ -1128,8 +1128,9 @@ jQuery(document).ready(function ($) {
                 });
             }
         });
-        $(document).on('mouseup', function (e) {
-            console.log('Done');
+
+        $CreateSeatGrid.on('mouseup', function (e) {
+        // $(document).on('mouseup', function (e) {
             e.preventDefault();
             if (createMultiSeats) {
                 createMultiSeats = false;

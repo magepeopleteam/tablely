@@ -153,8 +153,6 @@ jQuery(document).ready(function ($) {
                     seatBookedName.push(selectedSeatname);
                 }
 
-                // console.log( seatBookedName );
-
             });
         }
 
@@ -211,8 +209,11 @@ jQuery(document).ready(function ($) {
 
 
     let disabledDates = ["2025-03-20", "2025-03-25", "2025-02-26"];
-    mptrs_datePicker( disabledDates );
-    $(document).on('click',".mptrs_OrderPlaceBtn",function () {
+    mptrs_datePicker( disabledDates, 'mptrs_date' );
+    mptrs_datePicker( disabledDates, 'mptrs_dalivery_date' );
+    mptrs_datePicker( disabledDates, 'mptrs_takeaway_date' );
+
+    $(document).on('click',".mptrs_OrderPlaceBtn_old",function () {
         let orderPostClickedId = $(this).attr('id').trim();
         let orderPostId = orderPostClickedId.split('-');
         orderPostId = orderPostId[1];
@@ -247,26 +248,41 @@ jQuery(document).ready(function ($) {
 
     });
 
-    $(document).on('click',".mptrs_checkoutManage",function () {
+    $(document).on('click',".mptrs_dineInOrderPlaceBtn",function () {
 
+        let orderId = $(this).attr('id').trim();
         let mptrs_totalPrices = $("#mptrs_totalPrice").val().trim();
         let mptrs_order_time = $('.mptrs_time_button.active').data('time');
-        let mptrs_order_date = $("#mptrs_date").val().trim();
+        let mptrs_order_date = '';
         let postId = $("#mptrs_getPost").val().trim();
 
-        let itemID = 100;
-        let itemName = 'new name';
-        let itemPrice = 200 ;
-        let itemImage = '';
+        let seats = '';
+        let mptrs_locations = '';
+        let mptrs_location = [];
+        let mptrs_orderType = '';
 
+        if( orderId === 'mptrs_dineInOrderPlaceBtn' ){
+            mptrs_order_date = $("#mptrs_date").val().trim();
+            seats = JSON.stringify( seatBooked );
+            mptrs_orderType = 'dine_in';
+        }else if( orderId === 'mptrs_deliveryOrderPlaceBtn' ){
+            let mptrs_Location = $("#mptrsLocation").val().trim();
+            let mptrs_StreetAddress = $("#mptrsStreetAddress").val().trim();
+            mptrs_location.push( mptrs_Location, mptrs_StreetAddress);
+            mptrs_locations = JSON.stringify( mptrs_location );
+            mptrs_order_date = $("#mptrs_dalivery_date").val().trim();
+
+
+            mptrs_orderType = 'delivery';
+        }else{
+            mptrs_orderType = 'take_away';
+            mptrs_order_date = $("#mptrs_takeaway_date").val().trim();
+        }
 
         let button = $(this);
-        let post_id = 1072;
+        let post_id = postId;
         let menu = JSON.stringify( addToCartData ) ;
-        let seats = JSON.stringify( seatBooked ) ;
         let bookedSeatName =  JSON.stringify( seatBookedName );
-
-        let price = 6000; // Total price
         let quantity = 300; // Total quantity
 
         $.ajax({
@@ -275,8 +291,10 @@ jQuery(document).ready(function ($) {
             data: {
                 action: 'mptrs_add_food_items_to_cart',
                 post_id: post_id,
+                mptrs_orderType: mptrs_orderType,
                 menu: menu ,
                 seats: seats,
+                mptrs_locations: mptrs_locations,
                 bookedSeatName: bookedSeatName,
                 price: mptrs_totalPrices,
                 quantity: quantity,
@@ -289,7 +307,11 @@ jQuery(document).ready(function ($) {
             success: function (response) {
                 if (response.success) {
                     button.text('Added to Cart ✅');
-                    window.location.href = '/mage_people/checkout/';
+                    setTimeout(  function () {
+                        button.text('Process Checkout')
+                    },1000);
+
+                    window.location.href = mptrs_ajax.site_url+'/checkout/';
                 } else {
                     alert(response.data);
                     button.text('Add to Cart');
@@ -299,9 +321,9 @@ jQuery(document).ready(function ($) {
     });
 
 
-    function mptrs_datePicker( disabledDates ) {
+    function mptrs_datePicker( disabledDates, id ) {
         $(".mptrs_DatePickerContainer").fadeIn();
-        $("#mptrs_date").datepicker({
+        $("#"+id).datepicker({
             dateFormat: "yy-mm-dd",
             changeMonth: true,
             changeYear: true,
@@ -315,7 +337,7 @@ jQuery(document).ready(function ($) {
                 return [true, ""];
             }
         });
-        $(".mptrs_calendarIcon").click(function () {
+        $(document).on('click',".mptrs_calendarIcon",function () {
             $("#mptrs_date").focus();
         });
     }
@@ -524,8 +546,6 @@ jQuery(document).ready(function ($) {
             $("#"+menuQtyKey).text(quantity);
         }
 
-        // console.log( addToCartData );
-
         calculateTotal();
     });
     function mptrs_display_food_menu_for_order( food_menu_data ){
@@ -551,7 +571,7 @@ jQuery(document).ready(function ($) {
 
     let addToCartData = {};
     // Add Button Click
-    $(document).on('click', ".mptrs_addBtn", function () {
+    $(document).on('click', ".mptrs_addBtn_old", function () {
         $(this).fadeOut();
         $("#mptrs_orderedFoodMenuInfoHolder").fadeIn();
         $("#mptrs_dineInTabHolder").fadeIn();
@@ -592,9 +612,7 @@ jQuery(document).ready(function ($) {
             menuAddedKey: menuAddedKey,
         };
 
-        addToCartData[menuAddedKey] = {
-            menuCount: 1
-        };
+        addToCartData[menuAddedKey] = 1;
 
         // Create flying effect
         let flyItem = animationDiv.clone().css({
@@ -644,40 +662,104 @@ jQuery(document).ready(function ($) {
         $menuItem.hide().fadeIn(1000);
     }
 
+    function mptrs_display_ordered_menu( get_time ){
+        let menuItems = [];
+        let quantities = [];
+        $(".mptrs_addedMenuName").each(function () {
+            let text = $(this).text().trim(); // Get text and trim spaces
+            if (text) {
+                menuItems.push(text); // Add to array
+            }
+        });
+        $(".mptrs_menuAddedCartItem").each(function () {
+            let parentCartItem = $(this).closest(".mptrs_menuAddedCartItem"); // Find the closest parent
+            let quantity = parentCartItem.find(".mptrs_quantity").text().trim(); // Get quantity text
+
+            quantities.push(quantity);
+        });
+
+        let tableBody = $("#mptrs_orderAddedTable tbody");
+        tableBody.empty();
+        for (let i = 0; i < menuItems.length; i++) {
+            let row = `<tr>
+                    <td>${menuItems[i]}</td>
+                    <td>${quantities[i]}</td>
+                </tr>`;
+
+            tableBody.append(row);
+        }
+        let details = $("#mptrs_orderAddedDetails");
+
+        let totalPrices = $("#mptrs_totalPrice").val().trim();
+        // let order_time = $('.mptrs_time_button.active').data('time');
+        let order_date = $("#mptrs_date").val().trim();
+        let detailsRow = `<tr>
+                            <td>${order_date}</td>
+                            <td>${get_time}</td>
+                            <td>${totalPrices}</td>
+                        </tr>`;
+        details.append(detailsRow);
+    }
+
+
     // Handle time selection
     $(document).on('click',".mptrs_time_button", function () {
-        $(".mptrs_time_button").removeClass("active");
-        $(this).addClass("active");
-        $("#seatPopup").fadeIn();
-        let get_postId =  $("#mptrs_getPost").val().trim();
-        let get_time = $(this).data('time');
-        let get_date = $("#mptrs_date").val().trim();
-        if( get_time === '' ){
-            alert('Select Date First!');
-        }else{
-            $.ajax({
-                url: mptrs_ajax.ajax_url,
-                type: 'POST',
-                data: {
-                    action: 'mptrs_get_available_seats_for_reservations',
-                    nonce: mptrs_ajax.nonce,
-                    get_time: get_time,
-                    get_date: get_date,
-                    post_id: get_postId,
-                },
-                dataType: 'json',
-                success: function (response) {
-                    // mptrs_display_food_menu_for_order( response.data.get_food_menu )
 
-                    seatBooked = [];
-                    seatBookedName = [];
-                    $("#mptrs_seatMapDisplay").append( response.data.mptrs_seat_maps );
-                },
-                error: function () {
-                    alert( 'Error occurred');
-                }
-            });
+        let activeText = $('.mptrs_orderOptionTab.mptrs_orderTabActive').text().trim();
+        $(".mptrs_time_button").removeClass("active");
+        if( activeText === 'Dine-In' ){
+            let get_postId =  $("#mptrs_getPost").val().trim();
+            let get_time = $(this).data('time');
+            let get_date = $("#mptrs_date").val().trim();
+            if( !get_date ){
+                alert('Select Date First!');
+            }
+            else{
+                mptrs_display_ordered_menu( get_time );
+                $(this).addClass("active");
+                $("#seatPopup").fadeIn();
+                $.ajax({
+                    url: mptrs_ajax.ajax_url,
+                    type: 'POST',
+                    data: {
+                        action: 'mptrs_get_available_seats_for_reservations',
+                        nonce: mptrs_ajax.nonce,
+                        get_time: get_time,
+                        get_date: get_date,
+                        post_id: get_postId,
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        $(this).addClass("active");
+                        // mptrs_display_food_menu_for_order( response.data.get_food_menu )
+
+                        seatBooked = [];
+                        seatBookedName = [];
+                        $("#mptrs_seatMapDisplay").append( response.data.mptrs_seat_maps );
+                    },
+                    error: function () {
+                        alert( 'Error occurred');
+                    }
+                });
+            }
+        }else if( activeText === 'Delivery' ){
+            let get_date = $("#mptrs_dalivery_date").val().trim();
+            if( !get_date ){
+                alert('Select Date First!');
+            }else{
+                $(this).addClass("active");
+            }
+
+        }else{
+            let get_date = $("#mptrs_takeaway_date").val().trim();
+            if( !get_date ){
+                alert('Select Date First!');
+            }else{
+                $(this).addClass("active");
+            }
+
         }
+
 
 
     });

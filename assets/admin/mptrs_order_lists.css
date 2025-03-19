@@ -1,0 +1,204 @@
+.mptrs_order_page_wrap {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    margin: auto;
+}
+
+/* Page Header Styling */
+.mptrs_order_page_wrap h1 {
+    font-size: 28px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.mptrs_awesome-heading {
+    font-family: 'Poppins', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    text-align: center;
+    background: linear-gradient(90deg, #0073aa, #00d1b2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+.mptrs_awesome-heading::after {
+    content: "";
+    display: block;
+    width: 100px;
+    height: 3px;
+    background-color: #00d1b2;
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+.mptrs_order_page_table {
+    width: 100%;
+    border-collapse: collapse;
+    /*border: 1px solid #b0b0b0;*/
+    margin-bottom:15px;
+}
+.mptrs_order_page_table thead {
+    background-color: #161b37;
+}
+
+.mptrs_order_page_table th {
+    text-align: left;
+    color: #fff;
+    padding: 8px;
+}
+
+
+.mptrs_order_page_table td {
+    text-align: left;
+    padding: 8px;
+}
+
+.mptrs_order_page_table tbody tr:nth-child(even) {
+    background-color: #00328014;
+}
+
+.mptrs_order_page_table tbody tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+.mptrs_order_page_table .mptrs_order_status {
+    padding: 8px;
+    border-radius: 5px;
+    text-transform: capitalize;
+    display: block;
+    width: max-content;
+    color: #777;
+    background: #e5e5e5;
+}
+.mptrs_order_page_table .mptrs_service_status {
+    padding: 1px 8px;
+    border-radius: 5px;
+    text-transform: capitalize;
+    display: block;
+    width: max-content;
+    color: #777;
+    background: #e5e5e5;
+}
+
+.mptrs_order_page_table .mptrs_service_status.in_progress {
+    background: #c6e1c6;
+    color: #5b841b;
+}
+.mptrs_order_page_table .mptrs_order_status.service_out {
+    background: #990000;
+    color: #fff;
+}
+
+.mptrs_order_page_table .mptrs_order_status.processing {
+    background: #c6e1c6;
+    color: #5b841b;
+}
+
+.mptrs_order_page_table .mptrs_order_status.completed {
+    background: #c8d7e1;
+    color: #2e4453;
+}
+
+.mptrs_order_page_table .mptrs_order_status.cancelled {
+    color: #777;
+    background: #e5e5e5;
+}
+
+.mptrs_order_page_table .mptrs_order_status.failed {
+    background: #eba3a3;
+    color: #761919;
+}
+
+.mptrs_order_page_table .mptrs_order_status.on-hold {
+    background: #f8dda7;
+    color: #94660c;
+}
+
+.mptrs_order_page_table .mptrs_order_status.pending {
+    color: #777;
+    background: #e5e5e5;
+}
+
+.mptrs_order_view_btn {
+    padding: 8px 16px;
+    background-color: #299cdb; /* Material purple */
+    color: #ffffff;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 10px;
+}
+
+.mptrs_order_view_btn:hover {
+    background-color: #00ff4c; /* Darker purple on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.mptrs_order_edit_btn {
+    background: #2271b1;
+    color: #fff;
+    padding: 8px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.mptrs_order_edit_btn:hover {
+    color: #fff;
+}
+
+.mptrs_orderTypeContainer{
+    width: calc( 100% - 20px ); /* Parent width */
+    /*border: 1px solid #ddd;*/
+    border-radius: 5px;
+    margin: 10px 0 0 0 ;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    overflow: hidden;
+}
+
+.mptrs_order_type_item{
+    background: #ededed;
+    color: #333333;
+    padding: 8px 12px;
+    margin: 5px;
+    border-radius: 5px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+.mptrs_active{
+    background-color: #f14026;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .mptrs_order_page_wrap {
+        padding: 20px;
+    }
+    .rbfw_order_page_table {
+        font-size: 14px;
+    }
+    .search-input {
+        font-size: 14px;
+        width: 80%;
+    }
+    .rbfw_order_edit_btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}

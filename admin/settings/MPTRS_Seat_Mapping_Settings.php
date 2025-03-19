@@ -95,7 +95,6 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             }
             $menuItems = array_unique( $menuItems );
             $menuItems = array_values( $menuItems );
-//            error_log( print_r( [ '$menuItems' => $menuItems], true ) );
             $update = update_post_meta( $post_id, '_mptrs_food_menu_items', $menuItems );
             wp_send_json_success([
                 'message' => 'Food Menu successfully Added In Your List!',
@@ -156,13 +155,21 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
                 wp_send_json_error(['message' => 'Security check failed.'], 403);
             }
 
+            $variations_ary = [];
+            $variations = isset(  $_POST['menuData']['variations'] ) ?  sanitize_text_field( $_POST['menuData']['variations'] ) : '';
+            if( !empty($variations) ){
+                $variations_ary = json_decode( stripslashes( sanitize_text_field( $variations ) ), true);
+            }
             $uniqueKey = self::generateUniqueKey();
             $new_menu_data = [
-                'menuName'     => sanitize_text_field($_POST['menuData']['menuName']),
-                'menuCategory' => sanitize_text_field($_POST['menuData']['menuCategory']),
-                'menuPrice'    => floatval($_POST['menuData']['menuPrice']),
-                'numPersons'   => intval($_POST['menuData']['menunumPersons']),
-                'menuImgUrl'   => esc_url_raw($_POST['menuData']['menuImgUrl']),
+                'menuName'          => isset( $_POST['menuData']['menuName'] ) ? sanitize_text_field($_POST['menuData']['menuName'] ) : '',
+                'menuCategory'      =>  isset( $_POST['menuData']['menuCategory'] ) ? sanitize_text_field($_POST['menuData']['menuCategory']) : '',
+                'menuDescription'   => isset( $_POST['menuData']['menuDescription'] ) ? sanitize_text_field($_POST['menuData']['menuDescription']) : '',
+                'menuPrice'         => isset( $_POST['menuData']['menuDescription'] ) ? floatval($_POST['menuData']['menuPrice'] ) : 0,
+                'menuSalePrice'     => isset( $_POST['menuData']['menuSalePrice'] ) ? floatval($_POST['menuData']['menuSalePrice']) : 0,
+                'numPersons'        => isset( $_POST['menuData']['menunumPersons'] ) ? intval($_POST['menuData']['menunumPersons']) : 0,
+                'menuImgUrl'        => isset( $_POST['menuData']['menuImgUrl'] ) ? esc_url_raw($_POST['menuData']['menuImgUrl']) : '',
+                'variations'        => $variations_ary,
             ];
 
             if (empty($new_menu_data['menuName']) || empty($new_menu_data['menuCategory']) || $new_menu_data['menuPrice'] <= 0 || $new_menu_data['numPersons'] <= 0) {
@@ -173,8 +180,9 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
                 $existing_menus = [];
             }
             $existing_menus[ $uniqueKey ] = $new_menu_data;
+            error_log( print_r( [ '$existing_menus' => $existing_menus ], true ) );
             $saved = update_option( '_mptrs_food_menu', $existing_menus );
-            if (!$saved) {
+            if ( !$saved ) {
                 wp_send_json_error(['message' => 'Failed to save menu data.'], 500);
             }
 
@@ -190,14 +198,24 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
                 wp_send_json_error(['message' => 'Security check failed.'], 403);
             }
 
+            $variations_ary = [];
+            $variations = isset(  $_POST['menuEditData']['variations'] ) ?  sanitize_text_field( $_POST['menuEditData']['variations'] ) : '';
+            if( !empty($variations) ){
+                $variations_ary = json_decode( stripslashes( sanitize_text_field( $variations ) ), true);
+            }
+
             $uniqueKey = sanitize_text_field($_POST['menuEditData']['menuKey']);
             $new_menu_data = [
-                'menuName'     => sanitize_text_field($_POST['menuEditData']['menuName']),
-                'menuCategory' => sanitize_text_field($_POST['menuEditData']['menuCategory']),
-                'menuPrice'    => floatval($_POST['menuEditData']['menuPrice']),
-                'numPersons'   => intval($_POST['menuEditData']['menunumPersons']),
-                'menuImgUrl'   => esc_url_raw($_POST['menuEditData']['menuImgUrl']),
+                'menuName'     => isset( $_POST['menuEditData']['menuName'] ) ? sanitize_text_field( $_POST['menuEditData']['menuName'] ) : '',
+                'menuCategory' => isset( $_POST['menuEditData']['menuCategory'] ) ? sanitize_text_field( $_POST['menuEditData']['menuCategory'] ) : '',
+                'menuDescription' => isset( $_POST['menuEditData']['menuDescription'] ) ? sanitize_text_field( $_POST['menuEditData']['menuDescription'] ) : '',
+                'menuPrice'    => isset( $_POST['menuEditData']['menuPrice'] ) ? floatval( $_POST['menuEditData']['menuPrice'] ) : '',
+                'menuSalePrice'    => isset( $_POST['menuEditData']['menuSalePrice'] ) ? floatval( $_POST['menuEditData']['menuSalePrice'] ) : '',
+                'numPersons'   => isset( $_POST['menuEditData']['menunumPersons'] ) ? intval( $_POST['menuEditData']['menunumPersons'] ) : 0,
+                'menuImgUrl'   => isset( $_POST['menuEditData']['menuImgUrl'] ) ? esc_url_raw( $_POST['menuEditData']['menuImgUrl'] ) : '',
+                'variations'   => $variations_ary,
             ];
+
 
             if (empty($new_menu_data['menuName']) || empty($new_menu_data['menuCategory']) || $new_menu_data['menuPrice'] <= 0 || $new_menu_data['numPersons'] <= 0) {
                 wp_send_json_error(['message' => 'All fields are required and must be valid.'], 400);

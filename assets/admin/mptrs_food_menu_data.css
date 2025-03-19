@@ -1,3 +1,6 @@
+body.mptrs_no_scroll {
+    overflow: hidden;
+}
 
 .mptrs_food_menu_form {
     width: calc( 100% - 40px);
@@ -7,6 +10,17 @@
     padding: 20px;
     border-radius: 8px;
     /*box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);*/
+}
+
+.mptrs_menuPriceHolder{
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    flex-grow: 1;
+}
+.mptrs_regularSalePrice{
+    display: block;
+    width: 50%;
 }
 
 .mptrs_form_group {
@@ -238,18 +252,49 @@
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    overflow: scroll;
 }
 
 .mptrs_foodMenuContentPopup {
     background: #fff;
     padding: 20px;
     right: 0;
-    height: calc(100% - 110px);
+    /*height: calc(100% - 110px);*/
     top: 110px;
     width: calc(100% - 300px);
     position: absolute;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    /*overflow: scroll;*/
 }
+
+#mptrs_addVariation{
+    margin-bottom: 10px;
+}
+
+.mptrs_variationFormGroup {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.mptrs_variationFormGroup input {
+    flex: 1;
+}
+
+.mptrs_removeVariation {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.mptrs_removeVariation:hover {
+    background: #cc0000;
+}
+
 
 .mptrs_closePopup {
     position: absolute;
@@ -701,4 +746,30 @@
 }
 .mptrs_editMenuPriceClose:hover {
     background: #c82333;
+}
+
+
+
+
+.mptrs_variationCategory {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.mptrs_variationItem {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.mptrs_input, .mptrs_qty {
+    padding: 5px;
+    border: 1px solid #ccc;
+}
+
+#mptrs_addVariationCategory{
+    margin: 5px 10px 5px 0px;
+    padding: 5px;
 }
