@@ -769,7 +769,10 @@ body.mptrs_no_scroll {
     border: 1px solid #ccc;
 }
 
-#mptrs_addVariationCategory{
+#mptrs_addVariationCategory,
+#mptrs_addAddonsCategory
+{
     margin: 5px 10px 5px 0px;
     padding: 5px;
 }
+
