@@ -32,22 +32,31 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
         }
 
         function mptrs_add_food_items_to_cart() {
-
             if ( !isset($_POST['post_id'], $_POST['mptrs_orderType'], $_POST['menu'], $_POST['seats'], $_POST['bookedSeatName'], $_POST['price'], $_POST['quantity'])) {
                 wp_send_json_error('Missing required data.');
             }
-
 
             $original_post_id = intval( sanitize_text_field( $_POST['post_id'] ) );
             $post_id = get_post_meta( $original_post_id, 'link_wc_product', true ) ;
             $get_food_menu = get_option( '_mptrs_food_menu' );
             $ordered_menu_key = sanitize_text_field( $_POST['menu'] );
             $ordered_menu_key = json_decode( stripslashes( $ordered_menu_key ), true);
+
+            $orderVarDetailsAry =  isset( $_POST['orderVarDetailsStr'] ) ? (array) json_decode( stripslashes( $_POST['orderVarDetailsStr'] ) ) : [];
+
             $menu = '';
             foreach ($ordered_menu_key as $key => $value) {
 
+                $var_details = '';
                 if( isset( $get_food_menu[ $key ] ) ) {
-                    $menu .= 'Name: '.$get_food_menu[ $key ]['menuName']. ' Person:'.$get_food_menu[ $key ]['numPersons'].' Quantity:'.$value.' ';
+                    if (isset( $orderVarDetailsAry[ $key] ) ){
+                        $var_details = $orderVarDetailsAry[ $key];
+                    }
+                    if( $var_details ){
+                        $menu .= '<li class="mptrs_orderDetailList">Item Name: '.$get_food_menu[ $key ]['menuName']. ' Person:'.$get_food_menu[ $key ]['numPersons'].' Quantity:'.$value.' Details: '.$var_details.'</li>';
+                    }else{
+                        $menu .= '<li class="mptrs_orderDetailList">Item Name: '.$get_food_menu[ $key ]['menuName']. ' Person:'.$get_food_menu[ $key ]['numPersons'].' Quantity:'.$value.'</li>';
+                    }
                     $menu .= ', ';
                 }
             }

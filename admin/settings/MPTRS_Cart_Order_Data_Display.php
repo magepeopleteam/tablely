@@ -32,7 +32,6 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
                     $orderPostId = $product->get_id();
                 }
                 $mptrs_booking_data = maybe_unserialize( get_post_meta( $orderPostId, '_mptrs_booking_data', true ) );
-                error_log( print_r( [ '$mptrs_booking_data' => $mptrs_booking_data ], true ) );
 
                 $booked_seat_ids = isset( $mptrs_booking_data['selected_seat_ids'] ) ? $mptrs_booking_data['selected_seat_ids'] : array();
                 $order_date = isset( $mptrs_booking_data['ordered_date'] ) ? $mptrs_booking_data['ordered_date'] : '';
@@ -164,7 +163,7 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
                     $value = is_array($cart_item[$key]) ? implode(', ', $cart_item[$key]) : $cart_item[$key];
                     $item_data[] = [
                         'name'  => $label,
-                        'value' => esc_html($value)
+                        'value' => esc_html(esc_html( $value ) )
                     ];
                 }
             }
@@ -251,7 +250,9 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
             foreach ($meta_fields as $key => $label) {
                 $value = $item->get_meta($key, true);
                 if (!empty($value)) {
-                    echo '<p><strong>' . esc_html($label) . ':</strong> ' . esc_html($value) . '</p>';
+
+                    $value = preg_replace('/<\/li>,/', '</li>', $value);
+                    echo '<p><strong>' . esc_attr($label) . ':</strong> ' . wp_kses_post($value) . '</p>';
                 }
             }
             echo '</div>';

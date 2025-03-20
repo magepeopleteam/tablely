@@ -190,6 +190,13 @@ jQuery(document).ready(function ($) {
     mptrs_datePicker( disabledDates, 'mptrs_takeaway_date' );
 
     $(document).on('click',".mptrs_dineInOrderPlaceBtn",function () {
+        let orderVarDetails = {};
+        let orderVarDetailsText = '';
+        $(".mptrs_addedMenuOrderDetails").each(function () {
+            let key = $(this).parent().parent().attr('data-id');
+            orderVarDetailsText = $(this).text();
+            orderVarDetails[key] = orderVarDetailsText;
+        });
 
         let orderId = $(this).attr('id').trim();
         let mptrs_totalPrices = $("#mptrs_totalPrice").val().trim();
@@ -220,9 +227,8 @@ jQuery(document).ready(function ($) {
 
         let button = $(this);
         let post_id = postId;
-        let menu = JSON.stringify( addToCartData ) ;
-
-        console.log( menu );
+        let menu = JSON.stringify( addToCartData );
+        let orderVarDetailsStr = JSON.stringify( orderVarDetails );
         let bookedSeatName =  JSON.stringify( seatBookedName );
         let quantity = 300; // Total quantity
 
@@ -234,6 +240,7 @@ jQuery(document).ready(function ($) {
                 post_id: post_id,
                 mptrs_orderType: mptrs_orderType,
                 menu: menu ,
+                orderVarDetailsStr: orderVarDetailsStr ,
                 seats: seats,
                 mptrs_locations: mptrs_locations,
                 bookedSeatName: bookedSeatName,
@@ -582,12 +589,14 @@ jQuery(document).ready(function ($) {
 
     function mptrs_append_order_food_menu(item) {
         let container = $("#mptrs_orderedFoodMenuHolder");
+        let orderVarDetails = item.mptrs_oderDetails.trim(); // Get text from element
+        orderVarDetails = orderVarDetails.replace(/,\s*$/, "");
         let menuItem = `
         <div class="mptrs_menuAddedCartItem" id="mptrs_menuAddedCartItem-${item.menuAddedKey}" data-id="${item.menuAddedKey}" data-price="${item.menuPrice}">
             <img class="mptrs_menuImg" src="${item.menuImgUrl}" alt="${item.menuName}">
             <div class="mptrs_menuDetails">
                 <div class="mptrs_addedMenuName">${item.menuName}</div>
-                <div class="mptrs_addedMenuOrderDetails">${item.mptrs_oderDetails}</div>
+                <div class="mptrs_addedMenuOrderDetails">${orderVarDetails}</div>
                 <div class="mptrs_menuPrice">${item.mptrs_CurrencySymbol} ${item.menuPrice}</div>
             </div>
             
@@ -740,8 +749,10 @@ jQuery(document).ready(function ($) {
             if( addOneVariation === 'variations' ){
                 menuHtml += `
                     <div class="mptrs_optionItem">
-                        <input class="mptrs_variationInput" id="mptrs_variationInput" type="radio" name="variations" checked>
-                        <label for="mptrs_variationInput">Regular</label>
+                        <div class="mptrs_nameAcrionHolder">
+                            <input class="mptrs_variationInput" id="mptrs_variationInput" type="radio" name="variations" checked>
+                            <label for="mptrs_variationInput">Regular</label>
+                        </div>
                         <span class="mptrs_price">${mptrs_CurrencySymbol}${menuItem.menuPrice} </span>
                     </div>
                 `
@@ -751,7 +762,6 @@ jQuery(document).ready(function ($) {
                 let increaseDecrease = '';
                 let inputType = variation.radioOrCheckbox === "single" ? "radio" : "checkbox";
                 let inputName = variation.radioOrCheckbox === "single" ? variation.category : `${variation.category}[]`;
-                // console.log( inputName );
                  if( addOneVariation === 'variations' ){
                      increaseDecrease = '';
                  }else{
@@ -894,7 +904,7 @@ jQuery(document).ready(function ($) {
             let price = parent.find(".mptrs_price").text().trim();
             price = parseFloat(price.replace(/[^0-9.]/g, ''));
             let labelText = parent.find("label").text().trim();
-            mptrs_oderDetails += labelText+'('+quantity+' * '+price+'), ';
+            mptrs_oderDetails += labelText+'('+quantity+'), ';
         });
 
         // Sum all checked checkbox prices
@@ -905,7 +915,7 @@ jQuery(document).ready(function ($) {
             let price = parent.find(".mptrs_price").text().trim();
             price = parseFloat(price.replace(/[^0-9.]/g, ''));
             let labelText = parent.find("label").text().trim();
-            mptrs_oderDetails += labelText+'('+quantity+' * '+price+'), ';
+            mptrs_oderDetails += labelText+'('+quantity+'), ';
 
         });
         let addCartPrice =  $(".mptrs_addToCart span").text();
