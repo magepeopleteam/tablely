@@ -717,6 +717,7 @@ jQuery(document).ready(function ($) {
         let menuAddedKeys = menuAddedClickedId.split('-');
         let menuAddedKey = menuAddedKeys[1];
         let menuItem = selectedMenu[menuAddedKey];
+        let addOneVariation = '';
 
         let menuHtml = ` <div class="mptrs_addToCartPopupHolder" id="mptrs_addToCartPopupHolder">
             <div class="mptrs_popupContainer" id="mptrs_popupContainer">
@@ -730,21 +731,43 @@ jQuery(document).ready(function ($) {
 
         menuHtml += `<div class="mptrs_optionGroupHolder">`;
         menuItem.variations.forEach(variation => {
+            if (variation && variation.hasOwnProperty('variationOrAddOne')) {
+                addOneVariation = variation.variationOrAddOne;
+            }
             menuHtml += `<div class="mptrs_optionGroup">`;
             menuHtml += `<span class="mptrs_variationName">${variation.category}</span>`;
 
-            variation.items.forEach(item => {
-                let inputType = variation.radioOrCheckbox === "single" ? "radio" : "checkbox";
-                let inputName = variation.radioOrCheckbox === "single" ? variation.category : `${variation.category}[]`;
+            if( addOneVariation === 'variations' ){
                 menuHtml += `
                     <div class="mptrs_optionItem">
-                        <input class="mptrs_variationInput" id="mptrs_variationInput" type="${inputType}" name="${inputName}">
-                        <label for="mptrs_variationInput">${item.name}</label>
-                        <div class="mptrs_quantityControls">
-                            <button class="mptrs_addDecrease">-</button>
-                            <input type="text" value="1">
-                            <button class="mptrs_addIncrease">+</button>
+                        <input class="mptrs_variationInput" id="mptrs_variationInput" type="radio" name="variations" checked>
+                        <label for="mptrs_variationInput">Regular</label>
+                        <span class="mptrs_price">${mptrs_CurrencySymbol}${menuItem.menuPrice} </span>
+                    </div>
+                `
+            }
+
+            variation.items.forEach(item => {
+                let increaseDecrease = '';
+                let inputType = variation.radioOrCheckbox === "single" ? "radio" : "checkbox";
+                let inputName = variation.radioOrCheckbox === "single" ? variation.category : `${variation.category}[]`;
+                // console.log( inputName );
+                 if( addOneVariation === 'variations' ){
+                     increaseDecrease = '';
+                 }else{
+                     increaseDecrease = `<div class="mptrs_quantityControls">
+                                            <button class="mptrs_addDecrease">-</button>
+                                            <input type="text" value="1">
+                                            <button class="mptrs_addIncrease">+</button>
+                                        </div>`;
+                 }
+                menuHtml += `
+                    <div class="mptrs_optionItem">
+                        <div class="mptrs_nameAcrionHolder">
+                            <input class="mptrs_variationInput" id="mptrs_variationInput" type="${inputType}" name="${addOneVariation}">
+                            <label for="mptrs_variationInput">${item.name}</label>           
                         </div>
+                        ${increaseDecrease}
                         <span class="mptrs_price">${mptrs_CurrencySymbol}${item.price} </span>
                     </div>`;
             });
@@ -800,17 +823,32 @@ jQuery(document).ready(function ($) {
 
         let total = 0;
         let radioSelected = false;
+        let is_variations = false;
         let radioPrice = 0;
         let currentTotal = $("#mptrs_addCartmenuPrice").text() || 0;
         currentTotal = parseFloat(currentTotal.replace(/[^0-9.]/g, ''));
+        let radioName = '';
 
         $("input[type=radio]:checked").each(function () {
+            let quantity = 0;
             let parent = $(this).closest(".mptrs_optionItem");
-            let quantity = parseInt(parent.find("input[type=text]").val());
-            let price = parent.find(".mptrs_price").text().trim();
-            price = parseFloat(price.replace(/[^0-9.]/g, ''));
-            radioPrice += price * quantity;
-            radioSelected = true;
+            radioName = parent.find("input[type=radio]").attr("name");
+            if( radioName === 'variations' ){
+                quantity = 1
+                let price = parent.find(".mptrs_price").text().trim();
+                price = parseFloat(price.replace(/[^0-9.]/g, ''));
+                radioPrice += price * quantity;
+                radioSelected = 'var';
+                is_variations = true;
+            }else{
+                quantity = parseInt(parent.find("input[type=text]").val());
+                let price = parent.find(".mptrs_price").text().trim();
+                price = parseFloat(price.replace(/[^0-9.]/g, ''));
+                radioPrice += price * quantity;
+                radioSelected = 'not_var';
+            }
+
+
         });
 
         let checkboxTotal = 0;
@@ -823,10 +861,16 @@ jQuery(document).ready(function ($) {
             checkboxTotal += price * quantity;
         });
 
-        if ( radioSelected ) {
+        if ( radioSelected === 'var' ) {
             total = radioPrice + checkboxTotal;
-        }
-        else {
+        }else if( radioSelected === 'not_var' ){
+            if( is_variations ){
+                total = radioPrice + checkboxTotal;
+            }else{
+                total = radioPrice + checkboxTotal+currentTotal;
+            }
+
+        } else {
             total = currentTotal + checkboxTotal;
         }
         $(".mptrs_addToCart span").text( mptrs_CurrencySymbol + total.toFixed(2));
@@ -838,8 +882,15 @@ jQuery(document).ready(function ($) {
 
         let mptrs_oderDetails = '';
         $("input[type=radio]:checked").each(function () {
+            let quantity = 0;
             let parent = $(this).closest(".mptrs_optionItem");
-            let quantity = parseInt(parent.find("input[type=text]").val());
+            // let quantity = parseInt(parent.find("input[type=text]").val());
+            let radioName = parent.find("input[type=radio]").attr("name");
+            if( radioName === 'variations' ){
+                quantity = 1
+            }else{
+                quantity = parseInt(parent.find("input[type=text]").val());
+            }
             let price = parent.find(".mptrs_price").text().trim();
             price = parseFloat(price.replace(/[^0-9.]/g, ''));
             let labelText = parent.find("label").text().trim();

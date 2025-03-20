@@ -173,6 +173,7 @@ jQuery(document).ready(function ($) {
         $.each(variations, function (index, variationData) {
             let categoryId = `category_${new Date().getTime()}_${index}`;
             let itemsHTML = '';
+            let addOneVariation = '';
 
             $.each(variationData.items, function (key, item) {
                 itemsHTML += `
@@ -185,9 +186,19 @@ jQuery(document).ready(function ($) {
             `;
             });
 
+            if (variationData && variationData.hasOwnProperty('variationOrAddOne')) {
+                addOneVariation = variationData.variationOrAddOne;
+            }
+
             variationsHTML += `
             <div class="mptrs_variationCategory" id="${categoryId}">
                 <input type="text" class="mptrs_variationCategoryName" placeholder="Variation Name" value="${variationData.category}">
+                
+                <select class="mptrs_variationOrAddone" name="mptrs_variationOrAddone">
+                    <option class="mptrs_variationAddone" value="variations" ${addOneVariation === 'variations' ? 'selected' : '' }>Variations</option>
+                    <option class="mptrs_variationAddone" value="addones" ${addOneVariation === 'addones' ? 'selected' : '' }>Addones</option>
+                </select>
+                
                 <select class="mptrs_singleMultiSelect" name="mptrs_singleMultiSelect">
                     <option class="mptrs_select" value="single" ${variationData.radioOrCheckbox === 'single' ? 'selected' : ''}>Single Select (Radio)</option>
                     <option class="mptrs_select" value="multiple" ${variationData.radioOrCheckbox === 'multiple' ? 'selected' : ''}>Multiple (Check Box)</option>
@@ -517,6 +528,10 @@ jQuery(document).ready(function ($) {
         let categoryHTML = `
             <div class="mptrs_variationCategory" id="${categoryId}">
                 <input type="text" class="mptrs_variationCategoryName" placeholder="Variation Name">
+                <select class="mptrs_variationOrAddone" name="mptrs_variationOrAddone">
+                    <option class="mptrs_variationAddone" value="variations">Variations</option>
+                    <option class="mptrs_variationAddone" value="addones">Addones</option>
+                </select>
                 <select class="mptrs_singleMultiSelect" name="mptrs_singleMultiSelect">
                     <option class="mptrs_select" value="single">Single Select(Radio)</option>
                     <option class="mptrs_select" value="multiple">Multiple(Check Box)</option>
@@ -560,6 +575,7 @@ jQuery(document).ready(function ($) {
 
             let items = [];
             let radioOrCheckbox = $(this).find("select[name='mptrs_singleMultiSelect']").val().trim();
+            let variationOrAddOne = $(this).find("select[name='mptrs_variationOrAddone']").val().trim();
 
             $(this).find(".mptrs_variationItem").each(function () {
                 let itemName = $(this).find("input[name='variation_item_name[]']").val();
@@ -576,9 +592,12 @@ jQuery(document).ready(function ($) {
             variations.push({
                 category: categoryName,
                 radioOrCheckbox: radioOrCheckbox,
+                variationOrAddOne: variationOrAddOne,
                 items: items
             });
         });
+
+        console.log( variations );
 
         return variations;
     }
