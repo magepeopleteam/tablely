@@ -485,6 +485,38 @@
 			public static function get_organizer_slug() {
 				return self::get_general_settings( 'organizer_slug', 'tablely-organizer' );
 			}
+
+            public static function restaurant_menus( $post_id, $key='' ){
+                $existing_menu_by_id = get_post_meta($post_id, '_mptrs_food_menu_items', true);
+                $existing_edited_price = get_post_meta($post_id, '_mptrs_food_menu_edited_prices', true);
+                $existing_menus = [];
+                $new_existing_menus = [];
+                $all_food_menus = get_option( '_mptrs_food_menu', true);
+                if ( is_array( $existing_menu_by_id ) && !empty( $existing_menu_by_id ) ) {
+                    foreach ( $existing_menu_by_id as $item ) {
+                        if ( isset($all_food_menus[ $item ] ) ) {
+                            $existing_menus[$item] = $all_food_menus[ $item ];
+                        }
+                    }
+                }
+
+                foreach ( $existing_menus as $key => $existing_menu ) {
+                    if (is_array($existing_edited_price) && !empty($existing_edited_price)) {
+                        if (isset($existing_edited_price[$key])) {
+                            $price = $existing_edited_price[$key];
+                            $existing_menu['menuPrice'] = $price;
+                            $new_existing_menus[$key] = $existing_menu;
+                        }
+                    }
+                }
+
+                if( $key ){
+                    return $new_existing_menus[ $key ];
+                }else{
+                    return $new_existing_menus;
+                }
+
+            }
 			//*************************************************************Full Custom Function******************************//
 		}
 		new MPTRS_Function();
