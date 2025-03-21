@@ -675,9 +675,20 @@
 
 .mptrs_orderCardHolder,
 .mptrs_orderedFoodMenuInfoHolder,
-.mptrs_orderCardDeliveryHolder,
 .mptrs_orderCardTakeawayHolder
 {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
+}
+
+.mptrs_orderCardDeliveryHolder{
     display: flex;
     flex-direction: column;
     background: white;
@@ -1101,3 +1112,45 @@
     transform: scale(1.05);
 }
 
+@media screen and (max-width: 600px) {
+    .mptrs_contentDataHolder{
+        display: flex;
+        width: 100%;
+        flex-flow: column;
+    }
+
+    .mptrs_restaurantLeftSide{
+        width: 100%;
+    }
+    #mptrs_popupContainer{
+        width: calc( 100% - 20px);
+    }
+    .mptrs_restaurantInfoHolder{
+        flex-direction: column;
+        gap: 1px;
+    }
+    .mptrs_restaurantInfoRightHolder{
+      padding: 1px 5px;
+    }
+
+    .mptrs_restaurantDesHolder {
+        position: relative;
+        max-width: calc(100% - 20px);
+        padding: 10px;
+    }
+
+    .mptrs_restaurantRightSide {
+        width: calc(100% - 20px);
+        padding: 10px;
+    }
+
+    .mptrs_orderCardHolder,
+    .mptrs_orderedFoodMenuInfoHolder,
+    .mptrs_orderCardTakeawayHolder,
+    .mptrs_rightSidebar,
+    .mptrs_orderHolder
+    {
+        width: calc(100% - 20px);
+    }
+
+}
