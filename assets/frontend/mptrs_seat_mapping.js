@@ -728,11 +728,14 @@ jQuery(document).ready(function ($) {
         let menuItem = selectedMenu[menuAddedKey];
         let addOneVariation = '';
 
+        let mptrs_MenuPrice = $(this).parent().attr('data-menuprice').trim();
+        mptrs_MenuPrice = parseFloat(mptrs_MenuPrice.replace(/[^\d.]/g, ''));
+
         let menuHtml = ` <div class="mptrs_addToCartPopupHolder" id="mptrs_addToCartPopupHolder">
             <div class="mptrs_popupContainer" id="mptrs_popupContainer">
                 <div class="mptrs_popupHeader">
                     <span class="mptrs_addCartmenuName">${menuItem.menuName}</span>
-                    <span class="mptrs_addCartmenuPrice" id="mptrs_addCartmenuPrice">${mptrs_CurrencySymbol}${menuItem.menuPrice}</span>
+                    <span class="mptrs_addCartmenuPrice" id="mptrs_addCartmenuPrice">${mptrs_CurrencySymbol}${mptrs_MenuPrice}</span>
                     <span class="mptrs_popupClose">&times;</span>
                 </div>
                 <p class="mptrs_menuDescription">${menuItem.menuDescription}</p>
@@ -753,7 +756,7 @@ jQuery(document).ready(function ($) {
                             <input class="mptrs_variationInput" id="mptrs_variationInput" type="radio" name="variations" checked>
                             <label for="mptrs_variationInput">Regular</label>
                         </div>
-                        <span class="mptrs_price">${mptrs_CurrencySymbol}${menuItem.menuPrice} </span>
+                        <span class="mptrs_price">${mptrs_CurrencySymbol}${mptrs_MenuPrice} </span>
                     </div>
                 `
             }
@@ -787,7 +790,7 @@ jQuery(document).ready(function ($) {
         menuHtml += `</div>`;
 
         menuHtml += ` <div class="mptrs_addToCart">
-                        Total: <span>${mptrs_CurrencySymbol}${menuItem.menuPrice}</span>
+                        Total: <span>${mptrs_CurrencySymbol}${mptrs_MenuPrice}</span>
                         <button class="mptrs_foodMenuAddedCart" id="${menuAddedKey}">Add to Cart</button>
                     </div>`;
         menuHtml += `</div> </div>`;

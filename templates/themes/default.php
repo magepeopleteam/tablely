@@ -10,8 +10,25 @@
 
 	$post_id = get_the_id();
     $thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
-    $existing_menus = get_option( '_mptrs_food_menu' );
+//    $existing_menus = get_option( '_mptrs_food_menu' );
     $categories = get_option( 'mptrs_categories' );
+
+
+    $existing_menu_by_id = get_post_meta($post_id, '_mptrs_food_menu_items', true);
+    $existing_edited_price = get_post_meta($post_id, '_mptrs_food_menu_edited_prices', true);
+
+    $existing_menus = [];
+
+    $all_food_menus = get_option( '_mptrs_food_menu', true);
+
+    if ( is_array( $existing_menu_by_id ) && !empty( $existing_menu_by_id ) ) {
+        foreach ( $existing_menu_by_id as $item ) {
+            if ( isset($all_food_menus[ $item ] ) ) {
+                $existing_menus[$item] = $all_food_menus[ $item ];
+            }
+        }
+    }
+
     ?>
     <div class="mptrs_postHolder">
         <div id="seatPopup" class="popup">
@@ -112,6 +129,15 @@
                                 }else{
                                     $img = $existing_menu['menuImgUrl'];
                                 }
+
+                                $price =$existing_menu['menuPrice'];
+
+                                if( is_array( $existing_edited_price ) && !empty( $existing_edited_price ) ){
+                                    if ( isset($existing_edited_price[ $key ] ) ) {
+                                        $price = $existing_edited_price[ $key ] ;
+                                    }
+                                }
+
                                 ?>
                                 <div class="mptrs_foodMenuContent" id="mptrs_foodMenuContent-<?php echo esc_attr( $key );?>" data-category ="<?php echo esc_attr( $existing_menu['menuCategory'] )?>">
                                     <div class="mptrs_menuImageHolder">
@@ -124,12 +150,12 @@
                                             </div>
                                         </div>
                                         <div class="mptrs_BottomMenuInFo">
-                                            <div class="mptrs_menuPrice"><?php echo wc_price( $existing_menu['menuPrice'] );?></div>
+                                            <div class="mptrs_menuPrice"><?php echo wc_price( $price );?></div>
                                             <div class="mptrs_menuPersion"><i class='fas fa-user-alt' style='font-size:10px'></i><span class="mptrs_numberOfPerson"><?php echo esc_attr( $existing_menu['numPersons'] );?></span></div>
                                         </div>
                                     </div>
                                     <div class="mptrs_addedMenuordered" data-menuCategory ="<?php echo esc_attr( $existing_menu['menuCategory'] )?>" data-menuName="<?php echo esc_attr( $existing_menu['menuName'] );?>"
-                                         data-menuImgUrl ="<?php echo esc_attr( $img )?>" data-menuPrice = "<?php echo esc_attr( wc_price( $existing_menu['menuPrice'] ) );?>" data-numOfPerson =<?php echo esc_attr( $existing_menu['numPersons'] );?>
+                                         data-menuImgUrl ="<?php echo esc_attr( $img )?>" data-menuPrice = "<?php echo esc_attr( wc_price( $price ) );?>" data-numOfPerson =<?php echo esc_attr( $existing_menu['numPersons'] );?>
                                     >
                                         <button class="mptrs_addBtn" id="mptrs_addBtn-<?php echo esc_attr( $key ) ?>">+</button>
                                     </div>
