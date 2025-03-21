@@ -110,7 +110,8 @@
 }
 
 .mptrs_postHolder{
-    display: block;
+    display: flex;
+    flex-direction: column;
     max-width: 1024px;
     width: 100%;
     margin: auto;
@@ -118,9 +119,13 @@
 
 .mptrs_popUpInfoHolder {
     display: flex;
-    flex-direction: column; /* Arrange children in a row */
+    flex-direction: column;
     width: 100%;
-    gap: 10px; /* Optional spacing between children */
+    gap: 10px;
+}
+
+.mptrs_contentDataHolder{
+    display: flex;
 }
 
 .mptrs_seatMapDisplay {
