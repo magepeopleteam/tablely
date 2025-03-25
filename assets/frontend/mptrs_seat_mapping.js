@@ -871,7 +871,8 @@ jQuery(document).ready(function ($) {
                             if (addOneVariation === 'variations') {
                                 increaseDecrease = '';
                             } else {
-                                increaseDecrease = `<div class="mptrs_quantityControls">
+                                increaseDecrease = `
+                                        <div class="mptrs_quantityControls" style="display: none">
                                             <button class="mptrs_addDecrease">-</button>
                                             <input type="text" value="1">
                                             <button class="mptrs_addIncrease">+</button>
@@ -981,10 +982,20 @@ jQuery(document).ready(function ($) {
     });
 
     $(document).on('change', "input[type=checkbox]", function () {
+        if ($(this).is(":checked")) {
+            $(this).parent().siblings('.mptrs_quantityControls').fadeIn();
+        } else {
+            $(this).parent().siblings('.mptrs_quantityControls').fadeOut();
+        }
         mptrs_updateVariationTotalPrice("checkbox");
     });
 
     $(document).on('change', "input[type=radio]", function () {
+        $("input[type=radio][name='" + $(this).attr("name") + "']")
+            .parent().siblings('.mptrs_quantityControls').fadeOut();
+
+        // Show only for the selected radio
+        $(this).parent().siblings('.mptrs_quantityControls').fadeIn();
         mptrs_updateVariationTotalPrice("radio");
     });
 

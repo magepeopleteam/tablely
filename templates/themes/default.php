@@ -10,7 +10,6 @@
 
 	$post_id = get_the_id();
     $thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
-//    $existing_menus = get_option( '_mptrs_food_menu' );
     $categories = get_option( 'mptrs_categories' );
 
 
