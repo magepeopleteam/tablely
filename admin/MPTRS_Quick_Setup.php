@@ -79,7 +79,7 @@
                             $order = wc_get_order($rbfw_order_id);
                             $billing_name        = get_post_meta( $post_id, '_mptrs_customer_name', true );
                             $ordered_type        = get_post_meta( $post_id, '_mptrs_order_type', true );
-                            $ordered_type        = $order_types[$ordered_type];
+                            $ordered_type        = isset( $order_types[$ordered_type] ) ? $order_types[$ordered_type]: '' ;
 //                            $status              = ( $order && $order->get_status() === 'trash')? $order->get_status() : get_post_meta( $post_id, '_mptrs_order_status', true );
                             $status              = ( $order )? $order->get_status() : get_post_meta( $post_id, '_mptrs_order_status', true );
                             $total_price         = get_post_meta( $post_id, '_mptrs_order_total', true );

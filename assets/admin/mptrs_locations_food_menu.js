@@ -170,9 +170,11 @@ jQuery(document).ready(function ($) {
 
         let variations = data.variations;
         let variationsHTML = '';
+        let is_variations_exists = true;
         $.each(variations, function (index, variationData) {
             let categoryId = `category_${new Date().getTime()}_${index}`;
             let itemsHTML = '';
+            let addOneVariation = '';
 
             $.each(variationData.items, function (key, item) {
                 itemsHTML += `
@@ -180,24 +182,54 @@ jQuery(document).ready(function ($) {
                     <input type="text" name="variation_item_name[]" class="mptrs_input" placeholder="Item Name" value="${item.name}">
                     <input type="number" name="variation_item_price[]" class="mptrs_input" placeholder="Price" value="${item.price}">
                     <input type="number" name="variation_item_qty[]" class="mptrs_qty" min="1" value="${item.qty}">
-                    <button type="button" class="mptrs_removeVariationItem">Remove</button>
+                    <button type="button" class="mptrs_removeVariationItem">X</button>
                 </div>
             `;
             });
 
+            if (variationData && variationData.hasOwnProperty('variationOrAddOne')) {
+                addOneVariation = variationData.variationOrAddOne;
+            }
+            let options = '';
+            let select_type = '';
+            let removeCategory = '';
+
+            if( addOneVariation === "variations" ){
+                removeCategory = addOneVariation;
+                is_variations_exists = false;
+                options = `<option class="mptrs_variationAddons" value="variations" ${addOneVariation === 'variations' ? 'selected' : '' }>Variations</option>`;
+                select_type = `<option class="mptrs_select" value="single" ${variationData.radioOrCheckbox === 'single' ? 'selected' : ''}>Single Select (Radio)</option>`;
+            }else{
+                options = `<option class="mptrs_variationAddons" value="addons" ${addOneVariation === 'addons' ? 'selected' : '' }>Addons</option>`;
+                select_type = `<option class="mptrs_select" value="multiple" ${variationData.radioOrCheckbox === 'multiple' ? 'selected' : ''}>Multiple (Check Box)</option>
+                            <option class="mptrs_select" value="single" ${variationData.radioOrCheckbox === 'single' ? 'selected' : ''}>Single Select (Radio)</option>
+                            `;
+            }
+
             variationsHTML += `
             <div class="mptrs_variationCategory" id="${categoryId}">
-                <input type="text" class="mptrs_variationCategoryName" placeholder="Variation Name" value="${variationData.category}">
-                <select class="mptrs_singleMultiSelect" name="mptrs_singleMultiSelect">
-                    <option class="mptrs_select" value="single" ${variationData.radioOrCheckbox === 'single' ? 'selected' : ''}>Single Select (Radio)</option>
-                    <option class="mptrs_select" value="multiple" ${variationData.radioOrCheckbox === 'multiple' ? 'selected' : ''}>Multiple (Check Box)</option>
+                <input type="text" class="mptrs_variationCategoryName" placeholder="${addOneVariation}" value="${variationData.category}">
+                <select class="mptrs_variationOrAddone" name="mptrs_variationOrAddone">
+                    ${options}
                 </select>
-                <button type="button" class="mptrs_addVariationItem">+ Add Item</button>
-                <button type="button" class="mptrs_removeVariationCategory">Remove Category</button>
+                <select class="mptrs_singleMultiSelect" name="mptrs_singleMultiSelect">
+                    ${select_type}
+                </select>
+                
                 <div class="mptrs_variationItems">${itemsHTML}</div>
+                <div class="mptrs_addRemoveHolder">
+                    <button type="button" class="mptrs_addVariationItem">+Add More ${addOneVariation}</button>
+                    <button type="button" class="mptrs_removeVariationCategory" id="${removeCategory}">Remove</button>
+                </div>
+                
             </div>
         `;
         });
+
+        let variationsBtnDisplay = 'none';
+        if( is_variations_exists ){
+            variationsBtnDisplay = 'block';
+        }
 
         return `
         <h2 class="mptrs_addEditMenuTitleText">${data.popUpTitleText}</h2>
@@ -248,10 +280,15 @@ jQuery(document).ready(function ($) {
             </div>
 
             <div id="mptrs_variationsContainer">
-                <button type="button" id="mptrs_addVariationCategory">+ Add Variation Category</button>
-                ${variationsHTML}
+                <div class="mptrs_variationAddonsHolder">
+                    <button type="button" id="mptrs_addVariationCategory" style="display: ${variationsBtnDisplay}">+ Add Variation Category</button>
+                    <button type="button" id="mptrs_addAddonsCategory">+ Add Addons Category </button>
+                </div>
+                <div class="mptrs_addonsDataHolder" id="mptrs_addonsDataHolder">
+                    ${variationsHTML}
+                </div>
+                
             </div>
-
             <button type="submit" class="${data.btnIdClass}" id="mptrs_AddEdit-${data.key}">${data.btnText}</button>
         </form>
     `;
@@ -512,19 +549,39 @@ jQuery(document).ready(function ($) {
         mptrs_close_popup(e);
     });
 
-    function addVariationCategory() {
+    function addVariationCategory( type, placeholder ) {
         let categoryId = 'category_' + new Date().getTime(); // Unique ID
+
+        let is_type = '';
+        let is_type_options = '';
+        let removeCategory = '';
+        if( type === 'variations' ){
+            is_type = `<option class="mptrs_variationAddons" value="variations">Variations</option>`;
+            is_type_options = `<option class="mptrs_select" value="single">Single Select (Radio)</option>`;
+            removeCategory = `<button type="button" class="mptrs_removeVariationCategory" id="${type}">Remove</button>`;
+        }else{
+            is_type = `<option class="mptrs_variationAddons" value="addons">Addons</option>`;
+            is_type_options = `
+                    <option class="mptrs_select" value="multiple">Multiple (Check Box)</option>
+                    <option class="mptrs_select" value="single">Single Select (Radio)</option>`;
+            removeCategory = `<button type="button" class="mptrs_removeVariationCategory">Remove</button>`;
+        }
+
         let categoryHTML = `
             <div class="mptrs_variationCategory" id="${categoryId}">
-                <input type="text" class="mptrs_variationCategoryName" placeholder="Variation Name">
-                <select class="mptrs_singleMultiSelect" name="mptrs_singleMultiSelect">
-                    <option class="mptrs_select" value="single">Single Select(Radio)</option>
-                    <option class="mptrs_select" value="multiple">Multiple(Check Box)</option>
+                <input type="text" class="mptrs_variationCategoryName" placeholder="${placeholder}">
+                <select class="mptrs_variationOrAddone" name="mptrs_variationOrAddone">
+                    ${is_type}
                 </select>
-                <button type="button" class="mptrs_addVariationItem">+ Add Item</button>
-                <button type="button" class="mptrs_removeVariationCategory">Remove Category</button>
-                
+                <select class="mptrs_singleMultiSelect" name="mptrs_singleMultiSelect">
+                    ${is_type_options}
+                </select>
                 <div class="mptrs_variationItems"></div>
+                <div class="mptrs_addRemoveHolder">
+                    <button type="button" class="mptrs_addVariationItem">+Add More ${type} </button>
+                    ${removeCategory}
+                </div>
+                
             </div>
         `;
         $("#mptrs_variationsContainer").append(categoryHTML);
@@ -535,19 +592,34 @@ jQuery(document).ready(function ($) {
                 <input type="text" name="variation_item_name[]" class="mptrs_input" placeholder="Item Name">
                 <input type="number" name="variation_item_price[]" class="mptrs_input" placeholder="Price">
                 <input type="number" name="variation_item_qty[]" class="mptrs_qty" value="1" min="1">
-                <button type="button" class="mptrs_removeVariationItem">Remove</button>
+                <button type="button" class="mptrs_removeVariationItem">X</button>
             </div>
         `;
         category.find(".mptrs_variationItems").append(itemHTML);
     }
 
+    $(document).on("click", "#mptrs_addAddonsCategory", function () {
+        addVariationCategory( 'addons', 'Addons name' );
+    });
+
+    let variationAddClick = 0;
+
     $(document).on("click", "#mptrs_addVariationCategory", function () {
-        addVariationCategory();
+        variationAddClick++
+        if(variationAddClick > 0 ){
+            $(this).fadeOut();
+        }
+        addVariationCategory( 'variations', 'Variation Name' );
     });
     $(document).on("click", ".mptrs_addVariationItem", function () {
         addVariationItem($(this).closest(".mptrs_variationCategory"));
     });
     $(document).on("click", ".mptrs_removeVariationCategory", function () {
+        let clickedId = $(this).attr('id');
+        if( clickedId === 'variations' ){
+            variationAddClick = 0;
+            $("#mptrs_addVariationCategory").fadeIn();
+        }
         $(this).closest(".mptrs_variationCategory").remove();
     });
     $(document).on("click", ".mptrs_removeVariationItem", function () {
@@ -560,6 +632,7 @@ jQuery(document).ready(function ($) {
 
             let items = [];
             let radioOrCheckbox = $(this).find("select[name='mptrs_singleMultiSelect']").val().trim();
+            let variationOrAddOne = $(this).find("select[name='mptrs_variationOrAddone']").val().trim();
 
             $(this).find(".mptrs_variationItem").each(function () {
                 let itemName = $(this).find("input[name='variation_item_name[]']").val();
@@ -576,9 +649,12 @@ jQuery(document).ready(function ($) {
             variations.push({
                 category: categoryName,
                 radioOrCheckbox: radioOrCheckbox,
+                variationOrAddOne: variationOrAddOne,
                 items: items
             });
         });
+
+        console.log( variations );
 
         return variations;
     }

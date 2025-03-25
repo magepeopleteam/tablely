@@ -99,8 +99,9 @@
 
                             if ( is_array( $dynamic_shapes ) && count( $dynamic_shapes ) > 0 ) {
                                 foreach ( $dynamic_shapes as $dynamic_shape ) {
+                                    $tableBindID = isset( $dynamic_shape['tableBindID'] ) ? $dynamic_shape['tableBindID'] : '';
                                     $shape_rotate_deg = isset( $dynamic_shape['shapeRotateDeg'] ) ? $dynamic_shape['shapeRotateDeg'] : 0;
-                                    echo '<div id="'. esc_attr( $dynamic_shape['tableBindID'] ) .'" class="mptrs_dynamicShape ui-resizable ui-draggable ui-draggable-handle" data-shape-rotate="' . esc_attr( $shape_rotate_deg ) . '" style=" 
+                                    echo '<div id="'. esc_attr( $tableBindID ) .'" class="mptrs_dynamicShape ui-resizable ui-draggable ui-draggable-handle" data-shape-rotate="' . esc_attr( $shape_rotate_deg ) . '" style=" 
                                         left: ' . esc_attr( $dynamic_shape['textLeft'] ) . 'px; 
                                         top: ' . esc_attr( $dynamic_shape['textTop'] ) . 'px; 
                                         width: ' . esc_attr( $dynamic_shape['width'] ) . 'px;

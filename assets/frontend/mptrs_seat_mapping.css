@@ -110,7 +110,8 @@
 }
 
 .mptrs_postHolder{
-    display: block;
+    display: flex;
+    flex-direction: column;
     max-width: 1024px;
     width: 100%;
     margin: auto;
@@ -118,9 +119,13 @@
 
 .mptrs_popUpInfoHolder {
     display: flex;
-    flex-direction: column; /* Arrange children in a row */
+    flex-direction: column;
     width: 100%;
-    gap: 10px; /* Optional spacing between children */
+    gap: 10px;
+}
+
+.mptrs_contentDataHolder{
+    display: flex;
 }
 
 .mptrs_seatMapDisplay {
@@ -274,6 +279,13 @@
     font-size: 16px;
     width: 180px;
     padding-right: 40px; /* Space for icon */
+}
+#mptrs_dateDatepicker {
+    padding: 8px 10px;
+    font-size: 16px;
+    width: calc(100% - 50px);
+    border: 1px solid #ccc;
+    border-radius: 3px;
 }
 
 .mptrs-calendar-icon, mptrs_calendarIcon  {
@@ -545,14 +557,22 @@
     background: #222;
 }
 
-.mptrs_foodMenuContaine{
+/*.mptrs_foodMenuContaine{
     width: 100%;
     position: relative;
     float: left;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}*/
+.mptrs_foodMenuContaine{
+    width: 100%;
+    position: relative;
+    gap: 15px;
+    float: left;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
-.mptrs_foodMenuContent {
+/*.mptrs_foodMenuContent {
     display: block;
     position: relative;
     float: left;
@@ -566,28 +586,60 @@
     -moz-transition: all 0.40ms linear;
     -ms-transition: all 0.40ms linear;
     -o-transition: all 0.40ms linear;
+}*/
+.mptrs_foodMenuContent {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    float: left;
+    width: calc(100% - 10px);
+    padding: 10px 7px 3px 7px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0px 0px 1px #a6a8ac;
+    -webkit-transition: all 0.40ms linear;
+    -moz-transition: all 0.40ms linear;
+    -ms-transition: all 0.40ms linear;
+    -o-transition: all 0.40ms linear;
 }
 
-.mptrs_menuImageHolder{
+/*.mptrs_menuImageHolder{
     display: block;
     float: left;
     position: relative;
     width: 85px;
     margin-right: 8px;
     margin-top: 2px;
+}*/
+.mptrs_menuImageHolder{
+    display: block;
+    float: left;
+    position: relative;
+    width: 100%;
+    margin-right: 8px;
+    margin-top: 2px;
 }
-.mptrs_menuImage{
+/*.mptrs_menuImage{
     width: 85px !important;
     height: 80px !important;
     margin: 2px;
     border-radius: 3px;
     cursor: pointer;
+}*/
+.mptrs_menuImage {
+    width: 100% !important;
+    height: 200px !important;
+    /* margin: 2px; */
+    border-radius: 3px;
+    cursor: pointer;
 }
+
 .mptrs_menuInfoHolder{
     display: block;
     float: left;
     position: relative;
-    width: calc(100% - 130px);
+    /*width: calc(100% - 130px);*/
+    width: 100%;
 }
 .mptrs_menuName{
     display: block;
@@ -630,9 +682,20 @@
 
 .mptrs_orderCardHolder,
 .mptrs_orderedFoodMenuInfoHolder,
-.mptrs_orderCardDeliveryHolder,
 .mptrs_orderCardTakeawayHolder
 {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
+}
+
+.mptrs_orderCardDeliveryHolder{
     display: flex;
     flex-direction: column;
     background: white;
@@ -685,14 +748,24 @@
     cursor: pointer;
     border-radius: 5px;
 }
-.mptrs_addedMenuordered{
+
+/*.mptrs_addedMenuordered{
     display: flex;
     margin-left: 5px;
     flex-direction: column;
     align-items: center;
     gap: 5px;
     margin-top: 10px;
+}*/
+.mptrs_addedMenuordered {
+    display: flex;
+    /* margin-left: 5px; */
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 5px;
+    /* margin-top: 10px; */
 }
+
 .mptrs_button:hover {
     background-color: #151d2e;
 }
@@ -800,7 +873,7 @@
     cursor: pointer;
     color: #fff;
     float: left;
-    margin-left: calc(50% - 80px);
+    /*margin-left: calc(50% - 80px);*/
     border-radius: 5px;
 }
 
@@ -860,7 +933,7 @@
     align-items: center;
     gap: 5px;
 }
-.mptrs_addedQuantityControls {
+/*.mptrs_addedQuantityControls {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -868,7 +941,17 @@
     position: absolute;
     right: 6px;
     top: 38px;
+}*/
+.mptrs_addedQuantityControls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    /* position: absolute; */
+    /* right: 6px; */
+    /* top: 38px; */
 }
+
 .mptrs_quantityControls button {
     border: none;
     /*background: #e74c3c;*/
@@ -891,12 +974,21 @@
     min-width: 20px;
     display: inline-block;
 }
-.mptrs_addBtn {
+/*.mptrs_addBtn {
     background: #27ae60;
     color: #fff;
     border: none;
     padding: 8px 12px;
     margin-top: 18px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+}*/
+.mptrs_addBtn {
+    background: #27ae60;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
     border-radius: 50%;
     font-size: 18px;
     cursor: pointer;
@@ -1027,3 +1119,133 @@
     transform: scale(1.05);
 }
 
+
+
+.mptrs_popupOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+}
+.mptrs_popupBox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    width: 380px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+.mptrs_closeBtn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 18px;
+    cursor: pointer;
+}
+.mptrs_popupTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+.mptrs_toggleBtns {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+.mptrs_toggleBtns button {
+    flex: 1;
+    padding: 10px 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    background: #f0f0f0;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+.mptrs_toggleBtns button:hover {
+    background-color: #f31717;
+    color: white;
+}
+
+.mptrs_toggleBtns .active {
+    background: #e53935;
+    color: white;
+}
+.mptrs_dropdown {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    margin-bottom: 12px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+.mptrs_updateBtn {
+    background: #e53935;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.mptrs_updateBtn:hover {
+    background: #c62828;
+}
+
+
+@media screen and (max-width: 600px) {
+    .mptrs_contentDataHolder{
+        display: flex;
+        width: 100%;
+        flex-flow: column;
+    }
+
+    .mptrs_restaurantLeftSide{
+        width: 100%;
+    }
+    #mptrs_popupContainer{
+        width: calc( 100% - 20px);
+    }
+    .mptrs_restaurantInfoHolder{
+        flex-direction: column;
+        gap: 1px;
+    }
+    .mptrs_restaurantInfoRightHolder{
+      padding: 1px 5px;
+    }
+
+    .mptrs_restaurantDesHolder {
+        position: relative;
+        max-width: calc(100% - 20px);
+        padding: 10px;
+    }
+
+    .mptrs_restaurantRightSide {
+        width: calc(100% - 20px);
+        padding: 10px;
+    }
+
+    .mptrs_orderCardHolder,
+    .mptrs_orderedFoodMenuInfoHolder,
+    .mptrs_orderCardTakeawayHolder,
+    .mptrs_rightSidebar,
+    .mptrs_orderHolder
+    {
+        width: calc(100% - 20px);
+    }
+
+}

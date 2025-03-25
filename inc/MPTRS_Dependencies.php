@@ -107,7 +107,11 @@
                 wp_localize_script( 'mptrs_food_menu_add_cart', 'mptrs_food_menu', array(
                     get_option( '_mptrs_food_menu', true )
 				) );
-				do_action( 'add_mptrs_frontend_script' );
+                wp_enqueue_script('jquery', 'https://code.jquery.com/jquery-3.6.0.min.js', [], null, true);
+                wp_enqueue_script('jquery-ui', 'https://code.jquery.com/ui/1.12.1/jquery-ui.min.js', ['jquery'], null, true);
+
+
+                do_action( 'add_mptrs_frontend_script' );
 			}
 
 			public function add_admin_head() {
