@@ -130,8 +130,8 @@ jQuery(document).ready(function ($) {
             var attachment = frame.state().get('selection').first().toJSON();
             food_menu_image_url = attachment.url;
             $('#mptrs_menuImage_url').val(attachment.url);
-            /* $('.custom-foodMenu-image-preview').html('<img src="' + attachment.url + '" style="max-width: 100%; margin-bottom: 10px;">');
-             $('.custom-foodMenu-image-preview').show();*/
+             $('.custom-foodMenu-image-preview').html('<img src="' + attachment.url + '" style="max-width: 100%; margin-bottom: 10px;">');
+             $('.custom-foodMenu-image-preview').show();
         });
         frame.open();
     });
@@ -232,15 +232,15 @@ jQuery(document).ready(function ($) {
         }
 
         return `
-        <h2 class="mptrs_addEditMenuTitleText">${data.popUpTitleText}</h2>
+        <h2 class="mptrs_addEditMenuTitleText"><i class="fas fa-utensils mptrs_icon_color"></i>${data.popUpTitleText}</h2>
         <form id="mptrs_foodMenuForm" class="mptrs_food_menu_form">
             <div class="mptrs_form_group">
-                <label for="mptrs_menuName">Menu Name</label>
+                <label for="mptrs_menuName"><i class="fas fa-hamburger mptrs_icon_color"></i>Menu Name</label>
                 <input type="text" id="mptrs_menuName" name="mptrs_menuName" class="mptrs_input" required value="${data.name}">
             </div>
 
             <div class="mptrs_form_group">
-                <label for="mptrs_menuCategory">Category</label>
+                <label for="mptrs_menuCategory"><i class="fas fa-layer-group mptrs_icon_color"></i>Category</label>
                 <select id="mptrs_menuCategory" name="mptrs_menuCategory" class="mptrs_select" required>
                     ${displayCategory}
                 </select>
@@ -248,23 +248,23 @@ jQuery(document).ready(function ($) {
 
             <div class="mptrs_form_group mptrs_menuPriceHolder">
                 <div class="mptrs_regularSalePrice">
-                    <label for="mptrs_menuPrice">Regular Price</label>
+                    <label for="mptrs_menuPrice"><i class="fas fa-dollar-sign mptrs_icon_color"></i>Regular Price</label>
                     <input type="number" id="mptrs_menuPrice" name="mptrs_menuPrice" class="mptrs_input" required value="${data.price}">
             
                 </div>
                  <div class="mptrs_regularSalePrice">
-                    <label for="mptrs_menuSalePrice">Sale Price</label>
+                    <label for="mptrs_menuSalePrice"><i class="fas fa-tags mptrs_icon_color"></i>Sale Price</label>
                     <input type="number" id="mptrs_menuSalePrice" name="mptrs_menuSalePrice" class="mptrs_input" value="${data.menuSalePrice}">
                  </div>
             </div>
 
             <div class="mptrs_form_group">
-                <label for="mptrs_numPersons">Number of Persons</label>
+                <label for="mptrs_numPersons"><i class="fas fa-users mptrs_icon_color"></i>Number of Persons</label>
                 <input type="number" id="mptrs_numPersons" name="mptrs_numPersons" class="mptrs_input" min="1" required value="${data.person}">
             </div>
 
             <div class="mptrs_form_group">
-                <label for="mptrs_numPersons">Short Description</label>
+                <label for="mptrs_numPersons"><i class="fas fa-pencil-alt mptrs_icon_color"></i>Short Description</label>
                 <textarea class="mptrs_menuDescription mptrs_input" 
                   id="mptrs_menuDescription" 
                   name="mptrs_menuDescription"
@@ -273,7 +273,7 @@ jQuery(document).ready(function ($) {
             </div>
 
             <div class="mptrs_form_group">
-                <label for="mptrs_menuImage">Menu Image</label>
+                <label for="mptrs_menuImage"><i class="fas fa-image mptrs_icon_color"></i>Menu Image </label>
                 <input type="file" id="mptrs_menuImage" name="mptrs_menuImage" class="mptrs_input">
                 <input type="hidden" id="mptrs_menuImage_url" name="mptrs_menuImage_url" value="${data.imgUrl}">
                 <div class="custom-foodMenu-image-preview"></div>

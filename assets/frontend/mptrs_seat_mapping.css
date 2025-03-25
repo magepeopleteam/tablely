@@ -1079,12 +1079,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /*padding: 12px;*/
     background: rgba(255, 255, 255, 1);
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(255, 51, 51, 0.2);
-    max-width: 300px;
-    margin: 20px auto;
+    box-shadow: 0px 0px 10px rgba(10, 51, 51, 0.2);
+    margin: 10px 0px;
 }
 
 .mptrs_totalPricetext{
@@ -1106,6 +1103,32 @@
     color: #333;
     outline: none;
     transition: all 0.3s ease-in-out;
+}
+.mptrs_orderTypeDatesDisplay{
+    display: inline-block;
+    font-size: 14px;
+    padding: 5px 0px;
+}
+.mptrs_orderTypeDatesChange{
+    display: inline-block;
+    text-decoration: underline;
+    cursor: pointer;
+    color: #990000;
+}
+.mptrs_orderedMenuHolder{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.mptrs_clearOrder{
+    font-size: 13px;
+    color: #990000;
+}
+.mptrs_clearOrder:hover{
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .mptrs_totalPrice::placeholder {

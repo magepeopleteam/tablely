@@ -21,7 +21,24 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
             add_action('woocommerce_new_order', [$this, 'mptrs_woocommerce_new_order'], 10, 1);
             add_action( 'woocommerce_order_status_changed', [$this, 'custom_function_on_order_status_change'], 10, 4 );
 
+            add_filter('woocommerce_get_item_data', [$this,'pa_modify_order_summary_description'], 10, 2);
+
+
         }
+        function pa_modify_order_summary_description( $item_data, $cart_item) {
+            // Modify the product description
+
+            foreach ( $item_data as $k => $v ) {
+                if( $v['name'] === 'Food Menu' ){
+                    $decoded_text = html_entity_decode( $v['value'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                    $clean_text = strip_tags($decoded_text);
+                    $item_data[$k]['value'] = $clean_text;
+                }
+            }
+
+            return $item_data;
+        }
+
 
         function custom_function_on_order_status_change( $order_id, $old_status, $new_status, $order ) {
             if ( $new_status === 'processing' ) {

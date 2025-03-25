@@ -631,8 +631,8 @@ jQuery(document).ready(function ($) {
             }
         });
         $(".mptrs_menuAddedCartItem").each(function () {
-            let parentCartItem = $(this).closest(".mptrs_menuAddedCartItem"); // Find the closest parent
-            let quantity = parentCartItem.find(".mptrs_quantity").text().trim(); // Get quantity text
+            let parentCartItem = $(this).closest(".mptrs_menuAddedCartItem");
+            let quantity = parentCartItem.find(".mptrs_quantity").text().trim();
 
             quantities.push(quantity);
         });
@@ -780,16 +780,34 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
         let mptrs_orderType = $(".mptrs_orderTypeSelect.active").text().trim();
 
-
         let mptrs_orderDate = $("#mptrs_dateDatepicker").val().trim();
         let mptrs_orderTime = $("#mptrs_pickupTime").val().trim();
         mptrs_orderSettings = {
             mptrs_orderType, mptrs_orderDate, mptrs_orderTime
         }
-        console.log( mptrs_orderSettings );
+
+        let mptrs_order_des = mptrs_orderType+', Order Date: '+mptrs_orderDate+', Time:'+mptrs_orderTime;
+        $("#mptrs_orderTypeDates").text( mptrs_order_des );
 
         mptrs_close_order_type_popup();
+
     });
+
+    $(document).on( 'click', '.mptrs_clearOrder', function ( e ) {
+        e.preventDefault();
+        $("#mptrs_orderedFoodMenuInfoHolder").fadeOut();
+        $("#mptrs_orderedFoodMenuHolder").empty();
+
+        addToCartData = {};
+        $('.mptrs_foodMenuContaine').find('.mptrs_addedQuantityControls').fadeOut();
+        $('.mptrs_foodMenuContaine').find('.mptrs_addBtn').fadeIn(1000);
+
+    })
+
+    $(document).on( 'click', '.mptrs_orderTypeDatesChange', function (e) {
+        e.preventDefault();
+        mptrs_display_popup_for_order_types();
+    })
 
     function mptrs_close_order_type_popup(){
         $("#mptrs_popupOverlay").fadeOut();
@@ -808,10 +826,12 @@ jQuery(document).ready(function ($) {
 
     let selectedMenu = mptrs_food_menu.find(item => item);
     let menuAddedClickedId = '';
+    let mptrs_displayCartPopUp = 0;
     $(document).on('click', ".mptrs_addBtn", function () {
 
         if ( Object.keys(mptrs_orderSettings).length === 0 ) {
             mptrs_display_popup_for_order_types();
+            mptrs_displayCartPopUp++;
         }
 
         if( Object.keys(mptrs_orderSettings).length > 0 ) {
@@ -982,7 +1002,7 @@ jQuery(document).ready(function ($) {
     });
 
     $(document).on('change', "input[type=checkbox]", function () {
-        if ($(this).is(":checked")) {
+        if ( $(this).is(":checked") ) {
             $(this).parent().siblings('.mptrs_quantityControls').fadeIn();
         } else {
             $(this).parent().siblings('.mptrs_quantityControls').fadeOut();

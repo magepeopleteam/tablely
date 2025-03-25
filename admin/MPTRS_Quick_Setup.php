@@ -191,7 +191,6 @@
                 $existing_menus = get_option( '_mptrs_food_menu' );
                 $menu_categories = get_option( 'mptrs_categories' );
 
-//                error_log( print_r( [ '$existing_menus' => $existing_menus['variations'] ], true ) );
                 ?>
                 <div id="mptrs_foodMenuPopup" class="mptrs_foodMenuPopupContainer" style="display: none;">
                     <div class="mptrs_foodMenuContentPopup">
