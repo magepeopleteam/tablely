@@ -172,7 +172,7 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
 
         public function add_order_item_meta( $item, $cart_item_key, $values, $order ) {
 
-            if( $values['mptrs_order_type'] === 'dine_in' ) {
+            /*if( $values['mptrs_order_type'] === 'dine_in' ) {
                 $meta_fields = [
                     'food_menu' => 'Food Menu',
                     'booking_seats' => 'Seats',
@@ -180,7 +180,7 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
                     'mptrs_order_time' => 'Order Time',
                     'mptrs_original_post_id' => '_mptrs_id',
                 ];
-            }else{
+            }else{*/
                 $meta_fields = [
                     'food_menu' => 'Food Menu',
                     'mptrs_locations' => 'Locations',
@@ -188,7 +188,7 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
                     'mptrs_order_time' => 'Order Time',
                     'mptrs_original_post_id' => '_mptrs_id',
                 ];
-            }
+//            }
 
             foreach ($meta_fields as $key => $label) {
                 if (!empty($values[$key])) {
@@ -205,27 +205,13 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
             if( isset( $values['mptrs_order_type'] ) ){
                 $order_data = [];
                 $product_id = isset( $values['mptrs_item_id'] ) ? $values['mptrs_item_id'] : '';
-                if( $values['mptrs_order_type'] === 'dine_in' ){
-                    $selected_seat_ids = isset( $values['booking_seat_ids'] ) ? $values['booking_seat_ids'] : [];
-                    if( !empty( $selected_seat_ids ) ){
-
-                        $order_data = array(
-                            'selected_seat_ids' => $selected_seat_ids,
-                            'ordered_date' => $values['mptrs_order_date'],
-                            'ordered_time' => $values['mptrs_order_time'],
-                            'mptrs_food_menu' => $values['food_menu'],
-                            'mptrs_order_type' => $values['mptrs_order_type'],
-                        );
-                    }
-                }else{
-                    $order_data = array(
-                        'order_locations' => $values['mptrs_locations'],
-                        'ordered_date' => $values['mptrs_order_date'],
-                        'ordered_time' => $values['mptrs_order_time'],
-                        'mptrs_food_menu' => $values['food_menu'],
-                        'mptrs_order_type' => $values['mptrs_order_type'],
-                    );
-                }
+                $order_data = array(
+                    'order_locations' => $values['mptrs_locations'],
+                    'ordered_date' => $values['mptrs_order_date'],
+                    'ordered_time' => $values['mptrs_order_time'],
+                    'mptrs_food_menu' => $values['food_menu'],
+                    'mptrs_order_type' => $values['mptrs_order_type'],
+                );
 
                 $order_data = maybe_serialize( $order_data );
                 if( !empty( $product_id ) ){

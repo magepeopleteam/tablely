@@ -48,9 +48,16 @@
     padding: 8px 0;
     border-bottom: 1px solid #ddd;
 }
+
+.mptrs_nameAcrionHolder{
+    width: calc(100% - 190px);
+}
+
 .mptrs_quantityControls {
     display: flex;
     align-items: center;
+    width: 95px;
+    /*display: none;*/
 }
 .mptrs_quantityControls button {
     background: red;
@@ -68,6 +75,7 @@
 }
 .mptrs_price {
     margin-left: 10px;
+    width: 90px;
 }
 .mptrs_addToCart {
     display: flex;

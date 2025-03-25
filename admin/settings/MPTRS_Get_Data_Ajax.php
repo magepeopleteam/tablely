@@ -32,10 +32,9 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
         }
 
         function mptrs_add_food_items_to_cart() {
-            if ( !isset($_POST['post_id'], $_POST['mptrs_orderType'], $_POST['menu'], $_POST['seats'], $_POST['bookedSeatName'], $_POST['price'], $_POST['quantity'])) {
+            if ( !isset($_POST['post_id'], $_POST['mptrs_orderType'], $_POST['menu'], $_POST['price'], $_POST['quantity'])) {
                 wp_send_json_error('Missing required data.');
             }
-
             $original_post_id = intval( sanitize_text_field( $_POST['post_id'] ) );
             $post_id = get_post_meta( $original_post_id, 'link_wc_product', true ) ;
             $get_food_menu = get_option( '_mptrs_food_menu' );
@@ -46,7 +45,6 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
 
             $menu = '';
             foreach ($ordered_menu_key as $key => $value) {
-
                 $var_details = '';
                 if( isset( $get_food_menu[ $key ] ) ) {
                     if (isset( $orderVarDetailsAry[ $key] ) ){
@@ -64,13 +62,25 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             $mptrs_order_date = isset( $_POST['mptrs_order_date'] ) ?  sanitize_text_field( $_POST['mptrs_order_date'] ) : '';
             $mptrs_order_time = isset( $_POST['mptrs_order_time'] ) ? sanitize_text_field( $_POST['mptrs_order_time'] ) : '';
 
-
             $price = floatval( sanitize_text_field($_POST['price'] ) );
             $quantity = intval( sanitize_text_field($_POST['quantity'] ) );
             $mptrs_user_details = '';
+            $mptrs_locations = '';
 
-            $mptrs_orderType = sanitize_text_field( $_POST['mptrs_orderType'] );
-            if( $mptrs_orderType === 'dine_in' ){
+            $mptrs_orderType_text = sanitize_text_field( $_POST['mptrs_orderType'] );
+
+            if( $mptrs_orderType_text === 'Delivery' ) {
+                $mptrs_orderType = 'delivery';
+            }elseif( $mptrs_orderType_text === 'Takeaway' ) {
+                $mptrs_orderType = 'take_away';
+            }elseif( $mptrs_orderType_text === 'Dine-In' ){
+                $mptrs_orderType = 'dine_in';
+            }else{
+                $mptrs_orderType = '';
+            }
+//            error_log( print_r( [ '$mptrs_orderType' => $mptrs_orderType ], true ) );
+
+            /*if( $mptrs_orderType === 'dine_in' ){
                 $seats = json_decode( stripslashes( sanitize_text_field( $_POST['seats'] ) ), true);
                 $bookedSeatName = json_decode( stripslashes( sanitize_text_field( $_POST['bookedSeatName'] ) ), true);
                 $cart_item_data = [
@@ -85,7 +95,8 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                     'mptrs_order_time' => $mptrs_order_time,
                     'mptrs_user_details' => $mptrs_user_details,
                 ];
-            }else if( $mptrs_orderType === 'delivery' ){
+            }
+            else if( $mptrs_orderType === 'delivery' ){
                 $mptrs_locations = json_decode( stripslashes( sanitize_text_field( $_POST['mptrs_locations'] ) ), true);
                 $cart_item_data = [
                     'mptrs_original_post_id' => $original_post_id,
@@ -98,7 +109,8 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                     'mptrs_order_time' => $mptrs_order_time,
                     'mptrs_user_details' => $mptrs_user_details,
                 ];
-            }else{
+            }
+            else{
                 $mptrs_locations = '';
                 $cart_item_data = [
                     'mptrs_original_post_id' => $original_post_id,
@@ -111,7 +123,19 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                     'mptrs_order_time' => $mptrs_order_time,
                     'mptrs_user_details' => $mptrs_user_details,
                 ];
-            }
+            }*/
+
+            $cart_item_data = [
+                'mptrs_original_post_id' => $original_post_id,
+                'mptrs_item_id' => $post_id,
+                'food_menu' => $menu,
+                'mptrs_order_type' => $mptrs_orderType,
+                'price' => $price,
+                'mptrs_locations' => $mptrs_locations,
+                'mptrs_order_date' => $mptrs_order_date,
+                'mptrs_order_time' => $mptrs_order_time,
+                'mptrs_user_details' => $mptrs_user_details,
+            ];
 
             if (!class_exists('WC_Cart')) {
                 wp_send_json_error('WooCommerce is not active.');
