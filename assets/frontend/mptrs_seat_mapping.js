@@ -205,12 +205,12 @@ jQuery(document).ready(function ($) {
         let mptrs_order_time = mptrs_orderSettings.mptrs_orderDate;
         let mptrs_order_date = mptrs_orderSettings.mptrs_orderTime;
         let mptrs_orderType = mptrs_orderSettings.mptrs_orderType;
+        let mptrs_locations = mptrs_orderSettings.mptrs_locations;
         let postId = $("#mptrs_getPost").val().trim();
 
         console.log(mptrs_orderSettings);
 
         let seats = '';
-        let mptrs_locations = '';
         // let mptrs_location = [];
 
 
@@ -244,10 +244,10 @@ jQuery(document).ready(function ($) {
                 action: 'mptrs_add_food_items_to_cart',
                 post_id: post_id,
                 mptrs_orderType: mptrs_orderType,
-                menu: menu ,
-                orderVarDetailsStr: orderVarDetailsStr ,
+                menu: menu,
+                orderVarDetailsStr: orderVarDetailsStr,
                 // seats: seats,
-                // mptrs_locations: mptrs_locations,
+                mptrs_locations: mptrs_locations,
                 // bookedSeatName: bookedSeatName,
                 price: mptrs_totalPrices,
                 quantity: quantity,
@@ -446,9 +446,11 @@ jQuery(document).ready(function ($) {
             $("#mptrs_totalPriceHolder").fadeOut();
             $(".mptrs_foodOrderContentholder").fadeOut();
             $("#mptrs_orderedFoodMenuInfoHolder").fadeOut();
+            $("#mptrs_foodMenuAddedCart").fadeIn();
         }else{
             $("#mptrs_totalPriceHolder").fadeIn();
             $("#mptrs_orderedFoodMenuInfoHolder").fadeIn();
+            $("#mptrs_foodMenuAddedCart").fadeOut();
             $(".mptrs_foodOrderContentholder").fadeIn();
         }
     }
@@ -531,6 +533,7 @@ jQuery(document).ready(function ($) {
     $(document).on('click', ".mptrs_addBtn_old", function () {
         $(this).fadeOut();
         $("#mptrs_orderedFoodMenuInfoHolder").fadeIn();
+        $("#mptrs_foodMenuAddedCart").fadeOut();
         $("#mptrs_dineInTabHolder").fadeIn();
 
         let menuAddedClickedId = $(this).attr('id').trim();
@@ -725,6 +728,13 @@ jQuery(document).ready(function ($) {
 
 
     function mptrs_display_popup_for_order_types(){
+
+        // console.log( mptrs_orderSettings );
+        let setLocations = '';
+        if( mptrs_orderSettings.hasOwnProperty( 'mptrs_locations' ) && mptrs_orderSettings.mptrs_locations ){
+            setLocations = mptrs_orderSettings.mptrs_locations;
+        }
+
         let orderTypes = `
             <div class="mptrs_popupOverlay" id="mptrs_popupOverlay">
                 <div class="mptrs_popupBox">
@@ -732,8 +742,8 @@ jQuery(document).ready(function ($) {
                 <div class="mptrs_popupTitle">Your Order Settings</div>
        
                 <div class="mptrs_toggleBtns">
-                    <button id="mptrs_dine_in" class="mptrs_orderTypeSelect">Delivery</button>
-                    <button id="mptrs_take_away" class="mptrs_orderTypeSelect active">Takeaway</button>
+                    <button id="mptrs_dine_in" class="mptrs_orderTypeSelect active">Delivery</button>
+                    <button id="mptrs_take_away" class="mptrs_orderTypeSelect">Takeaway</button>
                     <button id="mptrs_dineInBtn" class="mptrs_orderTypeSelect">Dine-In</button>
                 </div>
         
@@ -750,6 +760,11 @@ jQuery(document).ready(function ($) {
                     <option>12:00pm</option>
                     <option>12:30pm</option>
                 </select>
+                
+                <div class="mptrs_OrderTypeLocationsContainer" style="display: block">
+                    <label for="mptrs_deliveryLocation">Set Delivery Location</label>
+                    <input type="text" id="mptrs_deliveryLocation" class="mptrs_deliveryLocations" value="${setLocations}" placeholder="Set Delivery Location">
+                </div>
         
                 <button class="mptrs_updateBtn" id="mptrs_updateorderTypeBtn">Update</button>
             </div>
@@ -778,15 +793,26 @@ jQuery(document).ready(function ($) {
     let mptrs_orderSettings = {};
     $(document).on( 'click',"#mptrs_updateorderTypeBtn", function (e) {
         e.preventDefault();
+
+        let mptrs_locations = '';
         let mptrs_orderType = $(".mptrs_orderTypeSelect.active").text().trim();
+
+        if( mptrs_orderType === 'Delivery'){
+            mptrs_locations = $("#mptrs_deliveryLocation").val().trim();
+        }
 
         let mptrs_orderDate = $("#mptrs_dateDatepicker").val().trim();
         let mptrs_orderTime = $("#mptrs_pickupTime").val().trim();
         mptrs_orderSettings = {
-            mptrs_orderType, mptrs_orderDate, mptrs_orderTime
+            mptrs_orderType, mptrs_orderDate, mptrs_orderTime, mptrs_locations
         }
 
-        let mptrs_order_des = mptrs_orderType+', Order Date: '+mptrs_orderDate+', Time:'+mptrs_orderTime;
+        let mptrs_order_des = '';
+        if( mptrs_locations ){
+            mptrs_order_des = mptrs_orderType+', Order Date: '+mptrs_orderDate+', Time:'+mptrs_orderTime+', Location:'+mptrs_locations;
+        }else{
+            mptrs_order_des = mptrs_orderType+', Order Date: '+mptrs_orderDate+', Time:'+mptrs_orderTime;
+        }
         $("#mptrs_orderTypeDates").text( mptrs_order_des );
 
         mptrs_close_order_type_popup();
@@ -796,6 +822,7 @@ jQuery(document).ready(function ($) {
     $(document).on( 'click', '.mptrs_clearOrder', function ( e ) {
         e.preventDefault();
         $("#mptrs_orderedFoodMenuInfoHolder").fadeOut();
+        $("#mptrs_foodMenuAddedCart").fadeIn();
         $("#mptrs_orderedFoodMenuHolder").empty();
 
         addToCartData = {};
@@ -821,7 +848,14 @@ jQuery(document).ready(function ($) {
 
     $(document).on( 'click',".mptrs_toggleBtns button", function () {
         $(".mptrs_toggleBtns button").removeClass("active");
+        let orderTypeText = $(this).text().trim();
+        if( orderTypeText === 'Delivery' ){
+            $(".mptrs_OrderTypeLocationsContainer").fadeIn();
+        }else{
+            $(".mptrs_OrderTypeLocationsContainer").fadeOut();
+        }
         $(this).addClass("active");
+
     });
 
     let selectedMenu = mptrs_food_menu.find(item => item);
@@ -914,8 +948,11 @@ jQuery(document).ready(function ($) {
                 }
                 menuHtml += `</div>`;
 
-                menuHtml += ` <div class="mptrs_addToCart">
-                        Total: <span>${mptrs_CurrencySymbol}${mptrs_MenuPrice}</span>
+                menuHtml += ` 
+                    <div class="mptrs_addToCart">
+                        <div class="mptrs_addToCartTitle">Total: 
+                            <span class="mptrs_addToCartText">${mptrs_CurrencySymbol}${mptrs_MenuPrice}</span>
+                        </div>
                         <button class="mptrs_foodMenuAddedCart" id="${menuAddedKey}">Add to Cart</button>
                     </div>`;
                 menuHtml += `</div> </div>`;
@@ -1113,6 +1150,7 @@ jQuery(document).ready(function ($) {
         addCartPrice = parseFloat( addCartPrice.replace(/[^0-9.]/g, '' ) );
 
         $("#mptrs_orderedFoodMenuInfoHolder").fadeIn();
+        $("#mptrs_foodMenuAddedCart").fadeOut();
         $("#mptrs_dineInTabHolder").fadeIn();
 
         let menuAddedKey = $(this).attr('id').trim();

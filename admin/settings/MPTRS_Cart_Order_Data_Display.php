@@ -49,7 +49,9 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
                     $orderPostId = $product->get_id();
                 }
                 $mptrs_booking_data = maybe_unserialize( get_post_meta( $orderPostId, '_mptrs_booking_data', true ) );
+                error_log( print_r( [ '$mptrs_booking_data' => $mptrs_booking_data ], true ) );
 
+                $order_locations =isset( $mptrs_booking_data['order_locations'] ) ? $mptrs_booking_data['order_locations'] : '';
                 $booked_seat_ids = isset( $mptrs_booking_data['selected_seat_ids'] ) ? $mptrs_booking_data['selected_seat_ids'] : array();
                 $order_date = isset( $mptrs_booking_data['ordered_date'] ) ? $mptrs_booking_data['ordered_date'] : '';
                 $order_time = isset( $mptrs_booking_data['ordered_time'] ) ? $mptrs_booking_data['ordered_time'] : '';
@@ -79,6 +81,7 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
                     update_post_meta($custom_order_id, '_mptrs_created_order_date', $order_created_date);
                     update_post_meta($custom_order_id, '_mptrs_order_total', $order_total);
                     update_post_meta($custom_order_id, '_mptrs_order_status', $order_status);
+                    update_post_meta($custom_order_id, '$order_locations', $order_locations);
                     update_post_meta($custom_order_id, '_mptrs_customer_id', $customer_id);
                     update_post_meta($custom_order_id, '_mptrs_customer_name', $customer_name);
                     update_post_meta($custom_order_id, '_mptrs_customer_email', $customer_email);
@@ -158,6 +161,7 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
         }
 
         public function display_custom_cart_item_data( $item_data, $cart_item ) {
+            error_log( print_r( [ '$cart_item' => $cart_item ], true ) );
             if( $cart_item['mptrs_order_type'] === '' ){
                 $fields = [
                     'food_menu' => 'Food Menu',
@@ -246,7 +250,8 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
                 'Seats' => '💺 Seats',
                 'Customer Name' => '👤 Customer',
                 'Order Date' => '📅 Date',
-                'Order Time' => '⏰ Time'
+                'Order Time' => '⏰ Time',
+                'Locations' => '⏰ Delivery Location'
             ];
 
             echo '<div class="mptrs-order-meta"><h4 class="mptrs-meta-title">Order Details</h4>';

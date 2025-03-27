@@ -43,7 +43,7 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
 
             $orderVarDetailsAry =  isset( $_POST['orderVarDetailsStr'] ) ? (array) json_decode( stripslashes( $_POST['orderVarDetailsStr'] ) ) : [];
 
-            $menu = '';
+            $menu = '<ul class="mptrs_orderDetailListsHolder">';
             foreach ($ordered_menu_key as $key => $value) {
                 $var_details = '';
                 if( isset( $get_food_menu[ $key ] ) ) {
@@ -51,13 +51,24 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                         $var_details = $orderVarDetailsAry[ $key];
                     }
                     if( $var_details ){
-                        $menu .= '<li class="mptrs_orderDetailList">Item Name: '.$get_food_menu[ $key ]['menuName']. ' Person:'.$get_food_menu[ $key ]['numPersons'].' Quantity:'.$value.' Details: '.$var_details.'</li>';
+                        $menu .= '<li class="mptrs_orderDetailList">
+                                     <strong>Item Name:</strong> '.$get_food_menu[ $key ]['menuName'].'<br>
+                                     <strong>Person:<strong>'.$get_food_menu[ $key ]['numPersons'].'<br>
+                                     <strong>Quantity:<strong>'.$value.'<br>
+                                     <strong>Details:<strong>'.$var_details.'<br>
+                                    </li>';
                     }else{
-                        $menu .= '<li class="mptrs_orderDetailList">Item Name: '.$get_food_menu[ $key ]['menuName']. ' Person:'.$get_food_menu[ $key ]['numPersons'].' Quantity:'.$value.'</li>';
+//                        $menu .= '<li class="mptrs_orderDetailList">Item Name: '.$get_food_menu[ $key ]['menuName']. ' Person:'.$get_food_menu[ $key ]['numPersons'].' Quantity:'.$value.'</li>';
+                        $menu .= '<li class="mptrs_orderDetailList">
+                                     <strong>Item Name:</strong> '.$get_food_menu[ $key ]['menuName'].'<br>
+                                     <strong>Person:<strong>'.$get_food_menu[ $key ]['numPersons'].'<br>
+                                     <strong>Quantity:<strong>'.$value.'<br>
+                                   </li>';
                     }
-                    $menu .= ', ';
+                    $menu .= '';
                 }
             }
+            $menu .= '</ul>';
 
             $mptrs_order_date = isset( $_POST['mptrs_order_date'] ) ?  sanitize_text_field( $_POST['mptrs_order_date'] ) : '';
             $mptrs_order_time = isset( $_POST['mptrs_order_time'] ) ? sanitize_text_field( $_POST['mptrs_order_time'] ) : '';
@@ -65,7 +76,7 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             $price = floatval( sanitize_text_field($_POST['price'] ) );
             $quantity = intval( sanitize_text_field($_POST['quantity'] ) );
             $mptrs_user_details = '';
-            $mptrs_locations = '';
+            $mptrs_locations = isset( $_POST['mptrs_locations'] ) ?  sanitize_text_field( $_POST['mptrs_locations'] ) : '';
 
             $mptrs_orderType_text = sanitize_text_field( $_POST['mptrs_orderType'] );
 
@@ -140,9 +151,6 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             if (!class_exists('WC_Cart')) {
                 wp_send_json_error('WooCommerce is not active.');
             }
-
-
-
 
             WC()->cart->empty_cart();
 
