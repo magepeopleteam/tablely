@@ -10,7 +10,7 @@
 		class MPTRS_Shortcodes {
 			public function __construct() {
                 add_shortcode( 'tablely_shortcode', array( $this, 'display_restaurant_menu_content_shortcode' ) );
-                add_shortcode( 'tablely_reserve_table_shortcode', array( $this, 'display_seat_mapping_shortcode' ) );
+                add_shortcode( 'mptrs_reserve_table', array( $this, 'display_seat_mapping_shortcode' ) );
 			}
 
             public function display_seat_mapping_shortcode( $atts ){
