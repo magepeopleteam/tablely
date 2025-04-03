@@ -387,7 +387,6 @@ jQuery(document).ready(function ($) {
     });
 
     const timeContainer = $(".mptrs_time_container");
-
     const timeSlots = {
         '11': "11:00 AM",
         '12': "12:00 PM",
@@ -402,7 +401,6 @@ jQuery(document).ready(function ($) {
         '21': "09:00 PM",
         '22': "10:00 PM"
     };
-    
     $.each( timeSlots, function ( key, time ) {
         let button = $("<button>")
             .addClass("mptrs_time_button")
@@ -412,9 +410,37 @@ jQuery(document).ready(function ($) {
         timeContainer.append(button);
     })
 
+    const tableReserveTimeContainer = $(".mptrs_tableReserveTimeContainer");
+    const tableReserveTimeSlots = {
+        '11': "11:00 AM",
+        '12': "12:00 PM",
+        '13': "01:00 PM",
+        '14': "02:00 PM",
+        '15': "03:00 PM",
+        '16': "04:00 PM",
+        '17': "05:00 PM",
+        '18': "06:00 PM",
+        '19': "07:00 PM",
+        '20': "08:00 PM",
+        '21': "09:00 PM",
+        '22': "10:00 PM"
+    };
+    $.each( tableReserveTimeSlots, function ( key, time ) {
+        let button = $("<button>")
+            .addClass("mptrs_tableReserveTimeButton")
+            .text(time)
+            .attr("data-time", key );
+
+        tableReserveTimeContainer.append(button);
+    })
+
     $(document).on( 'click', '.mptrs_button', function () {
         $(".mptrs_time_container").css("display", "flex");
     });
+
+    /*$(document).on( 'click', '.mptrs_findTimeButton', function () {
+        $(".mptrs_tableReserveTimeContainer").css("display", "flex");
+    });*/
 
 
     $(document).on('click',".mptrsPopupCloseBtn",function () {
@@ -725,7 +751,97 @@ jQuery(document).ready(function ($) {
     });
 
 
+    // Handle time selection
+    let mptrs_tableReserveDate = '';
+    let mptrs_tableReserveTime = '';
+    let mptrs_tableReservePost = '';
+    $(document).on('click',".mptrs_findSeatsButton", function () {
 
+        $(this).text('Loading...');
+
+        mptrs_tableReservePost =  $("#mptrs_tableReserveId").val().trim();
+        mptrs_tableReserveTime = $(".mptrs_tableReserveTimeButton.active").attr('data-time').trim();
+        mptrs_tableReserveDate = $("#mptrs_seatReserveDate").val().trim();
+
+        $(this).addClass("active");
+        $("#seatPopup").fadeIn();
+        $("#mptrs_seatReserveMapDisplay").empty();
+        $.ajax({
+            url: mptrs_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_get_available_seats_for_reservations',
+                nonce: mptrs_ajax.nonce,
+                get_time: mptrs_tableReserveTime,
+                get_date: mptrs_tableReserveDate,
+                post_id: mptrs_tableReservePost,
+            },
+            dataType: 'json',
+            success: function (response) {
+                $(this).addClass("active");
+                // mptrs_display_food_menu_for_order( response.data.get_food_menu )
+
+                seatBooked = [];
+                seatBookedName = [];
+                $("#mptrs_seatReserveMapDisplay").append( response.data.mptrs_seat_maps );
+                $('#mptrs_findSeatsButton').text('Finds Seats');
+            },
+            error: function () {
+                $(this).text('Finds Seats');
+                $('#mptrs_findSeatsButton').text('Finds Seats');
+            }
+        });
+
+    });
+
+    $(document).on('click',".mptrs_tableReservationButton", function ( e ) {
+        e.preventDefault();
+        // console.log( mptrs_tableReserveDate, mptrs_tableReserveTime, mptrs_tableReservePost );
+        mptrs_tableReservePost =  $("#mptrs_tableReserveId").val().trim();
+        mptrs_tableReserveTime = $(".mptrs_tableReserveTimeButton.active").attr('data-time').trim();
+        mptrs_tableReserveDate = $("#mptrs_seatReserveDate").val().trim();
+        let seatIds = JSON.stringify( seatBooked );
+        let seatNames = JSON.stringify( seatBookedName );
+        let occasion = $('select[name="mptrs_occasion"]').val();
+        let guests = $('select[name="mptrs_guests"]').val();
+
+        $.ajax({
+            url: mptrs_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_table_reservations',
+                nonce: mptrs_ajax.nonce,
+                get_time: mptrs_tableReserveTime,
+                get_date: mptrs_tableReserveDate,
+                seatIds: seatIds,
+                seatNames: seatNames,
+                occasion: occasion,
+                guests: guests,
+            },
+            dataType: 'json',
+            success: function (response) {
+                console.log(response);
+            },
+            error: function () {
+
+            }
+        });
+
+    });
+
+    // Handle time selection
+    $(document).on('click',".mptrs_tableReserveTimeButton", function () {
+
+        let get_date = $("#mptrs_seatReserveDate").val().trim();
+        if( !get_date ){
+            alert('Select Date First!');
+        }else{
+            $(".mptrs_tableReserveTimeButton").removeClass("active");
+            $(this).addClass('active');
+            $("#mptrs_findSeatsButton").fadeIn();
+        }
+
+    });
 
     function mptrs_display_popup_for_order_types(){
 
@@ -1213,5 +1329,27 @@ jQuery(document).ready(function ($) {
         $("#"+menuAddedClickedId).fadeOut();
 
     });
+
+    $("#mptrs_seatReserveDate").datepicker({
+        dateFormat: "yy-mm-dd",
+        minDate: 0
+    });
+
+    $("#mptrs_reservation_form").submit(function(event) {
+            event.preventDefault();
+
+            let formData = {
+                action: "mptrs_process_reservation",
+                mptrs_nonce: $("#mptrs_nonce").val(),
+                occasion: $("#mptrs_occasion").val(),
+                guests: $("#mptrs_guests").val(),
+                date: $("#mptrs_date").val(),
+            };
+
+            $.post("<?php echo admin_url('admin-ajax.php'); ?>", formData, function(response) {
+                $("#mptrs_message").html(response);
+            });
+        });
+
 
 });

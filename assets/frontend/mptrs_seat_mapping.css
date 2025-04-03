@@ -778,9 +778,20 @@
     margin-top: 15px;
     justify-content: center;
 }
+.mptrs_findSeatsButton{
+    display: none;
+}
+
+.mptrs_tableReserveTimeContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 15px;
+    justify-content: center;
+}
 
 /* Time Buttons */
-.mptrs_time_button {
+.mptrs_time_button, .mptrs_tableReserveTimeButton {
     padding: 10px;
     width: 80px;
     font-size: 14px;
@@ -790,12 +801,31 @@
     border-radius: 5px;
 }
 
+.mptrs_findSeatsButton{
+    display: none;
+    padding: 10px;
+    margin: 10px;
+    background-color: #19bd3b;
+    border: 1px solid #cbc7c7;
+    border-radius: 3px;
+    color: #fff;
+    min-width: 120px;
+    cursor: pointer;
+}
+
 .mptrs_time_button:hover {
+    background-color: #d0d0d0;
+}
+.mptrs_tableReserveTimeButton:hover {
     background-color: #d0d0d0;
 }
 
 /* Selected Time */
 .mptrs_time_button.active {
+    background-color: #1d273b;
+    color: white;
+}
+.mptrs_tableReserveTimeButton.active {
     background-color: #1d273b;
     color: white;
 }
@@ -1250,6 +1280,57 @@
     font-size: 48px;
     margin-right: 10px;
 }
+
+.mptrs_seatReserveContainer {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+.mptrs_seatReserveTitle {
+    color: #ff6600;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.mptrs_seatReserveLabel {
+    display: block;
+    text-align: left;
+    font-weight: bold;
+    margin: 10px 0 5px;
+    color: #333;
+}
+
+.mptrs_select,
+.mptrs_input {
+    width: calc( 100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.mptrs_tableReservationButton {
+    width: calc( 100% - 20px);
+    padding: 10px;
+    background-color: #ff6600;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.mptrs_tableReservationButton:hover {
+    background-color: #e65c00;
+}
+
 
 @media screen and (max-width: 600px) {
     .mptrs_contentDataHolder{

@@ -170,7 +170,57 @@
 //    }
                 return $content;
             }
-		}
+
+            public static function reserve_table( $post_id ) {
+                ob_start(); // Start output buffering
+                ?>
+                <div class="mptrs_seatReserveContainer">
+
+                    <h2 class="mptrs_seatReserveTitle"><?php echo esc_html__('MAKE A TABLE RESERVATION', 'mptrs-domain'); ?></h2>
+
+                    <div class="mptrs_form" id="mptrs_reservation_form">
+                        <label class="mptrs_seatReserveLabel" for="mptrs_occasion"><?php echo esc_html__('Select an Occasion', 'mptrs-domain'); ?></label>
+                        <select id="mptrs_occasion" class="mptrs_select" name="mptrs_occasion">
+                            <option value=""><?php echo esc_html__('Select An Occasion', 'mptrs-domain'); ?></option>
+                            <option value="birthday"><?php echo esc_html__('Birthday', 'mptrs-domain'); ?></option>
+                            <option value="anniversary"><?php echo esc_html__('Anniversary', 'mptrs-domain'); ?></option>
+                            <option value="meeting"><?php echo esc_html__('Business Meeting', 'mptrs-domain'); ?></option>
+                        </select>
+
+                        <label class="mptrs_seatReserveLabel" for="mptrs_guests"><?php echo esc_html__('Select Guest Numbers:', 'mptrs-domain'); ?></label>
+                        <select id="mptrs_guests" class="mptrs_select" name="mptrs_guests">
+                            <option value=""><?php echo esc_html__('Select Members', 'mptrs-domain'); ?></option>
+                            <option value="1"><?php echo esc_html__('1 Person', 'mptrs-domain'); ?></option>
+                            <option value="2"><?php echo esc_html__('2 People', 'mptrs-domain'); ?></option>
+                            <option value="3"><?php echo esc_html__('3 People', 'mptrs-domain'); ?></option>
+                            <option value="4"><?php echo esc_html__('4 People', 'mptrs-domain'); ?></option>
+                            <option value="5+"><?php echo esc_html__('5+ People', 'mptrs-domain'); ?></option>
+                        </select>
+
+                        <label class="mptrs_seatReserveLabel" for="mptrs_seatReserveDate"><?php echo esc_html__('Select a Date:', 'mptrs-domain'); ?></label>
+                        <input type="text" id="mptrs_seatReserveDate" class="mptrs_input" name="mptrs_seatReserveDate"
+                               placeholder="<?php echo esc_attr__('Select a Date', 'mptrs-domain'); ?>">
+
+
+                        <div class="mptrs_tableReserveTimeContainer"></div>
+
+                        <button id="mptrs_findSeatsButton" class="mptrs_findSeatsButton">Finds Seats</button>
+
+                        <div class="mptrs_seatMapDisplay" id="mptrs_seatReserveMapDisplay"></div>
+
+                        <button class="mptrs_tableReservationButton" id="mptrs_tableReservationButton"><?php echo esc_html__('Book Table', 'mptrs-domain'); ?></button>
+                    </div>
+
+                    <div id="mptrs_message"></div>
+                    <input type="hidden" id="mptrs_tableReserveId" value="<?php echo esc_attr( $post_id )?>">
+
+                </div>
+                <?php
+                return ob_get_clean(); // Return the buffered content
+            }
+
+
+        }
 
 		new MPTRS_Details_Layout();
 	}

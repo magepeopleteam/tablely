@@ -21,7 +21,9 @@
                     $seat_map = MPTRS_Details_Layout::display_seat_mapping( $post_id, $not_available );
                 }
 
-                return $seat_map;
+                $table_reserve = MPTRS_Details_Layout::reserve_table( $post_id );
+
+                return $table_reserve;
             }
             public function display_restaurant_menu_content_shortcode( $atts ) {
 

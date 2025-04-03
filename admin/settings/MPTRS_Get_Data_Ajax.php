@@ -28,6 +28,9 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             add_action('wp_ajax_mptrs_save_service_status_update', [$this, 'mptrs_save_service_status_update'] );
             add_action('wp_ajax_nopriv_mptrs_save_service_status_update', [$this, 'mptrs_save_service_status_update'] );
 
+            add_action('wp_ajax_mptrs_table_reservations', [$this, 'mptrs_table_reservations'] );
+            add_action('wp_ajax_nopriv_mptrs_table_reservations', [$this, 'mptrs_table_reservations'] );
+
 
         }
 
@@ -198,19 +201,39 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             ]);
         }
 
+        function mptrs_table_reservations(){
+
+            if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field($_POST['nonce']), 'mptrs_admin_nonce')) {
+//                error_log( print_r( $_POST, true ) );
+                $order_title = 'table reservations';
+                $custom_order_id = wp_insert_post(array(
+                    'post_title'    => $order_title,
+                    'post_type'     => 'mptrs_table_reservations',
+                    'post_status'   => 'publish',
+                    'post_author'   => 1,
+                ));
+
+                if ($custom_order_id) {
+                    // Store meta data in the custom post
+                    update_post_meta( $custom_order_id, '_mptrs_table_reservation_table_info', '');
+                    update_post_meta( $custom_order_id, '_mptrs_table_reservation_persion_info', '');
+                }
+            }
+        }
         function mptrs_get_available_seats_for_reservations(){
 
             $seat_map = '';
+            $get_food_menu = [];
+
             if (!isset($_POST['nonce']) || !wp_verify_nonce( sanitize_text_field( $_POST['nonce'] ), 'mptrs_admin_nonce')) {
-//                wp_send_json_error(['message' => 'Security check failed.'], 403);
                 $orderPostId = isset( $_POST['post_id']) ? sanitize_text_field( $_POST['post_id'] ) : '';
                 $search_time = isset( $_POST['get_time']) ? sanitize_text_field( $_POST['get_time'] ) : '';
                 $get_date = isset( $_POST['get_date']) ? sanitize_text_field( $_POST['get_date'] ) : '';
                 $orderDateFormatted = date('d_m_y', strtotime( $get_date ) );
 
-
                 $orderPostId = get_post_meta( $orderPostId, 'link_wc_product', true ) ;
                 $seat_booking_data = get_post_meta( $orderPostId, '_mptrs_seat_booking', true );
+
                 if( !is_array( $seat_booking_data ) && empty( $seat_booking_data ) ){
                     $seat_booking_data = [];
                 }
@@ -222,32 +245,16 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                 }
 
                 $post_id = isset( $_POST['post_id'] ) ? sanitize_text_field($_POST['post_id']) : '';
-                $seat_map = MPTRS_Details_Layout::display_seat_mapping( $post_id, $not_available );
+                if( $post_id ){
+                    $seat_map = MPTRS_Details_Layout::display_seat_mapping( $post_id, $not_available );
+                }
+
             }
 
-            $get_food_menu = get_option( '_mptrs_food_menu' );
+            /*$get_food_menu = get_option( '_mptrs_food_menu' );
             if( !is_array( $get_food_menu ) && empty( $get_food_menu ) ){
                 $get_food_menu = [];
-            }
-
-            /*$seat_booking_data = array(
-                'seat-2-4' => array(
-                    '25_03_25' => array('11', '12', '13'),
-                ),
-                'A2' => array(
-                    '25_03_25' => array('11', '12', '13'),
-                    '26_05_25' => array('18', '12', '13'),
-                ),
-                'A3' => array(
-                    '24_03_25' => array('11', '12', '13'),
-                ),
-                'A4' => array(
-                    '26_03_25' => array('11', '12', '13'),
-                ),
-                'A5' => array(
-                    '26_03_25' => array('11'),
-                ),
-            );*/
+            }*/
 
             wp_send_json_success([
                 'message' => 'Categories Data getting successfully.!',

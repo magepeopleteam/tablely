@@ -161,7 +161,6 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
         }
 
         public function display_custom_cart_item_data( $item_data, $cart_item ) {
-            error_log( print_r( [ '$cart_item' => $cart_item ], true ) );
             if( $cart_item['mptrs_order_type'] === '' ){
                 $fields = [
                     'food_menu' => 'Food Menu',
