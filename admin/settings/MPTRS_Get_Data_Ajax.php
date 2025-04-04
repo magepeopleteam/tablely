@@ -327,7 +327,7 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
 
                 $custom_order_id = wp_insert_post([
                     'post_title'    => $order_title,
-                    'post_type'     => 'mptrs_table_reserv',
+                    'post_type'     => 'mptrs_table_reserve',
                     'post_status'   => 'publish',
                     'post_author'   => get_current_user_id(),
                 ]);
