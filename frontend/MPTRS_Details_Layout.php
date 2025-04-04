@@ -171,44 +171,66 @@
                 return $content;
             }
 
-            public static function reserve_table( $post_id ) {
-                ob_start(); // Start output buffering
+            public static function reserve_table( $post_id, $atts ) {
+                ob_start();
+
                 ?>
                 <div class="mptrs_seatReserveContainer">
 
-                    <h2 class="mptrs_seatReserveTitle"><?php echo esc_html__('MAKE A TABLE RESERVATION', 'mptrs-domain'); ?></h2>
+                    <h2 class="mptrs_seatReserveTitle"><?php echo esc_html__('MAKE A TABLE RESERVATION', 'tablely'); ?></h2>
 
                     <div class="mptrs_form" id="mptrs_reservation_form">
-                        <label class="mptrs_seatReserveLabel" for="mptrs_occasion"><?php echo esc_html__('Select an Occasion', 'mptrs-domain'); ?></label>
-                        <select id="mptrs_occasion" class="mptrs_select" name="mptrs_occasion">
-                            <option value=""><?php echo esc_html__('Select An Occasion', 'mptrs-domain'); ?></option>
-                            <option value="birthday"><?php echo esc_html__('Birthday', 'mptrs-domain'); ?></option>
-                            <option value="anniversary"><?php echo esc_html__('Anniversary', 'mptrs-domain'); ?></option>
-                            <option value="meeting"><?php echo esc_html__('Business Meeting', 'mptrs-domain'); ?></option>
-                        </select>
+                        <div class="mptrs_tableReserveInfoHolder" id="mptrs_tableReserveInfoHolder">
+                            <label class="mptrs_seatReserveLabel" for="mptrs_occasion"><?php echo esc_html__('Select an Occasion', 'tablely'); ?></label>
+                            <select id="mptrs_occasion" class="mptrs_select" name="mptrs_occasion">
+                                <option value=""><?php echo esc_html__('Select An Occasion', 'tablely'); ?></option>
+                                <option value="birthday"><?php echo esc_html__('Birthday', 'tablely'); ?></option>
+                                <option value="anniversary"><?php echo esc_html__('Anniversary', 'tablely'); ?></option>
+                                <option value="meeting"><?php echo esc_html__('Business Meeting', 'tablely'); ?></option>
+                            </select>
 
-                        <label class="mptrs_seatReserveLabel" for="mptrs_guests"><?php echo esc_html__('Select Guest Numbers:', 'mptrs-domain'); ?></label>
-                        <select id="mptrs_guests" class="mptrs_select" name="mptrs_guests">
-                            <option value=""><?php echo esc_html__('Select Members', 'mptrs-domain'); ?></option>
-                            <option value="1"><?php echo esc_html__('1 Person', 'mptrs-domain'); ?></option>
-                            <option value="2"><?php echo esc_html__('2 People', 'mptrs-domain'); ?></option>
-                            <option value="3"><?php echo esc_html__('3 People', 'mptrs-domain'); ?></option>
-                            <option value="4"><?php echo esc_html__('4 People', 'mptrs-domain'); ?></option>
-                            <option value="5+"><?php echo esc_html__('5+ People', 'mptrs-domain'); ?></option>
-                        </select>
+                            <label class="mptrs_seatReserveLabel" for="mptrs_guests"><?php echo esc_html__('Select Guest Numbers:', 'tablely'); ?></label>
+                            <select id="mptrs_guests" class="mptrs_select" name="mptrs_guests">
+                                <option value=""><?php echo esc_html__('Select Members', 'tablely'); ?></option>
+                                <option value="1"><?php echo esc_html__('1 Person', 'tablely'); ?></option>
+                                <option value="2"><?php echo esc_html__('2 People', 'tablely'); ?></option>
+                                <option value="3"><?php echo esc_html__('3 People', 'tablely'); ?></option>
+                                <option value="4"><?php echo esc_html__('4 People', 'tablely'); ?></option>
+                                <option value="5+"><?php echo esc_html__('5+ People', 'tablely'); ?></option>
+                            </select>
 
-                        <label class="mptrs_seatReserveLabel" for="mptrs_seatReserveDate"><?php echo esc_html__('Select a Date:', 'mptrs-domain'); ?></label>
-                        <input type="text" id="mptrs_seatReserveDate" class="mptrs_input" name="mptrs_seatReserveDate"
-                               placeholder="<?php echo esc_attr__('Select a Date', 'mptrs-domain'); ?>">
+                            <label class="mptrs_seatReserveLabel" for="mptrs_seatReserveDate"><?php echo esc_html__('Select a Date:', 'tablely'); ?></label>
+                            <input type="text" id="mptrs_seatReserveDate" class="mptrs_input" name="mptrs_seatReserveDate"
+                                   placeholder="<?php echo esc_attr__('Select a Date', 'tablely'); ?>">
 
 
-                        <div class="mptrs_tableReserveTimeContainer"></div>
+                            <div class="mptrs_tableReserveTimeContainer"></div>
 
-                        <button id="mptrs_findSeatsButton" class="mptrs_findSeatsButton">Finds Seats</button>
+                            <?php  if( isset( $atts['seat_mapping'] ) && $atts['seat_mapping'] === 'yes' ){?>
+                                <button id="mptrs_findSeatsButton" class="mptrs_findSeatsButton">Finds Seats</button>
+                            <?php }?>
 
-                        <div class="mptrs_seatMapDisplay" id="mptrs_seatReserveMapDisplay"></div>
+                            <div class="mptrs_seatMapDisplay" id="mptrs_seatReserveMapDisplay"></div>
+                        </div>
+                        <div class="mptrs_tableReservePersonInfo" id="mptrs_tableReservePersonInfo" style="display: none">
+                            <label class="mptrs_seatReserveLabel" for="mptrs_seatReserveName"><?php echo esc_html__('Enter Name:', 'tablely'); ?></label>
+                            <input type="text" class="mptrs_input mptrs_seatReserveName" name="mptrs_seatReserveName" id="mptrs_seatReserveName" placeholder="Name" required>
 
-                        <button class="mptrs_tableReservationButton" id="mptrs_tableReservationButton"><?php echo esc_html__('Book Table', 'mptrs-domain'); ?></button>
+                            <label class="mptrs_seatReserveLabel" for="mptrs_seatReservePhone"><?php echo esc_html__('Phone number:', 'tablely'); ?></label>
+                            <input type="number" class="mptrs_input mptrs_seatReservePhone" name="mptrs_seatReservePhone" id="mptrs_seatReservePhone" placeholder="Phone number with country code (eg. +91XXXXXXXXXX)" required>
+
+                            <label class="mptrs_seatReserveLabel" for="mptrs_seatReserveEmail"><?php echo esc_html__('Email Id:', 'tablely'); ?></label>
+                            <input type="email" class="mptrs_input mptrs_seatReserveEmail" name="mptrs_seatReserveEmail" id="mptrs_seatReserveEmail" placeholder="Email" required>
+
+                            <label class="mptrs_seatReserveLabel" for="mptrs_seatReserveMessage"><?php echo esc_html__('Add Booking Message:', 'tablely'); ?></label>
+                            <textarea type="text" class="mptrs_input mptrs_seatReserveMessage" name="mptrs_seatReserveMessage" id="mptrs_seatReserveMessage" placeholder="Add a special request"></textarea>
+
+                        </div>
+
+                        <div class="mptrs_tableReserveBtnHolder" id="mptrs_tableReserveBtnHolder" style="display: none">
+                            <button class="mptrs_tableReservationButton" id="mptrs_tableReservationButton"><?php echo esc_html__('Book Now', 'tablely'); ?></button>
+                            <button class="mptrs_tableReservationBackButton" id="mptrs_tableReservationbackButton" style="display: none"><i class="fa fa-angle-double-left" style="font-size:16px"></i><?php echo esc_html__('Back', 'tablely'); ?></button>
+                        </div>
                     </div>
 
                     <div id="mptrs_message"></div>

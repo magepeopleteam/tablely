@@ -44,7 +44,6 @@
                 ?>
                 <div class="mptrs_order_page_wrap wrap">
                     <h1 class="mptrs_awesome-heading"><?php esc_html_e( 'Order List', 'booking-and-rental-manager-for-woocommerce' ); ?></h1>
-<!--                    <input type="text" id="search" class="search-input awesome-search" placeholder="--><?php //esc_attr_e( 'Search by order id or customer name..', 'booking-and-rental-manager-for-woocommerce' ); ?><!--"/>-->
                     <div class="mptrs_orderTypeContainer">
                         <?php
                         if( is_array( $order_types ) && count( $order_types ) > 0 ){ ?>

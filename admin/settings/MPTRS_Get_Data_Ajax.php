@@ -92,7 +92,6 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             }else{
                 $mptrs_orderType = '';
             }
-//            error_log( print_r( [ '$mptrs_orderType' => $mptrs_orderType ], true ) );
 
             /*if( $mptrs_orderType === 'dine_in' ){
                 $seats = json_decode( stripslashes( sanitize_text_field( $_POST['seats'] ) ), true);
@@ -201,11 +200,39 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             ]);
         }
 
-        function mptrs_table_reservations(){
+        function mptrs_table_reservations_old(){
 
             if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field($_POST['nonce']), 'mptrs_admin_nonce')) {
-//                error_log( print_r( $_POST, true ) );
-                $order_title = 'table reservations';
+
+                $get_time = isset( $_POST['get_time'] ) ? $_POST['get_time'] : '' ;
+                $get_date = isset( $_POST['get_date'] ) ? $_POST['get_date'] : '' ;
+                $seatIds = isset( $_POST['seatIds'] ) ? $_POST['seatIds'] : '' ;
+                $seatNames = isset( $_POST['seatNames'] ) ? $_POST['seatNames'] : '' ;
+                $occasion = isset( $_POST['occasion'] ) ? $_POST['occasion'] : '' ;
+                $guests = isset( $_POST['guests'] ) ? $_POST['guests'] : '' ;
+
+                $userName = isset( $_POST['userName'] ) ? $_POST['userName'] : '' ;
+                $userPhoneNum = isset( $_POST['userPhoneNum'] ) ? $_POST['userPhoneNum'] : '' ;
+                $userEmailId = isset( $_POST['userEmailId'] ) ? $_POST['userEmailId'] : '' ;
+                $userAdvice = isset( $_POST['userAdvice'] ) ? $_POST['userAdvice'] : '' ;
+
+                $reservation_table_info = array(
+                    'get_time' => $get_time,
+                    'get_date' => $get_date,
+                    'seatIds' => $seatIds,
+                    'seatNames' => $seatNames,
+                    'occasion' => $occasion,
+                    'guests' =>  $guests,
+                );
+
+                $reservation_persion_info = array(
+                    'userName' => $userName,
+                    'userPhoneNum' => $userPhoneNum,
+                    'userEmailId' => $userEmailId,
+                    'userAdvice' => $userAdvice,
+                );
+
+                $order_title = $userName.' table reservations';
                 $custom_order_id = wp_insert_post(array(
                     'post_title'    => $order_title,
                     'post_type'     => 'mptrs_table_reservations',
@@ -213,13 +240,122 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                     'post_author'   => 1,
                 ));
 
-                if ($custom_order_id) {
+                if ( $custom_order_id ) {
                     // Store meta data in the custom post
-                    update_post_meta( $custom_order_id, '_mptrs_table_reservation_table_info', '');
-                    update_post_meta( $custom_order_id, '_mptrs_table_reservation_persion_info', '');
+                    update_post_meta( $custom_order_id, '_mptrs_table_reservation_table_info', $reservation_table_info );
+                    update_post_meta( $custom_order_id, '_mptrs_table_reservation_persion_info', $reservation_persion_info );
+                    update_post_meta( $custom_order_id, '_mptrs_table_reservation_status', 0 );
                 }
             }
         }
+
+        public static function  mptrs_seats_reserved( $booked_seat_ids_str, $orderPostId, $order_date, $order_time ){
+
+            $result = 0;
+            if( $booked_seat_ids_str ){
+                $booked_seat_ids = json_decode(stripslashes( $booked_seat_ids_str ), true);
+
+                if( !empty( $booked_seat_ids ) && !empty( $orderPostId ) && !empty( $order_date ) && !empty( $order_time ) ){
+
+                    $seat_booking_data = get_post_meta( $orderPostId, '_mptrs_seat_booking', true );
+                    if( !is_array( $seat_booking_data ) && empty( $seat_booking_data ) ){
+                        $seat_booking_data = [];
+                    }
+
+                    $booked_seat_ids = json_decode(stripslashes( $booked_seat_ids_str ), true);
+                    $orderDateFormatted = date('d_m_y', strtotime( $order_date ) );
+
+                    foreach ( $booked_seat_ids as $seat_index ){
+                        $seat_booking_data = self::set_seat_bookig( $seat_booking_data, $seat_index, $orderDateFormatted, $order_time );
+                    }
+
+                    $result = update_post_meta( $orderPostId, '_mptrs_seat_booking', $seat_booking_data );
+                }
+
+            }
+
+            return $result;
+         }
+        function mptrs_table_reservations() {
+
+            $result = 0;
+            $message = 'Table Reserved Failed';
+            if (isset($_POST['nonce']) && wp_verify_nonce(sanitize_text_field($_POST['nonce']), 'mptrs_nonce')) {
+
+                $seatNames = [];
+                $get_time   = sanitize_text_field($_POST['get_time'] ?? '');
+                $get_date   = sanitize_text_field($_POST['get_date'] ?? '');
+                $booked_seat_ids_str    = sanitize_text_field($_POST['seatIds'] ?? '');
+                $seatNames_str  = sanitize_text_field($_POST['seatNames'] ?? '');
+                $occasion   = sanitize_text_field($_POST['occasion'] ?? '');
+                $guests     = sanitize_text_field($_POST['guests'] ?? '');
+
+                $userName      = sanitize_text_field($_POST['userName'] ?? '');
+                $userPhoneNum  = sanitize_text_field($_POST['userPhoneNum'] ?? '');
+                $userEmailId   = sanitize_email($_POST['userEmailId'] ?? '');
+                $userAdvice    = sanitize_text_field($_POST['userAdvice'] ?? '');
+                $orderPostId         = sanitize_text_field($_POST['postId'] ?? '');
+
+                if( $seatNames_str ){
+                    $seatNames_ary = json_decode( stripslashes( $seatNames_str ), true );
+                    if( is_array( $seatNames_ary ) && !empty( $seatNames_ary ) ){
+                        $seatNames = $seatNames_ary;
+                    }
+
+                }
+
+                $reservation_table_info = [
+                    'reserve_time' => $get_time,
+                    'reserve_date' => $get_date,
+                    'seatNames' => $seatNames,
+                    'occasion' => $occasion,
+                    'guests' =>  $guests,
+                    'userName' => $userName,
+                    'userPhoneNum' => $userPhoneNum,
+                    'userEmailId' => $userEmailId,
+                    'userAdvice' => $userAdvice,
+                ];
+
+                /*$reservation_persion_info = [
+                    'userName' => $userName,
+                    'userPhoneNum' => $userPhoneNum,
+                    'userEmailId' => $userEmailId,
+                    'userAdvice' => $userAdvice,
+                ];*/
+
+                $order_title = $userName . ' table reservation';
+
+                $custom_order_id = wp_insert_post([
+                    'post_title'    => $order_title,
+                    'post_type'     => 'mptrs_table_reserv',
+                    'post_status'   => 'publish',
+                    'post_author'   => get_current_user_id(),
+                ]);
+
+                if ( $custom_order_id && !is_wp_error($custom_order_id ) ) {
+
+                    $reservation_table_info = maybe_serialize( $reservation_table_info );
+
+                    $result = self::mptrs_seats_reserved( $booked_seat_ids_str, $orderPostId, $get_date, $get_time );
+                    update_post_meta($custom_order_id, '_mptrs_table_reservation_info', $reservation_table_info);
+//                    update_post_meta($custom_order_id, '_mptrs_table_reservation_persion_info', $reservation_persion_info);
+                    update_post_meta($custom_order_id, '_mptrs_table_reservation_status', 0);
+
+                    $message = 'Successfully table reserved';
+                }
+
+            } else {
+               $message='Nonce failed in mptrs_table_reservations';
+            }
+
+            wp_send_json_success([
+                'message' => $message,
+                'result' => $result,
+            ]);
+
+        }
+
+
         function mptrs_get_available_seats_for_reservations(){
 
             $seat_map = '';
@@ -231,7 +367,7 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                 $get_date = isset( $_POST['get_date']) ? sanitize_text_field( $_POST['get_date'] ) : '';
                 $orderDateFormatted = date('d_m_y', strtotime( $get_date ) );
 
-                $orderPostId = get_post_meta( $orderPostId, 'link_wc_product', true ) ;
+//                $orderPostId = get_post_meta( $orderPostId, 'link_wc_product', true ) ;
                 $seat_booking_data = get_post_meta( $orderPostId, '_mptrs_seat_booking', true );
 
                 if( !is_array( $seat_booking_data ) && empty( $seat_booking_data ) ){
@@ -285,7 +421,6 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             $existing_edited_prices[$editKey] = $price;
 
             $update = update_post_meta( $post_id, '_mptrs_food_menu_edited_prices', $existing_edited_prices );
-//            $existing_edited_pr = get_post_meta($post_id, '_mptrs_food_menu_edited_prices', true);
 
             wp_send_json_success([
                 'message' => 'Price successfully Updated!',

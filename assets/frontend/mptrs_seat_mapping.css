@@ -785,9 +785,10 @@
 .mptrs_tableReserveTimeContainer {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: 10px;
     margin-top: 15px;
-    justify-content: center;
+    margin-bottom: 15px;
+    justify-content: left;
 }
 
 /* Time Buttons */
@@ -809,8 +810,9 @@
     border: 1px solid #cbc7c7;
     border-radius: 3px;
     color: #fff;
-    min-width: 120px;
+    /*min-width: 120px;*/
     cursor: pointer;
+    width: calc( 100% - 40px);
 }
 
 .mptrs_time_button:hover {
@@ -1316,7 +1318,8 @@
 }
 
 .mptrs_tableReservationButton {
-    width: calc( 100% - 20px);
+    /*width: calc( 100% - 60px);*/
+    width: 100%;
     padding: 10px;
     background-color: #ff6600;
     color: white;
@@ -1331,6 +1334,22 @@
     background-color: #e65c00;
 }
 
+.mptrs_tableReserveBtnHolder{
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+.mptrs_tableReservationBackButton{
+    width: 75px;
+    padding: 10px;
+    background-color: #47423e;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
 
 @media screen and (max-width: 600px) {
     .mptrs_contentDataHolder{

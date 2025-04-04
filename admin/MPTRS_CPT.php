@@ -10,6 +10,7 @@
 		class MPTRS_CPT {
 			public function __construct() {
 				add_action('init', [$this, 'add_cpt']);
+                add_action('init', [$this, 'register_mptrs_table_reservations_cpt'] );
 			}
 			public function add_cpt(): void {
 				$cpt = MPTRS_Function::get_cpt();
@@ -61,6 +62,16 @@
 				];
 				register_post_type($cpt, $args);
 			}
+
+            function register_mptrs_table_reservations_cpt() {
+                register_post_type('mptrs_table_reserv', array(
+                    'label' => 'Table Reservations',
+                    'public' => true,
+                    'supports' => ['title', 'custom-fields'],
+                    'show_in_rest' => true,
+                ));
+            }
+
 		}
 		new MPTRS_CPT();
 	}

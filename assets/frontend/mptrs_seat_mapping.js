@@ -794,38 +794,75 @@ jQuery(document).ready(function ($) {
 
     });
 
+    $(document).on('click',".mptrs_tableReservationBackButton", function ( e ) {
+        e.preventDefault();
+
+        $("#mptrs_tableReservationButton").text('Book Now');
+        $("#mptrs_tableReservationButton").css('width','100%');
+
+        $("#mptrs_tableReservationbackButton").fadeOut();
+        $("#mptrs_tableReservePersonInfo").fadeOut();
+        $("#mptrs_tableReserveInfoHolder").fadeIn();
+    });
+
     $(document).on('click',".mptrs_tableReservationButton", function ( e ) {
         e.preventDefault();
-        // console.log( mptrs_tableReserveDate, mptrs_tableReserveTime, mptrs_tableReservePost );
-        mptrs_tableReservePost =  $("#mptrs_tableReserveId").val().trim();
-        mptrs_tableReserveTime = $(".mptrs_tableReserveTimeButton.active").attr('data-time').trim();
-        mptrs_tableReserveDate = $("#mptrs_seatReserveDate").val().trim();
-        let seatIds = JSON.stringify( seatBooked );
-        let seatNames = JSON.stringify( seatBookedName );
-        let occasion = $('select[name="mptrs_occasion"]').val();
-        let guests = $('select[name="mptrs_guests"]').val();
 
-        $.ajax({
-            url: mptrs_ajax.ajax_url,
-            type: 'POST',
-            data: {
-                action: 'mptrs_table_reservations',
-                nonce: mptrs_ajax.nonce,
-                get_time: mptrs_tableReserveTime,
-                get_date: mptrs_tableReserveDate,
-                seatIds: seatIds,
-                seatNames: seatNames,
-                occasion: occasion,
-                guests: guests,
-            },
-            dataType: 'json',
-            success: function (response) {
-                console.log(response);
-            },
-            error: function () {
+        let userAdvice = '';
+            let getText = $(this).text().trim();
+        if( getText === 'Book Now' ){
+            $("#mptrs_tableReserveInfoHolder").fadeOut();
+            $("#mptrs_tableReservePersonInfo").fadeIn();
+            $("#mptrs_tableReservationbackButton").fadeIn();
+            $("#mptrs_tableReservationButton").css('width','calc( 100% - 60px)');
+            $(this).text('Confirm Reservation');
+        }else {
+            $(this).text('Booking...');
+            // console.log( mptrs_tableReserveDate, mptrs_tableReserveTime, mptrs_tableReservePost );
+            mptrs_tableReservePost = $("#mptrs_tableReserveId").val().trim();
+            mptrs_tableReserveTime = $(".mptrs_tableReserveTimeButton.active").attr('data-time').trim();
+            mptrs_tableReserveDate = $("#mptrs_seatReserveDate").val().trim();
 
-            }
-        });
+            let userName = $("#mptrs_seatReserveName").val().trim();
+            let userPhoneNum = $("#mptrs_seatReservePhone").val().trim();
+            let userEmailId = $("#mptrs_seatReserveEmail").val().trim();
+            userAdvice = $("#mptrs_seatReserveMessage").val().trim();
+            let seatIds = JSON.stringify(seatBooked);
+            let seatNames = JSON.stringify(seatBookedName);
+            let occasion = $('select[name="mptrs_occasion"]').val();
+            let guests = $('select[name="mptrs_guests"]').val();
+
+            let postId = $("#mptrs_tableReserveId").val().trim();
+
+            $.ajax({
+                url: mptrs_ajax.ajax_url,
+                type: 'POST',
+                data: {
+                    action: 'mptrs_table_reservations',
+                    nonce: mptrs_ajax.nonce,
+                    get_time: mptrs_tableReserveTime,
+                    get_date: mptrs_tableReserveDate,
+                    seatIds: seatIds,
+                    seatNames: seatNames,
+                    occasion: occasion,
+                    guests: guests,
+                    userName: userName,
+                    userPhoneNum: userPhoneNum,
+                    userEmailId: userEmailId,
+                    userAdvice: userAdvice,
+                    postId: postId,
+                },
+                dataType: 'json',
+                success: function (response) {
+                    $('#mptrs_tableReservationButton').text('Confirm Reservation');
+                    console.log(response);
+                },
+                error: function () {
+                    alert('Error Occured');
+                    $('#mptrs_tableReservationButton').text('Confirm Reservation');
+                }
+            });
+        }
 
     });
 
@@ -839,6 +876,7 @@ jQuery(document).ready(function ($) {
             $(".mptrs_tableReserveTimeButton").removeClass("active");
             $(this).addClass('active');
             $("#mptrs_findSeatsButton").fadeIn();
+            $("#mptrs_tableReserveBtnHolder").fadeIn();
         }
 
     });

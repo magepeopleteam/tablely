@@ -21,7 +21,7 @@
                     $seat_map = MPTRS_Details_Layout::display_seat_mapping( $post_id, $not_available );
                 }
 
-                $table_reserve = MPTRS_Details_Layout::reserve_table( $post_id );
+                $table_reserve = MPTRS_Details_Layout::reserve_table( $post_id, $atts );
 
                 return $table_reserve;
             }
