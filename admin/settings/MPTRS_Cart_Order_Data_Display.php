@@ -49,7 +49,6 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
                     $orderPostId = $product->get_id();
                 }
                 $mptrs_booking_data = maybe_unserialize( get_post_meta( $orderPostId, '_mptrs_booking_data', true ) );
-                error_log( print_r( [ '$mptrs_booking_data' => $mptrs_booking_data ], true ) );
 
                 $order_locations =isset( $mptrs_booking_data['order_locations'] ) ? $mptrs_booking_data['order_locations'] : '';
                 $booked_seat_ids = isset( $mptrs_booking_data['selected_seat_ids'] ) ? $mptrs_booking_data['selected_seat_ids'] : array();

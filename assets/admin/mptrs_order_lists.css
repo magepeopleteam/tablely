@@ -91,6 +91,17 @@
     background: #e5e5e5;
 }
 
+.mptrs_reserved_status {
+    background: #c8d7e1;
+    color: #2e4453;
+}
+
+/*.mptrs_reserved_status.in_progress {
+    background: #c6e1c6;
+    color: #5b841b;
+}*/
+
+
 .mptrs_order_page_table .mptrs_service_status.in_progress {
     background: #c6e1c6;
     color: #5b841b;

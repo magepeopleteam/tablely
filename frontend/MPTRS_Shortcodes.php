@@ -14,7 +14,8 @@
 			}
 
             public function display_seat_mapping_shortcode( $atts ){
-                $post_id = isset( $atts['post_id'] ) ? $atts['post_id'] : 1292;
+//                $post_id = isset( $atts['post_id'] ) ? $atts['post_id'] : 1292;
+                $post_id = get_option( 'mptrs_restaurant_id' );
                 $seat_map = '';
                 if( $post_id ){
                     $not_available = [];
@@ -26,8 +27,7 @@
                 return $table_reserve;
             }
             public function display_restaurant_menu_content_shortcode( $atts ) {
-
-                $post_id = isset( $atts['post_id'] ) ? $atts['post_id'] : '';
+                $post_id = get_option( 'mptrs_restaurant_id' );
 
                 if( $post_id ){
 

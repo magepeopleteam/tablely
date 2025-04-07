@@ -75,18 +75,26 @@
                                 }
 
                             }
+
+                            $formattedDate = date('jS F Y', strtotime( $table_reservation_info['reserve_date'] ));
+
                             ?>
                             <tr class="mptrs_order_row">
                                 <td><?php echo esc_html( $table_reservation_info['occasion'] ); ?></td>
                                 <td><?php echo esc_html( $table_reservation_info['guests'] ); ?></td>
-                                <td><?php echo esc_html( $table_reservation_info['reserve_date'] ); ?></td>
+                                <td><?php echo esc_html( $formattedDate ); ?></td>
                                 <td><?php echo esc_html( $table_reservation_info['reserve_time'] ); ?></td>
                                 <td><?php echo esc_html(  $seatNames ); ?></td>
                                 <td><?php echo esc_html( $table_reservation_info['userName'] ); ?></td>
                                 <td><?php echo esc_html( $table_reservation_info['userPhoneNum'] ); ?></td>
                                 <td><?php echo esc_html( $table_reservation_info['userEmailId'] ); ?></td>
                                 <td><?php echo esc_html( $table_reservation_info['userAdvice'] ); ?></td>
-                                <td><?php echo esc_attr( $reservation_status )?></td>
+                                <td>
+                                    <select name="mptrs_reserved_status" id="mptrsReservedStatus-<?php echo esc_attr( $post_id ); ?>" class="mptrs_reserved_status">
+                                        <option value="0" <?php echo ($reservation_status == 0) ? 'selected' : ''; ?>><?php esc_attr_e( 'In Progress', 'tablely');?></option>
+                                        <option value="1" <?php echo ($reservation_status == 1) ? 'selected' : ''; ?>><?php esc_attr_e( 'Reserved', 'tablely');?></option>
+                                    </select>
+                                </td>
                             </tr>
                             <?php
                         endwhile;

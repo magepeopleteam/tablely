@@ -28,6 +28,9 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             add_action('wp_ajax_mptrs_save_service_status_update', [$this, 'mptrs_save_service_status_update'] );
             add_action('wp_ajax_nopriv_mptrs_save_service_status_update', [$this, 'mptrs_save_service_status_update'] );
 
+            add_action('wp_ajax_mptrs_save_table_reserved_status_update', [$this, 'mptrs_save_table_reserved_status_update'] );
+            add_action('wp_ajax_nopriv_mptrs_save_table_reserved_status_update', [$this, 'mptrs_save_table_reserved_status_update'] );
+
             add_action('wp_ajax_mptrs_table_reservations', [$this, 'mptrs_table_reservations'] );
             add_action('wp_ajax_nopriv_mptrs_table_reservations', [$this, 'mptrs_table_reservations'] );
 
@@ -475,6 +478,57 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             }
             wp_send_json_success([
                 'message' => 'Service Status updated successfully.!',
+                'success' => $result,
+            ]);
+        }
+
+        public function mptrs_send_reservation_completed_email( $post_id ) {
+
+
+            $reservation_info = maybe_unserialize( get_post_meta( $post_id, '_mptrs_table_reservation_info', true ) );
+            $user_email = $reservation_info['userEmailId'];
+            $user_name = $reservation_info['userName'];
+            $reservation_date = $reservation_info['reserve_date'];
+            $reserve_time = $reservation_info['reserve_time'];
+            $seatNames = $reservation_info['seatNames'];
+            $table_seats_number = '';
+            if( is_array( $seatNames ) && !empty( $seatNames ) ){
+                foreach( $seatNames as $seat ){
+                    $table_seats_number .= $seat.', ';
+                }
+            }
+
+//            $headers[] = "From: $form_name <$form_email>";
+            $headers[] = "";
+
+            if ( ! empty( $user_email ) ) {
+                $subject = 'Your Reservation is Completed';
+                $message = "Dear Customer,\n\nYour table reservation has been successfully completed.\n\n";
+                $message .= "Table: {$table_seats_number}\nDate: {$reservation_date}\n\n";
+                $message .= "Thank you for choosing us!\n\nBest regards,\nYour Restaurant Team";
+
+                wp_mail( $user_email, $subject, $message, $headers );
+            }
+        }
+        public function mptrs_save_table_reserved_status_update(){
+            $result = 0;
+
+            if ( isset($_POST['nonce']) && wp_verify_nonce( sanitize_text_field( $_POST['nonce'] ), 'mptrs_admin_nonce')) {
+                $post_id = isset( $_POST['post_id'] ) ? sanitize_text_field($_POST['post_id']) : '';
+                $service_status = isset( $_POST['selectedVal'] ) ? sanitize_text_field($_POST['selectedVal']) : '';
+                if(  $post_id !== '' && $service_status !== '' ){
+                    $result = update_post_meta( $post_id, '_mptrs_table_reservation_status', $service_status );
+                }
+
+                if ( $service_status == 1 ) {
+                    $this->mptrs_send_reservation_completed_email( $post_id );
+                }
+                $message = 'Service Status updated successfully.!';
+            }else{
+                $message = 'Service Status updated Failed.!';
+            }
+            wp_send_json_success([
+                'message' => $message,
                 'success' => $result,
             ]);
         }

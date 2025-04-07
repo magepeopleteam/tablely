@@ -196,6 +196,34 @@ function mptrs_load_sortable_datepicker(parent, item) {
         });
     });
 
+    $(document).on('change', '.mptrs_reserved_status', function () {
+        let mptrs_service_status_id = $(this).attr('id');
+        mptrs_service_status_id = mptrs_service_status_id.split('-');
+        let orderPostId = mptrs_service_status_id[1];
+        let selectedVal =$(this).val().trim();
+        alert( selectedVal );
+        $.ajax({
+            url: mptrs_admin_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_save_table_reserved_status_update',
+                nonce: mptrs_admin_ajax.nonce,
+                post_id: orderPostId,
+                selectedVal: selectedVal,
+            },
+            success: function (response) {
+                if ( response.data.success ) {
+                    alert(  response.data.message );
+                } else {
+                    alert('Error: ' + response.data.message);
+                }
+            },
+            error: function () {
+                alert('An unexpected error occurred.');
+            }
+        });
+    });
+
     $(document).on("click", ".mptrs_order_type_item",function () {
         $(".mptrs_order_type_item").removeClass('mptrs_active');
         $(this).addClass('mptrs_active');
