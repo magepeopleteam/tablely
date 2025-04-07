@@ -43,6 +43,8 @@
 												update_post_meta($post_id, $meta_key, $data);
 											}
 										};
+
+                                        update_option( 'mptrs_restaurant_id', $post_id );
 									}
 								}
 							}

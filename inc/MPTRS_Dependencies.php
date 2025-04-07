@@ -30,7 +30,7 @@
 				require_once MPTRS_PLUGIN_DIR . '/inc/MPTRS_Select_Icon_image.php';
 				require_once MPTRS_PLUGIN_DIR . '/inc/MPTRS_Query.php';
 				require_once MPTRS_PLUGIN_DIR . '/inc/MPTRS_Layout.php';
-				require_once MPTRS_PLUGIN_DIR . '/inc/MPTRS_Import_Demo_Data.php';
+//				require_once MPTRS_PLUGIN_DIR . '/inc/MPTRS_Import_Demo_Data.php';
 				if ( is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 					require_once MPTRS_PLUGIN_DIR . '/admin/MPTRS_Admin.php';
 				}
