@@ -10,28 +10,12 @@
 
 	$post_id = get_the_id();
     $thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
-    $categories = get_option( 'mptrs_categories' );
 
-    $existing_menu_by_id = get_post_meta($post_id, '_mptrs_food_menu_items', true);
-    $existing_edited_price = get_post_meta($post_id, '_mptrs_food_menu_edited_prices', true);
+    function display_restaurant_menu_content_shortcode( $post_id ) {
 
-    $existing_menus = [];
-
-    $all_food_menus = get_option( '_mptrs_food_menu', true);
-
-    if ( is_array( $existing_menu_by_id ) && !empty( $existing_menu_by_id ) ) {
-        foreach ( $existing_menu_by_id as $item ) {
-            if ( isset($all_food_menus[ $item ] ) ) {
-                $existing_menus[$item] = $all_food_menus[ $item ];
-            }
-        }
-    }
-
-    function display_restaurant_menu_content_shortcode( $atts ) {
-        $post_id = 1292;
         $categories = get_option('mptrs_categories');
-        $existing_menu_by_id = get_post_meta($post_id, '_mptrs_food_menu_items', true);
-        $existing_edited_price = get_post_meta($post_id, '_mptrs_food_menu_edited_prices', true);
+        $existing_menu_by_id = get_post_meta( $post_id, '_mptrs_food_menu_items', true );
+        $existing_edited_price = get_post_meta( $post_id, '_mptrs_food_menu_edited_prices', true );
 
         $existing_menus = [];
         $all_food_menus = get_option('_mptrs_food_menu', true);
@@ -234,7 +218,7 @@
     </div>
 </div>
     <?php
-    echo display_restaurant_menu_content_shortcode('');
+    echo display_restaurant_menu_content_shortcode($post_id );
     ?>
 
 </div>

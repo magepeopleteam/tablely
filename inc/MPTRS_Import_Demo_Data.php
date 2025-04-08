@@ -46,5 +46,5 @@ if ( ! class_exists( 'MPTRS_Import_Demo_Data' ) ) {
 
     }
 
-    new MPTRS_Import_Demo_Data();
+//    new MPTRS_Import_Demo_Data();
 }
