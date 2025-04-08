@@ -23,7 +23,6 @@ if (!class_exists('MPTRS_Menu')) {
             $args = array(
                 'post_type'      => 'mptrs_item',
                 'order'          => 'DESC',
-                'post_status'    => 'publish',
                 'posts_per_page' => -1,
             );
 
@@ -38,6 +37,7 @@ if (!class_exists('MPTRS_Menu')) {
                     ?>
                     <div class="mptrs_restaurant_list">
                         <div class="mptrs_add_new_restaurant">
+<!--                            <a href="--><?php //echo admin_url( 'edit.php?post_status=trash&post_type=mptrs_item' ); ?><!--" class="mptrs_trash_button">View Trashed Posts</a>-->
                             <a href="<?php echo esc_url( site_url( '/wp-admin/post-new.php?post_type=mptrs_item' ) ); ?>" class="mptrs_add_button">
                                 <button class="mptrs_add_button"><?php esc_html_e( 'Add New Restaurant', 'tablely' ); ?></button>
                             </a>
@@ -69,12 +69,12 @@ if (!class_exists('MPTRS_Menu')) {
 
                                         <div class="mptrs_shortCode">
                                             <span class=""><?php esc_html_e( 'Food Menu ShortCode', 'tablely' ); ?></span>
-                                            <p class="mptrs_postShortCode">[mptrs_shortcode id="<?php echo esc_attr($post_id); ?>"]</p>
+                                            <p class="mptrs_postShortCode">[mptrs_display_food_menu post_id=<?php echo esc_attr($post_id); ?>]</p>
                                         </div>
 
                                         <div class="mptrs_shortCode">
                                             <span class=""><?php esc_html_e( 'Table Reservation ShortCode', 'tablely' ); ?></span>
-                                            <p class="mptrs_postShortCode">[mptrs_reserve_table seat_mapping='yes/no' id="<?php echo esc_attr($post_id); ?>"]</p>
+                                            <p class="mptrs_postShortCode">[mptrs_reserve_table seat_mapping='yes/no' post_id=<?php echo esc_attr($post_id); ?>]</p>
                                         </div>
 
                                     </div>
@@ -83,20 +83,31 @@ if (!class_exists('MPTRS_Menu')) {
                                 <div class="mptrs_column mptrs_actions_column">
                                     <div class="mptrs_action_button">
                                         <a href="<?php echo esc_url( get_permalink( get_the_ID() ) ); ?>" class="mptrs_edit_button">
-                                            <button class="mptrs_view_button"><?php esc_html_e( 'View', 'tablely' ); ?></button>
+                                            <button class="mptrs_view_button">
+                                                <span class="dashicons dashicons-visibility"></span>
+                                                <?php esc_html_e( 'View', 'tablely' ); ?>
+                                            </button>
                                         </a>
                                     </div>
                                     <div class="mptrs_action_button">
                                         <a href="<?php echo esc_url( get_edit_post_link( get_the_ID() ) ); ?>" class="mptrs_edit_button">
-                                            <button class="mptrs_edit_button"><?php esc_html_e( 'Edit', 'tablely' ); ?></button>
+                                            <button class="mptrs_edit_button">
+                                                <span class="dashicons dashicons-edit"></span>
+                                                <?php esc_html_e( 'Edit', 'tablely' ); ?>
+                                            </button>
                                         </a>
                                     </div>
                                     <div class="mptrs_action_button">
                                         <a href="<?php echo get_delete_post_link( get_the_ID() ); ?>" onclick="return confirm('Are you sure you want to move this to trash?')">
-                                            <button class="mptrs_delete_button"><?php esc_html_e( 'Delete', 'tablely' ); ?></button>
+                                            <button class="mptrs_delete_button">
+                                                <span class="dashicons dashicons-trash"></span>
+                                                <?php esc_html_e( 'Delete', 'tablely' ); ?>
+                                            </button>
                                         </a>
                                     </div>
                                 </div>
+
+
                             </div>
                         <?php
                         endwhile;

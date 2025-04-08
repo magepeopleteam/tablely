@@ -9,7 +9,7 @@
 	if ( ! class_exists( 'MPTRS_Shortcodes' ) ) {
 		class MPTRS_Shortcodes {
 			public function __construct() {
-                add_shortcode( 'tablely_shortcode', array( $this, 'display_restaurant_menu_content_shortcode' ) );
+                add_shortcode( 'mptrs_display_food_menu', array( $this, 'display_restaurant_menu_content_shortcode' ) );
                 add_shortcode( 'mptrs_reserve_table', array( $this, 'display_seat_mapping_shortcode' ) );
 			}
 
@@ -29,6 +29,7 @@
             public function display_restaurant_menu_content_shortcode( $atts ) {
 //                $post_id = get_option( 'mptrs_restaurant_id' );
                 $post_id = isset( $atts['post_id'] ) ? $atts['post_id'] : '';
+                error_log( print_r( $post_id, true ) );
 
                 if( $post_id ){
 
