@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<items>
+
+    <item>
+        <title>Simple Dine - Demo Restaurant</title>
+        <content>Welcome to Simple Dine, your cozy corner for delicious food and relaxing ambiance. Come taste our chef's special menus!</content>
+
+
+        <postmeta>
+            <meta_key>mptrs_available_time</meta_key>
+            <meta_value>a:5:{i:0;s:8:"10:00 AM";i:1;s:8:"12:00 PM";i:2;s:7:"2:00 PM";i:3;s:7:"5:00 PM";i:4;s:8:"8:00 PM";}</meta_value>
+        </postmeta>
+
+        <postmeta>
+            <meta_key>mptrs_gallery_images</meta_key>
+            <meta_value>a:5:{i:0;s:4:"1647";i:1;s:4:"1648";i:2;s:4:"1650";i:3;s:4:"1651";i:4;s:4:"1652";}</meta_value>
+        </postmeta>
+
+        <postmeta>
+            <meta_key>mptrs_list_thumbnail</meta_key>
+            <meta_value></meta_value>
+        </postmeta>
+
+        <postmeta>
+            <meta_key>mptrs_item_type</meta_key>
+            <meta_value>restaurant</meta_value>
+        </postmeta>
+
+        <postmeta>
+            <meta_key>mptrs_enable_faq_content</meta_key>
+            <meta_value>yes</meta_value>
+        </postmeta>
+
+        <postmeta>
+            <meta_key>mptrs_time_format</meta_key>
+            <meta_value>12</meta_value>
+        </postmeta>
+
+        <postmeta>
+            <meta_key>mptrs_off_dates</meta_key>
+            <meta_value>a:1:{i:0;s:10:"2025-12-25";}</meta_value>
+        </postmeta>
+
+    </item>
+
+</items>

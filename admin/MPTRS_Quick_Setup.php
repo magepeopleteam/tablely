@@ -18,6 +18,7 @@
 					add_submenu_page( 'mptrs_item', esc_html__( 'Quick Setup', 'tablely' ), '<span style="color:#10dd10">' . esc_html__( 'Quick Setup', 'tablely' ) . '</span>', 'manage_options', 'mptrs_quick_setup', array( $this, 'quick_setup' ) );
                     add_submenu_page( 'edit.php?post_type=mptrs_item', esc_html__( 'New Food Menu', 'tablely' ), esc_html__( 'New Food Menu', 'tablely' ), 'manage_options', 'mptrs_new_food_menu', array( $this, 'mptrs_new_food_menu_callback' ) );
                     add_submenu_page( 'edit.php?post_type=mptrs_item', esc_html__( 'Order Lists', 'tablely' ), esc_html__( 'Order Lists', 'tablely' ), 'manage_options', 'mptrs_order', array( $this, 'mptrs_all_order_callback' ) );
+                    add_submenu_page( 'edit.php?post_type=mptrs_item', esc_html__( 'Table Reserve Lists', 'tablely' ), esc_html__( 'Table Reserve Lists', 'tablely' ), 'manage_options', 'mptrs_reserve', array( $this, 'mptrs_table_reserved_callback' ) );
 
                 } else {
 					add_menu_page( esc_html__( 'Tablely', 'tablely' ), esc_html__( 'Tablely', 'tablely' ), 'manage_options', 'mptrs_item', array( $this, 'quick_setup' ), 'dashicons-admin-site-alt2', 6 );
@@ -26,6 +27,91 @@
 
                 }
 			}
+
+
+            public function mptrs_table_reserved_callback() {
+                $args = array(
+                    'post_type'      => 'mptrs_table_reserve',
+                    'order'          => 'DESC',
+                    'posts_per_page' => -1
+                );
+
+                $query = new WP_Query($args);
+
+                ?>
+                    <div class="mptrs_order_page_wrap wrap">
+                <h1 class="mptrs_awesome-heading"><?php esc_html_e( 'Table Reserve List', 'booking-and-rental-manager-for-woocommerce' ); ?></h1>
+
+                <table class="mptrs_order_page_table">
+                    <thead>
+                    <tr>
+                        <th><?php esc_html_e( 'Occasion', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                        <th><?php esc_html_e( 'Total guests', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                        <th><?php esc_html_e( 'Reserve date', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                        <th><?php esc_html_e( 'Reserve time', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                        <th><?php esc_html_e( 'Seats Number', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                        <th><?php esc_html_e( 'User Name', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                        <th><?php esc_html_e( 'User Phone Num', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                        <th><?php esc_html_e( 'User Email', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                        <th><?php esc_html_e( 'User Advice', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                        <th><?php esc_html_e( 'Reserve Status', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                        <th style="display: none"><?php esc_html_e( 'Action', 'booking-and-rental-manager-for-woocommerce' ); ?></th>
+                    </tr>
+                    </thead>
+                    <tbody id="order-list">
+                    <?php
+                    if ($query->have_posts()) :
+                        while ($query->have_posts()) :
+                            $query->the_post();
+                            global $post;
+
+                            $seatNames = '';
+                            $post_id = $post->ID;
+                            $reservation_status = get_post_meta( $post_id, '_mptrs_table_reservation_status', true );
+                            $table_reservation_info = maybe_unserialize( get_post_meta( $post_id, '_mptrs_table_reservation_info', true ) );
+                            if( is_array($table_reservation_info['seatNames'] ) && !empty( $table_reservation_info['seatNames'] ) ){
+                                foreach ( $table_reservation_info['seatNames'] as $key => $value ) {
+                                    $seatNames .= $value.', ';
+                                }
+
+                            }
+
+                            $formattedDate = date('jS F Y', strtotime( $table_reservation_info['reserve_date'] ));
+
+                            ?>
+                            <tr class="mptrs_order_row">
+                                <td><?php echo esc_html( $table_reservation_info['occasion'] ); ?></td>
+                                <td><?php echo esc_html( $table_reservation_info['guests'] ); ?></td>
+                                <td><?php echo esc_html( $formattedDate ); ?></td>
+                                <td><?php echo esc_html( $table_reservation_info['reserve_time'] ); ?></td>
+                                <td><?php echo esc_html(  $seatNames ); ?></td>
+                                <td><?php echo esc_html( $table_reservation_info['userName'] ); ?></td>
+                                <td><?php echo esc_html( $table_reservation_info['userPhoneNum'] ); ?></td>
+                                <td><?php echo esc_html( $table_reservation_info['userEmailId'] ); ?></td>
+                                <td><?php echo esc_html( $table_reservation_info['userAdvice'] ); ?></td>
+                                <td>
+                                    <select name="mptrs_reserved_status" id="mptrsReservedStatus-<?php echo esc_attr( $post_id ); ?>" class="mptrs_reserved_status">
+                                        <option value="0" <?php echo ($reservation_status == 0) ? 'selected' : ''; ?>><?php esc_attr_e( 'In Progress', 'tablely');?></option>
+                                        <option value="1" <?php echo ($reservation_status == 1) ? 'selected' : ''; ?>><?php esc_attr_e( 'Reserved', 'tablely');?></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <?php
+                        endwhile;
+                        wp_reset_postdata();
+                    else :
+                        ?>
+                        <tr>
+                            <td colspan="10"><?php esc_html_e( 'No orders found.', 'booking-and-rental-manager-for-woocommerce' ); ?></td>
+                        </tr>
+                    <?php
+                    endif;
+                    ?>
+                    </tbody>
+                </table>
+                    </div>
+                <?php
+            }
 
 
             public function mptrs_all_order_callback( $key ) {
@@ -44,7 +130,6 @@
                 ?>
                 <div class="mptrs_order_page_wrap wrap">
                     <h1 class="mptrs_awesome-heading"><?php esc_html_e( 'Order List', 'booking-and-rental-manager-for-woocommerce' ); ?></h1>
-<!--                    <input type="text" id="search" class="search-input awesome-search" placeholder="--><?php //esc_attr_e( 'Search by order id or customer name..', 'booking-and-rental-manager-for-woocommerce' ); ?><!--"/>-->
                     <div class="mptrs_orderTypeContainer">
                         <?php
                         if( is_array( $order_types ) && count( $order_types ) > 0 ){ ?>
@@ -174,14 +259,6 @@
                         <div class="loader"></div> <!-- Loader element -->
                     </div>
                     <label for="posts-per-page"><?php esc_html_e( 'Posts per Page:', 'booking-and-rental-manager-for-woocommerce' ); ?></label>
-                    <!--<select id="posts-per-page">
-                            <option value="2" <?php /*selected( $this->posts_per_page, 2 ); */?>>2</option>
-                            <option value="5" <?php /*selected( $this->posts_per_page, 5 ); */?>>5</option>
-                            <option value="10" <?php /*selected( $this->posts_per_page, 10 ); */?>>10</option>
-                            <option value="20" <?php /*selected( $this->posts_per_page, 20 ); */?>>20</option>
-                            <option value="25" <?php /*selected( $this->posts_per_page, 25 ); */?>>25</option>
-                            <option value="30" <?php /*selected( $this->posts_per_page, 30 ); */?>>30</option>
-                        </select>-->
                     <div id="pagination" class="pagination"></div>
                 </div>
                 <?php
@@ -191,7 +268,6 @@
                 $existing_menus = get_option( '_mptrs_food_menu' );
                 $menu_categories = get_option( 'mptrs_categories' );
 
-//                error_log( print_r( [ '$existing_menus' => $existing_menus['variations'] ], true ) );
                 ?>
                 <div id="mptrs_foodMenuPopup" class="mptrs_foodMenuPopupContainer" style="display: none;">
                     <div class="mptrs_foodMenuContentPopup">

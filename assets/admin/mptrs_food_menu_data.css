@@ -259,12 +259,17 @@ body.mptrs_no_scroll {
     background: #fff;
     padding: 20px;
     right: 0;
-    /*height: calc(100% - 110px);*/
     top: 110px;
     width: calc(100% - 300px);
+    max-width: 600px;
     position: absolute;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     /*overflow: scroll;*/
+}
+
+.mptrs_icon_color {
+    margin: 0 10px 0 0;
+    color: var(--mage-primary);
 }
 
 #mptrs_addVariation{
@@ -832,5 +837,140 @@ body.mptrs_no_scroll {
 
 .mptrs_addonsDataHolder.ui-droppable {
     border: 2px dashed #ccc;  /* Optional: Add dashed border when hovering over the droppable area */
+}
+
+
+/* General Container */
+#mptrs_foodMenuContentContainer {
+    max-width: 600px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Title */
+.mptrs_addEditMenuTitleText {
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Form Group */
+.mptrs_form_group {
+    margin-bottom: 15px;
+}
+
+/* Labels */
+.mptrs_form_group label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 5px;
+}
+
+/* Input Fields */
+.mptrs_input,
+.mptrs_select,
+.mptrs_menuDescription {
+    width: calc( 100% - 10px );
+    padding: 5px  !important;
+    font-size: 14px;
+    border: 1px solid #ccc !important;
+    border-radius: 5px !important;
+    transition: 0.3s ease-in-out;
+}
+
+/* Focus Effect */
+.mptrs_input:focus,
+.mptrs_select:focus,
+.mptrs_menuDescription:focus {
+    border-color: #0073aa;
+    outline: none;
+    box-shadow: 0px 0px 5px rgba(0, 115, 170, 0.3);
+}
+
+/* Textarea */
+.mptrs_menuDescription {
+    height: 100px;
+    resize: vertical;
+}
+
+/* Price Holder */
+.mptrs_menuPriceHolder {
+    display: flex;
+    gap: 15px;
+}
+
+.mptrs_regularSalePrice {
+    flex: 1;
+}
+
+/* File Upload */
+#mptrs_menuImage {
+    display: block;
+}
+
+/* Buttons */
+.mptrs_submit_btn,
+#mptrs_addVariationCategory,
+#mptrs_addAddonsCategory {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+/* Primary Button */
+.mptrs_submit_btn {
+    background: #0073aa;
+    color: #fff;
+    margin-top: 10px;
+}
+
+.mptrs_submit_btn:hover {
+    background: #005f8d;
+}
+
+/* Variation & Addon Buttons */
+#mptrs_addVariationCategory,
+#mptrs_addAddonsCategory {
+    background: #f3f3f3;
+    color: #333;
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#mptrs_addVariationCategory:hover,
+#mptrs_addAddonsCategory:hover {
+    background: #ddd;
+}
+
+/* Custom Image Preview */
+.custom-foodMenu-image-preview {
+    margin-top: 10px;
+    min-height: 80px;
+    background: #f9f9f9;
+    border: 1px dashed #ccc;
+    border-radius: 5px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .mptrs_menuPriceHolder {
+        flex-direction: column;
+    }
 }
 

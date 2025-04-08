@@ -21,7 +21,24 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
             add_action('woocommerce_new_order', [$this, 'mptrs_woocommerce_new_order'], 10, 1);
             add_action( 'woocommerce_order_status_changed', [$this, 'custom_function_on_order_status_change'], 10, 4 );
 
+            add_filter('woocommerce_get_item_data', [$this,'pa_modify_order_summary_description'], 10, 2);
+
+
         }
+        function pa_modify_order_summary_description( $item_data, $cart_item) {
+            // Modify the product description
+
+            foreach ( $item_data as $k => $v ) {
+                if( $v['name'] === 'Food Menu' ){
+                    $decoded_text = html_entity_decode( $v['value'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                    $clean_text = strip_tags($decoded_text);
+                    $item_data[$k]['value'] = $clean_text;
+                }
+            }
+
+            return $item_data;
+        }
+
 
         function custom_function_on_order_status_change( $order_id, $old_status, $new_status, $order ) {
             if ( $new_status === 'processing' ) {
@@ -33,6 +50,7 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
                 }
                 $mptrs_booking_data = maybe_unserialize( get_post_meta( $orderPostId, '_mptrs_booking_data', true ) );
 
+                $order_locations =isset( $mptrs_booking_data['order_locations'] ) ? $mptrs_booking_data['order_locations'] : '';
                 $booked_seat_ids = isset( $mptrs_booking_data['selected_seat_ids'] ) ? $mptrs_booking_data['selected_seat_ids'] : array();
                 $order_date = isset( $mptrs_booking_data['ordered_date'] ) ? $mptrs_booking_data['ordered_date'] : '';
                 $order_time = isset( $mptrs_booking_data['ordered_time'] ) ? $mptrs_booking_data['ordered_time'] : '';
@@ -62,6 +80,7 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
                     update_post_meta($custom_order_id, '_mptrs_created_order_date', $order_created_date);
                     update_post_meta($custom_order_id, '_mptrs_order_total', $order_total);
                     update_post_meta($custom_order_id, '_mptrs_order_status', $order_status);
+                    update_post_meta($custom_order_id, '$order_locations', $order_locations);
                     update_post_meta($custom_order_id, '_mptrs_customer_id', $customer_id);
                     update_post_meta($custom_order_id, '_mptrs_customer_name', $customer_name);
                     update_post_meta($custom_order_id, '_mptrs_customer_email', $customer_email);
@@ -229,7 +248,8 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
                 'Seats' => '💺 Seats',
                 'Customer Name' => '👤 Customer',
                 'Order Date' => '📅 Date',
-                'Order Time' => '⏰ Time'
+                'Order Time' => '⏰ Time',
+                'Locations' => '⏰ Delivery Location'
             ];
 
             echo '<div class="mptrs-order-meta"><h4 class="mptrs-meta-title">Order Details</h4>';

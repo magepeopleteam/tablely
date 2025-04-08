@@ -77,14 +77,38 @@
     margin-left: 10px;
     width: 90px;
 }
+
+
 .mptrs_addToCart {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 10px;
+    gap: 10px;
+}
+.mptrs_addToCartTitle{
+    /*display: flex;*/
+    align-items: center;
     background: red;
     color: white;
-    padding: 10px;
+    padding: 6px;
+    text-align: center;
     cursor: pointer;
     border-radius: 5px;
     margin-top: 15px;
+    width: 50%;
+    border-width: 0px;
+}
+.mptrs_foodMenuAddedCart {
+    align-items: center;
+    background: red;
+    color: white;
+    padding: 12px;
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 15px;
+    width: 50%;
+    border-width: 0px;
 }

@@ -205,12 +205,12 @@ jQuery(document).ready(function ($) {
         let mptrs_order_time = mptrs_orderSettings.mptrs_orderDate;
         let mptrs_order_date = mptrs_orderSettings.mptrs_orderTime;
         let mptrs_orderType = mptrs_orderSettings.mptrs_orderType;
+        let mptrs_locations = mptrs_orderSettings.mptrs_locations;
         let postId = $("#mptrs_getPost").val().trim();
 
         console.log(mptrs_orderSettings);
 
         let seats = '';
-        let mptrs_locations = '';
         // let mptrs_location = [];
 
 
@@ -244,10 +244,10 @@ jQuery(document).ready(function ($) {
                 action: 'mptrs_add_food_items_to_cart',
                 post_id: post_id,
                 mptrs_orderType: mptrs_orderType,
-                menu: menu ,
-                orderVarDetailsStr: orderVarDetailsStr ,
+                menu: menu,
+                orderVarDetailsStr: orderVarDetailsStr,
                 // seats: seats,
-                // mptrs_locations: mptrs_locations,
+                mptrs_locations: mptrs_locations,
                 // bookedSeatName: bookedSeatName,
                 price: mptrs_totalPrices,
                 quantity: quantity,
@@ -387,7 +387,6 @@ jQuery(document).ready(function ($) {
     });
 
     const timeContainer = $(".mptrs_time_container");
-
     const timeSlots = {
         '11': "11:00 AM",
         '12': "12:00 PM",
@@ -402,7 +401,6 @@ jQuery(document).ready(function ($) {
         '21': "09:00 PM",
         '22': "10:00 PM"
     };
-    
     $.each( timeSlots, function ( key, time ) {
         let button = $("<button>")
             .addClass("mptrs_time_button")
@@ -412,9 +410,37 @@ jQuery(document).ready(function ($) {
         timeContainer.append(button);
     })
 
+    const tableReserveTimeContainer = $(".mptrs_tableReserveTimeContainer");
+    const tableReserveTimeSlots = {
+        '11': "11:00 AM",
+        '12': "12:00 PM",
+        '13': "01:00 PM",
+        '14': "02:00 PM",
+        '15': "03:00 PM",
+        '16': "04:00 PM",
+        '17': "05:00 PM",
+        '18': "06:00 PM",
+        '19': "07:00 PM",
+        '20': "08:00 PM",
+        '21': "09:00 PM",
+        '22': "10:00 PM"
+    };
+    $.each( tableReserveTimeSlots, function ( key, time ) {
+        let button = $("<button>")
+            .addClass("mptrs_tableReserveTimeButton")
+            .text(time)
+            .attr("data-time", key );
+
+        tableReserveTimeContainer.append(button);
+    })
+
     $(document).on( 'click', '.mptrs_button', function () {
         $(".mptrs_time_container").css("display", "flex");
     });
+
+    /*$(document).on( 'click', '.mptrs_findTimeButton', function () {
+        $(".mptrs_tableReserveTimeContainer").css("display", "flex");
+    });*/
 
 
     $(document).on('click',".mptrsPopupCloseBtn",function () {
@@ -446,9 +472,11 @@ jQuery(document).ready(function ($) {
             $("#mptrs_totalPriceHolder").fadeOut();
             $(".mptrs_foodOrderContentholder").fadeOut();
             $("#mptrs_orderedFoodMenuInfoHolder").fadeOut();
+            $("#mptrs_foodMenuAddedCart").fadeIn();
         }else{
             $("#mptrs_totalPriceHolder").fadeIn();
             $("#mptrs_orderedFoodMenuInfoHolder").fadeIn();
+            $("#mptrs_foodMenuAddedCart").fadeOut();
             $(".mptrs_foodOrderContentholder").fadeIn();
         }
     }
@@ -531,6 +559,7 @@ jQuery(document).ready(function ($) {
     $(document).on('click', ".mptrs_addBtn_old", function () {
         $(this).fadeOut();
         $("#mptrs_orderedFoodMenuInfoHolder").fadeIn();
+        $("#mptrs_foodMenuAddedCart").fadeOut();
         $("#mptrs_dineInTabHolder").fadeIn();
 
         let menuAddedClickedId = $(this).attr('id').trim();
@@ -631,8 +660,8 @@ jQuery(document).ready(function ($) {
             }
         });
         $(".mptrs_menuAddedCartItem").each(function () {
-            let parentCartItem = $(this).closest(".mptrs_menuAddedCartItem"); // Find the closest parent
-            let quantity = parentCartItem.find(".mptrs_quantity").text().trim(); // Get quantity text
+            let parentCartItem = $(this).closest(".mptrs_menuAddedCartItem");
+            let quantity = parentCartItem.find(".mptrs_quantity").text().trim();
 
             quantities.push(quantity);
         });
@@ -722,9 +751,144 @@ jQuery(document).ready(function ($) {
     });
 
 
+    // Handle time selection
+    let mptrs_tableReserveDate = '';
+    let mptrs_tableReserveTime = '';
+    let mptrs_tableReservePost = '';
+    $(document).on('click',".mptrs_findSeatsButton", function () {
 
+        $(this).text('Loading...');
+
+        mptrs_tableReservePost =  $("#mptrs_tableReserveId").val().trim();
+        mptrs_tableReserveTime = $(".mptrs_tableReserveTimeButton.active").attr('data-time').trim();
+        mptrs_tableReserveDate = $("#mptrs_seatReserveDate").val().trim();
+
+        $(this).addClass("active");
+        $("#seatPopup").fadeIn();
+        $("#mptrs_seatReserveMapDisplay").empty();
+        $.ajax({
+            url: mptrs_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_get_available_seats_for_reservations',
+                nonce: mptrs_ajax.nonce,
+                get_time: mptrs_tableReserveTime,
+                get_date: mptrs_tableReserveDate,
+                post_id: mptrs_tableReservePost,
+            },
+            dataType: 'json',
+            success: function (response) {
+                $(this).addClass("active");
+                // mptrs_display_food_menu_for_order( response.data.get_food_menu )
+
+                seatBooked = [];
+                seatBookedName = [];
+                $("#mptrs_seatReserveMapDisplay").append( response.data.mptrs_seat_maps );
+                $('#mptrs_findSeatsButton').text('Finds Seats');
+            },
+            error: function () {
+                $(this).text('Finds Seats');
+                $('#mptrs_findSeatsButton').text('Finds Seats');
+            }
+        });
+
+    });
+
+    $(document).on('click',".mptrs_tableReservationBackButton", function ( e ) {
+        e.preventDefault();
+
+        $("#mptrs_tableReservationButton").text('Book Now');
+        $("#mptrs_tableReservationButton").css('width','100%');
+
+        $("#mptrs_tableReservationbackButton").fadeOut();
+        $("#mptrs_tableReservePersonInfo").fadeOut();
+        $("#mptrs_tableReserveInfoHolder").fadeIn();
+    });
+
+    $(document).on('click',".mptrs_tableReservationButton", function ( e ) {
+        e.preventDefault();
+
+        let userAdvice = '';
+            let getText = $(this).text().trim();
+        if( getText === 'Book Now' ){
+            $("#mptrs_tableReserveInfoHolder").fadeOut();
+            $("#mptrs_tableReservePersonInfo").fadeIn();
+            $("#mptrs_tableReservationbackButton").fadeIn();
+            $("#mptrs_tableReservationButton").css('width','calc( 100% - 60px)');
+            $(this).text('Confirm Reservation');
+        }else {
+            $(this).text('Booking...');
+            // console.log( mptrs_tableReserveDate, mptrs_tableReserveTime, mptrs_tableReservePost );
+            mptrs_tableReservePost = $("#mptrs_tableReserveId").val().trim();
+            mptrs_tableReserveTime = $(".mptrs_tableReserveTimeButton.active").attr('data-time').trim();
+            mptrs_tableReserveDate = $("#mptrs_seatReserveDate").val().trim();
+
+            let userName = $("#mptrs_seatReserveName").val().trim();
+            let userPhoneNum = $("#mptrs_seatReservePhone").val().trim();
+            let userEmailId = $("#mptrs_seatReserveEmail").val().trim();
+            userAdvice = $("#mptrs_seatReserveMessage").val().trim();
+            let seatIds = JSON.stringify(seatBooked);
+            let seatNames = JSON.stringify(seatBookedName);
+            let occasion = $('select[name="mptrs_occasion"]').val();
+            let guests = $('select[name="mptrs_guests"]').val();
+
+            let postId = $("#mptrs_tableReserveId").val().trim();
+
+            $.ajax({
+                url: mptrs_ajax.ajax_url,
+                type: 'POST',
+                data: {
+                    action: 'mptrs_table_reservations',
+                    nonce: mptrs_ajax.nonce,
+                    get_time: mptrs_tableReserveTime,
+                    get_date: mptrs_tableReserveDate,
+                    seatIds: seatIds,
+                    seatNames: seatNames,
+                    occasion: occasion,
+                    guests: guests,
+                    userName: userName,
+                    userPhoneNum: userPhoneNum,
+                    userEmailId: userEmailId,
+                    userAdvice: userAdvice,
+                    postId: postId,
+                },
+                dataType: 'json',
+                success: function (response) {
+                    $('#mptrs_tableReservationButton').text('Confirm Reservation');
+                    console.log(response);
+                },
+                error: function () {
+                    alert('Error Occured');
+                    $('#mptrs_tableReservationButton').text('Confirm Reservation');
+                }
+            });
+        }
+
+    });
+
+    // Handle time selection
+    $(document).on('click',".mptrs_tableReserveTimeButton", function () {
+
+        let get_date = $("#mptrs_seatReserveDate").val().trim();
+        if( !get_date ){
+            alert('Select Date First!');
+        }else{
+            $(".mptrs_tableReserveTimeButton").removeClass("active");
+            $(this).addClass('active');
+            $("#mptrs_findSeatsButton").fadeIn();
+            $("#mptrs_tableReserveBtnHolder").fadeIn();
+        }
+
+    });
 
     function mptrs_display_popup_for_order_types(){
+
+        // console.log( mptrs_orderSettings );
+        let setLocations = '';
+        if( mptrs_orderSettings.hasOwnProperty( 'mptrs_locations' ) && mptrs_orderSettings.mptrs_locations ){
+            setLocations = mptrs_orderSettings.mptrs_locations;
+        }
+
         let orderTypes = `
             <div class="mptrs_popupOverlay" id="mptrs_popupOverlay">
                 <div class="mptrs_popupBox">
@@ -732,8 +896,8 @@ jQuery(document).ready(function ($) {
                 <div class="mptrs_popupTitle">Your Order Settings</div>
        
                 <div class="mptrs_toggleBtns">
-                    <button id="mptrs_dine_in" class="mptrs_orderTypeSelect">Delivery</button>
-                    <button id="mptrs_take_away" class="mptrs_orderTypeSelect active">Takeaway</button>
+                    <button id="mptrs_dine_in" class="mptrs_orderTypeSelect active">Delivery</button>
+                    <button id="mptrs_take_away" class="mptrs_orderTypeSelect">Takeaway</button>
                     <button id="mptrs_dineInBtn" class="mptrs_orderTypeSelect">Dine-In</button>
                 </div>
         
@@ -750,6 +914,11 @@ jQuery(document).ready(function ($) {
                     <option>12:00pm</option>
                     <option>12:30pm</option>
                 </select>
+                
+                <div class="mptrs_OrderTypeLocationsContainer" style="display: block">
+                    <label for="mptrs_deliveryLocation">Set Delivery Location</label>
+                    <input type="text" id="mptrs_deliveryLocation" class="mptrs_deliveryLocations" value="${setLocations}" placeholder="Set Delivery Location">
+                </div>
         
                 <button class="mptrs_updateBtn" id="mptrs_updateorderTypeBtn">Update</button>
             </div>
@@ -778,18 +947,48 @@ jQuery(document).ready(function ($) {
     let mptrs_orderSettings = {};
     $(document).on( 'click',"#mptrs_updateorderTypeBtn", function (e) {
         e.preventDefault();
+
+        let mptrs_locations = '';
         let mptrs_orderType = $(".mptrs_orderTypeSelect.active").text().trim();
 
+        if( mptrs_orderType === 'Delivery'){
+            mptrs_locations = $("#mptrs_deliveryLocation").val().trim();
+        }
 
         let mptrs_orderDate = $("#mptrs_dateDatepicker").val().trim();
         let mptrs_orderTime = $("#mptrs_pickupTime").val().trim();
         mptrs_orderSettings = {
-            mptrs_orderType, mptrs_orderDate, mptrs_orderTime
+            mptrs_orderType, mptrs_orderDate, mptrs_orderTime, mptrs_locations
         }
-        console.log( mptrs_orderSettings );
+
+        let mptrs_order_des = '';
+        if( mptrs_locations ){
+            mptrs_order_des = mptrs_orderType+', Order Date: '+mptrs_orderDate+', Time:'+mptrs_orderTime+', Location:'+mptrs_locations;
+        }else{
+            mptrs_order_des = mptrs_orderType+', Order Date: '+mptrs_orderDate+', Time:'+mptrs_orderTime;
+        }
+        $("#mptrs_orderTypeDates").text( mptrs_order_des );
 
         mptrs_close_order_type_popup();
+
     });
+
+    $(document).on( 'click', '.mptrs_clearOrder', function ( e ) {
+        e.preventDefault();
+        $("#mptrs_orderedFoodMenuInfoHolder").fadeOut();
+        $("#mptrs_foodMenuAddedCart").fadeIn();
+        $("#mptrs_orderedFoodMenuHolder").empty();
+
+        addToCartData = {};
+        $('.mptrs_foodMenuContaine').find('.mptrs_addedQuantityControls').fadeOut();
+        $('.mptrs_foodMenuContaine').find('.mptrs_addBtn').fadeIn(1000);
+
+    })
+
+    $(document).on( 'click', '.mptrs_orderTypeDatesChange', function (e) {
+        e.preventDefault();
+        mptrs_display_popup_for_order_types();
+    })
 
     function mptrs_close_order_type_popup(){
         $("#mptrs_popupOverlay").fadeOut();
@@ -803,15 +1002,24 @@ jQuery(document).ready(function ($) {
 
     $(document).on( 'click',".mptrs_toggleBtns button", function () {
         $(".mptrs_toggleBtns button").removeClass("active");
+        let orderTypeText = $(this).text().trim();
+        if( orderTypeText === 'Delivery' ){
+            $(".mptrs_OrderTypeLocationsContainer").fadeIn();
+        }else{
+            $(".mptrs_OrderTypeLocationsContainer").fadeOut();
+        }
         $(this).addClass("active");
+
     });
 
     let selectedMenu = mptrs_food_menu.find(item => item);
     let menuAddedClickedId = '';
+    let mptrs_displayCartPopUp = 0;
     $(document).on('click', ".mptrs_addBtn", function () {
 
         if ( Object.keys(mptrs_orderSettings).length === 0 ) {
             mptrs_display_popup_for_order_types();
+            mptrs_displayCartPopUp++;
         }
 
         if( Object.keys(mptrs_orderSettings).length > 0 ) {
@@ -894,8 +1102,11 @@ jQuery(document).ready(function ($) {
                 }
                 menuHtml += `</div>`;
 
-                menuHtml += ` <div class="mptrs_addToCart">
-                        Total: <span>${mptrs_CurrencySymbol}${mptrs_MenuPrice}</span>
+                menuHtml += ` 
+                    <div class="mptrs_addToCart">
+                        <div class="mptrs_addToCartTitle">Total: 
+                            <span class="mptrs_addToCartText">${mptrs_CurrencySymbol}${mptrs_MenuPrice}</span>
+                        </div>
                         <button class="mptrs_foodMenuAddedCart" id="${menuAddedKey}">Add to Cart</button>
                     </div>`;
                 menuHtml += `</div> </div>`;
@@ -982,7 +1193,7 @@ jQuery(document).ready(function ($) {
     });
 
     $(document).on('change', "input[type=checkbox]", function () {
-        if ($(this).is(":checked")) {
+        if ( $(this).is(":checked") ) {
             $(this).parent().siblings('.mptrs_quantityControls').fadeIn();
         } else {
             $(this).parent().siblings('.mptrs_quantityControls').fadeOut();
@@ -1093,6 +1304,7 @@ jQuery(document).ready(function ($) {
         addCartPrice = parseFloat( addCartPrice.replace(/[^0-9.]/g, '' ) );
 
         $("#mptrs_orderedFoodMenuInfoHolder").fadeIn();
+        $("#mptrs_foodMenuAddedCart").fadeOut();
         $("#mptrs_dineInTabHolder").fadeIn();
 
         let menuAddedKey = $(this).attr('id').trim();
@@ -1155,5 +1367,27 @@ jQuery(document).ready(function ($) {
         $("#"+menuAddedClickedId).fadeOut();
 
     });
+
+    $("#mptrs_seatReserveDate").datepicker({
+        dateFormat: "yy-mm-dd",
+        minDate: 0
+    });
+
+    $("#mptrs_reservation_form").submit(function(event) {
+            event.preventDefault();
+
+            let formData = {
+                action: "mptrs_process_reservation",
+                mptrs_nonce: $("#mptrs_nonce").val(),
+                occasion: $("#mptrs_occasion").val(),
+                guests: $("#mptrs_guests").val(),
+                date: $("#mptrs_date").val(),
+            };
+
+            $.post("<?php echo admin_url('admin-ajax.php'); ?>", formData, function(response) {
+                $("#mptrs_message").html(response);
+            });
+        });
+
 
 });
