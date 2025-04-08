@@ -27,12 +27,8 @@
                 return $table_reserve;
             }
             public function display_restaurant_menu_content_shortcode( $atts ) {
-//                $post_id = get_option( 'mptrs_restaurant_id' );
                 $post_id = isset( $atts['post_id'] ) ? $atts['post_id'] : '';
-                error_log( print_r( $post_id, true ) );
-
                 if( $post_id ){
-
                     $post = get_post($post_id);
                     if ($post) {
                         $content = apply_filters('the_content', $post->post_content);
