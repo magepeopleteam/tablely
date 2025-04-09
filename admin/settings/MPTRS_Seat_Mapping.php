@@ -380,7 +380,7 @@
                         <span><?php esc_html_e('Seat Mapping', 'tablely'); ?></span>
                     </section>
 
-                    <section class="mptrs-seat-mapping-section mptrs-seatMappingSection" id="mptrs-seat-mapping-section">
+                    <section class="mptrs-seat-mapping-section " id="mptrs-seat-mapping-section">
                     <?php echo  $this->render_meta_box( $post_id );?>
                     </section>
                 </div>

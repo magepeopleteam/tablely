@@ -991,9 +991,11 @@ jQuery(document).ready(function ($) {
     })
 
     function mptrs_close_order_type_popup(){
+
         $("#mptrs_popupOverlay").fadeOut();
         $("#mptrs_popupOverlay").remove();
         $("#mptrs_popupOverlay").empty();
+        $("#mptrs_addToCartPopupHolder").fadeIn();
     }
 
     $(document).on( 'click',".mptrs_closeBtn", function () {
@@ -1012,36 +1014,19 @@ jQuery(document).ready(function ($) {
 
     });
 
-    let selectedMenu = mptrs_food_menu.find(item => item);
-    let menuAddedClickedId = '';
-    let mptrs_displayCartPopUp = 0;
-    $(document).on('click', ".mptrs_addBtn", function () {
+    function mptrs_display_add_cart_item_data( menuAddedKey, mptrs_MenuPrice, mptrs_CurrencySymbol, menuPrice, display, animationDiv, parentItem, mptrs_this ){
+        // let mptrs_CurrencySymbol = jQuery('.woocommerce-Price-currencySymbol:first').text().trim();
 
-        if ( Object.keys(mptrs_orderSettings).length === 0 ) {
-            mptrs_display_popup_for_order_types();
-            mptrs_displayCartPopUp++;
+        let menuItem = selectedMenu[menuAddedKey];
+        let addOneVariation = '';
+
+        let menuDescription = '';
+        if (menuItem && menuItem.hasOwnProperty('menuDescription')) {
+            menuDescription = menuItem.menuDescription;
         }
 
-        if( Object.keys(mptrs_orderSettings).length > 0 ) {
-
-            let mptrs_CurrencySymbol = jQuery('.woocommerce-Price-currencySymbol:first').text().trim();
-
-            menuAddedClickedId = $(this).attr('id').trim();
-            let menuAddedKeys = menuAddedClickedId.split('-');
-            let menuAddedKey = menuAddedKeys[1];
-            let menuItem = selectedMenu[menuAddedKey];
-            let addOneVariation = '';
-
-            let mptrs_MenuPrice = $(this).parent().attr('data-menuprice').trim();
-            mptrs_MenuPrice = parseFloat(mptrs_MenuPrice.replace(/[^\d.]/g, ''));
-
-            let menuDescription = '';
-            if (menuItem && menuItem.hasOwnProperty('menuDescription')) {
-                menuDescription = menuItem.menuDescription;
-            }
-
-            if (menuItem.hasOwnProperty('variations') && menuItem.variations.length > 0) {
-                let menuHtml = ` <div class="mptrs_addToCartPopupHolder" id="mptrs_addToCartPopupHolder">
+        if (menuItem.hasOwnProperty('variations') && menuItem.variations.length > 0) {
+            let menuHtml = ` <div class="mptrs_addToCartPopupHolder" id="mptrs_addToCartPopupHolder" style="display: ${display}">
             <div class="mptrs_popupContainer" id="mptrs_popupContainer">
                 <div class="mptrs_popupHeader">
                     <span class="mptrs_addCartmenuName">${menuItem.menuName}</span>
@@ -1051,42 +1036,42 @@ jQuery(document).ready(function ($) {
                 <p class="mptrs_menuDescription">${menuDescription}</p>
             `;
 
-                menuHtml += `<div class="mptrs_optionGroupHolder">`;
-                if (menuItem && menuItem.hasOwnProperty('variations')) {
-                    menuItem.variations.forEach(variation => {
-                        if (variation && variation.hasOwnProperty('variationOrAddOne')) {
-                            addOneVariation = variation.variationOrAddOne;
-                        }
-                        menuHtml += `<div class="mptrs_optionGroup">`;
-                        menuHtml += `<span class="mptrs_variationName">${variation.category}</span>`;
+            menuHtml += `<div class="mptrs_optionGroupHolder">`;
+            if (menuItem && menuItem.hasOwnProperty('variations')) {
+                menuItem.variations.forEach(variation => {
+                    if (variation && variation.hasOwnProperty('variationOrAddOne')) {
+                        addOneVariation = variation.variationOrAddOne;
+                    }
+                    menuHtml += `<div class="mptrs_optionGroup">`;
+                    menuHtml += `<span class="mptrs_variationName">${variation.category}</span>`;
 
+                    if (addOneVariation === 'variations') {
+                        menuHtml += `
+                            <div class="mptrs_optionItem">
+                                <div class="mptrs_nameAcrionHolder">
+                                    <input class="mptrs_variationInput" id="mptrs_variationInput" type="radio" name="variations" checked>
+                                    <label for="mptrs_variationInput">Regular</label>
+                                </div>
+                                <span class="mptrs_price">${mptrs_CurrencySymbol}${mptrs_MenuPrice} </span>
+                            </div>
+                        `
+                    }
+
+                    variation.items.forEach(item => {
+                        let increaseDecrease = '';
+                        let inputType = variation.radioOrCheckbox === "single" ? "radio" : "checkbox";
+                        let inputName = variation.radioOrCheckbox === "single" ? variation.category : `${variation.category}[]`;
                         if (addOneVariation === 'variations') {
-                            menuHtml += `
-                    <div class="mptrs_optionItem">
-                        <div class="mptrs_nameAcrionHolder">
-                            <input class="mptrs_variationInput" id="mptrs_variationInput" type="radio" name="variations" checked>
-                            <label for="mptrs_variationInput">Regular</label>
-                        </div>
-                        <span class="mptrs_price">${mptrs_CurrencySymbol}${mptrs_MenuPrice} </span>
-                    </div>
-                `
-                        }
-
-                        variation.items.forEach(item => {
-                            let increaseDecrease = '';
-                            let inputType = variation.radioOrCheckbox === "single" ? "radio" : "checkbox";
-                            let inputName = variation.radioOrCheckbox === "single" ? variation.category : `${variation.category}[]`;
-                            if (addOneVariation === 'variations') {
-                                increaseDecrease = '';
-                            } else {
-                                increaseDecrease = `
+                            increaseDecrease = '';
+                        } else {
+                            increaseDecrease = `
                                         <div class="mptrs_quantityControls" style="display: none">
                                             <button class="mptrs_addDecrease">-</button>
                                             <input type="text" value="1">
                                             <button class="mptrs_addIncrease">+</button>
                                         </div>`;
-                            }
-                            menuHtml += `
+                        }
+                        menuHtml += `
                     <div class="mptrs_optionItem">
                         <div class="mptrs_nameAcrionHolder">
                             <input class="mptrs_variationInput" id="mptrs_variationInput" type="${inputType}" name="${addOneVariation}">
@@ -1095,74 +1080,102 @@ jQuery(document).ready(function ($) {
                         ${increaseDecrease}
                         <span class="mptrs_price">${mptrs_CurrencySymbol}${item.price} </span>
                     </div>`;
-                        });
-
-                        menuHtml += `</div>`;
                     });
-                }
-                menuHtml += `</div>`;
 
-                menuHtml += ` 
+                    menuHtml += `</div>`;
+                });
+            }
+            menuHtml += `</div>`;
+            menuHtml += ` 
                     <div class="mptrs_addToCart">
                         <div class="mptrs_addToCartTitle">Total: 
                             <span class="mptrs_addToCartText">${mptrs_CurrencySymbol}${mptrs_MenuPrice}</span>
                         </div>
                         <button class="mptrs_foodMenuAddedCart" id="${menuAddedKey}">Add to Cart</button>
                     </div>`;
-                menuHtml += `</div> </div>`;
-                $('body').append(menuHtml);
-            } else {
-                $(this).fadeOut();
-                let addedMenu = `
-            <div class="mptrs_addedQuantityControls" id="mptrs_addedQuantityControls-${menuAddedKey}">
-                <button class="mptrs_decrease">−</button>
-                <span class="mptrs_quantity" id="mptrs_menuAddedQuantity-${menuAddedKey}">1</span>
-                <button class="mptrs_increase">+</button>
-            </div>
-        `;
-                $(this).parent().append(addedMenu);
+            menuHtml += `</div> </div>`;
+            $('body').append(menuHtml);
+        }
+        else {
+            mptrs_this.fadeOut();
+            let addedMenu = `
+                    <div class="mptrs_addedQuantityControls" id="mptrs_addedQuantityControls-${menuAddedKey}">
+                        <button class="mptrs_decrease">−</button>
+                        <span class="mptrs_quantity" id="mptrs_menuAddedQuantity-${menuAddedKey}">1</span>
+                        <button class="mptrs_increase">+</button>
+                    </div>
+                `;
+            mptrs_this.parent().append(addedMenu);
 
-                let animationDiv = $(this).parent().parent();
-                let parentItem = $(this).parent();
-                let foodMenuCategory = parentItem.attr('data-menuCategory');
-                let menuImgUrl = parentItem.attr('data-menuImgUrl');
-                let menuName = parentItem.attr('data-menuName');
-                let menuPrice = parentItem.attr('data-menuPrice');
-                menuPrice = parseFloat(menuPrice.replace(/[^0-9.]/g, ''));
-                let numOfPerson = parentItem.attr('data-numOfPerson');
-                let mptrs_CurrencySymbol = jQuery('.woocommerce-Price-currencySymbol:first').text().trim();
 
-                let item = {
-                    menuImgUrl: menuImgUrl,
-                    menuName: menuName,
-                    menuPrice: menuPrice,
-                    mptrs_CurrencySymbol: mptrs_CurrencySymbol,
-                    numOfPerson: numOfPerson,
-                    foodMenuCategory: foodMenuCategory,
-                    menuAddedKey: menuAddedKey,
-                    mptrs_oderDetails: '',
-                };
-                addToCartData[menuAddedKey] = 1;
-                let flyItem = animationDiv.clone().css({
-                    position: "absolute",
-                    top: animationDiv.offset().top,
-                    left: animationDiv.offset().left,
-                    width: animationDiv.width(),
-                    opacity: 1,
-                    zIndex: 1000
-                }).appendTo("body");
-                let targetOffset = $("#mptrs_orderedFoodMenuHolder").offset();
-                flyItem.animate({
-                    top: targetOffset.top + 10,
-                    left: targetOffset.left + 10,
-                    width: "50px",
-                    opacity: 0
-                }, 800, function () {
-                    flyItem.remove();
-                    mptrs_append_order_food_menu(item);
-                    calculateTotal();
-                });
-            }
+            let foodMenuCategory = parentItem.attr('data-menuCategory');
+            let menuImgUrl = parentItem.attr('data-menuImgUrl');
+            let menuName = parentItem.attr('data-menuName');
+            let numOfPerson = parentItem.attr('data-numOfPerson');
+            let mptrs_CurrencySymbol = jQuery('.woocommerce-Price-currencySymbol:first').text().trim();
+
+            let item = {
+                menuImgUrl: menuImgUrl,
+                menuName: menuName,
+                menuPrice: menuPrice,
+                mptrs_CurrencySymbol: mptrs_CurrencySymbol,
+                numOfPerson: numOfPerson,
+                foodMenuCategory: foodMenuCategory,
+                menuAddedKey: menuAddedKey,
+                mptrs_oderDetails: '',
+            };
+            addToCartData[menuAddedKey] = 1;
+            let flyItem = animationDiv.clone().css({
+                position: "absolute",
+                top: animationDiv.offset().top,
+                left: animationDiv.offset().left,
+                width: animationDiv.width(),
+                opacity: 1,
+                zIndex: 1000
+            }).appendTo("body");
+            let targetOffset = $("#mptrs_orderedFoodMenuHolder").offset();
+            flyItem.animate({
+                top: targetOffset.top + 10,
+                left: targetOffset.left + 10,
+                width: "50px",
+                opacity: 0
+            }, 800, function () {
+                flyItem.remove();
+                mptrs_append_order_food_menu(item);
+                calculateTotal();
+            });
+        }
+    }
+
+    let selectedMenu = mptrs_food_menu.find(item => item);
+    let menuAddedClickedId = '';
+    let mptrs_displayCartPopUp = 0;
+    $(document).on('click', ".mptrs_addBtn", function () {
+
+        let mptrs_this = $(this);
+
+        let animationDiv = $(this).parent().parent();
+        let parentItem = $(this).parent();
+
+        let mptrs_CurrencySymbol = jQuery('.woocommerce-Price-currencySymbol:first').text().trim();
+        let mptrs_MenuPrice = $(this).parent().attr('data-menuprice').trim();
+        mptrs_MenuPrice = parseFloat(mptrs_MenuPrice.replace(/[^\d.]/g, ''));
+
+        let menuPrice = $(this).parent().attr('data-menuprice').trim();
+        menuPrice = parseFloat(menuPrice.replace(/[^0-9.]/g, ''));
+
+        menuAddedClickedId = $(this).attr('id').trim();
+        let menuAddedKeys = menuAddedClickedId.split('-');
+        let menuAddedKey = menuAddedKeys[1];
+
+        if ( Object.keys(mptrs_orderSettings).length === 0 ) {
+            mptrs_display_popup_for_order_types();
+            mptrs_displayCartPopUp++;
+            mptrs_display_add_cart_item_data( menuAddedKey, mptrs_MenuPrice, mptrs_CurrencySymbol, menuPrice,'none', animationDiv, parentItem, mptrs_this );
+        }
+
+        if( Object.keys(mptrs_orderSettings).length > 0 ) {
+            mptrs_display_add_cart_item_data( menuAddedKey, mptrs_MenuPrice, mptrs_CurrencySymbol, menuPrice, 'flex', animationDiv, parentItem, mptrs_this );
         }
 
     });
