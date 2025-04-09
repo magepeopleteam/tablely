@@ -381,6 +381,47 @@ div.mpwpb_category_header, div.mpwpb_category_header div.mpwpb_service_area {
   padding: 5px;
   cursor: pointer;
 }
+#mptrs_meta_box .tooltips {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+#mptrs_meta_box .tooltips::before {
+  content: "";
+  position: absolute;
+  bottom: 91%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #000 transparent transparent transparent;
+  visibility: hidden;
+  transition: 0s;
+  z-index: 99;
+}
+#mptrs_meta_box .tooltips::after {
+  content: attr(data-tooltip); /* Tooltip text comes from data-tooltip attribute */
+  visibility: hidden;
+  width: max-content;
+  max-width: 200px;
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  padding: 6px 10px;
+  border-radius: 5px;
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: normal;
+  z-index: 999;
+  transition: opacity 0s ease-in-out;
+  font-weight: normal;
+}
+#mptrs_meta_box .tooltips:hover::after, #mptrs_meta_box .tooltips:hover::before {
+  visibility: visible;
+  opacity: 1;
+}
 
 .mpwpb-category-lists {
   margin-bottom: 20px;
