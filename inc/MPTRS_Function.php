@@ -467,7 +467,8 @@
 			}
 
 			public static function get_icon() {
-				return self::get_general_settings( 'icon', 'dashicons-list-view' );
+				$icon =  MPTRS_Plan_ASSETS . 'images/dining-table.png';
+				return self::get_general_settings( 'icon', $icon );
 			}
 
 			public static function get_category_label() {
