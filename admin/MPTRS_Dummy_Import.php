@@ -59,7 +59,7 @@
 					'custom_post' => [
 						'mptrs_item' => [
 							0 => [
-								'name' => 'Hair Cut Salon Booking',
+								'name' => 'Simple Dine – Demo Restaurant',
 								'post_data' => [
 									// Gallery Settings
 									'mptrs_display_slider' => 'on',

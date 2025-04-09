@@ -24,7 +24,9 @@
 				require_once MPTRS_PLUGIN_DIR . '/admin/MPTRS_CPT.php';
 				//*************Global Settings*****************//
 				require_once MPTRS_PLUGIN_DIR . '/admin/global/MPTRS_Setting_API.php';
+                require_once MPTRS_PLUGIN_DIR . '/admin/global/MPTRS_Menu.php';
 				require_once MPTRS_PLUGIN_DIR . '/admin/global/MPTRS_Settings_Global.php';
+
 //                require_once MPTRS_PLUGIN_DIR . '/admin/global/MPTRS_Cart_Order_Data_Display.php';
 				//*************Service Settings*****************//
 				require_once MPTRS_PLUGIN_DIR . '/admin/settings/MPTRS_Settings.php';

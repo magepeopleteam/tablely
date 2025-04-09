@@ -68,7 +68,8 @@
                     'label' => 'Table Reservations',
                     'public' => true,
                     'supports' => ['title', 'custom-fields'],
-                    'show_in_rest' => true,
+                    'show_in_rest' => false,
+                    'show_ui' => false,
                 ));
             }
 
