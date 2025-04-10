@@ -119,8 +119,10 @@ body.mptrs_no_scroll {
     display: flex;
     justify-content: end;
 }
-.ptrs_addNewFoodMenuBtn{
-    padding: 10px;
+.mptrs_addNewFoodMenuBtn{
+    padding: 8px 10px;
+    background-color: #dbd6d6;
+    border-radius: 3px;
 }
 
 .mptrs_foodMenuContainer {
@@ -974,6 +976,7 @@ body.mptrs_no_scroll {
     justify-content: center;
     align-items: center;
 }
+
 
 /* Responsive Design */
 @media (max-width: 600px) {

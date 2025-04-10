@@ -34,10 +34,57 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             add_action('wp_ajax_mptrs_table_reservations', [$this, 'mptrs_table_reservations'] );
             add_action('wp_ajax_nopriv_mptrs_table_reservations', [$this, 'mptrs_table_reservations'] );
 
+            add_action('wp_ajax_mptrs_order_details_display', [$this, 'mptrs_order_details_display'] );
+            add_action('wp_ajax_nopriv_mptrs_order_details_display', [$this, 'mptrs_order_details_display'] );
+
+
+        }
+
+        function mptrs_order_details_display() {
+
+            $result = false;
+            $all_order_meta = [];
+
+            if (isset($_POST['nonce']) && wp_verify_nonce(sanitize_text_field($_POST['nonce']), 'mptrs_admin_nonce')) {
+                $order_id = isset( $_POST['orderId'] ) ? absint( $_POST['orderId'] ) : '';
+
+                if( $order_id ){
+                    $order = wc_get_order( $order_id );
+
+                    if ( $order ) {
+                        $all_order_meta['billing_email'] = $order->get_billing_email();
+                        foreach ( $order->get_items() as $item_id => $item ) {
+                            $item_meta = [];
+
+                            foreach ( $item->get_meta_data() as $meta ) {
+                                $item_meta[ $meta->key ] = $meta->value;
+                            }
+
+                            if( !empty( $item_meta )){
+                                $result = true;
+                                $all_order_meta[ 'order_info' ] = $item_meta;
+                            }
+
+                        }
+                    }
+
+                    error_log( print_r( ['$all_meta'=>$all_order_meta], true ) );
+                }
+
+
+            }
+
+            wp_send_json_success([
+                'message' => 'order Details Displayed',
+                'success' => $result,
+                'order_data' => $all_order_meta,
+            ]);
+
 
         }
 
         function mptrs_add_food_items_to_cart() {
+
             if ( !isset($_POST['post_id'], $_POST['mptrs_orderType'], $_POST['menu'], $_POST['price'], $_POST['quantity'])) {
                 wp_send_json_error('Missing required data.');
             }

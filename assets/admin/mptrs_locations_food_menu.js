@@ -867,4 +867,64 @@ jQuery(document).ready(function ($) {
         $(".mptrs-overlay").fadeOut();
     });
 
+
+    $(document).on('click', ".mptrs_orderDetailsBtn", function (e) {
+        e.preventDefault();
+        let orderId = $(this).parent().parent().attr('data-orderId');
+        $.ajax({
+            url: mptrs_admin_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_order_details_display',
+                nonce: mptrs_admin_ajax.nonce,
+                orderId: orderId,
+            },
+            success: function (response) {
+                console.log( response );
+                if (response.data.success) {
+
+                    let orderDetailsHtml = `<div class="mptrs_orderDetailPopupOverlay" style="display:block;">
+                                                        <div class="orderDetailPopupContent">
+                                                            <span class="mptrs_closePopup">&times;</span>
+                                                            <h3>Billing Email</h3>
+                                                            <p class="mptrs_billingEmail"></p>
+                                
+                                                            <h3>Order Info</h3>
+                                                            <div class="mptrs_orderDetailsDisplay"></div>
+                                                        </div>
+                                                    </div>`
+                    $("#mptrs_orderDetailsDisplayHolder").html( orderDetailsHtml );
+
+                    const orderData = response.data.order_data;
+                    $('.mptrs_billingEmail').text(orderData.billing_email);
+
+                    let detailsHtml = '';
+                    $.each(orderData.order_info, function(key, value) {
+                        if (key === "Food Menu") {
+                            detailsHtml += '<div><strong>' + key + ':</strong><br>' + value + '</div>';
+                        } else {
+                            detailsHtml += '<div><strong>' + key + ':</strong> ' + value + '</div>';
+                        }
+                    });
+
+                    $('.mptrs_orderDetailsDisplay').html(detailsHtml);
+                    // alert( response.data.message );
+                } else {
+                    alert('Something Wrong.');
+                }
+
+            },
+            error: function () {
+                alert('An unexpected error occurred.');
+            }
+        });
+
+    });
+
+    $(document).on('click', '.mptrs_closePopup', function() {
+        $('.mptrs_orderDetailPopupOverlay').fadeOut();
+        $('.mptrs_orderDetailsDisplayHolder').empty();
+
+    });
+
 });

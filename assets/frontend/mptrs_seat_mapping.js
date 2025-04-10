@@ -202,8 +202,8 @@ jQuery(document).ready(function ($) {
         let orderId = $(this).attr('id').trim();
         let mptrs_totalPrices = $("#mptrs_totalPrice").val().trim();
         mptrs_totalPrices = parseFloat(mptrs_totalPrices.replace(/[^\d.]/g, ''));
-        let mptrs_order_time = mptrs_orderSettings.mptrs_orderDate;
-        let mptrs_order_date = mptrs_orderSettings.mptrs_orderTime;
+        let mptrs_order_time = mptrs_orderSettings.mptrs_orderTime;
+        let mptrs_order_date = mptrs_orderSettings.mptrs_orderDate;
         let mptrs_orderType = mptrs_orderSettings.mptrs_orderType;
         let mptrs_locations = mptrs_orderSettings.mptrs_locations;
         let postId = $("#mptrs_getPost").val().trim();
