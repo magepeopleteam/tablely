@@ -163,9 +163,33 @@
 .enable_erase_seat,
 .shapeTextSelected,
 .enable_set_seat_number{
-    background-color: #ffc685;
+    background-color: #0d99ff;
     color: #fff;
 }
+.enable_single_seat_selection img,
+.circleSelected img,
+.enable_set_text img,
+.enable_drag_drop img,
+.enable_resize_selected img,
+.enable_clear_selected img,
+.enable_set_multiselect img,
+.enable_set_seat img,
+.enable_set_shape img,
+.setSeatNumberSelected img,
+.enable_erase_seat img,
+.shapeTextSelected img,
+.enable_set_seat_number img{
+    filter: brightness(0) invert(1);
+}
+
+.mptrs_mapping_planControlHolder button:hover,.mptrs_mapping_planControlHolder button:focus{
+    background-color: #44abff;
+}
+
+.mptrs_mapping_planControlHolder button:hover img,.mptrs_mapping_planControlHolder button:focus img{
+    filter: brightness(0) invert(1);
+}
+
 
 .mptrs_mapping_controls {
     display: flex;
@@ -325,9 +349,6 @@
     flex-wrap: wrap;
 }
 
-.mptrs_mapping_planControlHolder button:hover,.mptrs_mapping_planControlHolder button:focus{
-    background-color: #ffc685;
-}
 .lasso-cursor {
     cursor: crosshair;
 }
