@@ -1,47 +1,56 @@
 .mptrs_order_page_wrap {
-    background-color: #ffffff;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     margin: auto;
+    height: 100%;
 }
 
 /* Page Header Styling */
 .mptrs_order_page_wrap h1 {
-    font-size: 28px;
-    color: #333;
+    font-size: 46px;
+    font-weight:bold;
+    text-transform: capitalize;
+    color: rgb(184, 43, 43);
     text-align: center;
     margin-bottom: 30px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
 }
 
-.mptrs_awesome-heading {
-    font-family: 'Poppins', sans-serif;
-    font-size: 36px;
-    font-weight: 700;
-    color: #333;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 20px;
-    text-align: center;
-    background: linear-gradient(90deg, #0073aa, #00d1b2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-fill-color: transparent;
+.mptrs-restaurant-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    flex-wrap: nowrap;
 }
-
-.mptrs_awesome-heading::after {
-    content: "";
-    display: block;
-    width: 100px;
-    height: 3px;
-    background-color: #00d1b2;
-    margin: 10px auto 0;
-    border-radius: 2px;
+.mptrs_restaurant_item{
+    border: 1px solid #00328014;
+    background-color: #ffffff;
+    padding: 10px;
 }
-
+.mptrs_restaurant_item .thumbnail img{
+    width: 100%;
+    height:350px;
+    object-fit: cover;
+}
+.mptrs_restaurant_item .actions{
+    display: flex;
+    justify-content: start;
+    gap:10px;
+    align-items: center;
+}
+.mptrs_restaurant_item .actions a{
+    text-decoration: none;
+    padding: 10px 10px;
+    background-color: #00BFFF;
+    border-radius: 5px;
+    color: #fff;
+}
+.mptrs_restaurant_item .actions a.edit{
+    background-color: #ffdd47;
+    color: #161b37;
+}
+.mptrs_restaurant_item .actions a.delete{
+    background-color: #FF6347;
+}
 .mptrs_order_page_table {
     width: 100%;
     border-collapse: collapse;
@@ -252,22 +261,6 @@
     padding: 15px 30px;
     font-size: 16px;
     cursor: pointer;
-}
-
-
-.mptrs_restaurant_item {
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 5px;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-.mptrs_restaurant_item:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    transform: translateY(-5px);
 }
 
 .mptrs_row {
