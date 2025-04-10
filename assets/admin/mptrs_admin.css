@@ -272,7 +272,7 @@ div.mpwpb_category_header, div.mpwpb_category_header div.mpwpb_service_area {
 }
 #mptrs_meta_box .mptrs_tab .tabsContent section.section {
   background-color: var(--mage-light);
-  margin-top: 50px;
+  margin-top: 30px;
 }
 #mptrs_meta_box .mptrs_tab .tabsContent section.section h2 {
   font-weight: 600;
