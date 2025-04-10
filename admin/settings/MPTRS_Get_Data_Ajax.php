@@ -68,9 +68,7 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                         }
                     }
 
-                    error_log( print_r( ['$all_meta'=>$all_order_meta], true ) );
                 }
-
 
             }
 
