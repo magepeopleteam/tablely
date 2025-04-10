@@ -389,7 +389,7 @@ div.mpwpb_category_header, div.mpwpb_category_header div.mpwpb_service_area {
 #mptrs_meta_box .tooltips::before {
   content: "";
   position: absolute;
-  bottom: 91%;
+  bottom: 95%;
   left: 50%;
   transform: translateX(-50%);
   border-width: 6px;
