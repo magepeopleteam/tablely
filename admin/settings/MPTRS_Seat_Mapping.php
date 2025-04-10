@@ -19,24 +19,31 @@
                     wp_die( 'Invalid post ID' );
                 }
                 $template_id = isset( $_GET['templateId'] ) ? sanitize_text_field( $_GET['templateId'] ) : '';
-
+                $selection = MPTRS_Plan_ASSETS . 'images/tools/selection.png';
+                $choice = MPTRS_Plan_ASSETS . 'images/tools/choice.png';
+                $add_seats = MPTRS_Plan_ASSETS . 'images/tools/add-seats.png';
+                $shapes = MPTRS_Plan_ASSETS . 'images/tools/shapes.png';
+                $text = MPTRS_Plan_ASSETS . 'images/tools/text.png';
+                $import = MPTRS_Plan_ASSETS . 'images/tools/import.png';
+                $eraser = MPTRS_Plan_ASSETS . 'images/tools/eraser.png';
+                $undo = MPTRS_Plan_ASSETS . 'images/tools/undo.png';
+                $paste = MPTRS_Plan_ASSETS . 'images/tools/paste.png';
+                $group = MPTRS_Plan_ASSETS . 'images/tools/group.png';
                 // Output the meta box content
                 ?>
-                <h1><?php esc_html_e('Make Seat Plan', 'tablely'); ?></h1>
-
                 <div class="mptrs_mapping_controls" id="<?php echo esc_attr( $post->ID ); ?>">
                     <input type="hidden" id="mptrs_mapping_plan_id" name="mptrs_mapping_plan_id" value="<?php echo esc_attr( $post->ID ); ?>">
                     <div class="mptrs_mapping_planControlHolder">
-                        <button class="mptrs_mapping_multiselect" id="mptrs_mapping_multiselect"><?php esc_html_e('Multiselect', 'tablely'); ?></button>
-                        <button class="mptrs_mapping_singleSelect" id="mptrs_mapping_singleSelect"><?php esc_html_e('Single Select', 'tablely'); ?></button>
-                        <button class="mptrs_mapping_set_seat enable_set_seat" id="mptrs_mapping_set_seat"><?php esc_html_e('Add Seat +', 'tablely'); ?></button>
-                        <button class="mptrs_mapping_set_shape" id="mptrs_mapping_set_shape"><?php esc_html_e('Add Shape +', 'tablely'); ?></button>
-                        <button class="mptrs_mapping_setText" id="mptrs_mapping_setText" ><?php esc_html_e('Set Text', 'tablely'); ?></button>
-                        <button class="mptrs_importFromTemplate" id="mptrs_importFromTemplate"><?php esc_html_e('Import From Template', 'tablely'); ?></button>
-                        <button class="mptrs_removeSelected" id="mptrs_removeSelected"><?php esc_html_e('Erase', 'tablely'); ?></button>
-                        <button class="mptrs_undo" id="mptrs_undo" ><?php esc_html_e('Undo', 'tablely'); ?></button>
-                        <button class="mptrs_copyPaste" id="mptrs_copyPaste" ><?php esc_html_e('Paste', 'tablely'); ?></button>
-                        <button class="mptrs_bindTableWidthChair" id="mptrs_bindTableWidthChair" ><?php esc_html_e('Bind table', 'tablely'); ?></button>
+                        <button class="mptrs_mapping_multiselect tooltips" id="mptrs_mapping_multiselect" data-tooltip="<?php esc_html_e('Multi Select', 'tablely'); ?>"><img src="<?php echo esc_attr($selection); ?>" alt=""></button>
+                        <button class="mptrs_mapping_singleSelect tooltips" id="mptrs_mapping_singleSelect" data-tooltip="<?php esc_html_e('Single Select', 'tablely'); ?>"><img src="<?php echo esc_attr($choice); ?>" alt=""></button>
+                        <button class="mptrs_mapping_set_seat enable_set_seat tooltips" id="mptrs_mapping_set_seat"  data-tooltip="<?php esc_html_e('Add Seat', 'tablely'); ?>"><img src="<?php echo esc_attr($add_seats); ?>" alt=""></button>
+                        <button class="mptrs_mapping_set_shape tooltips" id="mptrs_mapping_set_shape" data-tooltip="<?php esc_html_e('Add Shape', 'tablely'); ?>"><img src="<?php echo esc_attr($shapes); ?>" alt=""></button>
+                        <button class="mptrs_mapping_setText tooltips" id="mptrs_mapping_setText" data-tooltip="<?php esc_html_e('Set Text', 'tablely'); ?>"><img src="<?php echo esc_attr($text); ?>" alt=""></button>
+                        <button class="mptrs_importFromTemplate tooltips" id="mptrs_importFromTemplate"  data-tooltip="<?php esc_html_e('Import From Template', 'tablely'); ?>"><img src="<?php echo esc_attr($import); ?>" alt=""></button>
+                        <button class="mptrs_removeSelected tooltips" id="mptrs_removeSelected"  data-tooltip="<?php esc_html_e('Erase', 'tablely'); ?>"><img src="<?php echo esc_attr($eraser); ?>" alt=""></button>
+                        <button class="mptrs_undo tooltips" id="mptrs_undo" data-tooltip="<?php esc_html_e('Undo', 'tablely'); ?>"><img src="<?php echo esc_attr($undo); ?>" alt=""></button>
+                        <button class="mptrs_copyPaste tooltips" id="mptrs_copyPaste" data-tooltip="<?php esc_html_e('Paste', 'tablely'); ?>"><img src="<?php echo esc_attr($paste); ?>" alt=""></button>
+                        <button class="mptrs_bindTableWidthChair tooltips" id="mptrs_bindTableWidthChair" data-tooltip="<?php esc_html_e('Group Table', 'tablely'); ?>"><img src="<?php echo esc_attr($group); ?>" alt=""></button>
                     </div>
                 </div>
 
@@ -372,14 +379,9 @@
                 
                 <div class="tabsItem" data-tabs="#mptrs_seat_mapping">
                     <header>
-                        <h2><?php esc_html_e('Seat Mapping Settings', 'tablely'); ?></h2>
-                        <span><?php esc_html_e('Seat Mapping Settings will be here.', 'tablely'); ?></span>
+                        <h2><?php esc_html_e('Seat Mapping', 'tablely'); ?></h2>
+                        <span><?php esc_html_e('In this section you will make table and seat for reservation.', 'tablely'); ?></span>
                     </header>
-                    <section class="section">
-                        <h2><?php esc_html_e('Seat Mapping Settings', 'tablely'); ?></h2>
-                        <span><?php esc_html_e('Seat Mapping', 'tablely'); ?></span>
-                    </section>
-
                     <section class="mptrs-seat-mapping-section " id="mptrs-seat-mapping-section">
                     <?php echo  $this->render_meta_box( $post_id );?>
                     </section>

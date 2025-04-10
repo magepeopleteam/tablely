@@ -160,6 +160,20 @@
 				<?php
 				echo wp_kses_post( ob_get_clean() );
 			}
+			
 		}
 		new MPTRS_Dependencies();
 	}
+
+	add_action('admin_head', 'custom_admin_menu_icon_css');
+function custom_admin_menu_icon_css() {
+    ?>
+    <style>
+        #menu-posts-mptrs_item .wp-menu-image img {
+            padding:2px 22px 0 8px;
+            width: 24px;
+            height: auto;
+        }
+    </style>
+    <?php
+}
