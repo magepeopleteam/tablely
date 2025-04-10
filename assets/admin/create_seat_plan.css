@@ -2,20 +2,20 @@
     display: flex;
     position: relative;
     width: 100%;
-    height: 550px;
+    height: 800px;
 }
 .mptrs_seatPlanHolder{
     display: flex;
     position: relative;
-    width: calc( 100% - 150px );
-    height: 450px;
+    width: 100%;
+    height: auto;
     overflow: scroll;
+    border: 1px solid #333;
 }
 .mptrs_seatPlanHolder::-webkit-scrollbar { width: 4px; }
 .mptrs_seatPlanHolder::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 2px; }
 .mptrs_seatPlanHolder::-webkit-scrollbar-thumb { background: #c1bfbf; border-radius: 4px; }
 .mptrs_seatPlanHolder::-webkit-scrollbar-thumb:hover { background: #555; }
-
 
 .mptrs_seatActionControl{
     display: block;
@@ -23,9 +23,14 @@
     margin-left: 10px;
     max-height: 500px;
     overflow-y: scroll;
+    position: absolute;
+
+
+    padding:13px;
+    right: 0;
 }
+
 #mptrs_parentDiv {
-    border: 1px solid #e9e4e4;
     position: absolute;
     padding: 10px;
 }
@@ -158,9 +163,33 @@
 .enable_erase_seat,
 .shapeTextSelected,
 .enable_set_seat_number{
-    background-color: #cf933d;
+    background-color: #0d99ff;
     color: #fff;
 }
+.enable_single_seat_selection img,
+.circleSelected img,
+.enable_set_text img,
+.enable_drag_drop img,
+.enable_resize_selected img,
+.enable_clear_selected img,
+.enable_set_multiselect img,
+.enable_set_seat img,
+.enable_set_shape img,
+.setSeatNumberSelected img,
+.enable_erase_seat img,
+.shapeTextSelected img,
+.enable_set_seat_number img{
+    filter: brightness(0) invert(1);
+}
+
+.mptrs_mapping_planControlHolder button:hover,.mptrs_mapping_planControlHolder button:focus{
+    background-color: #44abff;
+}
+
+.mptrs_mapping_planControlHolder button:hover img,.mptrs_mapping_planControlHolder button:focus img{
+    filter: brightness(0) invert(1);
+}
+
 
 .mptrs_mapping_controls {
     display: flex;
@@ -369,55 +398,6 @@
     padding: 0 2px !important;
 }
 
-#mptrs_clearAllPlan {
-    display: block;
-    float: left;
-    background-color: #dc3545;
-    color: #fff;
-    height: 30px;
-    width: 100%;
-    margin-bottom: 10px;
-    border: 1px solid #666666;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#mptrs_clearAllPlan:hover {
-    background-color: #c82333;
-}
-
-#mptrs_savePlan {
-    display: block;
-    float: left;
-    background-color: #37a8db;
-    color: #fff;
-    height: 30px;
-    width: 100%;
-    margin-bottom: 10px;
-    border: 1px solid #666666;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#mptrs_savePlanAsTemplate{
-    display: block;
-    float: left;
-    background-color: #728289;
-    color: #f9f7f7;
-    height: 40px;
-    width: 100%;
-    margin-bottom: 10px;
-    border: 1px solid #666666;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#mptrs_savePlan:hover,
-#mptrs_savePlanAsTemplate:hover {
-    cursor: pointer;
-    background-color: #e0a800;
-}
-
 #mptrs_mapping_set_seat,
 #mptrs_mapping_set_shape,
 #mptrs_mapping_multiselect {
@@ -429,7 +409,6 @@
 #mptrs_removeSelected:hover,
 #mptrs_mapping_singleSelect:hover,
 #mptrs_mapping_multiselect:hover {
-    background-color: #138496;
     color: #fff;
 }
 
