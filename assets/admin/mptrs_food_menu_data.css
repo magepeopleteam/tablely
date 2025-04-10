@@ -115,6 +115,14 @@ body.mptrs_no_scroll {
     margin-top: 10px;
 }
 
+.mptrs_addNewFoodMenuBtnHolder{
+    display: flex;
+    justify-content: end;
+}
+.ptrs_addNewFoodMenuBtn{
+    padding: 10px;
+}
+
 .mptrs_foodMenuContainer {
     display: flex;
     gap: 20px;

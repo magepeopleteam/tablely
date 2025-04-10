@@ -47,6 +47,9 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
                 </div>
 
                 <div class="mptrs_foodMenuContentHolder" id="mptrs_foodMenuContentHolder">
+                    <div class="mptrs_addNewFoodMenuBtnHolder">
+                        <button class="ptrs_addNewFoodMenuBtn">Add New Food Menu</button>
+                    </div>
                     <div id="mptrs_foodMenuAddedContainer" class="mptrs_foodMenuContainer">
                         <div class="mptrs-menu-container">
                             <span id="mptrs_foodMenuAdded" class="mptrs_foodMenuTab"><?php esc_attr_e( 'All Food Menu', 'tablely' )?></span>
