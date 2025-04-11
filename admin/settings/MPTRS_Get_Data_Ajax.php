@@ -37,6 +37,33 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             add_action('wp_ajax_mptrs_order_details_display', [$this, 'mptrs_order_details_display'] );
             add_action('wp_ajax_nopriv_mptrs_order_details_display', [$this, 'mptrs_order_details_display'] );
 
+            add_action('wp_ajax_mptrs_set_food_menu_display_limit', [$this, 'mptrs_set_food_menu_display_limit'] );
+            add_action('wp_ajax_nopriv_mptrs_set_food_menu_display_limit', [$this, 'mptrs_set_food_menu_display_limit'] );
+
+
+        }
+
+        function mptrs_set_food_menu_display_limit() {
+
+            $result = false;
+            $message = 'Something Wrong';
+
+            if (isset($_POST['nonce']) && wp_verify_nonce(sanitize_text_field($_POST['nonce']), 'mptrs_admin_nonce')) {
+                $newLimit = isset( $_POST['newLimit'] ) ? sanitize_file_name( $_POST['newLimit'] ) : '';
+                $limitKey = isset( $_POST['limitKey'] ) ? sanitize_file_name( $_POST['limitKey'] ) : '';
+
+                if( $limitKey ){
+                    $result = update_option( $limitKey, $newLimit );
+                    $message = 'Display Limit Successfully Updated';
+                }
+
+            }
+
+            wp_send_json_success([
+                'message' => $message,
+                'success' => $result,
+            ]);
+
 
         }
 

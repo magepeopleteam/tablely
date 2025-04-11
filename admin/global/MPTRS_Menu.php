@@ -323,7 +323,7 @@ if (!class_exists('MPTRS_Menu')) {
             $existing_menus = get_option( '_mptrs_food_menu' );
             $menu_categories = get_option( 'mptrs_categories' );
             $total_menus = 0;
-            $display = 3;
+            $display_limit = (int) get_option('mptrs_food_menu_display_limit', 20);
 
             if( is_array( $existing_menus ) ){
                 $total_menus = count( $menu_categories );
@@ -340,6 +340,7 @@ if (!class_exists('MPTRS_Menu')) {
             <div class="mptrs_area mptrs_global_settings">
                 <div class="tabsItem" data-tabs="#mptrs_food_menu_add">
                     <div class="mptrs_categoryMenubtnHolder">
+                        <input type="number"  id="mptrs_displayMenuCount" class="mptrs_setDisplayLimit" value="<?php echo esc_attr( $display_limit )?>" placeholder="Display Limit 20">
                         <button id="mptrs_openCategoryPopup" class="mptrs_open_popup_btn">Categories..</button>
                         <button id="mptrs_openPopup" class="mptrs_open_popup_btn">+Add New Food Menu </button>
                     </div>
@@ -407,8 +408,8 @@ if (!class_exists('MPTRS_Menu')) {
                                     ?>
                                     </tbody>
                                 </table>
-                                <input type="hidden" id="mptrs_displayMenuCount" value="<?php echo esc_attr( $display );?>">
-                                <?php if( $total_menus >= $display ){?>
+<!--                                <input type="hidden" id="mptrs_displayMenuCount" value="--><?php //echo esc_attr( $display_limit );?><!--">-->
+                                <?php if( $total_menus >= $display_limit ){?>
                                     <div class="mptrs_LoadMoreMenuHolder" id="mptrs_LoadMoreMenuHolder" style="display: none"><span class="mptrs_LoadMoreMenuText">Load More Menu</span></div>
 
                                 <?php }?>
