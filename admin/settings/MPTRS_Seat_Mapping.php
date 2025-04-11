@@ -29,6 +29,9 @@
                 $undo = MPTRS_Plan_ASSETS . 'images/tools/undo.png';
                 $paste = MPTRS_Plan_ASSETS . 'images/tools/paste.png';
                 $group = MPTRS_Plan_ASSETS . 'images/tools/group.png';
+                $reset = MPTRS_Plan_ASSETS . 'images/tools/reset.png';
+                $save_plan = MPTRS_Plan_ASSETS . 'images/tools/save.png';
+                $save_template = MPTRS_Plan_ASSETS . 'images/tools/save_template.png';
                 // Output the meta box content
                 ?>
                 <div class="mptrs_mapping_controls" id="<?php echo esc_attr( $post->ID ); ?>">
@@ -44,6 +47,9 @@
                         <button class="mptrs_undo tooltips" id="mptrs_undo" data-tooltip="<?php esc_html_e('Undo', 'tablely'); ?>"><img src="<?php echo esc_attr($undo); ?>" alt=""></button>
                         <button class="mptrs_copyPaste tooltips" id="mptrs_copyPaste" data-tooltip="<?php esc_html_e('Paste', 'tablely'); ?>"><img src="<?php echo esc_attr($paste); ?>" alt=""></button>
                         <button class="mptrs_bindTableWidthChair tooltips" id="mptrs_bindTableWidthChair" data-tooltip="<?php esc_html_e('Group Table', 'tablely'); ?>"><img src="<?php echo esc_attr($group); ?>" alt=""></button>
+                        <button class="tooltips" id="mptrs_clearAllPlan" data-tooltip="<?php esc_html_e('Clear All', 'tablely'); ?>"><img src="<?php echo esc_attr($reset); ?>" alt=""></button>
+                        <button class="mptrs_savePlan tooltips" id="mptrs_savePlan" data-tooltip="<?php esc_html_e('Save Plan', 'tablely'); ?>"><img src="<?php echo esc_attr($save_plan); ?>" alt=""></button>
+                        <button class="mptrs_savePlan tooltips" id="mptrs_savePlanAsTemplate" data-tooltip="<?php esc_html_e('Save Plan with Template', 'tablely'); ?>"><img src="<?php echo esc_attr($save_template); ?>" alt=""></button>
                     </div>
                 </div>
 
@@ -303,10 +309,6 @@
                                             <button class="mptrs_textCopy">Copy</button>
                                         </div>
                                     </div>
-                                    
-                                    <button id="mptrs_clearAllPlan"> All Clear</button>
-                                    <button class="mptrs_savePlan" id="mptrs_savePlan">Save Plan</button>
-                                    <button class="mptrs_savePlan" id="mptrs_savePlanAsTemplate">Save Plan with Template</button>
                                     <div class="mptrs_setPriceColorHolder" id="mptrs_setPriceColorHolder" style="display: none">
                                         <div class="mptrs_copyHolder">
                                             <button class="mptrs_seatCopyStore">Copy</button>

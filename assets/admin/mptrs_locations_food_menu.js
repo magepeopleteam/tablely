@@ -729,7 +729,7 @@ jQuery(document).ready(function ($) {
             action = 'mptrs_remove_saved_food_menu_for_restaurant';
             $("#" + getClickedId).text('Removing..');
         } else {
-            $("#" + getClickedId).text('Deleting..');
+            $("#" + getClickedId).text('Removing..');
             action = 'mptrs_remove_saved_food_menu_for_restaurant';
         }
         const postId = $('#mptrs_mapping_plan_id').val();
@@ -765,7 +765,7 @@ jQuery(document).ready(function ($) {
                                 <span class="mptrm_editAddedMenuPrice" id="mptrm_editAddedMenuPrice-${menuId}">Edit Price</span>
                             </td>
                             <td class="mptrs-menuAction">
-                                <button class="mptrs_addMenuToPost" id="mptrs_addedMenuToPost-${menuId}"><i class="fa-solid fa-trash"></i></button>
+                                <button class="mptrs_addMenuToPost mptrs-remove-menu" id="mptrs_addedMenuToPost-${menuId}">Remove</button>
                             </td>
                         </tr>`
                     $("#mptrs_AddedMenuData").append(newAddedMenu);

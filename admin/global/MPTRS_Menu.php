@@ -32,6 +32,7 @@ if (!class_exists('MPTRS_Menu')) {
             $query = new WP_Query($args);
             ?>
             <div class="mptrs_order_page_wrap wrap">
+
                 <h1 class="mptrs_awesome-heading"><?php esc_html_e( 'Restaurant Lists', 'tablely' ); ?></h1>
 
                 <?php if ($query->have_posts()) : ?>
@@ -42,10 +43,12 @@ if (!class_exists('MPTRS_Menu')) {
                             </a>
                         </div>
 
+
                         <?php while ($query->have_posts()) : $query->the_post();
                             $post_id = get_the_ID();
                             $thumbnail_url = get_the_post_thumbnail_url( $post_id, 'full');
                             ?>
+
                             <div class="mptrs_restaurant_item mptrs_row">
                                 <div class="mptrs_column mptrs_image_column">
                                     <a href="<?php echo esc_url( get_permalink( $post_id ) ); ?>">
@@ -88,6 +91,26 @@ if (!class_exists('MPTRS_Menu')) {
                                             <button class="mptrs_delete_button">
                                                 <span class="dashicons dashicons-trash"></span> <?php esc_html_e( 'Delete', 'tablely' ); ?>
                                             </button>
+
+                            <div class="mptrs-restaurant-item">
+                                <div class="mptrs_restaurant_item">
+                                    <div class="thumbnail">
+                                        <img src=" <?php  echo esc_attr( $thumbnail_url );?>" alt="<?php the_title(); ?>" class="mptrs_restaurant_image" />
+                                    </div>
+                                    <div class="content">
+                                        <h2><?php the_title(); ?></h2>
+                                        <?php the_content(); ?>
+                                    </div>
+                                    <div class="actions">
+                                        <a class="view" href="<?php echo esc_url( get_permalink( get_the_ID() ) ); ?>" class="mptrs_edit_button">
+                                        <i class="fas fa-eye"></i> <?php esc_html_e( 'View', 'tablely' ); ?>
+                                        </a>
+                                        <a class="edit" href="<?php echo esc_url( get_edit_post_link( get_the_ID() ) ); ?>" class="mptrs_edit_button">
+                                        <i class="fas fa-edit"></i> <?php esc_html_e( 'Edit', 'tablely' ); ?>
+                                        </a>
+                                        <a class="delete" href="<?php echo get_delete_post_link( get_the_ID() ); ?>" onclick="return confirm('Are you sure you want to move this to trash?')">
+                                            <i class="fas fa-trash"></i> <?php esc_html_e( 'Delete', 'tablely' ); ?>
+
                                         </a>
                                     </div>
                                 </div>

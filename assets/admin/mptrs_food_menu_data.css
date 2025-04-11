@@ -75,8 +75,6 @@ body.mptrs_no_scroll {
 
 .mptrs_foodMenuTabHoilder {
     width: 100%;
-    background-color: #f9f9f9;
-    /*border-bottom: 2px solid #ddd;*/
     display: flex;
     gap: 5px;
 }
@@ -108,12 +106,11 @@ body.mptrs_no_scroll {
 }
 
 .mptrs_foodMenuContentHolder {
-    padding: 20px 5px;
     background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    border: 1px solid #dfdfdf;
     margin-top: 10px;
 }
+
 
 .mptrs_addNewFoodMenuBtnHolder{
     display: flex;
@@ -125,10 +122,18 @@ body.mptrs_no_scroll {
     border-radius: 3px;
 }
 
+
 .mptrs_foodMenuContainer {
     display: flex;
     gap: 20px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+}
+
+#mptrs_meta_box .mptrs-menu-table th{
+    text-align: left;
+}
+#mptrs_meta_box .mptrs-menu-table td{
+    vertical-align: center;
 }
 
 .mptrs_foodMenuContainer.active {
@@ -343,10 +348,27 @@ body.mptrs_no_scroll {
 .mptrs_addMenuClass{
     background-color: #10a71a;
     color: #fff;
+    width: 80px;
+}
+.mptrs_area .mptrs_addMenuClass:hover,.mptrs_area .mptrs_addMenuClass:focus{
+    background-color: #0a7110;
 }
 .mptrs_addedMenuClass{
-    background-color: #990000;
+    background-color: #ddd;
+    color: #333;
+    width: 80px;
+}
+.mptrs-remove-menu{
+    background-color: #db1c1c;
     color: #fff;
+    width: 80px;
+}
+.mptrs_area .mptrs-remove-menu:hover,.mptrs_area .mptrs-remove-menu:focus{
+    background-color: #8f1212;
+}
+.mptrs_area .mptrs_addedMenuClass:hover,.mptrs_area .mptrs_addedMenuClass:focus{
+    background-color: #ccc;
+    color: #333;
 }
 
 .mptrs_addMenuToPost,
@@ -359,7 +381,6 @@ body.mptrs_no_scroll {
 
 .mptrs-menu-table {
     width: 100% !important;
-    max-width: 260px;
     border-collapse: collapse;
     margin-top: 1px;
     font-family: Arial, sans-serif;
@@ -406,7 +427,6 @@ body.mptrs_no_scroll {
 .mptrs-menu-table td:nth-child(4)
 {
     max-width: 80px;
-    text-align: center;
     color: #888;
 }
 
