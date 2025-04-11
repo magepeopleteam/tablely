@@ -47,53 +47,12 @@ if (!class_exists('MPTRS_Menu')) {
                         <?php while ($query->have_posts()) : $query->the_post();
                             $post_id = get_the_ID();
                             $thumbnail_url = get_the_post_thumbnail_url( $post_id, 'full');
+                            if ( empty( $thumbnail_url ) ) {
+                                $thumbnail_url = esc_url( MPTRS_Plan_ASSETS . 'images/fast-food.png' );
+                            }
                             ?>
-
-                            <div class="mptrs_restaurant_item mptrs_row">
-                                <div class="mptrs_column mptrs_image_column">
-                                    <a href="<?php echo esc_url( get_permalink( $post_id ) ); ?>">
-                                        <img src="<?php echo esc_url( $thumbnail_url ); ?>" alt="<?php the_title(); ?>" class="mptrs_restaurant_image" />
-                                    </a>
-                                </div>
-                                <div class="mptrs_column mptrs_info_column">
-                                    <div class="mptrs_restaurant_name"><h2><?php the_title(); ?></h2></div>
-                                    <div class="mptrs_restaurant_content">
-                                        <p class="mptrs_contentDisplay"><?php the_content(); ?></p>
-                                    </div>
-                                    <div class="mptrs_restaurant_shortcode">
-                                        <div class="mptrs_shortCode">
-                                            <span><?php esc_html_e( 'Food Menu ShortCode', 'tablely' ); ?></span>
-                                            <p class="mptrs_postShortCode">[mptrs_display_food_menu post_id=<?php echo esc_attr($post_id); ?>]</p>
-                                        </div>
-                                        <div class="mptrs_shortCode">
-                                            <span><?php esc_html_e( 'Table Reservation ShortCode', 'tablely' ); ?></span>
-                                            <p class="mptrs_postShortCode">[mptrs_reserve_table seat_mapping='yes/no' post_id=<?php echo esc_attr($post_id); ?>]</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mptrs_column mptrs_actions_column">
-                                    <div class="mptrs_action_button">
-                                        <a href="<?php echo esc_url( get_permalink( $post_id ) ); ?>">
-                                            <button class="mptrs_view_button">
-                                                <span class="dashicons dashicons-visibility"></span> <?php esc_html_e( 'View', 'tablely' ); ?>
-                                            </button>
-                                        </a>
-                                    </div>
-                                    <div class="mptrs_action_button">
-                                        <a href="<?php echo esc_url( get_edit_post_link( $post_id ) ); ?>">
-                                            <button class="mptrs_edit_button">
-                                                <span class="dashicons dashicons-edit"></span> <?php esc_html_e( 'Edit', 'tablely' ); ?>
-                                            </button>
-                                        </a>
-                                    </div>
-                                    <div class="mptrs_action_button">
-                                        <a href="<?php echo esc_url( get_delete_post_link( $post_id ) ); ?>" onclick="return confirm('Are you sure you want to move this to trash?')">
-                                            <button class="mptrs_delete_button">
-                                                <span class="dashicons dashicons-trash"></span> <?php esc_html_e( 'Delete', 'tablely' ); ?>
-                                            </button>
-
-                            <div class="mptrs-restaurant-item">
-                                <div class="mptrs_restaurant_item">
+                            <div class="mptrs_restaurant_item">
+                                <div class="mptrs-restaurant-content">
                                     <div class="thumbnail">
                                         <img src=" <?php  echo esc_attr( $thumbnail_url );?>" alt="<?php the_title(); ?>" class="mptrs_restaurant_image" />
                                     </div>
@@ -113,6 +72,19 @@ if (!class_exists('MPTRS_Menu')) {
 
                                         </a>
                                     </div>
+                                        <div class="mptrs_restaurant_content"><?php echo wp_kses_data(get_the_content()); ?></div>
+                                    </div>
+                                </div>
+                                <div class="actions">
+                                    <a class="view" href="<?php echo esc_url( get_permalink( get_the_ID() ) ); ?>" class="mptrs_edit_button">
+                                    <i class="fas fa-eye"></i> <?php esc_html_e( 'View', 'tablely' ); ?>
+                                    </a>
+                                    <a class="edit" href="<?php echo esc_url( get_edit_post_link( get_the_ID() ) ); ?>" class="mptrs_edit_button">
+                                    <i class="fas fa-edit"></i> <?php esc_html_e( 'Edit', 'tablely' ); ?>
+                                    </a>
+                                    <a class="delete" href="<?php echo get_delete_post_link( get_the_ID() ); ?>" onclick="return confirm('Are you sure you want to move this to trash?')">
+                                        <i class="fas fa-trash"></i> <?php esc_html_e( 'Delete', 'tablely' ); ?>
+                                    </a>
                                 </div>
                             </div>
                         <?php endwhile; ?>

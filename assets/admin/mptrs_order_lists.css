@@ -16,20 +16,47 @@
     letter-spacing: 0.5px;
 }
 
-.mptrs_awesome-heading {
-    font-family: 'Poppins', sans-serif;
-    font-size: 36px;
-    font-weight: 700;
-    color: #333;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 20px;
-    text-align: center;
-    background: linear-gradient(90deg, #0073aa, #00d1b2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-fill-color: transparent;
+.mptrs_restaurant_list{
+    /* background-color: #fff; */
+}
+
+.mptrs_restaurant_item{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding:10px;
+    flex-wrap: nowrap;
+    margin-right: 15px;
+    margin-bottom: 5px;
+    background-color: #fff;
+    border-radius: 5px;
+}
+.mptrs-restaurant-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: start;
+    width: 80%;
+}
+.mptrs_restaurant_item .thumbnail img{
+    width: 100px;
+    height:80px;
+    object-fit: cover;
+    border: 1px solid #333;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+.mptrs_restaurant_item .content h2{
+    margin: 0;
+    margin-bottom:10px;
+}
+.mptrs_restaurant_item .actions{
+    width:20%;
+    display: flex;
+    justify-content: end;
+    gap:10px;
+    align-items: center;
 }
 
 .mptrs_awesome-heading::after {
@@ -269,25 +296,15 @@
 }
 
 .mptrs_add_button {
-    padding: 15px 30px;
     font-size: 16px;
     cursor: pointer;
-}
-
-
-.mptrs_restaurant_item {
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    margin: 10px 0;
+    text-decoration: none ;
+    padding: 10px 20px;
+    background-color: #00BFFF;
+    color: #fff;
+    display: inline-block;
+    margin-bottom: 5px;
     border-radius: 5px;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-.mptrs_restaurant_item:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    transform: translateY(-5px);
 }
 
 .mptrs_row {
