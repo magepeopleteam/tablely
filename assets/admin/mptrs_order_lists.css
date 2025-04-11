@@ -67,6 +67,21 @@
 .mptrs_restaurant_item .actions a.delete{
     background-color: #FF6347;
 }
+.mptrs_pagination a{
+    font-size: 16px;
+    text-decoration: none;
+    padding: 10px 15px;
+    background-color: #fff;
+    border-radius: 5px;
+    color: #00BFFF;
+}
+.mptrs_pagination .current{
+    text-decoration: none;
+    padding: 10px 15px;
+    background-color: #00BFFF;
+    border-radius: 5px;
+    color: #fff;
+}
 .mptrs_awesome-heading::after {
     content: "";
     display: block;
@@ -305,16 +320,20 @@
 
 .mptrs_add_button {
     font-size: 16px;
+    font-weight: bold ;
     cursor: pointer;
     text-decoration: none ;
     padding: 10px 20px;
-    background-color: #00BFFF;
+    background-color: rgb(184, 43, 43);
     color: #fff;
     display: inline-block;
-    margin-bottom: 5px;
+    margin-bottom: 20px;
     border-radius: 5px;
 }
-
+.mptrs_add_button:hover {
+    color: #fff;
+    background-color: rgb(146, 34, 34);
+}
 .mptrs_row {
     display: flex;
     flex-wrap: wrap;
@@ -384,6 +403,26 @@
     cursor: pointer;
 }
 
+.menu-icon-mptrs_item .wp-submenu a[href$="mptrs_restaurant_lists"]::before {
+    content: "\1F4E6";
+    margin-right: 6px;
+}
+
+.menu-icon-mptrs_item .wp-submenu a[href$="mptrs_new_food_menu"]::before {
+    content: "\1F374";
+    margin-right: 6px;
+}
+
+.menu-icon-mptrs_item .wp-submenu a[href$="mptrs_order"]::before {
+    font-family: dashicons;
+    content: "\f174";
+    margin-right: 6px;
+}
+
+.menu-icon-mptrs_item .wp-submenu a[href$="mptrs_reserve"]::before {
+    content: "\1F4C5";
+    margin-right: 6px;
+}
 
 @media (max-width: 768px) {
     .mptrs_row .mptrs_restaurant_item {
