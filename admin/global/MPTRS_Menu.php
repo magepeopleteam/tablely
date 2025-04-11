@@ -25,27 +25,27 @@ if (!class_exists('MPTRS_Menu')) {
             $args = array(
                 'post_type'      => 'mptrs_item',
                 'order'          => 'DESC',
-                'posts_per_page' => 1,
+                'posts_per_page' => -1,
                 'paged'          => $paged,
             );
 
             $query = new WP_Query($args);
             ?>
             <div class="mptrs_order_page_wrap wrap">
-
-                <h1 class="mptrs_awesome-heading"><?php esc_html_e( 'Restaurant Lists', 'tablely' ); ?></h1>
-
-                <?php if ($query->have_posts()) : ?>
+                <h1><?php esc_html_e( 'Restaurant Lists', 'tablely' ); ?></h1>
+                <a href="<?php echo esc_url( site_url( '/wp-admin/post-new.php?post_type=mptrs_item' ) ); ?>" class="mptrs_add_button">
+                    <?php esc_html_e( 'Add New Restaurant', 'tablely' ); ?>
+                </a>
+                <?php
+                if ($query->have_posts()) :
+                    ?>
                     <div class="mptrs_restaurant_list">
-                        <div class="mptrs_add_new_restaurant">
-                            <a href="<?php echo esc_url( site_url( '/wp-admin/post-new.php?post_type=mptrs_item' ) ); ?>" class="mptrs_add_button">
-                                <button class="mptrs_add_button"><?php esc_html_e( 'Add New Restaurant', 'tablely' ); ?></button>
-                            </a>
-                        </div>
+                        <?php
+                        while ($query->have_posts()) :
+                            $query->the_post();
+                            global $post;
 
-
-                        <?php while ($query->have_posts()) : $query->the_post();
-                            $post_id = get_the_ID();
+                            $post_id = $post->ID;
                             $thumbnail_url = get_the_post_thumbnail_url( $post_id, 'full');
                             if ( empty( $thumbnail_url ) ) {
                                 $thumbnail_url = esc_url( MPTRS_Plan_ASSETS . 'images/fast-food.png' );
@@ -58,20 +58,6 @@ if (!class_exists('MPTRS_Menu')) {
                                     </div>
                                     <div class="content">
                                         <h2><?php the_title(); ?></h2>
-                                        <?php the_content(); ?>
-                                    </div>
-                                    <div class="actions">
-                                        <a class="view" href="<?php echo esc_url( get_permalink( get_the_ID() ) ); ?>" class="mptrs_edit_button">
-                                        <i class="fas fa-eye"></i> <?php esc_html_e( 'View', 'tablely' ); ?>
-                                        </a>
-                                        <a class="edit" href="<?php echo esc_url( get_edit_post_link( get_the_ID() ) ); ?>" class="mptrs_edit_button">
-                                        <i class="fas fa-edit"></i> <?php esc_html_e( 'Edit', 'tablely' ); ?>
-                                        </a>
-                                        <a class="delete" href="<?php echo get_delete_post_link( get_the_ID() ); ?>" onclick="return confirm('Are you sure you want to move this to trash?')">
-                                            <i class="fas fa-trash"></i> <?php esc_html_e( 'Delete', 'tablely' ); ?>
-
-                                        </a>
-                                    </div>
                                         <div class="mptrs_restaurant_content"><?php echo wp_kses_data(get_the_content()); ?></div>
                                     </div>
                                 </div>
@@ -87,9 +73,10 @@ if (!class_exists('MPTRS_Menu')) {
                                     </a>
                                 </div>
                             </div>
-                        <?php endwhile; ?>
+                        <?php
+                        endwhile;
+                        ?>
                     </div>
-
                     <!-- Pagination -->
                     <div class="mptrs_pagination">
                         <?php
@@ -100,14 +87,13 @@ if (!class_exists('MPTRS_Menu')) {
                         ));
                         ?>
                     </div>
+                <?php
+                else :
+                    echo '<p>' . esc_html__( 'No restaurants found.', 'tablely' ) . '</p>';
+                endif;
 
-
-
-                <?php else : ?>
-                    <p><?php esc_html_e( 'No restaurants found.', 'tablely' ); ?></p>
-                <?php endif; ?>
-
-                <?php wp_reset_postdata(); ?>
+                wp_reset_postdata();
+                ?>
             </div>
             <?php
         }
