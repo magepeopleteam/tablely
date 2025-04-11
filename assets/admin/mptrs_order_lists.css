@@ -1,19 +1,13 @@
-.mptrs_order_page_wrap {
-    background-color: #ffffff;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    margin: auto;
-}
+
 
 /* Page Header Styling */
 .mptrs_order_page_wrap h1 {
-    font-size: 28px;
-    color: #333;
+    font-size: 46px;
+    font-weight:bold;
+    text-transform: capitalize;
+    color: rgb(184, 43, 43);
     text-align: center;
     margin-bottom: 30px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
 }
 
 .mptrs_restaurant_list{
@@ -59,6 +53,20 @@
     align-items: center;
 }
 
+.mptrs_restaurant_item .actions a{
+    text-decoration: none;
+    padding: 10px 10px;
+    background-color: #00BFFF;
+    border-radius: 5px;
+    color: #fff;
+}
+.mptrs_restaurant_item .actions a.edit{
+    background-color: #ffdd47;
+    color: #161b37;
+}
+.mptrs_restaurant_item .actions a.delete{
+    background-color: #FF6347;
+}
 .mptrs_awesome-heading::after {
     content: "";
     display: block;
