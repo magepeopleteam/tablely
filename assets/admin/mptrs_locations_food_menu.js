@@ -67,6 +67,60 @@ jQuery(document).ready(function ($) {
         mptrs_showRows();
     });
 
+    $(document).on("blur", ".mptrs_setDisplayLimit", function () {
+        // Get the new value
+        const newLimit = parseInt($(this).val(), 10) || 20;
+        let limitKey = 'mptrs_food_menu_display_limit'
+        // alert( newLimit );
+        $.ajax({
+            url: mptrs_admin_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_set_food_menu_display_limit',
+                nonce: mptrs_admin_ajax.nonce,
+                newLimit: newLimit,
+                limitKey: limitKey,
+            },
+            success: function (response) {
+                $(".mptrs_display_limit").val( newLimit );
+                $(".mptrsTableRow").hide();
+                currentIndex = 0;
+                mptrs_showRows();
+                alert(response.data.message);
+            },
+            error: function () {
+                alert('An unexpected error occurred.');
+            }
+        });
+
+
+    });
+
+    $(document).on("blur", ".mptrs_ordersPerPage", function () {
+        const newLimit = parseInt($(this).val(), 10) || 20;
+        let limitKey = 'mptrs_order_lists_display_limit'
+        $.ajax({
+            url: mptrs_admin_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_set_food_menu_display_limit',
+                nonce: mptrs_admin_ajax.nonce,
+                newLimit: newLimit,
+                limitKey: limitKey,
+            },
+            success: function (response) {
+                $(".mptrs_display_limit").val( newLimit );
+                alert(response.data.message);
+                location.reload();
+            },
+            error: function () {
+                alert('An unexpected error occurred.');
+            }
+        });
+
+
+    });
+
 
     $(document).on("click", ".mptrs_filterByCategory", function () {
         let filterValue = $(this).data("filter");

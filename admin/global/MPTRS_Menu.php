@@ -18,12 +18,13 @@ if (!class_exists('MPTRS_Menu')) {
 
         public function mptrs_restaurant_lists_callback() {
             // Get current page
+            $order_display_limit = (int) get_option('mptrs_order_lists_display_limit', 20);
             $paged = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
 
             $args = array(
                 'post_type'      => 'mptrs_item',
                 'order'          => 'DESC',
-                'posts_per_page' => 1,
+                'posts_per_page' => $order_display_limit,
                 'paged'          => $paged,
             );
 
@@ -31,6 +32,7 @@ if (!class_exists('MPTRS_Menu')) {
             ?>
             <div class="mptrs_order_page_wrap wrap">
                 <h1><?php esc_html_e( 'Restaurant Lists', 'tablely' ); ?></h1>
+
                 <a href="<?php echo esc_url( site_url( '/wp-admin/post-new.php?post_type=mptrs_item' ) ); ?>" class="mptrs_add_button">
                     <i class="fas fa-plus"></i>
                     <?php esc_html_e( 'Add New Restaurant', 'tablely' ); ?>
@@ -76,6 +78,9 @@ if (!class_exists('MPTRS_Menu')) {
                         endwhile;
                         ?>
                     </div>
+                    <label for="mptrs_ordersPerPage"><?php esc_html_e( 'Posts per Page:', 'tablely' ); ?></label>
+                    <input type="number" id="mptrs_ordersPerPage" class="mptrs_ordersPerPage" value="<?php echo esc_attr( $order_display_limit );?>" placeholder="Limit 20">
+
                     <!-- Pagination -->
                     <div class="mptrs_pagination">
                         <?php
@@ -98,13 +103,16 @@ if (!class_exists('MPTRS_Menu')) {
         }
 
         public function mptrs_table_reserved_callback() {
+
+            $order_display_limit = (int) get_option('mptrs_order_lists_display_limit', 20);
+
             // Get current page
             $paged = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
 
             $args = array(
                 'post_type'      => 'mptrs_table_reserve',
                 'order'          => 'DESC',
-                'posts_per_page' => 2,
+                'posts_per_page' => $order_display_limit,
                 'paged'          => $paged,
             );
 
@@ -177,6 +185,9 @@ if (!class_exists('MPTRS_Menu')) {
                     </tbody>
                 </table>
 
+                <label for="mptrs_ordersPerPage"><?php esc_html_e( 'Posts per Page:', 'tablely' ); ?></label>
+                <input type="number" id="mptrs_ordersPerPage" class="mptrs_ordersPerPage" value="<?php echo esc_attr( $order_display_limit );?>" placeholder="Limit 20">
+
                 <?php
                 // Pagination
                 if ($total_pages > 1) {
@@ -199,6 +210,9 @@ if (!class_exists('MPTRS_Menu')) {
 
 
         public function mptrs_all_order_callback( $key ) {
+//            $order_display_limit = get_option( 'mptrs_order_lists_display_limit' );
+            $order_display_limit = (int) get_option('mptrs_order_lists_display_limit', 20);
+
             $order_types = array(
                 'dine_in'   => 'Dine In',
                 'delivery'  => 'Delivery',
@@ -210,11 +224,13 @@ if (!class_exists('MPTRS_Menu')) {
             $args = array(
                 'post_type'      => 'mptrs_order',
                 'order'          => 'DESC',
-                'posts_per_page' => 10,
+                'posts_per_page' => $order_display_limit,
                 'paged'          => $paged,
             );
 
             $query = new WP_Query( $args );
+
+
             ?>
             <div class="mptrs_order_page_wrap wrap">
                 <div class="mptrs_orderDetailsDisplayHolder" id="mptrs_orderDetailsDisplayHolder"></div>
@@ -302,7 +318,8 @@ if (!class_exists('MPTRS_Menu')) {
 
                 <div id="loader" style="display: none;"><div class="loader"></div></div>
 
-                <label for="posts-per-page"><?php esc_html_e( 'Posts per Page:', 'tablely' ); ?></label>
+                <label for="mptrs_ordersPerPage"><?php esc_html_e( 'Posts per Page:', 'tablely' ); ?></label>
+                <input type="number" id="mptrs_ordersPerPage" class="mptrs_ordersPerPage" value="<?php echo esc_attr( $order_display_limit );?>" placeholder="Limit 20">
 
                 <div id="mptrs_pagination" class="mptrs_pagination">
                     <?php
@@ -323,7 +340,7 @@ if (!class_exists('MPTRS_Menu')) {
             $existing_menus = get_option( '_mptrs_food_menu' );
             $menu_categories = get_option( 'mptrs_categories' );
             $total_menus = 0;
-            $display = 3;
+            $display_limit = (int) get_option('mptrs_food_menu_display_limit', 20);
 
             if( is_array( $existing_menus ) ){
                 $total_menus = count( $menu_categories );
@@ -340,6 +357,7 @@ if (!class_exists('MPTRS_Menu')) {
             <div class="mptrs_area mptrs_global_settings">
                 <div class="tabsItem" data-tabs="#mptrs_food_menu_add">
                     <div class="mptrs_categoryMenubtnHolder">
+                        <input type="number"  id="mptrs_displayMenuCount" class="mptrs_setDisplayLimit" value="<?php echo esc_attr( $display_limit )?>" placeholder="Display Limit 20">
                         <button id="mptrs_openCategoryPopup" class="mptrs_open_popup_btn">Categories..</button>
                         <button id="mptrs_openPopup" class="mptrs_open_popup_btn">+Add New Food Menu </button>
                     </div>
@@ -407,8 +425,8 @@ if (!class_exists('MPTRS_Menu')) {
                                     ?>
                                     </tbody>
                                 </table>
-                                <input type="hidden" id="mptrs_displayMenuCount" value="<?php echo esc_attr( $display );?>">
-                                <?php if( $total_menus >= $display ){?>
+<!--                                <input type="hidden" id="mptrs_displayMenuCount" value="--><?php //echo esc_attr( $display_limit );?><!--">-->
+                                <?php if( $total_menus >= $display_limit ){?>
                                     <div class="mptrs_LoadMoreMenuHolder" id="mptrs_LoadMoreMenuHolder" style="display: none"><span class="mptrs_LoadMoreMenuText">Load More Menu</span></div>
 
                                 <?php }?>
