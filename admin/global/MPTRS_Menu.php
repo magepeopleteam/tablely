@@ -25,7 +25,7 @@ if (!class_exists('MPTRS_Menu')) {
             $args = array(
                 'post_type'      => 'mptrs_item',
                 'order'          => 'DESC',
-                'posts_per_page' => -1,
+                'posts_per_page' => 1,
                 'paged'          => $paged,
             );
 

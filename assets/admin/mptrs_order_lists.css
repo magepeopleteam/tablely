@@ -67,6 +67,21 @@
 .mptrs_restaurant_item .actions a.delete{
     background-color: #FF6347;
 }
+.mptrs_pagination a{
+    font-size: 16px;
+    text-decoration: none;
+    padding: 10px 15px;
+    background-color: #fff;
+    border-radius: 5px;
+    color: #00BFFF;
+}
+.mptrs_pagination .current{
+    text-decoration: none;
+    padding: 10px 15px;
+    background-color: #00BFFF;
+    border-radius: 5px;
+    color: #fff;
+}
 .mptrs_awesome-heading::after {
     content: "";
     display: block;
