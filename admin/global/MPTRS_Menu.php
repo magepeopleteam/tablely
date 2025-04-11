@@ -323,6 +323,12 @@ if (!class_exists('MPTRS_Menu')) {
         public function mptrs_new_food_menu_callback(){
             $existing_menus = get_option( '_mptrs_food_menu' );
             $menu_categories = get_option( 'mptrs_categories' );
+            $total_menus = 0;
+            $display = 3;
+
+            if( is_array( $existing_menus ) ){
+                $total_menus = count( $menu_categories );
+            }
 
             ?>
             <div id="mptrs_foodMenuPopup" class="mptrs_foodMenuPopupContainer" style="display: none;">
@@ -367,10 +373,9 @@ if (!class_exists('MPTRS_Menu')) {
                                     <?php
                                     if( is_array( $existing_menus ) && !empty( $existing_menus ) ) {
                                         foreach ( $existing_menus as $key => $existing_menu ){
-//                                                error_log( print_r( [ '$existing_menus' => $existing_menu ], true ) );
                                             $category = isset( $menu_categories[$existing_menu['menuCategory']]) ? $menu_categories[$existing_menu['menuCategory']] : '';
                                             ?>
-                                            <tr class="mptrsTableRow" data-category ="<?php echo esc_attr( $existing_menu['menuCategory'] )?>" id="mptrs_foodMenuContent<?php echo esc_attr( $key )?>">
+                                            <tr class="mptrsTableRow" data-category ="<?php echo esc_attr( $existing_menu['menuCategory'] )?>" id="mptrs_foodMenuContent<?php echo esc_attr( $key )?>" style="display: none">
                                                 <td class="mptrsTableTd mptrsTdImage">
                                                     <div class="mptrsImageWrapper" >
                                                         <img class="mptrsImage" id="mptrs_memuImgUrl<?php echo esc_attr($key)?>" src="<?php echo esc_attr($existing_menu['menuImgUrl']); ?>" alt="<?php echo esc_attr($existing_menu['menuName']); ?>">
@@ -403,6 +408,11 @@ if (!class_exists('MPTRS_Menu')) {
                                     ?>
                                     </tbody>
                                 </table>
+                                <input type="hidden" id="mptrs_displayMenuCount" value="<?php echo esc_attr( $display );?>">
+                                <?php if( $total_menus >= $display ){?>
+                                    <div class="mptrs_LoadMoreMenuHolder" id="mptrs_LoadMoreMenuHolder" style="display: none"><span class="mptrs_LoadMoreMenuText">Load More Menu</span></div>
+
+                                <?php }?>
                             </div>
                         </div>
                     </div>
