@@ -320,16 +320,20 @@
 
 .mptrs_add_button {
     font-size: 16px;
+    font-weight: bold ;
     cursor: pointer;
     text-decoration: none ;
     padding: 10px 20px;
-    background-color: #00BFFF;
+    background-color: rgb(184, 43, 43);
     color: #fff;
     display: inline-block;
-    margin-bottom: 5px;
+    margin-bottom: 20px;
     border-radius: 5px;
 }
-
+.mptrs_add_button:hover {
+    color: #fff;
+    background-color: rgb(146, 34, 34);
+}
 .mptrs_row {
     display: flex;
     flex-wrap: wrap;

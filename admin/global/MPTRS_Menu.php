@@ -32,6 +32,7 @@ if (!class_exists('MPTRS_Menu')) {
             <div class="mptrs_order_page_wrap wrap">
                 <h1><?php esc_html_e( 'Restaurant Lists', 'tablely' ); ?></h1>
                 <a href="<?php echo esc_url( site_url( '/wp-admin/post-new.php?post_type=mptrs_item' ) ); ?>" class="mptrs_add_button">
+                    <i class="fas fa-plus"></i>
                     <?php esc_html_e( 'Add New Restaurant', 'tablely' ); ?>
                 </a>
                 <?php
