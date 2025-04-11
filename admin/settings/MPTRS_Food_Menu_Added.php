@@ -58,44 +58,44 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
                             <span id="mptrs_foodMenuAdded" class="mptrs_foodMenuTab"><?php esc_attr_e( 'All Food Menu', 'tablely' )?></span>
 
                             <?php  if( is_array( $all_food_menus ) && count( $all_food_menus ) > 0 ){ ?>
-                                    <table class="mptrs-menu-table">
-                                        <thead>
-                                            <tr>
-                                                <th><?php esc_attr_e( 'Image', 'tablely' )?></th>
-                                                <th><?php esc_attr_e( 'Name', 'tablely' )?></th>
-                                                <th><?php esc_attr_e( 'Price', 'tablely' )?></th>
-                                                <th><?php esc_attr_e( 'Action', 'tablely' )?></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        <?php
+                                <table class="mptrs-menu-table">
+                                    <thead>
+                                    <tr>
+                                        <th><?php esc_attr_e( 'Image', 'tablely' )?></th>
+                                        <th><?php esc_attr_e( 'Name', 'tablely' )?></th>
+                                        <th><?php esc_attr_e( 'Price', 'tablely' )?></th>
+                                        <th><?php esc_attr_e( 'Action', 'tablely' )?></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
 
-                                        foreach( $all_food_menus as $key => $food_menu ){
-                                            $add = 'Add';
-                                            $className = 'mptrs_addMenuClass';
-                                            if ( isset( $existing_menus[ $key ] ) ) {
-                                                $add = 'Added';
-                                                $className = 'mptrs_addedMenuClass';
-                                            }
+                                    foreach( $all_food_menus as $key => $food_menu ){
+                                        $add = 'Add';
+                                        $className = 'mptrs_addMenuClass';
+                                        if ( isset( $existing_menus[ $key ] ) ) {
+                                            $add = 'Added';
+                                            $className = 'mptrs_addedMenuClass';
+                                        }
 
                                         ?>
-                                            <tr class="mptrs_menuInfoHolderFilter" id="mptrs_menuInfoHolderFilter-<?php echo esc_attr( $key )?>" data-category ="<?php echo esc_attr( $food_menu['menuCategory'] )?>">
-                                                <td>
-                                                    <div class="mptrsMenuImg">
-                                                        <img id="mptrs_MenuImg-<?php echo esc_attr( $key )?>" src="<?php echo esc_attr( $food_menu['menuImgUrl'])?>" alt="<?php echo esc_attr( $food_menu['menuName'])?>">
-                                                    </div>
-                                                </td>
-                                                <td class="mptrs-menuName" id="mptrs-menuName-<?php echo esc_attr( $key )?>"><?php echo esc_attr( $food_menu['menuName'])?></td>
-                                                <td class="mptrs-menuPrice" id="mptrs-menuPrice-<?php echo esc_attr( $key )?>">$<?php echo esc_attr( $food_menu['menuPrice'])?></td>
-                                                <td class="mptrs-menuAction">
-                                                    <button class="mptrs_addMenuToPost <?php echo esc_attr( $className )?>" id="mptrs_addMenuToPost-<?php echo esc_attr( $key )?>"><?php echo esc_attr( $add )?></button>
-                                                </td>
-                                            </tr>
-                                        <?php }?>
-                                        </tbody>
-                                    </table>
+                                        <tr class="mptrs_menuInfoHolderFilter" id="mptrs_menuInfoHolderFilter-<?php echo esc_attr( $key )?>" data-category ="<?php echo esc_attr( $food_menu['menuCategory'] )?>">
+                                            <td>
+                                                <div class="mptrsMenuImg">
+                                                    <img id="mptrs_MenuImg-<?php echo esc_attr( $key )?>" src="<?php echo esc_attr( $food_menu['menuImgUrl'])?>" alt="<?php echo esc_attr( $food_menu['menuName'])?>">
+                                                </div>
+                                            </td>
+                                            <td class="mptrs-menuName" id="mptrs-menuName-<?php echo esc_attr( $key )?>"><?php echo esc_attr( $food_menu['menuName'])?></td>
+                                            <td class="mptrs-menuPrice" id="mptrs-menuPrice-<?php echo esc_attr( $key )?>">$<?php echo esc_attr( $food_menu['menuPrice'])?></td>
+                                            <td class="mptrs-menuAction">
+                                                <button class="mptrs_addMenuToPost <?php echo esc_attr( $className )?>" id="mptrs_addMenuToPost-<?php echo esc_attr( $key )?>"><?php echo esc_attr( $add )?></button>
+                                            </td>
+                                        </tr>
+                                    <?php }?>
+                                    </tbody>
+                                </table>
 
-                                <?php } ?>
+                            <?php } ?>
                         </div>
 
                         <div class="mptrs-menu-container">
@@ -104,55 +104,57 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
                             <?php
                             if( is_array( $all_food_menus ) && count( $all_food_menus ) > 0 ){
 
-                            ?>
-                                    <table class="mptrs-menu-table" id="mptrs_AddedMenuData">
-                                        <thead>
-                                            <tr>
-                                                <th><?php esc_attr_e( 'Image', 'tablely' )?></th>
-                                                <th><?php esc_attr_e( 'Name', 'tablely' )?></th>
-                                                <th><?php esc_attr_e( 'Price', 'tablely' )?></th>
-                                                <th><?php esc_attr_e( 'Action', 'tablely' )?></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        <?php
-                                        $fallbackImgUrl = get_site_url().'/wp-content/uploads/2025/02/fallbackimage.webp';
-                                        foreach ( $existing_menus as $key => $existing_menu ){
-                                            if( $existing_menu['menuImgUrl'] === '' ){
-                                                $menu_img = $fallbackImgUrl;
-                                            }else{
-                                                $menu_img = $existing_menu['menuImgUrl'];
-                                            }
-                                            $price =$existing_menu['menuPrice'];
 
-                                            if( is_array( $existing_edited_price ) && !empty( $existing_edited_price ) ){
-                                                if ( isset($existing_edited_price[ $key ] ) ) {
-                                                   $price = $existing_edited_price[ $key ] ;
-                                                }
-                                            }
-                                            ?>
-                                            <tr class="mptrs_menuInfoHolderFilter" id="mptrs_addedFoodMenu<?php echo esc_attr( $key ) ?>" data-category ="<?php echo esc_attr( $existing_menu['menuCategory'] )?>">
-                                                <td>
-                                                    <div class="mptrsMenuImg">
-                                                        <img src="<?php echo esc_attr( $menu_img )?>" alt="<?php echo esc_attr( $existing_menu['menuName'] )?>">
-                                                    </div>
-                                                </td>
-                                                <td class="mptrs-menuName">
-                                                    <?php echo esc_attr( $existing_menu['menuName'])?>
-                                                </td>
-                                                <td class=" mptrm_editFromFoodMenu mptrs-menuPrice">
-                                                    $<span class="mptrs_addedMenuPrice" id="mptrs_addedMenuPrice-<?php echo esc_attr( $key ) ?>"><?php echo esc_attr( $price )?></span>
-                                                    <span class="mptrm_editAddedMenuPrice" id="mptrm_editAddedMenuPrice-<?php echo esc_attr( $key )?>" style="display: block">Edit Price</span>
-                                                </td>
-                                                <td class="mptrs-menuAction">
-                                                    <button class="mptrs_addMenuToPost" id="mptrs_addedMenuToPost-<?php echo esc_attr( $key )?>"><i class="fa-solid fa-trash"></i></button>
-                                                </td>
-                                            </tr>
-                                        <?php }?>
-                                        </tbody>
-                                    </table>
+                                ?>
+                                <table class="mptrs-menu-table" id="mptrs_AddedMenuData">
+                                    <thead>
+                                    <tr>
+                                        <th><?php esc_attr_e( 'Image', 'tablely' )?></th>
+                                        <th><?php esc_attr_e( 'Name', 'tablely' )?></th>
+                                        <th><?php esc_attr_e( 'Price', 'tablely' )?></th>
+                                        <th><?php esc_attr_e( 'Action', 'tablely' )?></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    $fallbackImgUrl = get_site_url().'/wp-content/uploads/2025/02/fallbackimage.webp';
+                                    foreach ( $existing_menus as $key => $existing_menu ){
+                                        if( $existing_menu['menuImgUrl'] === '' ){
+                                            $menu_img = $fallbackImgUrl;
+                                        }else{
+                                            $menu_img = $existing_menu['menuImgUrl'];
+                                        }
+                                        $price =$existing_menu['menuPrice'];
 
-                                <?php } ?>
+                                        if( is_array( $existing_edited_price ) && !empty( $existing_edited_price ) ){
+                                            if ( isset($existing_edited_price[ $key ] ) ) {
+                                                $price = $existing_edited_price[ $key ] ;
+                                            }
+                                        }
+                                        ?>
+                                        <tr class="mptrs_menuInfoHolderFilter" id="mptrs_addedFoodMenu<?php echo esc_attr( $key ) ?>" data-category ="<?php echo esc_attr( $existing_menu['menuCategory'] )?>">
+                                            <td>
+                                                <div class="mptrsMenuImg">
+                                                    <img src="<?php echo esc_attr( $menu_img )?>" alt="<?php echo esc_attr( $existing_menu['menuName'] )?>">
+                                                </div>
+                                            </td>
+                                            <td class="mptrs-menuName">
+                                                <?php echo esc_attr( $existing_menu['menuName'])?>
+                                            </td>
+                                            <td class=" mptrm_editFromFoodMenu mptrs-menuPrice">
+                                                $<span class="mptrs_addedMenuPrice" id="mptrs_addedMenuPrice-<?php echo esc_attr( $key ) ?>"><?php echo esc_attr( $price )?></span>
+                                                <span class="mptrm_editAddedMenuPrice" id="mptrm_editAddedMenuPrice-<?php echo esc_attr( $key )?>" style="display: block">Edit Price</span>
+                                            </td>
+                                            <td class="mptrs-menuAction">
+                                                <button class="mptrs_addMenuToPost" id="mptrs_addedMenuToPost-<?php echo esc_attr( $key )?>"><i class="fa-solid fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    <?php }?>
+                                    </tbody>
+                                </table>
+
+                            <?php } ?>
+
                         </div>
 
                     </div>

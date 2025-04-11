@@ -10,7 +10,9 @@ jQuery(document).ready(function ($) {
        $("#"+menuTabContainer).fadeIn(1000);
     });*/
 
-    $(document).on("click", ".mptrs_categoryFilter", function () {
+    /*$(document).on("click", ".mptrs_categoryFilter", function () {
+
+        $("#mptrs_LoadMoreMenuHolder").hide();
         let filterValue = $(this).data("filter");
         $(".mptrs_categoryFilter").removeClass("active");
         $(this).addClass("active");
@@ -20,7 +22,51 @@ jQuery(document).ready(function ($) {
         } else {
             $(".mptrsTableRow").hide().filter(`[data-category='${filterValue}']`).fadeIn();
         }
+    });*/
+
+    function getRowsPerPage() {
+        return parseInt($("#mptrs_displayMenuCount").val(), 10) || 10;
+    }
+    let currentIndex = 0;
+    let $visibleRows = $('.mptrsTableRow');
+    const $loadMoreBtn = $('.mptrs_LoadMoreMenuText');
+    const $loadMoreHolder = $('#mptrs_LoadMoreMenuHolder');
+    function mptrs_showRows() {
+        const rowsPerPage = getRowsPerPage();
+        $visibleRows.hide();
+        $visibleRows.slice(0, currentIndex + rowsPerPage).fadeIn();
+        currentIndex += rowsPerPage;
+        if (currentIndex >= $visibleRows.length) {
+            $loadMoreHolder.hide();
+        } else {
+            $loadMoreHolder.show();
+        }
+    }
+    mptrs_showRows();
+
+    $loadMoreBtn.on('click', function() {
+        mptrs_showRows();
     });
+
+    $(document).on("click", ".mptrs_categoryFilter", function () {
+        currentIndex = 0;
+        let filterValue = $(this).data("filter");
+
+        $(".mptrs_categoryFilter").removeClass("active");
+        $(this).addClass("active");
+
+        // Hide all rows first
+        $(".mptrsTableRow").hide();
+
+        if (filterValue === "all") {
+            $visibleRows = $(".mptrsTableRow");
+        } else {
+            $visibleRows = $(".mptrsTableRow").filter(`[data-category='${filterValue}']`);
+        }
+
+        mptrs_showRows();
+    });
+
 
     $(document).on("click", ".mptrs_filterByCategory", function () {
         let filterValue = $(this).data("filter");
@@ -926,5 +972,30 @@ jQuery(document).ready(function ($) {
         $('.mptrs_orderDetailsDisplayHolder').empty();
 
     });
+
+    //load more menu
+    /*const rowsPerPage = parseInt($("#mptrs_displayMenuCount").val(), 10) || 0;
+    let currentIndex = 0;
+    const $rows = $('.mptrsTableRow');
+    const $loadMoreBtn = $('.mptrs_LoadMoreMenuText');
+
+    if( rowsPerPage > 0 ){
+        $loadMoreBtn.parent().show();
+    }
+    $rows.hide();
+    $rows.slice(0, rowsPerPage).show();
+    currentIndex += rowsPerPage;
+
+    if ($rows.length <= rowsPerPage) {
+        $loadMoreBtn.hide();
+    }
+    $loadMoreBtn.on('click', function() {
+        $rows.slice(currentIndex, currentIndex + rowsPerPage).fadeIn();
+        currentIndex += rowsPerPage;
+        if (currentIndex >= $rows.length) {
+            $loadMoreBtn.hide();
+        }
+    });*/
+    //End
 
 });

@@ -997,6 +997,30 @@ body.mptrs_no_scroll {
     align-items: center;
 }
 
+.mptrs_LoadMoreMenuHolder {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    width: 100%;
+}
+
+.mptrs_LoadMoreMenuText {
+    background-color: #0073aa;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mptrs_LoadMoreMenuText:hover {
+    background-color: #005e8c;
+    transform: translateY(-2px);
+}
+
 
 /* Responsive Design */
 @media (max-width: 600px) {
