@@ -111,15 +111,18 @@ body.mptrs_no_scroll {
     margin-top: 10px;
 }
 
-.mptrs-menu-container{
-    width:50%;
-    border-right: 1px solid #dfdfdf;
-    padding: 10px;
+
+.mptrs_addNewFoodMenuBtnHolder{
+    display: flex;
+    justify-content: end;
+}
+.mptrs_addNewFoodMenuBtn{
+    padding: 8px 10px;
+    background-color: #dbd6d6;
+    border-radius: 3px;
 }
 
-.mptrs-menu-container:last-child{
-    border-right: none;
-}
+
 .mptrs_foodMenuContainer {
     display: flex;
     gap: 20px;
@@ -993,6 +996,7 @@ body.mptrs_no_scroll {
     justify-content: center;
     align-items: center;
 }
+
 
 /* Responsive Design */
 @media (max-width: 600px) {
