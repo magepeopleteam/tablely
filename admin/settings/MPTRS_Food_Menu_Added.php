@@ -104,6 +104,7 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
                             <?php
                             if( is_array( $all_food_menus ) && count( $all_food_menus ) > 0 ){
 
+
                                 ?>
                                 <table class="mptrs-menu-table" id="mptrs_AddedMenuData">
                                     <thead>
@@ -153,6 +154,7 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
                                 </table>
 
                             <?php } ?>
+
                         </div>
 
                     </div>

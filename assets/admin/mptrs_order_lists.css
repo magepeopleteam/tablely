@@ -1,7 +1,4 @@
-.mptrs_order_page_wrap {
-    margin: auto;
-    height: 100%;
-}
+
 
 /* Page Header Styling */
 .mptrs_order_page_wrap h1 {
@@ -13,30 +10,49 @@
     margin-bottom: 30px;
 }
 
-.mptrs-restaurant-item{
+.mptrs_restaurant_list{
+    /* background-color: #fff; */
+}
+
+.mptrs_restaurant_item{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    padding:10px;
     flex-wrap: nowrap;
+    margin-right: 15px;
+    margin-bottom: 5px;
+    background-color: #fff;
+    border-radius: 5px;
 }
-.mptrs_restaurant_item{
-    border: 1px solid #00328014;
-    background-color: #ffffff;
-    padding: 10px;
+.mptrs-restaurant-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: start;
+    width: 80%;
 }
 .mptrs_restaurant_item .thumbnail img{
-    width: 100%;
-    height:350px;
+    width: 100px;
+    height:80px;
     object-fit: cover;
+    border: 1px solid #333;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+.mptrs_restaurant_item .content h2{
+    margin: 0;
+    margin-bottom:10px;
 }
 .mptrs_restaurant_item .actions{
+    width:20%;
     display: flex;
-    justify-content: start;
+    justify-content: end;
     gap:10px;
     align-items: center;
 }
+
 .mptrs_restaurant_item .actions a{
     text-decoration: none;
     padding: 10px 10px;
@@ -51,6 +67,16 @@
 .mptrs_restaurant_item .actions a.delete{
     background-color: #FF6347;
 }
+.mptrs_awesome-heading::after {
+    content: "";
+    display: block;
+    width: 100px;
+    height: 3px;
+    background-color: #00d1b2;
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
 .mptrs_order_page_table {
     width: 100%;
     border-collapse: collapse;
@@ -278,9 +304,15 @@
 }
 
 .mptrs_add_button {
-    padding: 15px 30px;
     font-size: 16px;
     cursor: pointer;
+    text-decoration: none ;
+    padding: 10px 20px;
+    background-color: #00BFFF;
+    color: #fff;
+    display: inline-block;
+    margin-bottom: 5px;
+    border-radius: 5px;
 }
 
 .mptrs_row {
