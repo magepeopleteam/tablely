@@ -337,6 +337,10 @@ body.mptrs_no_scroll {
     border-radius: 5px;
 }
 
+.mptrs_ordersPerPage{
+    width: 60px;
+}
+
 .mptrs_setDisplayLimit {
     background-color: #38a5d6;
     color: #fff;
