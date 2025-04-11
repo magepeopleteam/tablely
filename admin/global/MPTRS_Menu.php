@@ -7,8 +7,6 @@ if (!class_exists('MPTRS_Menu')) {
     class MPTRS_Menu{
         public function __construct(){
             add_action( 'admin_menu', array( $this, 'added_menu_pages' ) );
-
-            add_action('admin_head', [ $this, 'mptrs_admin_menu_icons'] );
         }
 
         public function added_menu_pages() {
@@ -410,34 +408,6 @@ if (!class_exists('MPTRS_Menu')) {
             </div>
             <?php
         }
-
-        function mptrs_admin_menu_icons() {
-            ?>
-            <style>
-                .menu-icon-mptrs_item .wp-submenu a[href$="mptrs_restaurant_lists"]::before {
-                    content: "\f333";
-                    margin-right: 6px;
-                }
-
-                .menu-icon-mptrs_item .wp-submenu a[href$="mptrs_new_food_menu"]::before {
-                    content: "\1F374";
-                    margin-right: 6px;
-                }
-
-                .menu-icon-mptrs_item .wp-submenu a[href$="mptrs_order"]::before {
-                    content: "\1F4E6";
-                    margin-right: 6px;
-                }
-
-                .menu-icon-mptrs_item .wp-submenu a[href$="mptrs_reserve"]::before {
-                    content: "\1F4C5";
-                    margin-right: 6px;
-                }
-            </style>
-            <?php
-        }
-
-
     }
 
     new MPTRS_Menu();
