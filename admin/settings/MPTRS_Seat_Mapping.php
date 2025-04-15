@@ -13,12 +13,16 @@
 			}
 
              public function render_meta_box( $post_id ) {
-
                 $post = get_post( $post_id );
                 if ( ! $post ) {
                     wp_die( 'Invalid post ID' );
                 }
-                $template_id = isset( $_GET['templateId'] ) ? sanitize_text_field( $_GET['templateId'] ) : '';
+
+                $template_id = '';
+                if ( isset( $_GET['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['nonce'] ) ), 'mptrs_template' ) ) {
+                    $template_id = isset( $_GET['templateId'] ) ? sanitize_text_field( wp_unslash( $_GET['templateId'] ) ) : '';
+                }
+
                 $selection = MPTRS_Plan_ASSETS . 'images/tools/selection.png';
                 $choice = MPTRS_Plan_ASSETS . 'images/tools/choice.png';
                 $add_seats = MPTRS_Plan_ASSETS . 'images/tools/add-seats.png';
@@ -262,11 +266,11 @@
                             </div>
                             <div class="mptrs_seatActionControl">
                                 <div class="mptrs_dynamicShapeHolder" id="mptrs_dynamicShapeHolder">
-                                    ' . $shapeText . '
+                                    ' . wp_kses_post( $shapeText ) . '
                                 </div>
                                 <div class="mptrs_dynamicShapeColorHolder" style="display: none">
                                     <div class="mptrs_dynamicShapeControl">
-                                        <div class="mptrs_dynamicShapeControlText">'.__('Shape Setting', 'tablely').'</div>
+                                        <div class="mptrs_dynamicShapeControlText">Shape Setting</div>
                                         <div class="mptrs_colorRemoveHolder">
                                             <div class="mptrs_shapeRotationHolder">
                                                 <img class="mptrs_shapeRotate" id="mptrs_shapeRotateRight" src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/rotate/rotate_right.webp' ) . '"/>
@@ -276,7 +280,7 @@
                                             <button class="mptrs_removeDynamicShape" id="mptrs_removeDynamicShape">X</button>
                                         </div>
                                         <div class="mptrs_shapeDisplayIconHolder">
-                                            <div class="mptrs_shapeIconTitleTextHolder"><span class="mptrs_shapeIconTitleText">'.__('Add Shape', 'tablely').'</span></div>
+                                            <div class="mptrs_shapeIconTitleTextHolder"><span class="mptrs_shapeIconTitleText">Add Shape</span></div>
                                                 <div class="mptrs_shapeDisplayIcons">
                                                     <img class="mptrs_shapeDisplayIcon" id="table1" src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/tableIcon/table1.png' ) . '"/>
                                                     <img class="mptrs_shapeDisplayIcon" id="table2" src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/tableIcon/table2.png' ) . '"/>
@@ -301,8 +305,9 @@
                                                 <input type="color" id="mptrs_setTextColor" value="#3498db">
                                             </div>
                                             <div class="mptrs_textRotationHolder">
-                                                <img class="mptrs_textRotate" id="mptrs_textRotateRight" src="'.MPTRS_Plan_ASSETS.'images/icons/rotate/rotate_right.webp'.'"/>
-                                                <img class="mptrs_textRotate" id="mptrs_textRotateLeft" src="'.MPTRS_Plan_ASSETS.'images/icons/rotate/rotate_left.webp'.'"/>
+
+                                                <img class="mptrs_textRotate" id="mptrs_textRotateRight" src="'.esc_url( MPTRS_Plan_ASSETS.'images/icons/rotate/rotate_right.webp').'"/>
+                                                <img class="mptrs_textRotate" id="mptrs_textRotateLeft" src="'.esc_url(MPTRS_Plan_ASSETS.'images/icons/rotate/rotate_left.webp').'"/>
                                             </div>
                                         </div>
                                         <div class="mptrs_copyHolder">
@@ -324,8 +329,8 @@
                                                 <span class="mptrs_seatRotateIconText">Seat Rotate In Degree</span>
                                                 <div class="mptrs_seatRotateIconImgHolder"> 
                                                     <div class="mptrs_seatRotateIconHolder">
-                                                        <img class="mptrs_shapeRotate" id="mptrs_rotateRight" src="'.MPTRS_Plan_ASSETS.'images/icons/rotate/rotate_right.webp'.'"/>
-                                                        <img class="mptrs_shapeRotate" id="mptrs_rotateLeft" src="'.MPTRS_Plan_ASSETS.'images/icons/rotate/rotate_left.webp'.'"/>
+                                                        <img class="mptrs_shapeRotate" id="mptrs_rotateRight" src="'.esc_url(MPTRS_Plan_ASSETS.'images/icons/rotate/rotate_right.webp').'"/>
+                                                        <img class="mptrs_shapeRotate" id="mptrs_rotateLeft" src="'.esc_url(MPTRS_Plan_ASSETS.'images/icons/rotate/rotate_left.webp').'"/>
                                                     </div>
                                                     <input class="mptrs_seatRotateDegree" type="number" name="mptrs_rotationAngle" id="mptrs_rotationAngle" value="10" placeholder="10 degree">
                                                 </div>
@@ -333,7 +338,7 @@
                                         </div>
                                         <div class="mptrs_seatIconContainer">
                                             <span class="mptrs_seatIconTitle">Select seat icon</span>
-                                            '.$icon_images.'
+                                            '.wp_kses_post( $icon_images ).'
                                         </div>
                                         <div class="mptrs_movementHolder" id="mptrs_movementHolder">
                                              <div class="mptrs_movementControl">
@@ -385,7 +390,7 @@
                         <span><?php esc_html_e('In this section you will make table and seat for reservation.', 'tablely'); ?></span>
                     </header>
                     <section class="mptrs-seat-mapping-section " id="mptrs-seat-mapping-section">
-                    <?php echo  $this->render_meta_box( $post_id );?>
+                    <?php echo wp_kses_post( $this->render_meta_box( $post_id ) );?>
                     </section>
                 </div>
 				<?php
