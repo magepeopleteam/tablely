@@ -61,21 +61,26 @@
                                 }
                                 ?>
                                 <div class="mptrs_foodMenuContent" id="mptrs_foodMenuContent-<?php echo esc_attr($key); ?>" data-category="<?php echo esc_attr($existing_menu['menuCategory']); ?>">
-                                    <div class="mptrs_menuImageHolder">
-                                        <img class="mptrs_menuImage" src="<?php echo esc_attr($img); ?>" >
-                                    </div>
-                                    <div class="mptrs_menuInfoHolder">
-                                        <div class="mptrs_topMenuInFo">
-                                            <div class="mptrs_menuName"><?php echo esc_html($existing_menu['menuName']); ?></div>
+                                    <div class="mptrs-menu-item-info">
+                                        <div class="mptrs_menuInfoHolder">
+                                            <div class="mptrs_topMenuInFo">
+                                                <div class="mptrs_menuName"><?php echo esc_html($existing_menu['menuName']); ?></div>
+                                            </div>
+                                            <div class="mptrs_BottomMenuInFo">
+                                                <div class="mptrs_menuPrice"><?php echo wc_price($price); ?></div>
+                                            </div>
+                                            <div class="mptrs_menuDescription"><?php echo esc_html($existing_menu['menuDescription']); ?></div>
                                         </div>
-                                        <div class="mptrs_BottomMenuInFo">
-                                            <div class="mptrs_menuPrice"><?php echo wc_price($price); ?></div>
+                                    </div>
+                                    <div class="mptrs-menu-item-thumbnail">
+                                        <div class="mptrs_menuImageHolder">
+                                            <img class="mptrs_menuImage" src="<?php echo esc_attr($img); ?>" >
                                             <div class="mptrs_menuPersion"><i class='fas fa-user-alt' style='font-size:10px'></i><span class="mptrs_numberOfPerson"><?php echo esc_html($existing_menu['numPersons']); ?></span></div>
                                         </div>
-                                    </div>
-                                    <div class="mptrs_addedMenuordered" data-menuCategory="<?php echo esc_attr($existing_menu['menuCategory']); ?>" data-menuName="<?php echo esc_attr($existing_menu['menuName']); ?>"
-                                         data-menuImgUrl="<?php echo esc_attr($img); ?>" data-menuPrice="<?php echo esc_attr(wc_price($price)); ?>" data-numOfPerson="<?php echo esc_attr($existing_menu['numPersons']); ?>">
-                                        <button class="mptrs_addBtn" id="mptrs_addBtn-<?php echo esc_attr($key); ?>">+</button>
+                                        <div class="mptrs_addedMenuordered" data-menuCategory="<?php echo esc_attr($existing_menu['menuCategory']); ?>" data-menuName="<?php echo esc_attr($existing_menu['menuName']); ?>"
+                                        data-menuImgUrl="<?php echo esc_attr($img); ?>" data-menuPrice="<?php echo esc_attr(wc_price($price)); ?>" data-numOfPerson="<?php echo esc_attr($existing_menu['numPersons']); ?>">
+                                            <button class="mptrs_addBtn" id="mptrs_addBtn-<?php echo esc_attr($key); ?>">+</button>
+                                        </div>
                                     </div>
                                 </div>
                             <?php } ?>
@@ -93,7 +98,7 @@
                     <div class="mptrs_orderedFoodMenuHolder" id="mptrs_orderedFoodMenuHolder"></div>
                     <div class="mptrs_totalPriceHolder" id="mptrs_totalPriceHolder">
 
-                        <span class="mptrs_totalPricetext"><?php esc_html_e( 'Total', 'tablely' ); ?></span>
+                        <div class="mptrs_totalPricetext"><?php esc_html_e( 'Total', 'tablely' ); ?></div>
                         <!--                        <span class="mptrs_sitePriceSymble" id="mptrs_sitePriceSymble"></span>-->
                         <input class="mptrs_totalPrice" id="mptrs_totalPrice" name="mptrs_totalPrice" value="" readonly placeholder="total price" disabled>
 
