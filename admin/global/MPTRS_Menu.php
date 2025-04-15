@@ -19,7 +19,12 @@ if (!class_exists('MPTRS_Menu')) {
         public function mptrs_restaurant_lists_callback() {
             // Get current page
             $order_display_limit = (int) get_option('mptrs_order_lists_display_limit', 20);
-            $paged = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
+
+            if (isset($_GET['_wpnonce']) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'mptrs_pagination')) {
+                $paged = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
+            } else {
+                $paged = 1;
+            }
 
             $args = array(
                 'post_type'      => 'mptrs_item',
@@ -29,14 +34,16 @@ if (!class_exists('MPTRS_Menu')) {
             );
 
             $query = new WP_Query($args);
+
             ?>
             <div class="mptrs_order_page_wrap wrap">
-                <h1><?php esc_html_e( 'Restaurant Lists', 'tablely' ); ?></h1>
+                <h1><?php esc_html_e('Restaurant Lists', 'tablely'); ?></h1>
 
-                <a href="<?php echo esc_url( site_url( '/wp-admin/post-new.php?post_type=mptrs_item' ) ); ?>" class="mptrs_add_button">
+                <a href="<?php echo esc_url(site_url('/wp-admin/post-new.php?post_type=mptrs_item')); ?>" class="mptrs_add_button">
                     <i class="fas fa-plus"></i>
-                    <?php esc_html_e( 'Add New Restaurant', 'tablely' ); ?>
+                    <?php esc_html_e('Add New Restaurant', 'tablely'); ?>
                 </a>
+
                 <?php
                 if ($query->have_posts()) :
                     ?>
@@ -47,15 +54,15 @@ if (!class_exists('MPTRS_Menu')) {
                             global $post;
 
                             $post_id = $post->ID;
-                            $thumbnail_url = get_the_post_thumbnail_url( $post_id, 'full');
-                            if ( empty( $thumbnail_url ) ) {
-                                $thumbnail_url = esc_url( MPTRS_Plan_ASSETS . 'images/fast-food.png' );
+                            $thumbnail_url = get_the_post_thumbnail_url($post_id, 'full');
+                            if (empty($thumbnail_url)) {
+                                $thumbnail_url = esc_url(MPTRS_Plan_ASSETS . 'images/fast-food.png');
                             }
                             ?>
                             <div class="mptrs_restaurant_item">
                                 <div class="mptrs-restaurant-content">
                                     <div class="thumbnail">
-                                        <img src=" <?php  echo esc_attr( $thumbnail_url );?>" alt="<?php the_title(); ?>" class="mptrs_restaurant_image" />
+                                        <img src="<?php echo esc_attr($thumbnail_url); ?>" alt="<?php the_title(); ?>" class="mptrs_restaurant_image" />
                                     </div>
                                     <div class="content">
                                         <h2><?php the_title(); ?></h2>
@@ -63,37 +70,41 @@ if (!class_exists('MPTRS_Menu')) {
                                     </div>
                                 </div>
                                 <div class="actions">
-                                    <a class="view" href="<?php echo esc_url( get_permalink( get_the_ID() ) ); ?>" class="mptrs_edit_button">
-                                    <i class="fas fa-eye"></i> <?php esc_html_e( 'View', 'tablely' ); ?>
+                                    <a class="view" href="<?php echo esc_url(get_permalink(get_the_ID())); ?>" class="mptrs_edit_button">
+                                        <i class="fas fa-eye"></i> <?php esc_html_e('View', 'tablely'); ?>
                                     </a>
-                                    <a class="edit" href="<?php echo esc_url( get_edit_post_link( get_the_ID() ) ); ?>" class="mptrs_edit_button">
-                                    <i class="fas fa-edit"></i> <?php esc_html_e( 'Edit', 'tablely' ); ?>
+                                    <a class="edit" href="<?php echo esc_url(get_edit_post_link(get_the_ID())); ?>" class="mptrs_edit_button">
+                                        <i class="fas fa-edit"></i> <?php esc_html_e('Edit', 'tablely'); ?>
                                     </a>
-                                    <a class="delete" href="<?php echo get_delete_post_link( get_the_ID() ); ?>" onclick="return confirm('Are you sure you want to move this to trash?')">
-                                        <i class="fas fa-trash"></i> <?php esc_html_e( 'Delete', 'tablely' ); ?>
+                                    <a class="delete" href="<?php echo get_delete_post_link(get_the_ID()); ?>" onclick="return confirm('Are you sure you want to move this to trash?')">
+                                        <i class="fas fa-trash"></i> <?php esc_html_e('Delete', 'tablely'); ?>
                                     </a>
                                 </div>
                             </div>
-                        <?php
-                        endwhile;
-                        ?>
+                        <?php endwhile; ?>
                     </div>
-                    <label for="mptrs_ordersPerPage"><?php esc_html_e( 'Posts per Page:', 'tablely' ); ?></label>
-                    <input type="number" id="mptrs_ordersPerPage" class="mptrs_ordersPerPage" value="<?php echo esc_attr( $order_display_limit );?>" placeholder="Limit 20">
+
+                    <label for="mptrs_ordersPerPage"><?php esc_html_e('Posts per Page:', 'tablely'); ?></label>
+                    <input type="number" id="mptrs_ordersPerPage" class="mptrs_ordersPerPage" value="<?php echo esc_attr($order_display_limit); ?>" placeholder="Limit 20">
 
                     <!-- Pagination -->
                     <div class="mptrs_pagination">
                         <?php
-                        echo paginate_links(array(
-                            'total'   => $query->max_num_pages,
-                            'current' => $paged,
-                            'format'  => '?paged=%#%',
-                        ));
+                        echo wp_kses_post(paginate_links(array(
+                            'total'     => $query->max_num_pages,
+                            'current'   => $paged,
+                            'format'    => '?paged=%#%',
+                            'prev_text' => __('« Prev', 'tablely'),
+                            'next_text' => __('Next »', 'tablely'),
+                            'add_args'  => array(
+                                '_wpnonce' => wp_create_nonce('mptrs_pagination'),
+                            ),
+                        )));
                         ?>
                     </div>
-                <?php
-                else :
-                    echo '<p>' . esc_html__( 'No restaurants found.', 'tablely' ) . '</p>';
+
+                <?php else :
+                    echo '<p>' . esc_html__('No restaurants found.', 'tablely') . '</p>';
                 endif;
 
                 wp_reset_postdata();
@@ -102,12 +113,16 @@ if (!class_exists('MPTRS_Menu')) {
             <?php
         }
 
+
         public function mptrs_table_reserved_callback() {
 
             $order_display_limit = (int) get_option('mptrs_order_lists_display_limit', 20);
 
-            // Get current page
-            $paged = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
+            if (isset($_GET['_wpnonce']) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'mptrs_pagination')) {
+                $paged = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
+            } else {
+                $paged = 1;
+            }
 
             $args = array(
                 'post_type'      => 'mptrs_table_reserve',
@@ -156,7 +171,8 @@ if (!class_exists('MPTRS_Menu')) {
                                 }
                             }
 
-                            $formattedDate = date('jS F Y', strtotime($table_reservation_info['reserve_date']));
+//                            $formattedDate = date('jS F Y', strtotime($table_reservation_info['reserve_date']));
+                            $formattedDate = gmdate('jS F Y', strtotime($table_reservation_info['reserve_date']));
                             ?>
                             <tr class="mptrs_order_row">
                                 <td><?php echo esc_html($table_reservation_info['occasion']); ?></td>
@@ -192,14 +208,17 @@ if (!class_exists('MPTRS_Menu')) {
                 // Pagination
                 if ($total_pages > 1) {
                     echo '<div class="mptrs_pagination" style="margin-top: 20px;">';
-                    echo paginate_links(array(
-                        'base'      => add_query_arg('paged', '%#%'),
+                    echo wp_kses_post( paginate_links( array(
+                        'base'      => add_query_arg( 'paged', '%#%' ),
                         'format'    => '',
                         'current'   => $paged,
                         'total'     => $total_pages,
-                        'prev_text' => __('« Prev', 'tablely'),
-                        'next_text' => __('Next »', 'tablely'),
-                    ));
+                        'prev_text' => __( '« Prev', 'tablely' ),
+                        'next_text' => __( 'Next »', 'tablely' ),
+                        'add_args'  => array(
+                            '_wpnonce' => wp_create_nonce('mptrs_pagination'),
+                        ),
+                    ) ) );
                     echo '</div>';
                 }
                 ?>
@@ -219,7 +238,11 @@ if (!class_exists('MPTRS_Menu')) {
                 'take_away' => 'Takeaway',
             );
 
-            $paged = isset($_GET['paged']) ? absint($_GET['paged']) : 1;
+            if (isset($_GET['_wpnonce']) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'mptrs_pagination')) {
+                $paged = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
+            } else {
+                $paged = 1;
+            }
 
             $args = array(
                 'post_type'      => 'mptrs_order',
@@ -238,7 +261,7 @@ if (!class_exists('MPTRS_Menu')) {
 
                 <div class="mptrs_orderTypeContainer">
                     <?php if ( is_array($order_types) && count($order_types) > 0 ) : ?>
-                        <div class="mptrs_order_type_item mptrs_active" data-filter="<?php echo __( 'all', 'tablely' ); ?>"><?php echo __( 'All', 'tablely' ); ?></div>
+                        <div class="mptrs_order_type_item mptrs_active" data-filter="<?php __( 'all', 'tablely' ); ?>"><?php __( 'All', 'tablely' ); ?></div>
                         <?php foreach( $order_types as $key => $order_type ) : ?>
                             <div class="mptrs_order_type_item" data-filter="<?php echo esc_attr($order_type); ?>"><?php echo esc_attr($order_type); ?></div>
                         <?php endforeach; ?>
@@ -323,13 +346,16 @@ if (!class_exists('MPTRS_Menu')) {
 
                 <div id="mptrs_pagination" class="mptrs_pagination">
                     <?php
-                    echo paginate_links( array(
-                        'total'   => $query->max_num_pages,
-                        'current' => $paged,
-                        'format'  => '?paged=%#%',
-                        'prev_text' => __('« Prev'),
-                        'next_text' => __('Next »'),
-                    ) );
+                    echo wp_kses_post( paginate_links( array(
+                        'total'     => $query->max_num_pages,
+                        'current'   => $paged,
+                        'format'    => '?paged=%#%',
+                        'prev_text' => __( '« Prev', 'tablely' ),
+                        'next_text' => __( 'Next »', 'tablely' ),
+                        'add_args'  => array(
+                            '_wpnonce' => wp_create_nonce('mptrs_pagination'),
+                        ),
+                    ) ) );
                     ?>
                 </div>
             </div>
@@ -366,7 +392,7 @@ if (!class_exists('MPTRS_Menu')) {
                         <div id="mptrs_foodMenuShowContainer" class="mptrs_foodMenuContainer" style="display: block">
                             <div id="mptrs_allFoodMenu" class="mptrs_allFoodMenu">
                                 <div class="mptrs_categoryFilterHolder">
-                                    <div class="mptrs_categoryFilter active" data-filter="all"><?php echo __( 'All', 'tablely' ) ?></div>
+                                    <div class="mptrs_categoryFilter active" data-filter="all"><?php __( 'All', 'tablely' ) ?></div>
                                     <?php
                                     if( is_array( $menu_categories ) && !empty( $menu_categories ) ) {
                                         foreach ( $menu_categories as $key => $category ) { ?>

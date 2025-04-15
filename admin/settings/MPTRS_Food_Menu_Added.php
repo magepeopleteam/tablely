@@ -36,7 +36,7 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
             <div class="tabsItem" data-tabs="#mptrs_food_menu_add">
 
                 <div class="mptrs_foodMenuTabHoilder">
-                    <div class="mptrs_filterByCategory active" data-filter="all"><?php echo __( 'All', 'tablely' ) ?></div>
+                    <div class="mptrs_filterByCategory active" data-filter="all"><?php __( 'All', 'tablely' ) ?></div>
                     <?php
                     if( is_array( $menu_categories ) && !empty( $menu_categories ) ) {
                         foreach ( $menu_categories as $key => $category ) { ?>
@@ -48,9 +48,8 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
 
                 <div class="mptrs_foodMenuContentHolder" id="mptrs_foodMenuContentHolder">
                     <div class="mptrs_addNewFoodMenuBtnHolder">
-
-                        <a href="<?php echo admin_url('edit.php?post_type=mptrs_item&page=mptrs_new_food_menu'); ?>" class="mptrs_addNewFoodMenuBtn">
-                            <?php esc_attr_e( 'Add New Food Menu', 'tablely' );?>
+                        <a href="<?php echo esc_url(admin_url('edit.php?post_type=mptrs_item&page=mptrs_new_food_menu')); ?>" class="mptrs_addNewFoodMenuBtn">
+                            <?php esc_html_e( 'Add New Food Menu', 'tablely' ); ?>
                         </a>
                     </div>
                     <div id="mptrs_foodMenuAddedContainer" class="mptrs_foodMenuContainer">

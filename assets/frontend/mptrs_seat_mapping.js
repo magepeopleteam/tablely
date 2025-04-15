@@ -236,6 +236,7 @@ jQuery(document).ready(function ($) {
         let orderVarDetailsStr = JSON.stringify( orderVarDetails );
         let bookedSeatName =  JSON.stringify( seatBookedName );
         let quantity = 300; // Total quantity
+        let nonce = mptrs_ajax.nonce;
 
         $.ajax({
             type: 'POST',
@@ -250,6 +251,7 @@ jQuery(document).ready(function ($) {
                 mptrs_locations: mptrs_locations,
                 // bookedSeatName: bookedSeatName,
                 price: mptrs_totalPrices,
+                nonce: nonce,
                 quantity: quantity,
                 mptrs_order_date: mptrs_order_date,
                 mptrs_order_time: mptrs_order_time,
@@ -1381,9 +1383,26 @@ jQuery(document).ready(function ($) {
 
     });
 
-    $("#mptrs_seatReserveDate").datepicker({
+    /*$("#mptrs_seatReserveDate").datepicker({
         dateFormat: "yy-mm-dd",
         minDate: 0
+    });*/
+
+    var disableReservedDates = ["2025-04-18", "2025-04-20", "2025-04-25"]; // your disabled dates
+
+    $("#mptrs_seatReserveDate").datepicker({
+        dateFormat: "yy-mm-dd",
+        minDate: 0,
+        beforeShowDay: function(date) {
+            var day = date.getDay();
+            var formattedDate = $.datepicker.formatDate("yy-mm-dd", date);
+
+            // Disable weekends (Saturday=6, Sunday=0) and specific dates
+            if (day === 0 || day === 6 || disableReservedDates.includes(formattedDate)) {
+                return [false, "", "Unavailable"];
+            }
+            return [true, ""];
+        }
     });
 
     $("#mptrs_reservation_form").submit(function(event) {

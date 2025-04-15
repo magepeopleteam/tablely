@@ -266,7 +266,7 @@
                                 </div>
                                 <div class="mptrs_dynamicShapeColorHolder" style="display: none">
                                     <div class="mptrs_dynamicShapeControl">
-                                        <div class="mptrs_dynamicShapeControlText">Shape Setting</div>
+                                        <div class="mptrs_dynamicShapeControlText">'.__('Shape Setting', 'tablely').'</div>
                                         <div class="mptrs_colorRemoveHolder">
                                             <div class="mptrs_shapeRotationHolder">
                                                 <img class="mptrs_shapeRotate" id="mptrs_shapeRotateRight" src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/rotate/rotate_right.webp' ) . '"/>
@@ -276,7 +276,7 @@
                                             <button class="mptrs_removeDynamicShape" id="mptrs_removeDynamicShape">X</button>
                                         </div>
                                         <div class="mptrs_shapeDisplayIconHolder">
-                                            <div class="mptrs_shapeIconTitleTextHolder"><span class="mptrs_shapeIconTitleText">Add Shape</span></div>
+                                            <div class="mptrs_shapeIconTitleTextHolder"><span class="mptrs_shapeIconTitleText">'.__('Add Shape', 'tablely').'</span></div>
                                                 <div class="mptrs_shapeDisplayIcons">
                                                     <img class="mptrs_shapeDisplayIcon" id="table1" src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/tableIcon/table1.png' ) . '"/>
                                                     <img class="mptrs_shapeDisplayIcon" id="table2" src="' . esc_url( MPTRS_Plan_ASSETS . 'images/icons/tableIcon/table2.png' ) . '"/>
