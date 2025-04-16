@@ -118,9 +118,6 @@
     gap: 10px;
 }
 
-.mptrs_contentDataHolder{
-    display: flex;
-}
 
 .mptrs_seatMapDisplay {
     flex-grow: 1;
@@ -1269,11 +1266,6 @@
 }
 
 @media screen and (max-width: 600px) {
-    .mptrs_contentDataHolder{
-        display: flex;
-        width: 100%;
-        flex-flow: column;
-    }
 
     .mptrs_restaurantLeftSide{
         width: 100%;

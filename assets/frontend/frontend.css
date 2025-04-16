@@ -13,64 +13,55 @@
   object-fit: cover;
   object-position: center;
 }
-
-.mptrs-header-baner img {
-  object-fit: cover !important;
-  --tw-bg-opacity: 1 !important;
-  background-color: rgb(255, 255, 255) !important;
-  border-width: 1px !important;
-  border-radius: 0.25rem !important;
-}
-
-.mptrs-header {
+.mptrs-default-template .mptrs-header {
   display: flex;
   gap: 10px;
   padding: 10px 0;
   border-bottom: 1px solid #ebebeb;
   margin-bottom: 10px;
 }
-.mptrs-header .mptrs-logo {
+.mptrs-default-template .mptrs-header .mptrs-logo {
   width: 156px;
   height: 156px;
   border: 1px solid #333;
   border-radius: 5px;
 }
-.mptrs-header .mptrs-logo img {
+.mptrs-default-template .mptrs-header .mptrs-logo img {
   border-radius: 5px;
 }
-.mptrs-header .mptrs-restaurant-info .mptrs-restaurant-name {
+.mptrs-default-template .mptrs-header .mptrs-restaurant-info .mptrs-restaurant-name {
   margin: 10px 0;
   font-size: 26px;
   font-weight: bold;
 }
-.mptrs-header .mptrs-restaurant-info p {
+.mptrs-default-template .mptrs-header .mptrs-restaurant-info p {
   margin: 10px 0;
 }
-.mptrs-header .mptrs-restaurant-info button {
+.mptrs-default-template .mptrs-header .mptrs-restaurant-info button {
   background-color: #fff;
   border: 0;
   color: #000;
   padding: 2px 5px;
   font-weight: 500;
 }
-.mptrs-header .mptrs-restaurant-info button:hover {
+.mptrs-default-template .mptrs-header .mptrs-restaurant-info button:hover {
   background-color: #efefef;
   color: #000;
 }
-.mptrs-header .mptrs-restaurant-info .mptrs-reviews {
+.mptrs-default-template .mptrs-header .mptrs-restaurant-info .mptrs-reviews {
   display: flex;
   align-items: center;
   gap: 5px;
 }
-.mptrs-header .mptrs-restaurant-info .mptrs-reviews i {
+.mptrs-default-template .mptrs-header .mptrs-restaurant-info .mptrs-reviews i {
   color: gold;
 }
-.mptrs-header .mptrs-restaurant-info .mptrs-time-schedule {
+.mptrs-default-template .mptrs-header .mptrs-restaurant-info .mptrs-time-schedule {
   display: flex;
   align-items: center;
   gap: 5px;
 }
-.mptrs-header .mptrs-restaurant-info .mptrs-time-schedule .open-now {
+.mptrs-default-template .mptrs-header .mptrs-restaurant-info .mptrs-time-schedule .open-now {
   width: 10px;
   height: 10px;
   background-color: rgb(7, 215, 7);
@@ -93,12 +84,12 @@
     box-shadow: 0 0 0 0 rgba(7, 215, 7, 0);
   }
 }
-.mptrs-header .mptrs-restaurant-info .more-info-button {
+.mptrs-default-template .mptrs-header .mptrs-restaurant-info .more-info-button {
   display: inline-flex;
   align-items: center;
   gap: 5px;
 }
-.mptrs-header .mptrs-restaurant-info .more-info-button i {
+.mptrs-default-template .mptrs-header .mptrs-restaurant-info .more-info-button i {
   color: #999;
   border: 1px solid #999;
   border-radius: 50px;
