@@ -12,10 +12,13 @@ if (!class_exists('MPTRS_Template')) {
     {
         public function __construct()
         {
-            add_action('mptrs_template_baner',[$this, 'template_header']);
+            add_action('mptrs_template_header',[$this, 'template_header']);
+            add_action('mptrs_template_header',[$this, 'template_popup_tablely']);
+            add_action('mptrs_template_header',[$this, 'template_popup_restaurant']);
             add_action('mptrs_template_logo',[$this, 'template_logo']);
             add_action('mptrs_restaurant_info',[$this, 'restaurant_info']);
-            add_action('mptrs_template_content',[$this, 'display_restaurant_content']);
+            add_action('mptrs_template_menus',[$this, 'display_restaurant_content']);
+            add_action('mptrs_template_basket',[$this, 'display_restaurant_basket']);
         }
 
         public function template_header()
@@ -26,7 +29,60 @@ if (!class_exists('MPTRS_Template')) {
                 <header class="mptrs-header-baner"> 
                     <img alt="<?php esc_attr( get_the_title() );?>" src=" <?php  echo esc_attr( $thumbnail_url );?>">
                 </header>
-            <?php endif;
+            <?php endif; ?>
+            <?php
+        }
+
+        public function template_popup_tablely(){
+            ?>
+            <div id="seatPopup" class="popup">
+                <div class="popup-content">
+                    <span class="close-btn">&times;</span>
+                    <div class="mptrs_seatMappedHolder">
+                        <span class="mptrs_selectSeatText"><?php esc_html_e( 'Choose a Seat, What\'s Your Choice?', 'tablely' ); ?></span>
+                        <div class="mptrs_popUpInfoHolder">
+                            <div class="mptrs_seatMapDisplay" id="mptrs_seatMapDisplay"></div>
+                            <div class="mptrs_orderInfoHolder">
+                                <div class="mptrs_orderDetailsPopup" id="mptrs_orderDetailsPopup">
+                                    <table class="mptrs_orderAddedTable" id="mptrs_orderAddedTable">
+                                        <thead>
+                                        <tr>
+                                            <th><?php esc_html_e( 'Menu Item', 'tablely' )?></th>
+                                            <th><?php esc_html_e( 'Quantity', 'tablely' )?></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                    <table class="mptrs_orderAddedTable" id="mptrs_orderAddedDetails">
+                                        <thead>
+                                        <tr>
+                                            <th><?php esc_html_e( 'Order Date', 'tablely' )?></th>
+                                            <th><?php esc_html_e( 'Ordered Time', 'tablely' )?></th>
+                                            <th><?php esc_html_e( 'Total Price', 'tablely' )?></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="mptrs_dineInOrderPlaceBtn" id="mptrs_dineInOrderPlaceBtn"><?php esc_html_e( 'Process Checkout', 'tablely' )?></div>
+                </div>
+            </div>
+            <?php
+        }
+
+        public function template_popup_restaurant(){
+            ?>
+            <div id="mptrs-restaurant-popup" class="popup">
+                <div class="popup-content">
+                    <span class="close-btn" data-popup-close="mptrs-popup-close">&times;</span>
+                    <?php the_content(); ?>
+                </div>
+            </div>
+            <?php
         }
 
         public function template_logo()
@@ -53,11 +109,80 @@ if (!class_exists('MPTRS_Template')) {
                 <i class="fas fa-star"></i>
                 <span><?php echo esc_html__('4.8/5','tablely'); ?></span>
                 <button class="reviews-button"><?php echo esc_html__('See Reviews','tablely'); ?></button>
-                <button class="more-info-button"><i class="fas fa-info"></i> <?php echo esc_html__('More Info','tablely'); ?></button>
+                <button class="more-info-button" data-popup-target="#mptrs-restaurant-popup"><i class="fas fa-info"></i> <?php echo esc_html__('More Info','tablely'); ?></button>
             </p>
             <?php
         }
 
+        public function display_restaurant_basket(){
+            ?>
+            <div class="mptrs_orderedFoodMenuInfoHolder" id="mptrs_orderedFoodMenuInfoHolder" style="display: none">
+                <div class="mptrs_orderedMenuHolder">
+                    <span class=""><?php esc_html_e( 'Your Orders', 'tablely' ); ?></span>
+                    <span class="mptrs_clearOrder">Clear Order</span>
+                </div>
+                <div class="mptrs_orderedFoodMenuHolder" id="mptrs_orderedFoodMenuHolder"></div>
+                <div class="mptrs_totalPriceHolder" id="mptrs_totalPriceHolder">
+
+                    <div class="mptrs_totalPricetext"><?php esc_html_e( 'Total', 'tablely' ); ?></div>
+                    <!--                        <span class="mptrs_sitePriceSymble" id="mptrs_sitePriceSymble"></span>-->
+                    <input class="mptrs_totalPrice" id="mptrs_totalPrice" name="mptrs_totalPrice" value="" readonly placeholder="total price" disabled>
+
+                </div>
+                <div class="mptrs_orderTypeDatesDisplay">
+                    <span class="mptrs_orderTypeDates" id="mptrs_orderTypeDates"></span>
+                    <span class="mptrs_orderTypeDatesChange" id="mptrs_orderTypeDatesChange">change</span>
+                </div>
+                <div class="mptrs_dineInOrderPlaceBtn" id="mptrs_dineInOrderPlaceBtn"><?php esc_html_e( 'Process Checkout', 'tablely' )?></div>
+            </div>
+
+            <div class="mptrs_rightSidebar">
+                <div class="mptrs_rightSidebarItem">
+                    <h4><?php esc_html_e( 'Dress Code', 'tablely' ); ?></h4>
+                    <p><?php esc_html_e( 'Casual, Business Casual, Semi-Formal, Western, Formal', 'tablely' ); ?></p>
+                </div>
+
+                <div class="mptrs_rightSidebarItem">
+                    <h4><?php esc_html_e( 'Noise', 'tablely' ); ?></h4>
+                    <p><?php esc_html_e( 'Silence, Party, Normal', 'tablely' ); ?></p>
+                </div>
+
+                <div class="mptrs_rightSidebarItem">
+                    <h4><?php esc_html_e( 'Dining Style', 'tablely' ); ?></h4>
+                    <p><?php esc_html_e( 'Casual Dining, Family', 'tablely' ); ?></p>
+                </div>
+
+                <div class="mptrs_rightSidebarItem">
+                    <h4><?php esc_html_e( 'Cuisine', 'tablely' ); ?></h4>
+                    <p><?php esc_html_e( 'International, Local', 'tablely' ); ?></p>
+                </div>
+
+                <div class="mptrs_rightSidebarItem">
+                    <h4><?php esc_html_e( 'Address', 'tablely' ); ?></h4>
+                    <p class="mptrs_address">
+                        <?php esc_html_e( '5th floor, Concord MK Heritage, Dhaka, Dhanmondi Dhaka', 'tablely' ); ?>
+                    </p>
+                    <a href="#" class="mptrs_openMap"><?php esc_html_e( 'Open in Map', 'tablely' ); ?></a>
+                </div>
+
+                <div class="mptrs_rightSidebarItem">
+                    <a href="#" class="mptrs_socialMedia"><?php esc_html_e( 'Find on Social Media', 'tablely' ); ?></a>
+                </div>
+            </div>
+            <div class="mptrs_openingHours">
+                <h3 class="mptrs_openingTitle"><?php esc_html_e( 'Opening Hours', 'tablely' ); ?></h3>
+                <ul class="mptrs_openingList">
+                    <li><span class="mptrs_day"><?php esc_html_e( 'Saturday', 'tablely' ); ?></span> <span class="mptrs_time"><?php esc_html_e( '11:00 AM - 11:00 PM', 'tablely' ); ?></span></li>
+                    <li><span class="mptrs_day"><?php esc_html_e( 'Sunday', 'tablely' ); ?></span> <span class="mptrs_time"><?php esc_html_e( '11:00 AM - 11:00 PM', 'tablely' ); ?></span></li>
+                    <li><span class="mptrs_day"><?php esc_html_e( 'Monday', 'tablely' ); ?></span> <span class="mptrs_time"><?php esc_html_e( '11:00 AM - 11:00 PM', 'tablely' ); ?></span></li>
+                    <li><span class="mptrs_day"><?php esc_html_e( 'Tuesday', 'tablely' ); ?></span> <span class="mptrs_time"><?php esc_html_e( '11:00 AM - 11:00 PM', 'tablely' ); ?></span></li>
+                    <li><span class="mptrs_day"><?php esc_html_e( 'Wednesday', 'tablely' ); ?></span> <span class="mptrs_time"><?php esc_html_e( '11:00 AM - 11:00 PM', 'tablely' ); ?></span></li>
+                    <li><span class="mptrs_day"><?php esc_html_e( 'Thursday', 'tablely' ); ?></span> <span class="mptrs_time"><?php esc_html_e( '11:00 AM - 11:00 PM', 'tablely' ); ?></span></li>
+                    <li><span class="mptrs_day"><?php esc_html_e( 'Friday', 'tablely' ); ?></span> <span class="mptrs_time"><?php esc_html_e( '11:00 AM - 11:00 PM', 'tablely' ); ?></span></li>
+                </ul>
+            </div>
+            <?php
+        }
         public function display_restaurant_content( ) {
             $post_id = get_the_id();
             $categories = get_option('mptrs_categories');
@@ -75,15 +200,6 @@ if (!class_exists('MPTRS_Template')) {
                 }
             }
             ?>
-            
-                <div class="mptrs_restaurantLeftSide">
-                    <div class="mptrs_restaurantDesHolder">
-                        <div class="mptrs_restaurantDes">
-                            <?php the_content(); ?>
-                        </div>
-                        <button class="mptrs_toggleBtn"><?php esc_html_e('See More', 'tablely'); ?></button>
-                    </div>
-    
                     <?php if (!empty($existing_menus)) { ?>
                         <div class="mptrs_FoodMenuHolder">
                             <h3 class="mptrs_FoodMenuHolderTitle"><?php esc_html_e('Menu', 'tablely'); ?> (<?php echo esc_html(count($existing_menus)); ?>)</h3>
@@ -133,76 +249,8 @@ if (!class_exists('MPTRS_Template')) {
                             </div>
                         </div>
                     <?php } ?>
-                </div>
-                <div class="mptrs_restaurantRightSide">
-    
-                    <div class="mptrs_orderedFoodMenuInfoHolder" id="mptrs_orderedFoodMenuInfoHolder" style="display: none">
-                        <div class="mptrs_orderedMenuHolder">
-                            <span class=""><?php esc_html_e( 'Your Orders', 'tablely' ); ?></span>
-                            <span class="mptrs_clearOrder">Clear Order</span>
-                        </div>
-                        <div class="mptrs_orderedFoodMenuHolder" id="mptrs_orderedFoodMenuHolder"></div>
-                        <div class="mptrs_totalPriceHolder" id="mptrs_totalPriceHolder">
-    
-                            <div class="mptrs_totalPricetext"><?php esc_html_e( 'Total', 'tablely' ); ?></div>
-                            <!--                        <span class="mptrs_sitePriceSymble" id="mptrs_sitePriceSymble"></span>-->
-                            <input class="mptrs_totalPrice" id="mptrs_totalPrice" name="mptrs_totalPrice" value="" readonly placeholder="total price" disabled>
-    
-                        </div>
-                        <div class="mptrs_orderTypeDatesDisplay">
-                            <span class="mptrs_orderTypeDates" id="mptrs_orderTypeDates"></span>
-                            <span class="mptrs_orderTypeDatesChange" id="mptrs_orderTypeDatesChange">change</span>
-                        </div>
-                        <div class="mptrs_dineInOrderPlaceBtn" id="mptrs_dineInOrderPlaceBtn"><?php esc_html_e( 'Process Checkout', 'tablely' )?></div>
-                    </div>
-    
-                    <div class="mptrs_rightSidebar">
-                        <div class="mptrs_rightSidebarItem">
-                            <h4><?php esc_html_e( 'Dress Code', 'tablely' ); ?></h4>
-                            <p><?php esc_html_e( 'Casual, Business Casual, Semi-Formal, Western, Formal', 'tablely' ); ?></p>
-                        </div>
-    
-                        <div class="mptrs_rightSidebarItem">
-                            <h4><?php esc_html_e( 'Noise', 'tablely' ); ?></h4>
-                            <p><?php esc_html_e( 'Silence, Party, Normal', 'tablely' ); ?></p>
-                        </div>
-    
-                        <div class="mptrs_rightSidebarItem">
-                            <h4><?php esc_html_e( 'Dining Style', 'tablely' ); ?></h4>
-                            <p><?php esc_html_e( 'Casual Dining, Family', 'tablely' ); ?></p>
-                        </div>
-    
-                        <div class="mptrs_rightSidebarItem">
-                            <h4><?php esc_html_e( 'Cuisine', 'tablely' ); ?></h4>
-                            <p><?php esc_html_e( 'International, Local', 'tablely' ); ?></p>
-                        </div>
-    
-                        <div class="mptrs_rightSidebarItem">
-                            <h4><?php esc_html_e( 'Address', 'tablely' ); ?></h4>
-                            <p class="mptrs_address">
-                                <?php esc_html_e( '5th floor, Concord MK Heritage, Dhaka, Dhanmondi Dhaka', 'tablely' ); ?>
-                            </p>
-                            <a href="#" class="mptrs_openMap"><?php esc_html_e( 'Open in Map', 'tablely' ); ?></a>
-                        </div>
-    
-                        <div class="mptrs_rightSidebarItem">
-                            <a href="#" class="mptrs_socialMedia"><?php esc_html_e( 'Find on Social Media', 'tablely' ); ?></a>
-                        </div>
-                    </div>
-                    <div class="mptrs_openingHours">
-                        <h3 class="mptrs_openingTitle"><?php esc_html_e( 'Opening Hours', 'tablely' ); ?></h3>
-                        <ul class="mptrs_openingList">
-                            <li><span class="mptrs_day"><?php esc_html_e( 'Saturday', 'tablely' ); ?></span> <span class="mptrs_time"><?php esc_html_e( '11:00 AM - 11:00 PM', 'tablely' ); ?></span></li>
-                            <li><span class="mptrs_day"><?php esc_html_e( 'Sunday', 'tablely' ); ?></span> <span class="mptrs_time"><?php esc_html_e( '11:00 AM - 11:00 PM', 'tablely' ); ?></span></li>
-                            <li><span class="mptrs_day"><?php esc_html_e( 'Monday', 'tablely' ); ?></span> <span class="mptrs_time"><?php esc_html_e( '11:00 AM - 11:00 PM', 'tablely' ); ?></span></li>
-                            <li><span class="mptrs_day"><?php esc_html_e( 'Tuesday', 'tablely' ); ?></span> <span class="mptrs_time"><?php esc_html_e( '11:00 AM - 11:00 PM', 'tablely' ); ?></span></li>
-                            <li><span class="mptrs_day"><?php esc_html_e( 'Wednesday', 'tablely' ); ?></span> <span class="mptrs_time"><?php esc_html_e( '11:00 AM - 11:00 PM', 'tablely' ); ?></span></li>
-                            <li><span class="mptrs_day"><?php esc_html_e( 'Thursday', 'tablely' ); ?></span> <span class="mptrs_time"><?php esc_html_e( '11:00 AM - 11:00 PM', 'tablely' ); ?></span></li>
-                            <li><span class="mptrs_day"><?php esc_html_e( 'Friday', 'tablely' ); ?></span> <span class="mptrs_time"><?php esc_html_e( '11:00 AM - 11:00 PM', 'tablely' ); ?></span></li>
-                        </ul>
-                    </div>
-    
-                </div>
+
+                
                 <input type="hidden" id="mptrs_getPost" value="<?php echo esc_attr( $post_id )?>">
             <?php
         }
