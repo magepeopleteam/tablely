@@ -92,7 +92,7 @@
                                                         <div class="mptrs_menuName"><?php echo esc_html($existing_menu['menuName']); ?></div>
                                                     </div>
                                                     <div class="mptrs_BottomMenuInFo">
-                                                        <div class="mptrs_menuPrice"><?php echo esc_attr( wc_price( $price ) ); ?></div>
+                                                        <div class="mptrs_menuPrice"><?php echo wp_kses_post( wc_price( $price ) ); ?></div>
                                                         <div class="mptrs_menuPersion"><i class='fas fa-user-alt' style='font-size:10px'></i><span class="mptrs_numberOfPerson"><?php echo esc_html($existing_menu['numPersons']); ?></span></div>
                                                     </div>
                                                 </div>
