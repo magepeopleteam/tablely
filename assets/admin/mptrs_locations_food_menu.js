@@ -825,34 +825,35 @@ jQuery(document).ready(function ($) {
         if (menuAddText === 'Add') {
             $("#" + getClickedId).text('Adding..');
             action = 'mptrs_save_food_menu_for_restaurant';
-        } else if (menuAddText === 'Added') {
+        } else if (menuAddText === '' || menuAddText === 'Remove') {
             action = 'mptrs_remove_saved_food_menu_for_restaurant';
             $("#" + getClickedId).text('Removing..');
         } else {
-            $("#" + getClickedId).text('Removing..');
-            action = 'mptrs_remove_saved_food_menu_for_restaurant';
+            // $("#" + getClickedId).text('Removing..');
+            action = '';
         }
         const postId = $('#mptrs_mapping_plan_id').val();
-        $.ajax({
-            url: mptrs_admin_ajax.ajax_url,
-            type: 'POST',
-            data: {
-                action: action,
-                nonce: mptrs_admin_ajax.nonce,
-                menu_key: menuId,
-                postId: postId,
-            },
-            success: function (response) {
-                if (menuAddText === 'Add') {
-                    $("#" + getClickedId).text('Added');
-                    let imgUrl = $("#" + imgContentId).attr("src").trim();
-                    let nameContent = $("#" + nameContentId).text().trim();
-                    let priceContent = $("#" + priceContentId).text().trim();
+        if (menuAddText !== 'Added') {
+            $.ajax({
+                url: mptrs_admin_ajax.ajax_url,
+                type: 'POST',
+                data: {
+                    action: action,
+                    nonce: mptrs_admin_ajax.nonce,
+                    menu_key: menuId,
+                    postId: postId,
+                },
+                success: function (response) {
+                    if (menuAddText === 'Add') {
+                        $("#" + getClickedId).text('Added');
+                        let imgUrl = $("#" + imgContentId).attr("src").trim();
+                        let nameContent = $("#" + nameContentId).text().trim();
+                        let priceContent = $("#" + priceContentId).text().trim();
 
 
-                    priceContent = priceContent.replace("$", "");
-                    $("#" + getClickedId).removeClass('mptrs_addMenuClass').addClass('mptrs_addedMenuClass');
-                    let newAddedMenu = `
+                        priceContent = priceContent.replace("$", "");
+                        $("#" + getClickedId).removeClass('mptrs_addMenuClass').addClass('mptrs_addedMenuClass');
+                        let newAddedMenu = `
                         <tr class="mptrs_menuInfoHolderFilter" id="mptrs_addedFoodMenu${menuId}" data-category="${menuCategory}">
                             <td>
                                 <div class="mptrsMenuImg">
@@ -868,27 +869,28 @@ jQuery(document).ready(function ($) {
                                 <button class="mptrs_addMenuToPost mptrs-remove-menu" id="mptrs_addedMenuToPost-${menuId}">Remove</button>
                             </td>
                         </tr>`
-                    $("#mptrs_AddedMenuData").append(newAddedMenu);
+                        $("#mptrs_AddedMenuData").append(newAddedMenu);
 
-                } else if (menuAddText === 'Added') {
-                    $("#" + getClickedId).text('Add');
-                    $("#" + getClickedId).removeClass('mptrs_addedMenuClass').addClass('mptrs_addMenuClass');
-                    $("#" + removedKey).fadeOut();
-                    $("#" + removedKey).empty();
-                } else {
-                    $("#" + removedKey).fadeOut();
-                    $("#" + removedKey).empty();
-                    let addedId = 'mptrs_addMenuToPost-' + menuId;
-                    // alert( removedKey );
-                    $("#" + addedId).removeClass('mptrs_addedMenuClass').addClass('mptrs_addMenuClass');
-                    $("#" + addedId).text('Add');
-                    // $("#"+removedKey).data('category', '');
+                    } else if (menuAddText === 'Added') {
+                        $("#" + getClickedId).text('Add');
+                        $("#" + getClickedId).removeClass('mptrs_addedMenuClass').addClass('mptrs_addMenuClass');
+                        $("#" + removedKey).fadeOut();
+                        $("#" + removedKey).empty();
+                    } else {
+                        $("#" + removedKey).fadeOut();
+                        $("#" + removedKey).empty();
+                        let addedId = 'mptrs_addMenuToPost-' + menuId;
+                        // alert( removedKey );
+                        $("#" + addedId).removeClass('mptrs_addedMenuClass').addClass('mptrs_addMenuClass');
+                        $("#" + addedId).text('Add');
+                        // $("#"+removedKey).data('category', '');
+                    }
+                },
+                error: function () {
+                    alert('An unexpected error occurred.');
                 }
-            },
-            error: function () {
-                alert('An unexpected error occurred.');
-            }
-        });
+            });
+        }
 
     });
 

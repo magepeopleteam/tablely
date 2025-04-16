@@ -9,7 +9,7 @@
 	if (!class_exists('MPTRS_Woocommerce')) {
 		class MPTRS_Woocommerce {
 			public function __construct() {
-				add_filter('woocommerce_add_cart_item_data', array($this, 'add_cart_item_data'), 90, 3);
+//				add_filter('woocommerce_add_cart_item_data', array($this, 'add_cart_item_data'), 90, 3);
 				add_action('woocommerce_before_calculate_totals', array($this, 'before_calculate_totals'), 90, 1);
 				add_filter('woocommerce_cart_item_thumbnail', array($this, 'cart_item_thumbnail'), 90, 3);
 				add_filter('woocommerce_get_item_data', array($this, 'get_item_data'), 90, 2);

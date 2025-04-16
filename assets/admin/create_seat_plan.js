@@ -1646,6 +1646,8 @@ jQuery(document).ready(function ($) {
             lastElementData = value;
         });
 
+        console.log( lastElementData );
+
         if( lastElementData.boxType === 'seats' ){
             copy_paste_html = `<div class="mptrs_mappingSeat save" id="div_${whereAppend.id}" 
                           data-id="${whereAppend.data_id}" 
@@ -1936,7 +1938,6 @@ jQuery(document).ready(function ($) {
                 selectedSeats.push({ id, row, col, color, price, width, height, seat_number, left, top, z_index, data_degree, data_tableBind, border_radius, seatText, backgroundImage });
             }
         });
-        console.log( selectedSeats );
 
         $('.mptrs_text-wrapper').each(function () {
             const textLeft = parseInt($(this).css('left')) || 0;
@@ -1967,7 +1968,6 @@ jQuery(document).ready(function ($) {
             return;
         }
         const postId = $('#mptrs_mapping_plan_id').val();
-        console.log( postId );
         $.ajax({
             url: mptrs_admin_ajax.ajax_url,
             type: 'POST',

@@ -31,7 +31,7 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
             foreach ( $item_data as $k => $v ) {
                 if( $v['name'] === 'Food Menu' ){
                     $decoded_text = html_entity_decode( $v['value'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
-                    $clean_text = strip_tags($decoded_text);
+                    $clean_text = wp_strip_all_tags($decoded_text);
                     $item_data[$k]['value'] = $clean_text;
                 }
             }
@@ -131,7 +131,7 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
                         $seat_booking_data = [];
                     }
 
-                    $orderDateFormatted = date('d_m_y', strtotime( $order_date ) );
+                    $orderDateFormatted = gmdate('d_m_y', strtotime( $order_date ) );
                     foreach ( $booked_seat_ids as $seat_index ){
                         $seat_booking_data = self::set_seat_bookig( $seat_booking_data, $seat_index, $orderDateFormatted, $order_time );
                     }
@@ -143,9 +143,13 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
         }
 
         public function set_custom_price_cart_item( $cart_item_data, $product_id) {
-            if (!empty($_POST['price'])) {
-                $cart_item_data['custom_price'] = floatval($_POST['price']);
+
+            if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mptrs_nonce' ) ) {
+                if ( isset( $_POST['price'] ) && ! empty( $_POST['price'] ) ) {
+                    $cart_item_data['custom_price'] = floatval( $_POST['price'] );
+                }
             }
+
             return $cart_item_data;
         }
 
