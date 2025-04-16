@@ -1423,3 +1423,18 @@ jQuery(document).ready(function ($) {
 
 
 });
+
+// @author: shahadat hossain
+(function($){
+    $(document).on('click', '[data-popup-target]', function (e) {
+        e.preventDefault();
+        let target = $(this).data('popup-target');
+        $(target).fadeIn(200);
+    });
+    $(document).on('click', '[data-popup-close]', function (e) {
+        e.preventDefault();
+        $(this).closest('.popup').fadeOut(200);
+    });
+    
+})(jQuery);
+   
