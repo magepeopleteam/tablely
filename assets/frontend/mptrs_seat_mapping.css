@@ -109,13 +109,7 @@
     color: red;
 }
 
-.mptrs_postHolder{
-    display: flex;
-    flex-direction: column;
-    max-width: 1440px;
-    width: 100%;
-    margin: auto;
-}
+
 
 .mptrs_popUpInfoHolder {
     display: flex;
@@ -319,61 +313,7 @@
     font-size: 18px;
     color: #555;
 }
-.mptrs_featureImageHolder{
-    display: flex;
-    width: 100%;
-    height: 350px;
-}
-.mptrs_featureImage{
-    width: 100%;
-    max-width: 1440px;
-    height: 100%;
-    object-fit: cover !important;
-    --tw-bg-opacity: 1 !important;
-    background-color: rgb(255 255 255/ 1) !important;
-    border-width: 1px !important;
-    border-radius: .25rem !important;
-}
-.mptrs_shadow {
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
-}
 
-.mptrs_restaurantInfoImg{
-    display: block;
-    float: left;
-    position: relative;
-    width: 125px;
-    height: 125px;
-    border: 1px solid #c1bbbb;
-    border-radius: 3px;
-    top: -35px;
-}
-.mptrs_restaurantInfoHolder{
-    display: flex;
-    padding: 15px 10px 20px 35px;
-    gap: 10px;
-}
-.mptrs_restaurantName{
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.mptrs_restaurantOpening {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    font-size: 13px;
-}
-.mptrs_restaurantInfoRightHolder{
-    padding: 10px 5px;
-}
-
-.mptrs_restaurantOpeninglocation {
-    font-size: 13px;
-}
-.mptrs_restaurantOpeningText{
-    color: #51b309;
-}
 .mptrs_FoodMenuHolder{
     position: relative;
 
@@ -429,7 +369,6 @@
     display: block;
     float: left;
     position: relative;
-    margin-right:30px;
     width: calc( 100% - 350px);
 }
 
@@ -558,46 +497,31 @@
 .mptrs_foodMenuContaine{
     position: relative;
     display: flex;
-    gap:30px;
+    gap:20px;
     justify-content: start;
     align-items: start;
     flex-wrap: wrap;
 }
-/*.mptrs_foodMenuContent {
-    display: block;
-    position: relative;
-    float: left;
-    width: calc(100% - 10px);
-    margin: 10px 7px 3px 7px;
-    border-radius: 5px;
-    height: 90px;
-    background-color: #fff;
-    box-shadow: 0px 0px 1px #a6a8ac;
-    -webkit-transition: all 0.40ms linear;
-    -moz-transition: all 0.40ms linear;
-    -ms-transition: all 0.40ms linear;
-    -o-transition: all 0.40ms linear;
-}*/
 
 .mptrs_foodMenuContent {
     display: flex;
     justify-content: space-between;
     position: relative;
+    transform: scale(1);
     width: 48%;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 12px;
     background-color: #fff;
     box-shadow: 0px 0px 1px #a6a8ac;
-    -webkit-transition: all 0.40ms linear;
-    -moz-transition: all 0.40ms linear;
-    -ms-transition: all 0.40ms linear;
-    -o-transition: all 0.40ms linear;
+    transition: all 0.3s;
     cursor: pointer;
 }
 
 .mptrs_foodMenuContent:hover {
-    transform: scale(1.05);
-    background-color: #ff97308e;
+    transform: scale(1.03);
+    background-color:  var(--mptrs_color_theme_77);
+    border-radius:5px;
+    padding: 10px;
 }
 
 .mptrs-menu-item-info{
@@ -619,14 +543,18 @@
     
 }
 .mptrs_addBtn {
-    background: #f14026;
-    color: #fff;
+    background: var(--mptrs_color_theme);
+    color: var(--mptrs_color_theme_alter);
     border: none;
     width: 40px;
     height: 40px;
     border-radius: 50%;
     cursor: pointer;
     box-shadow: 0 0 5px #333;
+}
+.mptrs_addBtn:hover,.mptrs_addBtn:focus {
+    background: var(--mptrs_color_theme_alter);
+    color: var(--mptrs_color_theme);
 }
 .mptrs_menuImage {
     height:150px;
@@ -640,10 +568,17 @@
     position: absolute;
     top: 10px;
     right: 10px;
+    color: var(--mptrs_color_theme);
     background-color: #fff;
-    padding:5px;
-    line-height: 0px;
-    border-radius: 5px;
+    padding:5px 8px;
+    line-height: 5px;
+    border-radius: 50px;
+    box-shadow: 0 0 5px #333;
+}
+.mptrs_numberOfPerson {
+    font-weight: normal;
+    color: var(--mptrs_color_theme);
+    font-size: 12px;
 }
 /*.mptrs_menuImageHolder{
     display: block;
@@ -856,7 +791,7 @@
     cursor: pointer;
 }
 .mptrs_active{
-    background-color: #f14026;
+    background-color: var(--mptrs_color_theme);
     color: #fff;
 }
 
@@ -892,7 +827,7 @@
     padding: 5px;
 }
 .mptrs_orderOptionTab.mptrs_orderTabActive {
-    border-bottom: 2px solid red;
+    border-bottom: 2px solid var(--mptrs_color_theme);
 }
 .mptrs_input-field {
     width: calc( 100% - 25px );
@@ -904,9 +839,9 @@
 .mptrs_OrderPlaceBtn, .mptrs_dineInOrderPlaceBtn{
     display: block;
     padding:15px;
-    background-color: #f14026;
+    color: var(--mptrs_color_light);
+    background-color: var(--mptrs_color_theme);
     cursor: pointer;
-    color: #fff;
     float: left;
     /*margin-left: calc(50% - 80px);*/
     border-radius: 5px;
@@ -952,7 +887,7 @@
     text-align: left;
 }
 .mptrs_menuPrice {
-    color: #e74c3c;
+    color: var(--mptrs_color_theme);
 }
 .mptrs_quantityControls {
     display: flex;
@@ -1088,11 +1023,7 @@
     align-items: center;
     gap: 5px;
 }
-.mptrs_numberOfPerson {
-    font-weight: normal;
-    color: #555;
-    font-size: 12px;
-}
+
 
 .mptrs_totalPriceHolder {
     display: flex;
@@ -1103,7 +1034,7 @@
 }
 
 .mptrs_totalPricetext{
-    color: #f54040;
+    color: var(--mptrs_color_theme);
 }
 
 .mptrs_totalPrice {
@@ -1124,7 +1055,7 @@
     display: inline-block;
     text-decoration: underline;
     cursor: pointer;
-    color: #990000;
+    color: red;
 }
 .mptrs_orderedMenuHolder{
     display: flex;
@@ -1135,7 +1066,7 @@
 
 .mptrs_clearOrder{
     font-size: 13px;
-    color: #990000;
+    color: red;
 }
 .mptrs_clearOrder:hover{
     text-decoration: underline;
@@ -1204,18 +1135,19 @@
     cursor: pointer;
     font-size: 14px;
     font-weight: bold;
-    background: #f0f0f0;
+    color: var(--mptrs_color_theme);
+    background-color: var(--mptrs_color_light);
     border-radius: 5px;
     transition: 0.3s;
 }
 .mptrs_toggleBtns button:hover {
-    background-color: #f31717;
-    color: white;
+    background-color: var(--mptrs_color_theme);
+    color: var(--mptrs_color_theme_alter);
 }
 
 .mptrs_toggleBtns .active {
-    background: #e53935;
-    color: white;
+    background: var(--mptrs_color_theme);
+    color: var(--mptrs_color_theme_alter);
 }
 .mptrs_dropdown {
     width: 100%;
@@ -1234,8 +1166,8 @@
     border: 1px solid #ccc;
 }
 .mptrs_updateBtn {
-    background: #e53935;
-    color: white;
+    background: var(--mptrs_color_theme);
+    color: var(--mptrs_color_theme_alter);
     border: none;
     width: 100%;
     padding: 10px;
@@ -1245,7 +1177,13 @@
     font-weight: bold;
 }
 .mptrs_updateBtn:hover {
-    background: #c62828;
+    background: var(--mptrs_color_theme);
+}
+[type="button"]:focus, [type="button"]:hover, [type="submit"]:focus, [type="submit"]:hover, button:focus, button:hover,button{
+    color: var(--mptrs_color_theme_alter);
+    background-color: var(--mptrs_color_theme);
+    text-decoration:
+    none;
 }
 
 #mptrs_foodMenuAddedCart {
@@ -1343,14 +1281,7 @@
     #mptrs_popupContainer{
         width: calc( 100% - 20px);
     }
-    .mptrs_restaurantInfoHolder{
-        flex-direction: column;
-        gap: 1px;
-    }
-    .mptrs_restaurantInfoRightHolder{
-      padding: 1px 5px;
-    }
-
+ 
     .mptrs_restaurantDesHolder {
         position: relative;
         max-width: calc(100% - 20px);

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "sass --watch sass/main.scss assets/admin/mptrs_admin.css",
-    "frontend": "sass --watch sass/frontend.scss assets/frontend/mptrs_registration.css"
+    "frontend": "sass --watch sass/frontend.scss assets/frontend/frontend.css"
   },
   "repository": {
     "type": "git",

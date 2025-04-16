@@ -165,65 +165,66 @@
     }
 
     ?>
-    <div class="mptrs_postHolder">
+<main class="mptrs-default-template">
+    <?php if ( has_post_thumbnail() ) : ?>
+        <header class="mptrs-header-baner"> 
+            <img alt="<?php esc_attr( get_the_title() );?>" src=" <?php  echo esc_attr( $thumbnail_url );?>">
+        </header>
+    <?php endif; ?>
+    <div class="mptrs-header">
+        <div class="mptrs-logo">
+            <img alt="<?php esc_attr( get_the_title() );?>" src="http://magepeople.local/wp-content/uploads/2025/04/logo.jpg">
+        </div>
+        <div class="mptrs-restaurant-info">
+            <h1 class="mptrs-restaurant-name"><?php the_title();?></h1>
+            <p class="mptrs-location"><i class="fas fa-map-marker-alt"></i> <?php esc_html_e( '5th floor, Concord MK Heritage, Dhaka, Dhanmondi Dhaka', 'tablely' ); ?></p>
+            <p class="mptrs-time-schedule">
+                <span class="open-now"></span><?php esc_html_e( 'Open Now', 'tablely' ); ?></span>
+                <?php esc_html_e( '11:00 AM - 11:00 PM', 'tablely' ); ?>
+            </p>
+            <p class="mptrs-reviews">
+                <i class="fas fa-star"></i>
+                <span><?php echo esc_html__('4.8/5','tablely'); ?></span>
+                <button class="reviews-button"><?php echo esc_html__('See Reviews','tablely'); ?></button>
+                <button class="more-info-button"><i class="fas fa-info"></i> <?php echo esc_html__('More Info','tablely'); ?></button>
+            </p>
+        </div>
+    </div>
+    <?php echo display_restaurant_menu_content_shortcode($post_id ); ?>
     <div id="seatPopup" class="popup">
-    <div class="popup-content">
-        <span class="close-btn">&times;</span>
-        <div class="mptrs_seatMappedHolder">
-            <span class="mptrs_selectSeatText"><?php esc_html_e( 'Choose a Seat, What\'s Your Choice?', 'tablely' ); ?></span>
-            <div class="mptrs_popUpInfoHolder">
-                <div class="mptrs_seatMapDisplay" id="mptrs_seatMapDisplay"></div>
-                <div class="mptrs_orderInfoHolder">
-                    <div class="mptrs_orderDetailsPopup" id="mptrs_orderDetailsPopup">
-                        <table class="mptrs_orderAddedTable" id="mptrs_orderAddedTable">
-                            <thead>
-                            <tr>
-                                <th><?php esc_html_e( 'Menu Item', 'tablely' )?></th>
-                                <th><?php esc_html_e( 'Quantity', 'tablely' )?></th>
-                            </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                        <table class="mptrs_orderAddedTable" id="mptrs_orderAddedDetails">
-                            <thead>
-                            <tr>
-                                <th><?php esc_html_e( 'Order Date', 'tablely' )?></th>
-                                <th><?php esc_html_e( 'Ordered Time', 'tablely' )?></th>
-                                <th><?php esc_html_e( 'Total Price', 'tablely' )?></th>
-                            </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+        <div class="popup-content">
+            <span class="close-btn">&times;</span>
+            <div class="mptrs_seatMappedHolder">
+                <span class="mptrs_selectSeatText"><?php esc_html_e( 'Choose a Seat, What\'s Your Choice?', 'tablely' ); ?></span>
+                <div class="mptrs_popUpInfoHolder">
+                    <div class="mptrs_seatMapDisplay" id="mptrs_seatMapDisplay"></div>
+                    <div class="mptrs_orderInfoHolder">
+                        <div class="mptrs_orderDetailsPopup" id="mptrs_orderDetailsPopup">
+                            <table class="mptrs_orderAddedTable" id="mptrs_orderAddedTable">
+                                <thead>
+                                <tr>
+                                    <th><?php esc_html_e( 'Menu Item', 'tablely' )?></th>
+                                    <th><?php esc_html_e( 'Quantity', 'tablely' )?></th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <table class="mptrs_orderAddedTable" id="mptrs_orderAddedDetails">
+                                <thead>
+                                <tr>
+                                    <th><?php esc_html_e( 'Order Date', 'tablely' )?></th>
+                                    <th><?php esc_html_e( 'Ordered Time', 'tablely' )?></th>
+                                    <th><?php esc_html_e( 'Total Price', 'tablely' )?></th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+
             </div>
-
+            <div class="mptrs_dineInOrderPlaceBtn" id="mptrs_dineInOrderPlaceBtn"><?php esc_html_e( 'Process Checkout', 'tablely' )?></div>
         </div>
-        <div class="mptrs_dineInOrderPlaceBtn" id="mptrs_dineInOrderPlaceBtn"><?php esc_html_e( 'Process Checkout', 'tablely' )?></div>
     </div>
-</div>
-
-    <?php if ( has_post_thumbnail() ) : ?>
-    <div class="mptrs_featureImageHolder">
-        <img class="mptrs_featureImage mptrs_shadow" alt="<?php esc_attr( get_the_title() );?>" src=" <?php  echo esc_attr( $thumbnail_url );?>">
-    </div>
-<?php endif; ?>
-
-    <div class="mptrs_restaurantInfoHolder">
-    <div class="mptrs_restaurantInfoImgHolder">
-        <img class="mptrs_restaurantInfoImg" alt="<?php esc_attr( get_the_title() );?>" src="<?php  echo esc_attr( $thumbnail_url );?>">
-    </div>
-    <div class="mptrs_restaurantInfoRightHolder">
-        <div class="mptrs_restaurantName"><?php echo esc_attr( get_the_title() );?></div>
-        <div class="mptrs_restaurantOpening">
-            <span class="mptrs_restaurantOpeningText"><?php esc_html_e( 'Opening Time', 'tablely' ); ?></span>
-            <span class="mptrs_restaurantOpeningTime"><?php esc_html_e( '11:00 AM - 11:00 PM', 'tablely' ); ?></span>
-        </div>
-        <div class="mptrs_restaurantOpeninglocation"><?php esc_html_e( '5th floor, Concord MK Heritage, Dhaka, Dhanmondi Dhaka', 'tablely' ); ?></div>
-    </div>
-</div>
-    <?php
-    echo display_restaurant_menu_content_shortcode($post_id );
-    ?>
-
-</div>
+</main>

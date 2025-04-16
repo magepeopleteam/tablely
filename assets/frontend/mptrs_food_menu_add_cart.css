@@ -60,8 +60,8 @@
     /*display: none;*/
 }
 .mptrs_quantityControls button {
-    background: red;
-    color: white;
+    background: var(--mptrs_color_theme);
+    color: var(--mptrs_color_theme_alter);
     border: none;
     padding: 2px;
     cursor: pointer;
@@ -101,8 +101,8 @@
 }
 .mptrs_foodMenuAddedCart {
     align-items: center;
-    background: red;
-    color: white;
+    background: var(--mptrs_color_theme);
+    color: var(--mptrs_color_theme_alter);
     padding: 12px;
     font-size: 14px;
     text-align: center;
