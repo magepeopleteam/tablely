@@ -12,31 +12,7 @@
     align-items: center;
     z-index: 999;
 }
-.popup {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-}
 
-.popup-content {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
-    text-align: center;
-    position: relative;
-    margin: auto;
-    top: 70px;
-}
 .mptrs_popupContent {
     background: white;
     padding: 20px;
@@ -95,21 +71,6 @@
 .mptrs_orderAddedTable th {
     background-color: #f4f4f4;
 }
-
-/* Close Button */
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 25px;
-    cursor: pointer;
-}
-
-.close-btn:hover {
-    color: red;
-}
-
-
 
 .mptrs_popUpInfoHolder {
     display: flex;
@@ -311,12 +272,7 @@
     color: #555;
 }
 
-.mptrs_FoodMenuHolder{
-    position: relative;
 
-    border-radius: 5px;
-    margin: 15px 0px;
-}
 .mptrs_openingHours{
     display: block;
     float: left;
@@ -354,19 +310,6 @@
 .mptrs_day,
 .mptrs_time {
     font-size: 14px;
-}
-
-.mptrs_restaurantRightSide{
-    display: block;
-    float: right;
-    position: relative;
-    width: 350px;
-}
-.mptrs_restaurantLeftSide{
-    display: block;
-    float: left;
-    position: relative;
-    width: calc( 100% - 350px);
 }
 
 .mptrs_restaurantDesHolder {
@@ -462,10 +405,6 @@
     background: #005bbd;
 }
 
-.mptrs_FoodMenuHolderTitle{
-    margin-block-end: 0;
-}
-
 /* Social Media Button */
 .mptrs_socialMedia {
     display: inline-block;
@@ -484,42 +423,6 @@
     background: #222;
 }
 
-/*.mptrs_foodMenuContaine{
-    width: 100%;
-    position: relative;
-    float: left;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-}*/
-.mptrs_foodMenuContaine{
-    position: relative;
-    display: flex;
-    gap:20px;
-    justify-content: start;
-    align-items: start;
-    flex-wrap: wrap;
-}
-
-.mptrs_foodMenuContent {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    transform: scale(1);
-    width: 48%;
-    padding: 10px;
-    border-radius: 12px;
-    background-color: #fff;
-    box-shadow: 0px 0px 1px #a6a8ac;
-    transition: all 0.3s;
-    cursor: pointer;
-}
-
-.mptrs_foodMenuContent:hover {
-    transform: scale(1.03);
-    background-color:  var(--mptrs_color_theme_77);
-    border-radius:5px;
-    padding: 10px;
-}
 
 .mptrs-menu-item-info{
     width: 75%;
@@ -540,18 +443,20 @@
     
 }
 .mptrs_addBtn {
-    background: var(--mptrs_color_theme);
-    color: var(--mptrs_color_theme_alter);
+    background: var(--mptrs_color_theme_alter);
+    color: var(--mptrs_color_black);
     border: none;
     width: 40px;
     height: 40px;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 0 5px #333;
+    box-shadow: 0 0 5px #666;
+    padding: 0;
 }
 .mptrs_addBtn:hover,.mptrs_addBtn:focus {
-    background: var(--mptrs_color_theme_alter);
-    color: var(--mptrs_color_theme);
+    background: var(--mptrs_color_light);
+    color: var(--mptrs_color_black);
+    box-shadow: 0 0 10px #333;
 }
 .mptrs_menuImage {
     height:150px;
@@ -626,7 +531,6 @@
 }
 
 .mptrs_orderCardHolder,
-.mptrs_orderedFoodMenuInfoHolder,
 .mptrs_orderCardTakeawayHolder
 {
     display: flex;
@@ -636,6 +540,7 @@
     padding: 10px;
     border-radius: 10px;
     text-align: center;
+    
 }
 
 .mptrs_orderCardDeliveryHolder{
@@ -768,30 +673,6 @@
     color: white;
 }
 
-.mptrs_category_container {
-    width: calc( 100% - 20px );
-    border-radius: 5px;
-    margin: 30px 0;
-    display: flex;
-    flex-wrap: wrap;
-    position: relative;
-    overflow: hidden;
-}
-
-.mptrs_category_item {
-    background: #ededed;
-    color: #333333;
-    padding:8px 10px;
-    margin-right:10px;
-    border-radius: 5px;
-    white-space: nowrap;
-    cursor: pointer;
-}
-.mptrs_active{
-    background-color: var(--mptrs_color_theme);
-    color: #fff;
-}
-
 .mptrs_hidden_items {
     display: none;
     flex-wrap: wrap;
@@ -802,16 +683,6 @@
     padding: 10px;
     z-index: 10;
 }
-
-.mptrs_more_button {
-    background: #333;
-    color: white;
-    padding: 8px 12px;
-    margin: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
 
 .mptrs_orderOptionsTab {
     display: flex;
@@ -1054,12 +925,6 @@
     cursor: pointer;
     color: red;
 }
-.mptrs_orderedMenuHolder{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-}
 
 .mptrs_clearOrder{
     font-size: 13px;
@@ -1267,9 +1132,6 @@
 
 @media screen and (max-width: 600px) {
 
-    .mptrs_restaurantLeftSide{
-        width: 100%;
-    }
     #mptrs_popupContainer{
         width: calc( 100% - 20px);
     }
@@ -1280,13 +1142,7 @@
         padding: 10px;
     }
 
-    .mptrs_restaurantRightSide {
-        width: calc(100% - 20px);
-        padding: 10px;
-    }
-
     .mptrs_orderCardHolder,
-    .mptrs_orderedFoodMenuInfoHolder,
     .mptrs_orderCardTakeawayHolder,
     .mptrs_rightSidebar,
     .mptrs_orderHolder

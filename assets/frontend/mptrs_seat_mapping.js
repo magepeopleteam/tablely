@@ -2,11 +2,11 @@ jQuery(document).ready(function ($) {
 
     $(document).on('click',".mptrs_menuImageHolder", function() {
 
-        let foodMenuCategory = $(this).closest('.mptrs_foodMenuContent').find('.mptrs_addedMenuordered').attr('data-menuCategory');
-        let menuName = $(this).closest('.mptrs_foodMenuContent').find('.mptrs_addedMenuordered').attr('data-menuName').trim();
-        let menuImg = $(this).closest('.mptrs_foodMenuContent').find('.mptrs_menuImage').attr('src').trim();
-        let menuPrice = $(this).closest('.mptrs_foodMenuContent').find('.mptrs_addedMenuordered').attr('data-menuPrice').trim();
-        let numPersons = $(this).closest('.mptrs_foodMenuContent').find('.mptrs_addedMenuordered').attr('data-numOfPerson').trim();
+        let foodMenuCategory = $(this).closest('.mptrs-food-menu').find('.mptrs_addedMenuordered').attr('data-menuCategory');
+        let menuName = $(this).closest('.mptrs-food-menu').find('.mptrs_addedMenuordered').attr('data-menuName').trim();
+        let menuImg = $(this).closest('.mptrs-food-menu').find('.mptrs_menuImage').attr('src').trim();
+        let menuPrice = $(this).closest('.mptrs-food-menu').find('.mptrs_addedMenuordered').attr('data-menuPrice').trim();
+        let numPersons = $(this).closest('.mptrs-food-menu').find('.mptrs_addedMenuordered').attr('data-numOfPerson').trim();
 
         let menuDetails = `
                             <div class="mptrs_foodMenuDetailsContent">
@@ -58,15 +58,15 @@ jQuery(document).ready(function ($) {
         $(this).addClass("active");
 
         if (filterValue === "all") {
-            $(".mptrs_foodMenuContent").fadeIn();
+            $(".mptrs-food-menu").fadeIn();
         } else {
-            $(".mptrs_foodMenuContent").hide().filter(`[data-category='${filterValue}']`).fadeIn();
+            $(".mptrs-food-menu").hide().filter(`[data-category='${filterValue}']`).fadeIn();
         }
     });
     function category_shown(){
-        let container = $(".mptrs_category_container");
-        let items = $(".mptrs_category_item");
-        let moreButton = $(".mptrs_more_button");
+        let container = $(".mptrs-category-container");
+        let items = $(".mptrs-category-item");
+        let moreButton = $(".mptrs-more-button");
         let hiddenContainer = $(".mptrs_hidden_items");
         let availableWidth = container.width() - moreButton.outerWidth(true);
         let usedWidth = 0;
@@ -473,7 +473,8 @@ jQuery(document).ready(function ($) {
         if( total === 0 ){
             $("#mptrs_totalPriceHolder").fadeOut();
             $(".mptrs_foodOrderContentholder").fadeOut();
-            $("#mptrs_orderedFoodMenuInfoHolder").fadeOut();
+            // $("#mptrs_orderedFoodMenuInfoHolder").fadeOut();
+            $(".mptrs_clearOrder").fadeOut();
             $("#mptrs_foodMenuAddedCart").fadeIn();
         }else{
             $("#mptrs_totalPriceHolder").fadeIn();
@@ -977,13 +978,13 @@ jQuery(document).ready(function ($) {
 
     $(document).on( 'click', '.mptrs_clearOrder', function ( e ) {
         e.preventDefault();
-        $("#mptrs_orderedFoodMenuInfoHolder").fadeOut();
+        // $("#mptrs_orderedFoodMenuInfoHolder").fadeOut();
         $("#mptrs_foodMenuAddedCart").fadeIn();
         $("#mptrs_orderedFoodMenuHolder").empty();
 
         addToCartData = {};
-        $('.mptrs_foodMenuContaine').find('.mptrs_addedQuantityControls').fadeOut();
-        $('.mptrs_foodMenuContaine').find('.mptrs_addBtn').fadeIn(1000);
+        $('.mptrs-food-menu-container').find('.mptrs_addedQuantityControls').fadeOut();
+        $('.mptrs-food-menu-container').find('.mptrs_addBtn').fadeIn(1000);
 
     })
 
@@ -1127,6 +1128,7 @@ jQuery(document).ready(function ($) {
                 mptrs_oderDetails: '',
             };
             addToCartData[menuAddedKey] = 1;
+            $("#mptrs_orderedFoodMenuHolder").empty();
             let flyItem = animationDiv.clone().css({
                 position: "absolute",
                 top: animationDiv.offset().top,
@@ -1426,14 +1428,14 @@ jQuery(document).ready(function ($) {
 
 // @author: shahadat hossain
 (function($){
-    $(document).on('click', '[data-popup-target]', function (e) {
+    $(document).on('click', '.mptrs-data[data-popup-target]', function (e) {
         e.preventDefault();
         let target = $(this).data('popup-target');
         $(target).fadeIn(200);
     });
     $(document).on('click', '[data-popup-close]', function (e) {
         e.preventDefault();
-        $(this).closest('.popup').fadeOut(200);
+        $(this).closest('.mptrs-popup').fadeOut(200);
     });
     
 })(jQuery);
