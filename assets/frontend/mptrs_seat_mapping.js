@@ -50,12 +50,12 @@ jQuery(document).ready(function ($) {
 
     });
 
-    $(document).on("click", ".mptrs_category_item",function () {
-        $(".mptrs_category_item").removeClass('mptrs_active');
-        $(this).addClass('mptrs_active');
+    $(document).on("click", ".mptrs-category-item",function () {
+        $(".mptrs-category-item").removeClass('mptrs-active');
+        $(this).addClass('mptrs-active');
         let filterValue = $(this).data("filter");
-        $(".mptrs_categoryFilter").removeClass("active");
-        $(this).addClass("active");
+        $(".mptrs_categoryFilter").removeClass("mptrs-active");
+        $(this).addClass("mptrs-active");
 
         if (filterValue === "all") {
             $(".mptrs-food-menu").fadeIn();

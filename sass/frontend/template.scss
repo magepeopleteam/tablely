@@ -104,13 +104,13 @@
     }
 
     .mptrs-content{
+        display: flex;
+        justify-content: space-between;
+        gap:20px;
         .mptrs-content-left{
-            display: block;
-            float: left;
             position: relative;
-            width: calc( 100% - 350px);
+            width:75%;
             .mptrs-category-container{
-                width: calc( 100% - 20px );
                 border-radius: 5px;
                 margin: 30px 0;
                 display: flex;
@@ -125,7 +125,7 @@
                     border-radius: 5px;
                     white-space: nowrap;
                     cursor: pointer;
-                    &.mptrs_active{
+                    &.mptrs-active{
                         background-color: var(--mptrs_color_theme);
                         color: #fff;
                     }
@@ -169,11 +169,8 @@
             }
         }
         .mptrs-content-right{
-            padding: 10px;
-            display: block;
-            float: right;
             position: relative;
-            width: 350px;
+            width:25%;
             .mptrs-ordered-basket{
                 position: sticky;
                 display: flex;

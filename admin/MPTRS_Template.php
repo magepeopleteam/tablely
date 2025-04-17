@@ -248,7 +248,7 @@ if (!class_exists('MPTRS_Template')) {
                         <h4><?php esc_html_e('Menu', 'tablely'); ?> (<?php echo esc_html(count($existing_menus)); ?>)</h4>
                         <div class="mptrs-category-container">
                             <?php if (!empty($categories)) { ?>
-                                <div class="mptrs-category-item  mptrs_active" data-filter="all"><?php echo esc_html__('All ', 'tablely').'('.count($existing_menus).')'; ?></div>
+                                <div class="mptrs-category-item  mptrs-active" data-filter="all"><?php echo esc_html__('All ', 'tablely').'('.count($existing_menus).')'; ?></div>
                                 <?php foreach ($categories as $key => $category) { ?>
                                     <div class="mptrs-category-item" data-filter="<?php echo esc_attr($key); ?>"><?php echo esc_html($category); ?></div>
                                 <?php } ?>
