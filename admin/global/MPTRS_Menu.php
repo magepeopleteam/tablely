@@ -384,15 +384,15 @@ if (!class_exists('MPTRS_Menu')) {
                 <div class="tabsItem" data-tabs="#mptrs_food_menu_add">
                     <div class="mptrs_categoryMenubtnHolder">
                         <input type="number"  id="mptrs_displayMenuCount" class="mptrs_setDisplayLimit" value="<?php echo esc_attr( $display_limit )?>" placeholder="Display Limit 20">
-                        <button id="mptrs_openCategoryPopup" class="mptrs_open_popup_btn">Categories..</button>
-                        <button id="mptrs_openPopup" class="mptrs_open_popup_btn">+Add New Food Menu </button>
+                        <button id="mptrs_openCategoryPopup" class="mptrs_open_popup_btn"><?php esc_attr_e( 'Categories..', 'tablely' ) ?></button>
+                        <button id="mptrs_openPopup" class="mptrs_open_popup_btn"><?php esc_attr_e( '+Add New Food Menu', 'tablely' ) ?> </button>
                     </div>
                     <div class="mptrs_foodMenuContentHolder">
 
                         <div id="mptrs_foodMenuShowContainer" class="mptrs_foodMenuContainer" style="display: block">
                             <div id="mptrs_allFoodMenu" class="mptrs_allFoodMenu">
                                 <div class="mptrs_categoryFilterHolder">
-                                    <div class="mptrs_categoryFilter active" data-filter="all"><?php __( 'All', 'tablely' ) ?></div>
+                                    <div class="mptrs_categoryFilter active" data-filter="all"><?php esc_attr_e( 'All', 'tablely' ) ?></div>
                                     <?php
                                     if( is_array( $menu_categories ) && !empty( $menu_categories ) ) {
                                         foreach ( $menu_categories as $key => $category ) { ?>
@@ -404,12 +404,12 @@ if (!class_exists('MPTRS_Menu')) {
                                 <table class="mptrsTable" id="mptrs_showAllMenu">
                                     <thead>
                                     <tr>
-                                        <th class="mptrsTableTh mptrsThImage">Image</th>
-                                        <th class="mptrsTableTh mptrsThName">Name</th>
-                                        <th class="mptrsTableTh mptrsThcategory">Category</th>
-                                        <th class="mptrsTableTh mptrsThPrice">Price</th>
-                                        <th class="mptrsTableTh mptrsThServes">Serves</th>
-                                        <th class="mptrsTableTh mptrsThActions">Actions</th>
+                                        <th class="mptrsTableTh mptrsThImage"><?php esc_attr_e( 'Image', 'tablely' ) ?></th>
+                                        <th class="mptrsTableTh mptrsThName"><?php esc_attr_e( 'Name', 'tablely' ) ?></th>
+                                        <th class="mptrsTableTh mptrsThcategory"><?php esc_attr_e( 'Category', 'tablely' ) ?></th>
+                                        <th class="mptrsTableTh mptrsThPrice"><?php esc_attr_e( 'Price', 'tablely' ) ?></th>
+                                        <th class="mptrsTableTh mptrsThServes"><?php esc_attr_e( 'Serves', 'tablely' ) ?></th>
+                                        <th class="mptrsTableTh mptrsThActions"><?php esc_attr_e( 'Actions', 'tablely' ) ?></th>
                                     </tr>
                                     </thead>
                                     <tbody id="mptrs_foodMenuContainer">

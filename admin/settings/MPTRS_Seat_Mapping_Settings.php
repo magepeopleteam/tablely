@@ -19,10 +19,10 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             add_action('wp_ajax_mptrs_render_manage_seat_templates_for_import', [ $this,  'mptrs_render_manage_seat_templates_for_import'] );
             add_action('wp_ajax_nopriv_mptrs_render_manage_seat_templates_for_import', [ $this,  'mptrs_render_manage_seat_templates_for_import'] ); // Allow non-logged-in users if needed
 
-            add_action('wp_ajax_remove_from_templates',[ $this,  'remove_from_templates']);
+//            add_action('wp_ajax_remove_from_templates',[ $this,  'remove_from_templates']);
 
-            add_action('wp_ajax_image_upload', [ $this,'handle_image_upload' ] );
-            add_action('wp_ajax_nopriv_image_upload', [ $this,'handle_image_upload' ] );
+            add_action('wp_ajax_mptrs_icon_image_upload', [ $this,'handle_image_upload' ] );
+            add_action('wp_ajax_nopriv_mptrs_icon_image_upload', [ $this,'handle_image_upload' ] );
 
             add_action('wp_ajax_mptrs_save_food_menu',[ $this, 'mptrs_save_food_menu' ] );
             add_action('wp_ajax_nopriv_mptrs_save_food_menu', [ $this, 'mptrs_save_food_menu' ] );
@@ -58,7 +58,7 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
                 wp_send_json_error(['message' => 'Permission denied']);
             }
 
-            $categories_json = isset( $_POST['categoryJsonData']) ? sanitize_text_field( stripslashes( wp_unslash( $_POST['categoryJsonData'] ) ) ) : '';
+            $categories_json = isset( $_POST['categoryJsonData']) ? sanitize_text_field( wp_unslash( $_POST['categoryJsonData'] ) ) : '';
             $categories = json_decode($categories_json, true);
 
             $result = 0;
@@ -88,7 +88,7 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             if (!$post_id || get_post_type($post_id) !== 'mptrs_item') {
                 wp_send_json_error(['message' => 'Invalid post ID or post type.']);
             }
-            $menuItemkey = isset( $_POST['menu_key'] ) ? MPTRS_Function::data_sanitize( wp_unslash( $_POST['menu_key'] ) ) : [];
+            $menuItemkey = isset( $_POST['menu_key'] ) ? sanitize_text_field( wp_unslash( $_POST['menu_key'] ) ) : [];
             $menuItems[0] = $menuItemkey;
             $existing_menuItems = get_post_meta( $post_id, '_mptrs_food_menu_items', true );
             if ( is_array( $existing_menuItems ) ) {
@@ -104,9 +104,11 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
         }
 
         public function mptrs_remove_saved_food_menu_for_restaurant(){
-            if ( !isset($_POST['nonce']) || !wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mptrs_admin_nonce')) {
-                wp_send_json_error(['message' => 'Security check failed.'], 403);
+            $nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '' ;
+            if ( ! wp_verify_nonce( $nonce, 'mptrs_admin_nonce' ) ) {
+                wp_send_json_error( [ 'message' => 'Security check failed.' ], 403 );
             }
+
             $post_id = intval(isset( $_POST['postId']) ? sanitize_text_field( wp_unslash( $_POST['postId'] ) ) : 0 );
             if (!$post_id || get_post_type( $post_id ) !== 'mptrs_item') {
                 wp_send_json_error(['message' => 'Invalid post ID or post type.']);
@@ -133,7 +135,7 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             if (!isset($_POST['nonce']) || !wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mptrs_admin_nonce')) {
                 wp_send_json_error(['message' => 'Security check failed.'], 403);
             }
-            $delete_menu_key = isset($_POST['deleteKey']) ? sanitize_text_field( $_POST['deleteKey'] ) : '';
+            $delete_menu_key = isset($_POST['deleteKey']) ? sanitize_text_field( wp_unslash( $_POST['deleteKey'] ) ) : '';
             $success = false;
             if( $delete_menu_key !== '' ){
                 $existing_menus = get_option( '_mptrs_food_menu' );
@@ -166,7 +168,7 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
                 'menuName'          => isset( $_POST['menuData']['menuName'] ) ? sanitize_text_field( wp_unslash( $_POST['menuData']['menuName'] ) ) : '',
                 'menuCategory'      =>  isset( $_POST['menuData']['menuCategory'] ) ? sanitize_text_field( wp_unslash( $_POST['menuData']['menuCategory'] ) ) : '',
                 'menuDescription'   => isset( $_POST['menuData']['menuDescription'] ) ? sanitize_text_field( wp_unslash( $_POST['menuData']['menuDescription'] ) ) : '',
-                'menuPrice'         => isset( $_POST['menuData']['menuDescription'] ) ? floatval( wp_unslash( $_POST['menuData']['menuPrice'] ) ) : 0,
+                'menuPrice'         => isset( $_POST['menuData']['menuPrice'] ) ? floatval( wp_unslash( $_POST['menuData']['menuPrice'] ) ) : 0,
                 'menuSalePrice'     => isset( $_POST['menuData']['menuSalePrice'] ) ? floatval( wp_unslash( $_POST['menuData']['menuSalePrice'] ) ) : 0,
                 'numPersons'        => isset( $_POST['menuData']['menunumPersons'] ) ? intval( wp_unslash( $_POST['menuData']['menunumPersons'] ) ) : 0,
                 'menuImgUrl'        => isset( $_POST['menuData']['menuImgUrl'] ) ? esc_url_raw( wp_unslash( $_POST['menuData']['menuImgUrl'] ) ) : '',
@@ -204,7 +206,7 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
                 $variations_ary = json_decode( stripslashes( sanitize_text_field( $variations ) ), true);
             }
 
-            $uniqueKey = sanitize_text_field($_POST['menuEditData']['menuKey']);
+            $uniqueKey = isset(  $_POST['menuEditData']['menuKey'] ) ? sanitize_text_field( wp_unslash( $_POST['menuEditData']['menuKey'] ) ) : '';
             $new_menu_data = [
                 'menuName'     => isset( $_POST['menuEditData']['menuName'] ) ? sanitize_text_field( wp_unslash( $_POST['menuEditData']['menuName'] ) ) : '',
                 'menuCategory' => isset( $_POST['menuEditData']['menuCategory'] ) ? sanitize_text_field( wp_unslash( $_POST['menuEditData']['menuCategory'] ) ) : '',
@@ -254,9 +256,12 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
                 wp_send_json_error(['message' => 'Permission denied.']);
             }
 
-            $seat_maps_meta_data = isset( $_POST['seat_maps_meta_data'] ) ? MPTRS_Function::data_sanitize( $_POST['seat_maps_meta_data'] ) : [];
-            $seat_plan_texts= isset( $_POST['seatPlanTexts'] ) ? MPTRS_Function::data_sanitize( $_POST['seatPlanTexts'] ) : '' ;
-            $dynamicShapes = isset( $_POST['dynamicShapes'] ) ? MPTRS_Function::data_sanitize( $_POST['dynamicShapes'] ) : '';
+
+            $seat_maps_meta_data = isset( $_POST['seat_maps_meta_data'] ) ? json_decode( sanitize_text_field( wp_unslash( $_POST['seat_maps_meta_data'] ) ), true ) : [];
+            $seat_plan_texts= isset( $_POST['seatPlanTexts'] ) ? json_decode( sanitize_text_field( wp_unslash( $_POST['seatPlanTexts'] ) ), true ) : '' ;
+            $dynamicShapes = isset( $_POST['dynamicShapes'] ) ? json_decode( sanitize_text_field( wp_unslash( $_POST['dynamicShapes'] ) ), true ) : '';
+
+
             $template = isset( $_POST['template'] ) ? sanitize_text_field( wp_unslash( $_POST['template'] ) ) : '';
             $seat_plan_data = array(
                 'seat_data' => $seat_maps_meta_data,
@@ -271,100 +276,64 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             wp_send_json_success(['message' => 'Meta data saved successfully.']);
         }
 
-        /*function handle_image_upload_old() {
-            // check_ajax_referer('image_upload_nonce', 'nonce');
-
-            if (!empty($_FILES['image'])) {
-                $file = $_FILES['image'];
-
-                $allowed_types = array('image/jpeg', 'image/png', 'image/gif', 'image/webp');
-                if (!in_array($file['type'], $allowed_types)) {
-                    wp_send_json_error(['message' => 'Invalid file type.']);
-                }
-
-                $assets_dir = MPTRS_Plan_PATH . '/assets/images/icons/seatIcons';
-
-                if (!file_exists( $assets_dir ) ) {
-                    wp_mkdir_p( $assets_dir );
-                }
-
-                $timestamp = time();
-                $unique_name = substr( hash('sha256', $timestamp ), 0, 12 );
-                $file_extension = pathinfo( $file['name'], PATHINFO_EXTENSION );
-                $new_file_name = $unique_name . '.' . $file_extension;
-
-                $target_file = $assets_dir . '/' . $new_file_name;
-
-                if ( move_uploaded_file( $file['tmp_name'], $target_file ) ) {
-                    $file_url = MPTRS_Plan_ASSETS . 'images/icons/seatIcons/' . $new_file_name;
-
-                    wp_send_json_success( [ 'message' => 'Image uploaded successfully!', 'file_url' => $file_url, 'image_name' => $unique_name ] );
-                } else {
-                    wp_send_json_error( [ 'message' => 'Failed to move the uploaded file.' ] );
-                }
-            } else {
-                wp_send_json_error( [ 'message' => 'No file uploaded.' ] );
-            }
-        }*/
         function handle_image_upload() {
-            // Optional: Add nonce verification for security
-            // check_ajax_referer('image_upload_nonce', 'nonce');
+            if ( !isset($_POST['nonce']) || !wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mptrs_admin_nonce')) {
+                wp_send_json_error(['message' => 'Security check failed.'], 403);
+            }
 
-            if (!empty($_FILES['image'])) {
+            if ( isset( $_FILES['image'] ) && $_FILES['image']['error'] === UPLOAD_ERR_OK ) {
                 $file = $_FILES['image'];
 
-                // Validate file type (for extra safety, even though wp_handle_upload does it too)
-                $allowed_types = array('image/jpeg', 'image/png', 'image/gif', 'image/webp');
-                if (!in_array($file['type'], $allowed_types)) {
+                // Allowed types
+                $allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                $tmp_path = $file['tmp_name'];
+                $mime_type = mime_content_type($tmp_path);
+
+                if ( ! in_array($mime_type, $allowed_types, true) ) {
                     wp_send_json_error(['message' => 'Invalid file type.']);
                 }
 
-                require_once ABSPATH . 'wp-admin/includes/file.php';
+                // Sanitize file name
+                $original_name = sanitize_file_name( $file['name'] );
+                $file_ext = pathinfo( $original_name, PATHINFO_EXTENSION );
+                $unique_name = substr( hash( 'sha256', time() . wp_rand() ), 0, 12 ) . '.' . $file_ext;
 
-                $upload_overrides = [
-                    'test_form' => false,
-                    'mimes'     => [
-                        'jpg|jpeg' => 'image/jpeg',
-                        'png'      => 'image/png',
-                        'gif'      => 'image/gif',
-                        'webp'     => 'image/webp',
-                    ]
-                ];
+                $upload_dir = MPTRS_Plan_PATH . '/assets/images/icons/seatIcons/';
 
-                $movefile = wp_handle_upload($file, $upload_overrides);
+                if ( ! file_exists($upload_dir) ) {
+                    wp_mkdir_p($upload_dir);
+                }
 
-                if ($movefile && !isset($movefile['error'])) {
-                    // Rename the file if needed
-                    $timestamp = time();
-                    $unique_name = substr(hash('sha256', $timestamp), 0, 12);
-                    $file_extension = pathinfo($movefile['file'], PATHINFO_EXTENSION);
-                    $new_filename = $unique_name . '.' . $file_extension;
+                // Final file path
+                $destination = $upload_dir . $unique_name;
 
-                    $new_file_path = dirname($movefile['file']) . '/' . $new_filename;
-                    $new_file_url  = dirname($movefile['url']) . '/' . $new_filename;
-
-                    rename($movefile['file'], $new_file_path);
+                if ( move_uploaded_file( $tmp_path, $destination ) ) {
+                    $plugin_url = MPTRS_Plan_ASSETS.'images/icons/seatIcons/' . $unique_name;
 
                     wp_send_json_success([
                         'message'    => 'Image uploaded successfully!',
-                        'file_url'   => esc_url_raw($new_file_url),
-                        'image_name' => sanitize_file_name($unique_name)
+                        'file_url'   => esc_url_raw($plugin_url),
+                        'image_name' => sanitize_file_name($unique_name),
                     ]);
                 } else {
-                    wp_send_json_error(['message' => 'Upload error: ' . esc_html($movefile['error'])]);
+                    wp_send_json_error(['message' => 'Failed to move uploaded file.']);
                 }
             } else {
-                wp_send_json_error(['message' => 'No file uploaded.']);
+                wp_send_json_error(['message' => 'No file uploaded or upload error.']);
             }
         }
 
 
-        public function remove_from_templates(){
-            $template_id = isset($_POST['templateId']) ? absint($_POST['templateId']) : '';
+       /* public function remove_from_templates(){
+            $template_id = isset($_POST['templateId']) ? absint( $_POST['templateId']) : '';
             $result = delete_post_meta( $template_id, 'is_template');
             wp_send_json_success( $result );
-        }
+        }*/
         function mptrs_render_manage_seat_templates_for_import() {
+
+            if ( !isset($_POST['nonce']) || !wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mptrs_admin_nonce')) {
+                wp_send_json_error(['message' => 'Security check failed.'], 403);
+            }
             $paged = isset($_POST['paged']) ? absint($_POST['paged']) : 1;
             $original_post_id = isset($_POST['postId']) ? absint($_POST['postId']) : 1;
             $args = [

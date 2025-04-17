@@ -446,7 +446,7 @@ jQuery(document).ready(function ($) {
             'data-price': 0
         });
 
-        $('.mptrs_mappingSeat').text('');
+        // $('.mptrs_mappingSeat').text('');
         seat_num = 0;
         selectedDivs = [];
         selectedDraggableDivs = [];
@@ -630,7 +630,7 @@ jQuery(document).ready(function ($) {
                 'data-price': 0
             });
 
-            $this.text('');
+            // $this.text('');
         }
 
         if( selectedDivs.length > 0 ){
@@ -1604,12 +1604,13 @@ jQuery(document).ready(function ($) {
     }
 
     $(document).on('change', '#mptrs_seatIconUpload', function () {
+        alert('CLicked');
         const file = this.files[0];
         const formData = new FormData();
 
         if ( file ) {
             formData.append('image', file);
-            formData.append('action', 'image_upload');
+            formData.append('action', 'mptrs_icon_image_upload');
             formData.append('nonce', mptrs_admin_ajax.nonce);
             $.ajax({
                 url: mptrs_admin_ajax.ajax_url,
@@ -1898,7 +1899,7 @@ jQuery(document).ready(function ($) {
         }
     }
 
-    $('.mptrs_savePlan').on('click', function (e) {
+    $(document).on( 'click', '.mptrs_savePlan', function (e) {
         e.preventDefault();
         /*const planName = $('#plan-name').val();
         if (!planName) {
@@ -1921,11 +1922,11 @@ jQuery(document).ready(function ($) {
                 const row = $(this).data('row');
                 const col = $(this).data('col');
                 const backgroundImage = $(this).data('background-image');
-                const seat_number = $(this).data('seat-num');
+                const seat_number = $(this).attr('data-seat-num');
                 const data_degree = $(this).data('degree');
                 const data_tableBind = $(this).attr('data-tablebind');
                 const color = $(this).css('background-color');
-                const price = $(this).data('price') || 0;
+                const price = $(this).attr('data-price') || 0;
                 const width =$(this).css('width') || 0;
                 const height = $(this).css('height') || 0;
                 const z_index = $(this).css('z-index') || 0;
@@ -1968,6 +1969,10 @@ jQuery(document).ready(function ($) {
             return;
         }
         const postId = $('#mptrs_mapping_plan_id').val();
+        let selectedSeatsStr = JSON.stringify(selectedSeats);
+        let seatPlanTextsStr = JSON.stringify(seatPlanTexts);
+        let dynamicShapesStr = JSON.stringify(dynamicShapes);
+
         $.ajax({
             url: mptrs_admin_ajax.ajax_url,
             type: 'POST',
@@ -1975,10 +1980,10 @@ jQuery(document).ready(function ($) {
                 action: 'mptrs_save_seat_maps_meta_data',
                 nonce: mptrs_admin_ajax.nonce,
                 post_id: postId,
-                seat_maps_meta_data: selectedSeats,
-                seatPlanTexts: seatPlanTexts,
+                seat_maps_meta_data: selectedSeatsStr,
+                seatPlanTexts: seatPlanTextsStr,
                 seatIcon: seatIconName,
-                dynamicShapes: dynamicShapes,
+                dynamicShapes: dynamicShapesStr,
                 template: template,
             },
             success: function (response) {

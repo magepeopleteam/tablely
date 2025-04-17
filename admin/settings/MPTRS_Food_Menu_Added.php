@@ -41,7 +41,7 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
                 <section class="section">
                     <h2><?php esc_html_e('Food Menu Details', 'tablely'); ?></h2>
                     <span><?php esc_html_e('Add Food menu from left side to right side. You can create new menu from here ', 'tablely'); ?>
-                    <a href="<?php echo admin_url('edit.php?post_type=mptrs_item&page=mptrs_new_food_menu'); ?>">
+                    <a href="<?php echo esc_attr( admin_url('edit.php?post_type=mptrs_item&page=mptrs_new_food_menu') ); ?>">
                         <?php esc_attr_e( 'Add New Food Menu', 'tablely' );?>
                     </a>
                 </span>
@@ -49,7 +49,7 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
                 <section>
                     <?php  if( is_array( $all_food_menus ) && count( $all_food_menus ) > 0 ): ?>
                         <div class="mptrs_foodMenuTabHoilder">
-                            <div class="mptrs_filterByCategory active" data-filter="all"><?php echo __( 'All', 'tablely' ) ?></div>
+                            <div class="mptrs_filterByCategory active" data-filter="all"><?php esc_attr_e( 'All', 'tablely' ) ?></div>
                                 <?php
                                 if( is_array( $menu_categories ) && !empty( $menu_categories ) ) {
                                     foreach ( $menu_categories as $key => $category ) { ?>
@@ -160,7 +160,7 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
                             </div>
                         </div>
                     <?php else: ?>
-                        <a class="mptrs_addNewFoodMenuBtn" href="<?php echo admin_url('edit.php?post_type=mptrs_item&page=mptrs_new_food_menu'); ?>" ><?php esc_attr_e( 'Add New Food Menu', 'tablely' );?></a>
+                        <a class="mptrs_addNewFoodMenuBtn" href="<?php echo esc_attr( admin_url('edit.php?post_type=mptrs_item&page=mptrs_new_food_menu' ) ); ?>" ><?php esc_attr_e( 'Add New Food Menu', 'tablely' );?></a>
                     <?php endif; ?>
                 </section>
             </div>
