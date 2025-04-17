@@ -17,10 +17,10 @@
         </div>
     </div>
     <div class="mptrs-content">
-        <div class="mptrs_restaurantLeftSide">
+        <div class="mptrs-content-left">
             <?php do_action('mptrs_template_menus'); ?>
         </div>
-        <div class="mptrs_restaurantRightSide">
+        <div class="mptrs-content-right">
             <?php do_action('mptrs_template_basket'); ?>
             <?php do_action('mptrs_sidebar_content'); ?>
         </div>
