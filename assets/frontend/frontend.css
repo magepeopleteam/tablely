@@ -98,9 +98,10 @@
   line-height: 13px;
   font-size: 12px;
 }
+.mptrs-default-template .mptrs-content {
+  display: flex;
+}
 .mptrs-default-template .mptrs-content .mptrs-content-left {
-  display: block;
-  float: left;
   position: relative;
   width: calc(100% - 350px);
 }
@@ -163,8 +164,6 @@
 }
 .mptrs-default-template .mptrs-content .mptrs-content-right {
   padding: 10px;
-  display: block;
-  float: right;
   position: relative;
   width: 350px;
 }

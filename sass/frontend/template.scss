@@ -104,9 +104,8 @@
     }
 
     .mptrs-content{
+        display: flex;
         .mptrs-content-left{
-            display: block;
-            float: left;
             position: relative;
             width: calc( 100% - 350px);
             .mptrs-category-container{
@@ -170,8 +169,6 @@
         }
         .mptrs-content-right{
             padding: 10px;
-            display: block;
-            float: right;
             position: relative;
             width: 350px;
             .mptrs-ordered-basket{
