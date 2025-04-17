@@ -22,6 +22,7 @@
         </div>
         <div class="mptrs_restaurantRightSide">
             <?php do_action('mptrs_template_basket'); ?>
+            <?php do_action('mptrs_sidebar_content'); ?>
         </div>
     </div>
 </main>

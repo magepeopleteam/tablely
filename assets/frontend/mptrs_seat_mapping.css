@@ -12,31 +12,7 @@
     align-items: center;
     z-index: 999;
 }
-.popup {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-}
 
-.popup-content {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
-    text-align: center;
-    position: relative;
-    margin: auto;
-    top: 70px;
-}
 .mptrs_popupContent {
     background: white;
     padding: 20px;
@@ -95,21 +71,6 @@
 .mptrs_orderAddedTable th {
     background-color: #f4f4f4;
 }
-
-/* Close Button */
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 25px;
-    cursor: pointer;
-}
-
-.close-btn:hover {
-    color: red;
-}
-
-
 
 .mptrs_popUpInfoHolder {
     display: flex;
