@@ -195,6 +195,9 @@
   margin: 0;
   font-weight: bold;
 }
+.mptrs-default-template .mptrs-content .mptrs-content-right .mptrs-ordered-basket .mptrs-basket-middle {
+  background-color: transparent;
+}
 .mptrs-default-template .mptrs-content .mptrs-content-right .mptrs-ordered-basket .mptrs-basket-bottom {
   display: flex;
   flex-direction: column;

@@ -202,7 +202,9 @@
                         }
                     }
                 }
-                .mptrs-basket-middle{}
+                .mptrs-basket-middle{
+                    background-color: transparent;
+                }
                 .mptrs-basket-bottom{
                     display: flex;
                     flex-direction: column;
