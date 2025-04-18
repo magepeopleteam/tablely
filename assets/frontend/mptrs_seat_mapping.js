@@ -930,15 +930,19 @@ jQuery(document).ready(function ($) {
 
     $(document).on( 'click', '.mptrs_clearOrder', function ( e ) {
         e.preventDefault();
+        mptrs_increase_decrease_icon_change();
         // $("#mptrs_orderedFoodMenuInfoHolder").fadeOut();
         $("#mptrs_foodMenuAddedCart").fadeIn();
         $("#mptrs_orderedFoodMenuHolder").empty();
+        $(".mptrs_addedQuantityControls").remove();
 
         addToCartData = {};
         $('.mptrs-food-menu-container').find('.mptrs_addedQuantityControls').fadeOut();
         $('.mptrs-food-menu-container').find('.mptrs_addBtn').fadeIn(1000);
 
         mptrs_show_hide_basket();
+
+
 
     })
 
