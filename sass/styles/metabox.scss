@@ -105,6 +105,35 @@
             }
         }
     }
+    .mptrs-logo{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        .mptrs-logo-wrapper{
+            width: 100px;
+            height: 100px;
+            border-radius:10px;
+            border: 1px solid var(--mage-light);
+        }
+        .mptrs-logo-upload-wrapper{
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            span{
+                display: flex;
+                align-items: center;
+                gap:5px;
+                background-color: var(--mage-light);
+                margin: 2px;
+                padding: 5px 10px;
+                color: var(--mage-dark);
+                font-size: 14px;
+                font-weight: 600;
+                border-radius:2px;
+            }
+        }
+    }
     //========================validation================
     .required{
         border: 1px solid red;
