@@ -31,15 +31,17 @@
                                 <p><?php esc_html_e('Add restaurant logo', 'tablely'); ?></p>
 								<span><?php esc_html_e('Put this shortcode in any page or post to show Food Menu.', 'tablely'); ?></span>
                             </div>
-							<div style="width: 200px;">
+							<div class="mptrs-logo">
 								<div class="mptrs-logo-wrapper">
 									<?php if ($image_url): ?>
 										<img  src="<?php echo esc_url($image_url); ?>"/>
 									<?php endif; ?>
 								</div>
-								<input type="hidden" name="mptrs_restaurant_logo" id="mptrs-restaurant-logo" value="<?php echo esc_attr($image_id); ?>" />
-								<button type="button" class="button mptrs-logo-upload"><?php _e('Upload Image', 'myplugin'); ?></button>
-								<button type="button" class="button mptrs-logo-remove"><?php _e('Remove Image', 'myplugin'); ?></button>
+								<div class="mptrs-logo-upload-wrapper">
+									<input type="hidden" name="mptrs_restaurant_logo" id="mptrs-restaurant-logo" value="<?php echo esc_attr($image_id); ?>" />
+									<span class="mptrs-logo-upload"><i class="fas fa-upload"></i>Upload</span>
+									<span class="mptrs-logo-remove"><i class="fa fa-times"></i>Remove</span>
+								</div>
 							</div>
                         </label>
                     </section>
