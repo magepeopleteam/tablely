@@ -7,6 +7,7 @@
 	if ( ! defined( 'ABSPATH' ) ) {
 		die;
 	}
+    $post_id = get_the_ID();
     ?>
 <main class="mptrs-default-template">
     <?php do_action('mptrs_template_header'); ?>
@@ -18,7 +19,7 @@
     </div>
     <div class="mptrs-content">
         <div class="mptrs-content-left">
-            <?php do_action('mptrs_template_menus'); ?>
+            <?php do_action('mptrs_template_menus', $post_id ); ?>
         </div>
         <div class="mptrs-content-right">
             <?php do_action('mptrs_template_basket'); ?>

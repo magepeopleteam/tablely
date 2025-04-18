@@ -15,8 +15,6 @@
 
             public function display_seat_mapping_shortcode( $atts ){
                 $post_id = isset( $atts['post_id'] ) ? $atts['post_id'] : '';
-//              $post_id = get_option( 'mptrs_restaurant_id' );
-                $seat_map = '';
                 $table_reserve = '';
                 if( $post_id ){
                     $not_available = [];
@@ -26,7 +24,7 @@
 
                 return $table_reserve;
             }
-            public function display_restaurant_menu_content_shortcode( $atts ) {
+            public function display_restaurant_menu_content_shortcode_old( $atts ) {
                 $post_id = isset( $atts['post_id'] ) ? $atts['post_id'] : '';
                 if( $post_id ){
                     $post = get_post($post_id);
@@ -138,6 +136,27 @@
                 }else{
                     return 'No Restaurant Found';
                 }
+            }
+
+            public function display_restaurant_menu_content_shortcode( $atts ) {
+                $post_id = isset( $atts['post_id'] ) ? $atts['post_id'] : '';
+
+                ob_start();
+                ?>
+                <main class="mptrs-default-template">
+
+                    <div class="mptrs-content">
+                        <div class="mptrs-content-left">
+                            <?php do_action('mptrs_template_menus', $post_id ); ?>
+                        </div>
+                        <div class="mptrs-content-right">
+                            <?php do_action('mptrs_template_basket'); ?>
+                        </div>
+                    </div>
+                </main>
+
+                <?php
+                return ob_get_clean();
             }
 
 		}

@@ -474,7 +474,7 @@ jQuery(document).ready(function ($) {
             $("#mptrs_totalPriceHolder").fadeOut();
             $(".mptrs_foodOrderContentholder").fadeOut();
             // $("#mptrs_orderedFoodMenuInfoHolder").fadeOut();
-            $(".mptrs_clearOrder").fadeOut();
+            // $(".mptrs_clearOrder").fadeOut();
             $("#mptrs_foodMenuAddedCart").fadeIn();
         }else{
             $("#mptrs_totalPriceHolder").fadeIn();
@@ -499,6 +499,9 @@ jQuery(document).ready(function ($) {
         addToCartData[menuKey] = quantity;
 
         calculateTotal();
+
+        mptrs_increase_decrease_icon_change();
+
     });
 
     // Decrease Button Click
@@ -527,7 +530,6 @@ jQuery(document).ready(function ($) {
             }
 
         } else {
-
             addToCartData[menuKey] = quantity;
 
             $("#"+menuAddedQtyKey).text(quantity);
@@ -535,99 +537,27 @@ jQuery(document).ready(function ($) {
         }
 
         calculateTotal();
+
+        mptrs_show_hide_basket();
+
+        mptrs_increase_decrease_icon_change();
+
     });
-    function mptrs_display_food_menu_for_order( food_menu_data ){
-        let container = $("#mptrs_foodMenuHolder");
-        $.each( food_menu_data, function (id, item) {
-            let menuItem = `
-                    <div class="mptrs_menuAddedCartItem" data-menuKey="${id}" data-price="${item.menuPrice}">
-                        <img class="mptrs_menuImg" src="${item.menuImgUrl}" alt="${item.menuName}">
-                        <div class="mptrs_menuDetails">
-                            <div class="mptrs_menuName">${item.menuName}</div>
-                            <div class="mptrs_menuPrice">৳ ${item.menuPrice}</div>
-                        </div>
-                        <button class="mptrs_addBtn">+</button>
-                        <div class="mptrs_quantityControls" style="display:none;">
-                            <button class="mptrs_decrease">−</button>
-                            <span class="mptrs_quantity">1</span>
-                            <button class="mptrs_increase">+</button>
-                        </div>
-                    </div>`;
-            container.append(menuItem);
+
+    function mptrs_increase_decrease_icon_change(){
+        $('.mptrs_quantity').each(function() {
+            let quantity_test = $(this).text().trim();
+
+            if (quantity_test === "1") {
+                $(this).closest('.mptrs_addedQuantityControls, .mptrs_quantityControls').find('.mptrs_decrease').html("<i class='fas fa-trash'></i>");
+            } else {
+                $(this).closest('.mptrs_addedQuantityControls, .mptrs_quantityControls').find('.mptrs_decrease').text("-");
+            }
         });
     }
 
     let addToCartData = {};
     // Add Button Click
-    $(document).on('click', ".mptrs_addBtn_old", function () {
-        $(this).fadeOut();
-        $("#mptrs_orderedFoodMenuInfoHolder").fadeIn();
-        $("#mptrs_foodMenuAddedCart").fadeOut();
-        $("#mptrs_dineInTabHolder").fadeIn();
-
-        let menuAddedClickedId = $(this).attr('id').trim();
-        let menuAddedKeys = menuAddedClickedId.split('-');
-        let menuAddedKey = menuAddedKeys[1];
-        // alert( menuAddedKey );
-
-
-        let addedMenu = `
-            <div class="mptrs_addedQuantityControls" id="mptrs_addedQuantityControls-${menuAddedKey}">
-                <button class="mptrs_decrease">−</button>
-                <span class="mptrs_quantity" id="mptrs_menuAddedQuantity-${menuAddedKey}">1</span>
-                <button class="mptrs_increase">+</button>
-            </div>
-        `;
-        $(this).parent().append( addedMenu );
-
-        let animationDiv =  $(this).parent().parent();
-        let parentItem = $(this).parent();
-        let foodMenuCategory = parentItem.attr('data-menuCategory');
-        let menuImgUrl = parentItem.attr('data-menuImgUrl');
-        let menuName = parentItem.attr('data-menuName');
-        let menuPrice = parentItem.attr('data-menuPrice');
-         menuPrice = parseFloat(menuPrice.replace(/[^0-9.]/g, ''));
-        let numOfPerson = parentItem.attr('data-numOfPerson');
-        let mptrs_CurrencySymbol = jQuery('.woocommerce-Price-currencySymbol:first').text().trim();
-
-
-        let item = {
-            menuImgUrl: menuImgUrl,
-            menuName: menuName,
-            menuPrice: menuPrice,
-            mptrs_CurrencySymbol: mptrs_CurrencySymbol,
-            numOfPerson: numOfPerson,
-            foodMenuCategory: foodMenuCategory,
-            menuAddedKey: menuAddedKey,
-        };
-
-        addToCartData[menuAddedKey] = 1;
-
-        // Create flying effect
-        let flyItem = animationDiv.clone().css({
-            position: "absolute",
-            top: animationDiv.offset().top,
-            left: animationDiv.offset().left,
-            width: animationDiv.width(),
-            opacity: 1,
-            zIndex: 1000
-        }).appendTo("body");
-
-        let targetOffset = $("#mptrs_orderedFoodMenuHolder").offset();
-
-        flyItem.animate({
-            top: targetOffset.top + 10,
-            left: targetOffset.left + 10,
-            width: "50px",
-            opacity: 0
-        }, 800, function () {
-            flyItem.remove();
-            mptrs_append_order_food_menu(item);
-            calculateTotal();
-        });
-
-    });
-
     function mptrs_append_order_food_menu(item) {
         let container = $("#mptrs_orderedFoodMenuHolder");
         let orderVarDetails = item.mptrs_oderDetails.trim(); // Get text from element
@@ -642,7 +572,7 @@ jQuery(document).ready(function ($) {
             </div>
             
             <div class="mptrs_quantityControls" id="mptrs_quantityControls-${item.menuAddedKey}">
-                <button class="mptrs_decrease">−</button>
+                <button class="mptrs_decrease"><i class='fas fa-trash'></i></button>
                 <span class="mptrs_quantity" id="mptrs_quantity-${item.menuAddedKey}">1</span>
                 <button class="mptrs_increase">+</button>
             </div>
@@ -651,6 +581,20 @@ jQuery(document).ready(function ($) {
         let $menuItem = $(menuItem);
         container.append($menuItem);
         $menuItem.hide().fadeIn(1000);
+
+        mptrs_show_hide_basket();
+    }
+
+    function mptrs_show_hide_basket(){
+        if( $("#mptrs_orderedFoodMenuHolder").find('.mptrs_menuAddedCartItem').length > 0 ){
+            $("#mptrs-basket-middle").fadeOut();
+            $(".mptrs_clearOrder").fadeIn();
+            $("#mptrs_orderTypeDatesChange").fadeIn();
+        }else{
+            $("#mptrs-basket-middle").fadeIn();
+            $(".mptrs_clearOrder").fadeOut();
+            $("#mptrs_orderTypeDatesChange").fadeOut();
+        }
     }
 
     function mptrs_display_ordered_menu( get_time ){
@@ -938,6 +882,7 @@ jQuery(document).ready(function ($) {
             maxDate: "+1Y",
         }).val( today );
     }
+
     $(document).on("focus", ".mptrs_datepicker_input", function () {
         $(this).datepicker("show");
     });
@@ -948,6 +893,8 @@ jQuery(document).ready(function ($) {
 
 
     let mptrs_orderSettings = {};
+    let mptrsOrderTypePopUp = 0;
+
     $(document).on( 'click',"#mptrs_updateorderTypeBtn", function (e) {
         e.preventDefault();
 
@@ -974,6 +921,11 @@ jQuery(document).ready(function ($) {
 
         mptrs_close_order_type_popup();
 
+        if( mptrsOrderTypePopUp === 0 ){
+            mptrs_display_add_cart_item_data( menuAddedKey, mptrs_MenuPrice, mptrs_CurrencySymbol, menuPrice, 'flex', animationDiv, parentItem, mptrs_this );
+        }
+        mptrsOrderTypePopUp++;
+
     });
 
     $(document).on( 'click', '.mptrs_clearOrder', function ( e ) {
@@ -985,6 +937,8 @@ jQuery(document).ready(function ($) {
         addToCartData = {};
         $('.mptrs-food-menu-container').find('.mptrs_addedQuantityControls').fadeOut();
         $('.mptrs-food-menu-container').find('.mptrs_addBtn').fadeIn(1000);
+
+        mptrs_show_hide_basket();
 
     })
 
@@ -1101,13 +1055,7 @@ jQuery(document).ready(function ($) {
         }
         else {
             mptrs_this.fadeOut();
-            let addedMenu = `
-                    <div class="mptrs_addedQuantityControls" id="mptrs_addedQuantityControls-${menuAddedKey}">
-                        <button class="mptrs_decrease">−</button>
-                        <span class="mptrs_quantity" id="mptrs_menuAddedQuantity-${menuAddedKey}">1</span>
-                        <button class="mptrs_increase">+</button>
-                    </div>
-                `;
+            let addedMenu = mptrs_increase_decrease_cart_data( menuAddedKey );
             mptrs_this.parent().append(addedMenu);
 
 
@@ -1115,7 +1063,7 @@ jQuery(document).ready(function ($) {
             let menuImgUrl = parentItem.attr('data-menuImgUrl');
             let menuName = parentItem.attr('data-menuName');
             let numOfPerson = parentItem.attr('data-numOfPerson');
-            let mptrs_CurrencySymbol = jQuery('.woocommerce-Price-currencySymbol:first').text().trim();
+            // let mptrs_CurrencySymbol = jQuery('.woocommerce-Price-currencySymbol:first').text().trim();
 
             let item = {
                 menuImgUrl: menuImgUrl,
@@ -1128,7 +1076,7 @@ jQuery(document).ready(function ($) {
                 mptrs_oderDetails: '',
             };
             addToCartData[menuAddedKey] = 1;
-            $("#mptrs_orderedFoodMenuHolder").empty();
+            // $("#mptrs_orderedFoodMenuHolder").empty();
             let flyItem = animationDiv.clone().css({
                 position: "absolute",
                 top: animationDiv.offset().top,
@@ -1149,33 +1097,45 @@ jQuery(document).ready(function ($) {
                 calculateTotal();
             });
         }
+
     }
 
     let selectedMenu = mptrs_food_menu.find(item => item);
     let menuAddedClickedId = '';
     let mptrs_displayCartPopUp = 0;
+
+
+    let mptrs_this = '';
+    let animationDiv = '';
+    let parentItem = '';
+    let mptrs_CurrencySymbol = '';
+    let mptrs_MenuPrice = '';
+    let menuPrice = '';
+    let menuAddedKey = '';
+
     $(document).on('click', ".mptrs_addBtn", function () {
+        mptrs_this = $(this);
 
-        let mptrs_this = $(this);
+        animationDiv = $(this).parent().parent();
+        parentItem = $(this).parent();
 
-        let animationDiv = $(this).parent().parent();
-        let parentItem = $(this).parent();
-
-        let mptrs_CurrencySymbol = jQuery('.woocommerce-Price-currencySymbol:first').text().trim();
-        let mptrs_MenuPrice = $(this).parent().attr('data-menuprice').trim();
+        mptrs_CurrencySymbol = jQuery('.woocommerce-Price-currencySymbol:first').text().trim();
+        mptrs_MenuPrice = $(this).parent().attr('data-menuprice').trim();
         mptrs_MenuPrice = parseFloat(mptrs_MenuPrice.replace(/[^\d.]/g, ''));
 
-        let menuPrice = $(this).parent().attr('data-menuprice').trim();
+        menuPrice = $(this).parent().attr('data-menuprice').trim();
         menuPrice = parseFloat(menuPrice.replace(/[^0-9.]/g, ''));
 
         menuAddedClickedId = $(this).attr('id').trim();
         let menuAddedKeys = menuAddedClickedId.split('-');
-        let menuAddedKey = menuAddedKeys[1];
+        menuAddedKey = menuAddedKeys[1];
 
         if ( Object.keys(mptrs_orderSettings).length === 0 ) {
+
             mptrs_display_popup_for_order_types();
             mptrs_displayCartPopUp++;
-            mptrs_display_add_cart_item_data( menuAddedKey, mptrs_MenuPrice, mptrs_CurrencySymbol, menuPrice,'none', animationDiv, parentItem, mptrs_this );
+            // mptrs_display_add_cart_item_data(menuAddedKey, mptrs_MenuPrice, mptrs_CurrencySymbol, menuPrice, 'none', animationDiv, parentItem, mptrs_this);
+
         }
 
         if( Object.keys(mptrs_orderSettings).length > 0 ) {
@@ -1285,10 +1245,16 @@ jQuery(document).ready(function ($) {
         $(".mptrs_addToCart span").text( mptrs_CurrencySymbol + total.toFixed(2));
     }
 
+    function mptrs_increase_decrease_cart_data( menuAddedKey ){
+        return `<div class="mptrs_addedQuantityControls" id="mptrs_addedQuantityControls-${menuAddedKey}">
+                    <button class="mptrs_decrease"><i class='fas fa-trash'></i></button>
+                    <span class="mptrs_quantity" id="mptrs_menuAddedQuantity-${menuAddedKey}">1</span>
+                    <button class="mptrs_increase">+</button>
+                </div>`;
+    }
 
 
     $(document).on('click', ".mptrs_foodMenuAddedCart", function () {
-
         let mptrs_oderDetails = '';
         $("input[type=radio]:checked").each(function () {
             let quantity = 0;
@@ -1325,13 +1291,7 @@ jQuery(document).ready(function ($) {
         $("#mptrs_dineInTabHolder").fadeIn();
 
         let menuAddedKey = $(this).attr('id').trim();
-        let addedMenu = `
-            <div class="mptrs_addedQuantityControls" id="mptrs_addedQuantityControls-${menuAddedKey}">
-                <button class="mptrs_decrease">−</button>
-                <span class="mptrs_quantity" id="mptrs_menuAddedQuantity-${menuAddedKey}">1</span>
-                <button class="mptrs_increase">+</button>
-            </div>
-        `;
+        let addedMenu = mptrs_increase_decrease_cart_data( menuAddedKey );
         $("#"+menuAddedClickedId).parent().append( addedMenu );
 
         let animationDiv =  $("#"+menuAddedClickedId).parent().parent();
