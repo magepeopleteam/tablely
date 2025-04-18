@@ -17,9 +17,12 @@
     .mptrs-header{
         display: flex;
         gap:10px;
-        padding:10px 0;
+        padding:10px;
         border-bottom:1px solid #ebebeb;
         margin-bottom: 10px;
+        @media (min-width:1440px) {
+            padding:10px 0;
+        }
         .mptrs-logo{
             width: 156px;
             height: 156px;
@@ -107,9 +110,18 @@
         display: flex;
         justify-content: space-between;
         gap:20px;
+        flex-direction: column;
+        @media (min-width: 768px) {
+            flex-direction: row;
+        }
         .mptrs-content-left{
             position: relative;
-            width:75%;
+            width:100%;
+            padding: 10px;
+            @media (min-width:1440px) {
+                width:75%;
+                max-width: 1065px;
+            }
             .mptrs-category-container{
                 border-radius: 5px;
                 margin: 30px 0;
@@ -152,13 +164,17 @@
                     justify-content: space-between;
                     position: relative;
                     transform: scale(1);
-                    width: 47%;
+                    width: 100%;
                     padding: 10px;
                     border-radius: 12px;
                     background-color: #fff;
                     box-shadow: 0px 0px 1px #a6a8ac;
                     transition: all 0.3s;
                     cursor: pointer;
+                    @media (min-width:1440px) {
+                        width: 49%;
+                        max-width: 520px;
+                    }
                     &:hover {
                         transform: scale(1.03);
                         background-color:  var(--mptrs_color_theme_77);
@@ -170,7 +186,11 @@
         }
         .mptrs-content-right{
             position: relative;
-            width:25%;
+            width:100%;
+            padding: 10px;
+            @media (min-width:1440px) {
+                width:25%;
+            }
             .mptrs-ordered-basket{
                 position: sticky;
                 display: flex;
