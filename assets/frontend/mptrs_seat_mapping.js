@@ -333,6 +333,7 @@ jQuery(document).ready(function ($) {
         // orderClickedId = orderClickedId.slice('-');
         let idParts = orderClickedId.split('-');
         let postId = idParts[1];
+        // alert(postId);
         /*$.ajax({
             url: mptrs_ajax.ajax_url,
             type: 'POST',
@@ -499,11 +500,7 @@ jQuery(document).ready(function ($) {
 
         calculateTotal();
 
-        if( quantity === 1 ){
-            $(this).siblings('.mptrs_decrease').html("<i class='fas fa-trash'></i>");
-        }else{
-            $(this).siblings('.mptrs_decrease').text('-');
-        }
+        mptrs_increase_decrease_icon_change();
 
     });
 
@@ -533,12 +530,6 @@ jQuery(document).ready(function ($) {
             }
 
         } else {
-            if( quantity === 1 ){
-                $(this).html("<i class='fas fa-trash'></i>");
-            }else{
-                $(this).text('-');
-            }
-
             addToCartData[menuKey] = quantity;
 
             $("#"+menuAddedQtyKey).text(quantity);
@@ -548,11 +539,25 @@ jQuery(document).ready(function ($) {
         calculateTotal();
 
         mptrs_show_hide_basket();
+
+        mptrs_increase_decrease_icon_change();
+
     });
+
+    function mptrs_increase_decrease_icon_change(){
+        $('.mptrs_quantity').each(function() {
+            let quantity_test = $(this).text().trim();
+
+            if (quantity_test === "1") {
+                $(this).closest('.mptrs_addedQuantityControls, .mptrs_quantityControls').find('.mptrs_decrease').html("<i class='fas fa-trash'></i>");
+            } else {
+                $(this).closest('.mptrs_addedQuantityControls, .mptrs_quantityControls').find('.mptrs_decrease').text("-");
+            }
+        });
+    }
 
     let addToCartData = {};
     // Add Button Click
-
     function mptrs_append_order_food_menu(item) {
         let container = $("#mptrs_orderedFoodMenuHolder");
         let orderVarDetails = item.mptrs_oderDetails.trim(); // Get text from element
