@@ -202,17 +202,17 @@ if (!class_exists('MPTRS_Template')) {
                 <div class="mptrs-basket-top">
                     <div class="mptrs_orderTypeDatesDisplay">
                         <span class="mptrs_orderTypeDates" id="mptrs_orderTypeDates"></span>
-                        <span class="mptrs_orderTypeDatesChange" id="mptrs_orderTypeDatesChange">change</span>
+                        <span class="mptrs_orderTypeDatesChange" id="mptrs_orderTypeDatesChange" style="display: none">change</span>
                     </div>
                     <div class="basket-header">
                         <h6><?php esc_html_e( 'Your Orders', 'tablely' ); ?></h6>
                         <div class="mptrs_orderedMenuHolder">
-                            <span class="mptrs_clearOrder">Clear Order</span>
+                            <span class="mptrs_clearOrder" style="display: none">Clear Order</span>
                         </div>
                     </div>
                     <div class="mptrs_orderedFoodMenuHolder" id="mptrs_orderedFoodMenuHolder"></div>
                 </div>
-                <div class="mptrs-basket-middle">
+                <div class="mptrs-basket-middle" id="mptrs-basket-middle">
                     <img src="<?php echo MPTRS_Plan_URL; ?>/assets/images/dish.png" alt="">
                     <p><?php esc_html_e('Please Add menu to busket','tablely'); ?></p>
                 </div>
@@ -227,8 +227,8 @@ if (!class_exists('MPTRS_Template')) {
             </div>
             <?php
         }
-        public function display_restaurant_content( ) {
-            $post_id = get_the_id();
+        public function display_restaurant_content( $post_id ) {
+//            $post_id = get_the_id();
             $categories = get_option('mptrs_categories');
             $existing_menu_by_id = get_post_meta( $post_id, '_mptrs_food_menu_items', true );
             $existing_edited_price = get_post_meta( $post_id, '_mptrs_food_menu_edited_prices', true );
@@ -243,6 +243,7 @@ if (!class_exists('MPTRS_Template')) {
                     }
                 }
             }
+            error_log( print_r( [ '$existing_menus' => $existing_menus ], true ) );
             ?>
                     <?php if (!empty($existing_menus)) { ?>
                         <h4><?php esc_html_e('Menu', 'tablely'); ?> (<?php echo esc_html(count($existing_menus)); ?>)</h4>
