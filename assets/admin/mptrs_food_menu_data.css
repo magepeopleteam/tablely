@@ -928,6 +928,12 @@ body.mptrs_no_scroll {
     border: 1px solid #ccc !important;
     border-radius: 5px !important;
     transition: 0.3s ease-in-out;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Limit to 3 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Focus Effect */

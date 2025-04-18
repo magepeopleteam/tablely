@@ -1,6 +1,6 @@
 jQuery(document).ready(function ($) {
 
-    $(document).on('click',".mptrs_menuImageHolder", function() {
+    $(document).on('click',".mptrs_menuImageHolder_old", function() {
 
         let foodMenuCategory = $(this).closest('.mptrs-food-menu').find('.mptrs_addedMenuordered').attr('data-menuCategory');
         let menuName = $(this).closest('.mptrs-food-menu').find('.mptrs_addedMenuordered').attr('data-menuName').trim();
@@ -549,7 +549,7 @@ jQuery(document).ready(function ($) {
             let quantity_test = $(this).text().trim();
 
             if (quantity_test === "1") {
-                $(this).closest('.mptrs_addedQuantityControls, .mptrs_quantityControls').find('.mptrs_decrease').html("<i class='fas fa-trash'></i>");
+                $(this).closest('.mptrs_addedQuantityControls, .mptrs_quantityControls').find('.mptrs_decrease').html("<i class='fas fa-trash' style='font-size: 16px'></i>");
             } else {
                 $(this).closest('.mptrs_addedQuantityControls, .mptrs_quantityControls').find('.mptrs_decrease').text("-");
             }
@@ -572,9 +572,9 @@ jQuery(document).ready(function ($) {
             </div>
             
             <div class="mptrs_quantityControls" id="mptrs_quantityControls-${item.menuAddedKey}">
-                <button class="mptrs_decrease"><i class='fas fa-trash'></i></button>
+                <span class="mptrs_decrease"><i class='fas fa-trash' style="font-size: 16px"></i></span>
                 <span class="mptrs_quantity" id="mptrs_quantity-${item.menuAddedKey}">1</span>
-                <button class="mptrs_increase">+</button>
+                <span class="mptrs_increase">+</span>
             </div>
         </div>`;
 
@@ -922,7 +922,7 @@ jQuery(document).ready(function ($) {
         mptrs_close_order_type_popup();
 
         if( mptrsOrderTypePopUp === 0 ){
-            mptrs_display_add_cart_item_data( menuAddedKey, mptrs_MenuPrice, mptrs_CurrencySymbol, menuPrice, 'flex', animationDiv, parentItem, mptrs_this );
+            mptrs_display_add_cart_item_data( menuAddedKey, mptrs_MenuPrice, mptrs_CurrencySymbol, menuPrice, 'flex', animationDiv, parentItem, mptrs_this, mptrs_menuImageUrl );
         }
         mptrsOrderTypePopUp++;
 
@@ -975,9 +975,10 @@ jQuery(document).ready(function ($) {
 
     });
 
-    function mptrs_display_add_cart_item_data( menuAddedKey, mptrs_MenuPrice, mptrs_CurrencySymbol, menuPrice, display, animationDiv, parentItem, mptrs_this ){
+    function mptrs_display_add_cart_item_data( menuAddedKey, mptrs_MenuPrice, mptrs_CurrencySymbol, menuPrice, display, animationDiv, parentItem, mptrs_this, mptrs_menuImageUrl ){
         // let mptrs_CurrencySymbol = jQuery('.woocommerce-Price-currencySymbol:first').text().trim();
 
+        // console.log( mptrs_menuImageUrl );
         let menuItem = selectedMenu[menuAddedKey];
         let addOneVariation = '';
 
@@ -987,14 +988,21 @@ jQuery(document).ready(function ($) {
         }
 
         if (menuItem.hasOwnProperty('variations') && menuItem.variations.length > 0) {
-            let menuHtml = ` <div class="mptrs_addToCartPopupHolder" id="mptrs_addToCartPopupHolder" style="display: ${display}">
+            let menuHtml = ` 
+            <div class="mptrs_addToCartPopupHolder" id="mptrs_addToCartPopupHolder" style="display: ${display}">
             <div class="mptrs_popupContainer" id="mptrs_popupContainer">
+             <span class="mptrs_popupClose">&times;</span>
+                <div class="mptrs_addCartMenuImageHolder">
+                    <img class="mptrs_addCartMenuImage" src="${mptrs_menuImageUrl}">
+                </div>
                 <div class="mptrs_popupHeader">
                     <span class="mptrs_addCartmenuName">${menuItem.menuName}</span>
                     <span class="mptrs_addCartmenuPrice" id="mptrs_addCartmenuPrice">${mptrs_CurrencySymbol}${mptrs_MenuPrice}</span>
-                    <span class="mptrs_popupClose">&times;</span>
+                 
                 </div>
-                <p class="mptrs_menuDescription">${menuDescription}</p>
+                <div class="mptrs_menuDescriptionHolder">
+                    <p class="mptrs_menuDescription">${menuDescription}</p>
+                </div>
             `;
 
             menuHtml += `<div class="mptrs_optionGroupHolder">`;
@@ -1003,12 +1011,17 @@ jQuery(document).ready(function ($) {
                     if (variation && variation.hasOwnProperty('variationOrAddOne')) {
                         addOneVariation = variation.variationOrAddOne;
                     }
-                    menuHtml += `<div class="mptrs_optionGroup">`;
+
+                    if (addOneVariation === 'variations') {
+                        menuHtml += `<div class="mptrs_optionGroup mptrs_addCartVariationMenu">`;
+                    }else{
+                        menuHtml += `<div class="mptrs_optionGroup">`;
+                    }
                     menuHtml += `<span class="mptrs_variationName">${variation.category}</span>`;
 
                     if (addOneVariation === 'variations') {
                         menuHtml += `
-                            <div class="mptrs_optionItem">
+                            <div class="mptrs_optionItem" >
                                 <div class="mptrs_nameAcrionHolder">
                                     <input class="mptrs_variationInput" id="mptrs_variationInput" type="radio" name="variations" checked>
                                     <label for="mptrs_variationInput">Regular</label>
@@ -1116,9 +1129,13 @@ jQuery(document).ready(function ($) {
     let mptrs_MenuPrice = '';
     let menuPrice = '';
     let menuAddedKey = '';
+    let mptrs_menuImageUrl = '';
 
     $(document).on('click', ".mptrs_addBtn", function () {
         mptrs_this = $(this);
+
+        let img_wrapper = $(this).closest('.mptrs-menu-item-thumbnail');
+        mptrs_menuImageUrl = img_wrapper.find('.mptrs_menuImage').attr('src');
 
         animationDiv = $(this).parent().parent();
         parentItem = $(this).parent();
@@ -1138,12 +1155,12 @@ jQuery(document).ready(function ($) {
 
             mptrs_display_popup_for_order_types();
             mptrs_displayCartPopUp++;
-            // mptrs_display_add_cart_item_data(menuAddedKey, mptrs_MenuPrice, mptrs_CurrencySymbol, menuPrice, 'none', animationDiv, parentItem, mptrs_this);
+            // mptrs_display_add_cart_item_data(menuAddedKey, mptrs_MenuPrice, mptrs_CurrencySymbol, menuPrice, 'none', animationDiv, parentItem, mptrs_this, mptrs_menuImageUrl);
 
         }
 
         if( Object.keys(mptrs_orderSettings).length > 0 ) {
-            mptrs_display_add_cart_item_data( menuAddedKey, mptrs_MenuPrice, mptrs_CurrencySymbol, menuPrice, 'flex', animationDiv, parentItem, mptrs_this );
+            mptrs_display_add_cart_item_data( menuAddedKey, mptrs_MenuPrice, mptrs_CurrencySymbol, menuPrice, 'flex', animationDiv, parentItem, mptrs_this, mptrs_menuImageUrl );
         }
 
     });
@@ -1251,9 +1268,9 @@ jQuery(document).ready(function ($) {
 
     function mptrs_increase_decrease_cart_data( menuAddedKey ){
         return `<div class="mptrs_addedQuantityControls" id="mptrs_addedQuantityControls-${menuAddedKey}">
-                    <button class="mptrs_decrease"><i class='fas fa-trash'></i></button>
+                    <span class="mptrs_decrease"><i class='fas fa-trash' style="font-size: 16px"></i></span>
                     <span class="mptrs_quantity" id="mptrs_menuAddedQuantity-${menuAddedKey}">1</span>
-                    <button class="mptrs_increase">+</button>
+                    <span class="mptrs_increase">+</span>
                 </div>`;
     }
 

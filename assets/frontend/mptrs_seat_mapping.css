@@ -429,7 +429,7 @@
     
 }
 .mptrs-menu-item-thumbnail{
-    width: 25%;
+    width: 30%;
     position: relative;
     background: linear-gradient(135deg, #ff7e5f, #feb47b);
     border-radius:5px;
@@ -440,7 +440,6 @@
     position: absolute;
     bottom: 10px;
     right: 10px;
-    
 }
 .mptrs_addBtn {
     background: var(--mptrs_color_theme_alter);
@@ -453,6 +452,12 @@
     box-shadow: 0 0 5px #666;
     padding: 0;
 }
+
+.mptrs_increase, .mptrs_decrease{
+    font-size: 25px;
+    cursor: pointer;
+}
+
 .mptrs_addBtn:hover,.mptrs_addBtn:focus {
     background: var(--mptrs_color_light);
     color: var(--mptrs_color_black);
@@ -759,8 +764,13 @@
 }
 .mptrs_quantityControls {
     display: flex;
-    flex-direction: row;
     align-items: center;
+    border: 1px solid #d9d2d2;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-bottom: 4px;
+    border-radius: 50px;
+    height: 30px;;
     gap: 5px;
 }
 /*.mptrs_addedQuantityControls {
@@ -777,6 +787,14 @@
     flex-direction: row;
     align-items: center;
     gap: 5px;
+    height: 30px;
+    /*background-color: #f6f6f6;*/
+    background-color: #f6f6f6c2;
+    border: 1px solid #d7d5d5;
+    border-radius: 50px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 2px;
     /* position: absolute; */
     /* right: 6px; */
     /* top: 38px; */
@@ -800,9 +818,10 @@
 }
 
 .mptrs_quantity {
-    font-size: 16px;
-    min-width: 20px;
+    font-size: 18px;
+    padding:0px 5px;
     display: inline-block;
+    margin-top: 5px;
 }
 /*.mptrs_addBtn {
     background: #27ae60;
