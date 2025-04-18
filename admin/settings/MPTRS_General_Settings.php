@@ -23,13 +23,13 @@
                     </header>
                     <section class="section">
                         <h2><?php esc_html_e('Restaurant Branding', 'tablely'); ?></h2>
-                        <span><?php esc_html_e('Restaurant Info.', 'tablely'); ?></span>
+                        <span><?php esc_html_e('Restaurant Branding.', 'tablely'); ?></span>
                     </section>
                     <section>
                         <label class="label">
                             <div>
                                 <p><?php esc_html_e('Add restaurant logo', 'tablely'); ?></p>
-								<span><?php esc_html_e('Put this shortcode in any page or post to show Food Menu.', 'tablely'); ?></span>
+								<span><?php esc_html_e('Upload logo for your rastaurant. Best size 156px x 156px.', 'tablely'); ?></span>
                             </div>
 							<div class="mptrs-logo">
 								<div class="mptrs-logo-wrapper">
