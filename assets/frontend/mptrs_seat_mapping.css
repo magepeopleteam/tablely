@@ -460,7 +460,7 @@
 }
 .mptrs_menuImage {
     height:150px;
-    width:150px;
+    width:100%;
 
     object-fit: cover;
     cursor: pointer;
