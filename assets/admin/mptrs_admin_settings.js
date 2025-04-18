@@ -236,6 +236,30 @@ function mptrs_load_sortable_datepicker(parent, item) {
             $(".mptrs_order_row").hide().filter(`[ data-order_type_filter='${filterValue}']`).fadeIn();
         }
     });
-
-
+    // upload image
+    var mediaUploader;
+    $(document).on("click", ".mptrs-logo-upload",function (e) {
+        e.preventDefault();
+        if(mediaUploader){
+            mediaUploader.open();
+            return;
+        }
+        mediaUploader = wp.media.frames.file_frame = wp.media({
+            title: 'Upload Logo',
+            button: { text: 'Choose Image' },
+            multiple: false
+        });
+        mediaUploader.on('select', function(){
+            var attachment = mediaUploader.state().get('selection').first().toJSON();
+            var imageUrl = (attachment.sizes && attachment.sizes.medium) ? attachment.sizes.medium.url : attachment.url;
+            $('#mptrs-restaurant-logo').val(attachment.id);
+            $('.mptrs-logo-wrapper').html('<img src="' + imageUrl + '" style="max-width:100%; margin-bottom:10px;" />');
+        });
+        mediaUploader.open();
+    });
+    $(document).on("click", ".mptrs-logo-remove",function (e) {
+        e.preventDefault();
+        $('#mptrs-restaurant-logo').val('');
+        $('.mptrs-logo-wrapper').html('');
+    });
 }(jQuery));
