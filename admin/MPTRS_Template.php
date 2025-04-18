@@ -243,7 +243,6 @@ if (!class_exists('MPTRS_Template')) {
                     }
                 }
             }
-            error_log( print_r( [ '$existing_menus' => $existing_menus ], true ) );
             ?>
                     <?php if (!empty($existing_menus)) { ?>
                         <h4><?php esc_html_e('Menu', 'tablely'); ?> (<?php echo esc_html(count($existing_menus)); ?>)</h4>
