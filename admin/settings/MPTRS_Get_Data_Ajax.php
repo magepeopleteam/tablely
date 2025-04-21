@@ -40,8 +40,43 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             add_action('wp_ajax_mptrs_set_food_menu_display_limit', [$this, 'mptrs_set_food_menu_display_limit'] );
             add_action('wp_ajax_nopriv_mptrs_set_food_menu_display_limit', [$this, 'mptrs_set_food_menu_display_limit'] );
 
+            add_action('wp_ajax_mptrs_set_seat_mapping_info', [$this, 'mptrs_set_seat_mapping_info'] );
+            add_action('wp_ajax_nopriv_mptrs_set_seat_mapping_info', [$this, 'mptrs_set_seat_mapping_info'] );
+
 
         }
+
+        function mptrs_set_seat_mapping_info() {
+
+            $result = false;
+            $message = 'Something Wrong';
+
+            if (isset($_POST['nonce']) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mptrs_admin_nonce')) {
+                $mptrs_num_of_rows = isset( $_POST['mptrs_num_of_rows'] ) ?sanitize_file_name( wp_unslash( $_POST['mptrs_num_of_rows'] ) ) : '';
+                $mptrs_num_of_columns = isset( $_POST['mptrs_num_of_columns'] ) ?sanitize_file_name( wp_unslash( $_POST['mptrs_num_of_columns'] ) ) : '';
+                $mptrs_box_size = isset( $_POST['mptrs_box_size'] ) ?sanitize_file_name( wp_unslash( $_POST['mptrs_box_size'] ) ) : '';
+                $limitKey = isset( $_POST['limitKey'] ) ? sanitize_file_name( wp_unslash( $_POST['limitKey'] ) ) : '';
+
+                $info_data = array(
+                    'mptrs_box_size' => $mptrs_box_size,
+                    'mptrs_num_of_rows' => $mptrs_num_of_rows,
+                    'mptrs_num_of_columns' => $mptrs_num_of_columns,
+                );
+                if( $limitKey ){
+                    $result = update_option( $limitKey, $info_data );
+                    $message = 'Display Limit Successfully Updated';
+                }
+
+            }
+
+            wp_send_json_success([
+                'message' => $message,
+                'success' => $result,
+            ]);
+
+
+        }
+
 
         function mptrs_set_food_menu_display_limit() {
 

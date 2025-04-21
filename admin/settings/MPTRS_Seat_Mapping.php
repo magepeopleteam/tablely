@@ -85,10 +85,18 @@
                             $shapeText .= '<div class="mptrs_shapeText ' . esc_attr( $select_class ) . '" id="' . esc_attr( $key ) . '"><img class="shapeIcon" src="' . $src . '" /></div>';
                         }
 
-                        $get_create_box_data = get_option( 'create_box_data' );
+                        /*$get_create_box_data = get_option( 'create_box_data' );
                         $box_size = isset( $get_create_box_data['box_size'] ) ? absint( $get_create_box_data['box_size'] ) : 35;
                         $rows = isset( $get_create_box_data['numberOfRows'] ) ? absint( $get_create_box_data['numberOfRows'] ) : 30;
                         $columns = isset( $get_create_box_data['numberOfColumns'] ) ? absint( $get_create_box_data['numberOfColumns'] ) : 24;
+                        */
+
+                        $seat_mapping_info = get_option( 'mptrs_seat_mapping_info' );
+                        $box_size = isset($seat_mapping_info[ 'mptrs_box_size' ]) ? $seat_mapping_info[ 'mptrs_box_size' ] : 35;
+                        $rows = isset($seat_mapping_info[ 'mptrs_num_of_rows' ]) ? $seat_mapping_info[ 'mptrs_num_of_rows' ] : 30;
+                        $columns = isset($seat_mapping_info[ 'mptrs_num_of_columns' ]) ? $seat_mapping_info[ 'mptrs_num_of_columns' ] : 20;
+
+
                         $gap = isset( $get_create_box_data['boxGap'] ) ? absint( $get_create_box_data['boxGap'] ) : 10;
 
                         $childWidth = $box_size;
