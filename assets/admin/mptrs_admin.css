@@ -634,5 +634,8 @@ div.mpwpb_category_header, div.mpwpb_category_header div.mpwpb_service_area {
   border-radius: 0;
   margin: 1px;
 }
+.post-type-mptrs_item .notice {
+    display: none;
+}
 
 /*# sourceMappingURL=mptrs_admin.css.map */
