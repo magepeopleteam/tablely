@@ -973,6 +973,7 @@ jQuery(document).ready(function ($) {
     $(document).on('click', ".mptrs_orderDetailsBtn", function (e) {
         e.preventDefault();
         let orderId = $(this).parent().parent().attr('data-orderId');
+        let postId = $(this).attr('id').trim();
         $.ajax({
             url: mptrs_admin_ajax.ajax_url,
             type: 'POST',
@@ -980,9 +981,9 @@ jQuery(document).ready(function ($) {
                 action: 'mptrs_order_details_display',
                 nonce: mptrs_admin_ajax.nonce,
                 orderId: orderId,
+                postId: postId,
             },
             success: function (response) {
-                console.log( response );
                 if (response.data.success) {
 
                     let orderDetailsHtml = `<div class="mptrs_orderDetailPopupOverlay" style="display:block;">
@@ -990,6 +991,9 @@ jQuery(document).ready(function ($) {
                                                             <span class="mptrs_closePopup">&times;</span>
                                                             <h3>Billing Email</h3>
                                                             <p class="mptrs_billingEmail"></p>
+                                
+                                                            <h3>Order type</h3>
+                                                            <p class="mptrs_orderType"></p>
                                 
                                                             <h3>Order Info</h3>
                                                             <div class="mptrs_orderDetailsDisplay"></div>
@@ -999,6 +1003,7 @@ jQuery(document).ready(function ($) {
 
                     const orderData = response.data.order_data;
                     $('.mptrs_billingEmail').text(orderData.billing_email);
+                    $('.mptrs_orderType').text(orderData.order_type);
 
                     let detailsHtml = '';
                     $.each(orderData.order_info, function(key, value) {

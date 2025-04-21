@@ -50,18 +50,50 @@ jQuery(document).ready(function ($) {
 
     });
 
+    function getMenuPerPage() {
+        return parseInt($("#mptrs_menu_display_limit").val(), 10) || 20;
+    }
+    let currentMenuIndex = 0;
+    let visibleMenuRows = $('.mptrs-food-menu');
+    const loadMoreMenuBtn = $('.mptrs_loadMoreMenuBtn');
+    const loadMoreMenuBtnHolder = $('#mptrs_loadMoreMenuBtnHolder');
+    function mptrs_showMenu() {
+        const rowsPerPage = getMenuPerPage();
+        visibleMenuRows.hide();
+        visibleMenuRows.slice(0, currentMenuIndex + rowsPerPage).fadeIn();
+        currentMenuIndex += rowsPerPage;
+        if (currentMenuIndex >= visibleMenuRows.length) {
+            loadMoreMenuBtnHolder.hide();
+        } else {
+            loadMoreMenuBtnHolder.show();
+        }
+    }
+    mptrs_showMenu();
+    $("#mptrs_loadMoreMenuBtnHolder").fadeIn();
+
+    loadMoreMenuBtn.on('click', function() {
+        mptrs_showMenu();
+    });
+
     $(document).on("click", ".mptrs-category-item",function () {
+
+        currentMenuIndex = 0;
+        visibleMenuRows = '';
+
         $(".mptrs-category-item").removeClass('mptrs-active');
-        $(this).addClass('mptrs-active');
         let filterValue = $(this).data("filter");
-        $(".mptrs_categoryFilter").removeClass("mptrs-active");
         $(this).addClass("mptrs-active");
 
+        $(".mptrs-food-menu").hide();
+
         if (filterValue === "all") {
-            $(".mptrs-food-menu").fadeIn();
+            visibleMenuRows = $(".mptrs-food-menu");
         } else {
-            $(".mptrs-food-menu").hide().filter(`[data-category='${filterValue}']`).fadeIn();
+            visibleMenuRows = $(".mptrs-food-menu").filter(`[data-category='${filterValue}']`);
         }
+
+        mptrs_showMenu();
+
     });
     function category_shown(){
         let container = $(".mptrs-category-container");

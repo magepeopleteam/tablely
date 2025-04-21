@@ -79,6 +79,18 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                     $order = wc_get_order( $order_id );
 
                     if ( $order ) {
+                        $post_id = isset( $_POST['postId'] ) ? absint( $_POST['postId'] ) : '';
+
+                        if( $post_id ){
+                            $order_types = array(
+                                'dine_in'   => 'Dine In',
+                                'delivery'  => 'Delivery',
+                                'take_away' => 'Takeaway',
+                            );
+                            $order_type = get_post_meta( $post_id, '_mptrs_order_type', true );
+                            $all_order_meta['order_type'] = $order_types[$order_type];
+                        }
+
                         $all_order_meta['billing_email'] = $order->get_billing_email();
                         foreach ( $order->get_items() as $item_id => $item ) {
                             $item_meta = [];
@@ -132,16 +144,14 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                         if ($var_details) {
                             $menu .= '<li class="mptrs_orderDetailList">
                                      <strong>Item Name:</strong> ' . $get_food_menu[$key]['menuName'] . '<br>
-                                     <strong>Person:<strong>' . $get_food_menu[$key]['numPersons'] . '<br>
-                                     <strong>Quantity:<strong>' . $value . '<br>
-                                     <strong>Details:<strong>' . $var_details . '<br>
+                                     <strong>Quantity:<strong>' . ' ' . $value . '<br>
+                                     <strong>Details:<strong>' . ' ' . $var_details . '<br>
                                     </li>';
                         } else {
 //                        $menu .= '<li class="mptrs_orderDetailList">Item Name: '.$get_food_menu[ $key ]['menuName']. ' Person:'.$get_food_menu[ $key ]['numPersons'].' Quantity:'.$value.'</li>';
                             $menu .= '<li class="mptrs_orderDetailList">
                                      <strong>Item Name:</strong> ' . $get_food_menu[$key]['menuName'] . '<br>
-                                     <strong>Person:<strong>' . $get_food_menu[$key]['numPersons'] . '<br>
-                                     <strong>Quantity:<strong>' . $value . '<br>
+                                     <strong>Quantity:<strong>' .' ' .  $value . '<br>
                                    </li>';
                         }
                         $menu .= '';
