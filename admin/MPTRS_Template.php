@@ -117,10 +117,14 @@ if (!class_exists('MPTRS_Template')) {
         public function template_logo()
         {
             $post_id = get_the_id();
+            $image_id = get_post_meta($post_id, 'mptrs_restaurant_logo', true);
+			$image_url = $image_id ? wp_get_attachment_image_src($image_id, 'full')[0] : '';
             ?>
-            <div    div class="mptrs-logo">
-                <img alt="<?php esc_attr( get_the_title() );?>" src="http://magepeople.local/wp-content/uploads/2025/04/logo.jpg">
-            </div>
+            <?php if ($image_url): ?>
+                <div div class="mptrs-logo">
+                    <img alt="<?php esc_attr( get_the_title() );?>" src="<?php echo esc_attr($image_url); ?>">
+                </div>
+            <?php endif; ?>
             <?php
         }
 

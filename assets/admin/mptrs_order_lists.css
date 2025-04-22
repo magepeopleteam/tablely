@@ -17,6 +17,7 @@
 .mptrs_restaurant_item{
     display: flex;
     flex-direction: row;
+    border: border 1px solid #ddd;
     justify-content: space-between;
     align-items: center;
     padding:10px;
