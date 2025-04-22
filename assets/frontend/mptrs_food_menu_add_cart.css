@@ -25,8 +25,7 @@
 }
 
 .mptrs_optionGroupHolder{
-    min-height: 400px;
-    /*overflow-y: auto;*/
+    height: auto;
     padding: 0px 20px;
 }
 .mptrs_popupHeader {

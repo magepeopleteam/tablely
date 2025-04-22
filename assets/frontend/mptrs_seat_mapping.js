@@ -887,12 +887,14 @@ jQuery(document).ready(function ($) {
                     <span class="mptrs_calendarIcon">&#128197;</span>
                 </div>
         
-                <label for="mptrs_pickupTime">Select a pickup time</label>
-                <select id="mptrs_pickupTime" class="mptrs_dropdown">
-                    <option>11:30am</option>
-                    <option>12:00pm</option>
-                    <option>12:30pm</option>
-                </select>
+                <div class="mptrs_DatePickerContainer">
+                    <label for="mptrs_pickupTime">Select a pickup time</label>
+                    <select id="mptrs_pickupTime" class="mptrs_dropdown">
+                        <option>11:30am</option>
+                        <option>12:00pm</option>
+                        <option>12:30pm</option>
+                    </select>
+                </div>
                 
                 <div class="mptrs_OrderTypeLocationsContainer" style="display: block">
                     <label for="mptrs_deliveryLocation">Set Delivery Location</label>
@@ -939,22 +941,30 @@ jQuery(document).ready(function ($) {
 
         let mptrs_orderDate = $("#mptrs_dateDatepicker").val().trim();
         let mptrs_orderTime = $("#mptrs_pickupTime").val().trim();
-        mptrs_orderSettings = {
-            mptrs_orderType, mptrs_orderDate, mptrs_orderTime, mptrs_locations
+
+
+        if (mptrs_orderType === 'Delivery' && mptrs_locations === '') {
+            alert('Please Fill Up Location Input Fields and Click Update');
+            $("#mptrs_deliveryLocation").focus();
+            return;
         }
 
-        let mptrs_order_des = '';
-        if( mptrs_locations ){
-            mptrs_order_des = mptrs_orderType+', Order Date: '+mptrs_orderDate+', Time:'+mptrs_orderTime+', Location:'+mptrs_locations;
-        }else{
-            mptrs_order_des = mptrs_orderType+', Order Date: '+mptrs_orderDate+', Time:'+mptrs_orderTime;
+        mptrs_orderSettings = {
+            mptrs_orderType,
+            mptrs_orderDate,
+            mptrs_orderTime,
+            mptrs_locations
+        };
+
+        let mptrs_order_des = `${mptrs_orderType}, Order Date: ${mptrs_orderDate}, Time: ${mptrs_orderTime}`;
+        if (mptrs_locations) {
+            mptrs_order_des += `, Location: ${mptrs_locations}`;
         }
-        $("#mptrs_orderTypeDates").text( mptrs_order_des );
+        $("#mptrs_orderTypeDates").text(mptrs_order_des);
 
         mptrs_close_order_type_popup();
-
-        if( mptrsOrderTypePopUp === 0 ){
-            mptrs_display_add_cart_item_data( menuAddedKey, mptrs_MenuPrice, mptrs_CurrencySymbol, menuPrice, 'flex', animationDiv, parentItem, mptrs_this, mptrs_menuImageUrl );
+        if (mptrsOrderTypePopUp === 0) {
+            mptrs_display_add_cart_item_data(menuAddedKey, mptrs_MenuPrice, mptrs_CurrencySymbol, menuPrice, 'flex', animationDiv, parentItem, mptrs_this, mptrs_menuImageUrl);
         }
         mptrsOrderTypePopUp++;
 
@@ -1182,6 +1192,8 @@ jQuery(document).ready(function ($) {
         menuAddedClickedId = $(this).attr('id').trim();
         let menuAddedKeys = menuAddedClickedId.split('-');
         menuAddedKey = menuAddedKeys[1];
+
+
 
         if ( Object.keys(mptrs_orderSettings).length === 0 ) {
 

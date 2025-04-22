@@ -223,7 +223,10 @@
 
 .mptrs_DatePickerContainer {
     position: relative;
-    display: inline-block;
+    display: flex;
+    width: 100%;
+    margin-bottom: 10px;
+    flex-direction: column;
 }
 
 #mptrs-datepicker, #mptrs_date, #mptrs_dalivery_date, #mptrs_takeaway_date {
@@ -233,11 +236,24 @@
     padding-right: 40px; /* Space for icon */
 }
 #mptrs_dateDatepicker {
-    padding: 8px 10px;
+    padding: 10px;
     font-size: 16px;
-    width: calc(100% - 50px);
+    /*width: calc(100% - 50px);*/
     border: 1px solid #ccc;
     border-radius: 3px;
+}
+
+.mptrs_calendarIcon{
+    position: absolute;
+    right: 2px;
+    top: 32px;
+
+}
+
+.mptrs_OrderTypeLocationsContainer{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
 }
 
 .mptrs-calendar-icon, mptrs_calendarIcon  {
@@ -985,12 +1001,36 @@
     left: 50%;
     transform: translate(-50%, -50%);
     background: #fff;
-    width: 380px;
+    max-width: 420px;
+    width: 100%;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    text-align: center;
+    text-align: left;
 }
+
+label[for="mptrs_dateDatepicker"] {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    display: block;
+    color: #7d7979;
+}
+
+label[for="mptrs_pickupTime"] {
+    font-size: 14px;
+    font-weight: 500;
+    display: block;
+    color: #7d7979;
+}
+
+label[for="mptrs_deliveryLocation"] {
+    font-size: 14px;
+    font-weight: 500;
+    display: block;
+    color:#7d7979;
+}
+
 .mptrs_closeBtn {
     position: absolute;
     top: 10px;
@@ -1032,15 +1072,15 @@
 }
 .mptrs_dropdown {
     width: 100%;
-    padding: 8px;
+    padding: 10px;
     font-size: 14px;
     margin-bottom: 12px;
     border-radius: 4px;
     border: 1px solid #ccc;
 }
 .mptrs_deliveryLocations {
-    width: calc( 100% - 16px);
-    padding: 10px 8px;
+    width: calc( 100% - 20px);
+    padding: 10px;
     font-size: 14px;
     margin-bottom: 12px;
     border-radius: 4px;
