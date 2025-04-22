@@ -303,6 +303,7 @@ if (!class_exists('MPTRS_Menu')) {
                         $rbfw_service_status = get_post_meta( $post_id, '_mptrs_service_status', true );
                         $rbfw_service_status = empty( $rbfw_service_status ) ? 'In progress' : $rbfw_service_status;
                         $rbfw_service_status_val = strtolower( str_replace( ' ', '_', $rbfw_service_status ) );
+
                         ?>
                         <tr class="mptrs_order_row" data-orderId="<?php echo esc_attr( $rbfw_order_id ); ?>" data-order_type_filter="<?php echo esc_html( $ordered_type ); ?>">
                             <td><?php echo esc_html( $rbfw_order_id ); ?></td>
@@ -328,7 +329,7 @@ if (!class_exists('MPTRS_Menu')) {
                             </td>
                             <td><span class="mptrs_order_status <?php echo esc_attr( $status ); ?>"><?php echo esc_html( $status ); ?></span></td>
                             <td><?php echo wp_kses_post( wc_price( $total_price ) ); ?></td>
-                            <td><span class="mptrs_orderDetailsBtn"><?php esc_attr_e( 'Details', 'tablely' ); ?></span></td>
+                            <td><span class="mptrs_orderDetailsBtn" id="<?php echo esc_attr( $post_id )?>"><?php esc_attr_e( 'Details', 'tablely' ); ?></span></td>
                         </tr>
                         <tr id="order-details-<?php echo esc_attr( $post_id ); ?>" class="order-details" style="display: none;">
                             <td colspan="12"><div class="order-details-content"></div></td>

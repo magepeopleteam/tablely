@@ -247,57 +247,70 @@ if (!class_exists('MPTRS_Template')) {
                     }
                 }
             }
+
+            $total_menus = 0;
+            $menu_display_limit = get_option( 'mptrs_menu_display_limit' );
+            $menu_display_limit = !empty($menu_display_limit) ? $menu_display_limit : 20;
+
+            if( is_array( $existing_menus ) ){
+                $total_menus = count( $existing_menus );
+            }
+
             ?>
-                    <?php if (!empty($existing_menus)) { ?>
-                        <h4><?php esc_html_e('Menu', 'tablely'); ?> (<?php echo esc_html(count($existing_menus)); ?>)</h4>
-                        <div class="mptrs-category-container">
-                            <?php if (!empty($categories)) { ?>
-                                <div class="mptrs-category-item  mptrs-active" data-filter="all"><?php echo esc_html__('All ', 'tablely').'('.count($existing_menus).')'; ?></div>
-                                <?php foreach ($categories as $key => $category) { ?>
-                                    <div class="mptrs-category-item" data-filter="<?php echo esc_attr($key); ?>"><?php echo esc_html($category); ?></div>
-                                <?php } ?>
-                            <?php } ?>
-                            <div class="mptrs-more-button">...</div>
-                        </div>
-                        <div class="mptrs-food-menu-container">
-                            <?php
-                            $fallbackImgUrl = get_site_url() . '/wp-content/uploads/2025/02/fallbackimage.webp';
-                            foreach ($existing_menus as $key => $existing_menu) {
-                                $img = empty($existing_menu['menuImgUrl']) ? $fallbackImgUrl : $existing_menu['menuImgUrl'];
-                                $price = $existing_menu['menuPrice'];
-                                if (!empty($existing_edited_price) && isset($existing_edited_price[$key])) {
-                                    $price = $existing_edited_price[$key];
-                                }
-                                ?>
-                                <div class="mptrs-food-menu" id="mptrs_foodMenuContent-<?php echo esc_attr($key); ?>" data-category="<?php echo esc_attr($existing_menu['menuCategory']); ?>">
-                                    <div class="mptrs-menu-item-info">
-                                        <div class="mptrs_menuInfoHolder">
-                                            <div class="mptrs_topMenuInFo">
-                                                <div class="mptrs_menuName"><?php echo esc_html($existing_menu['menuName']); ?></div>
-                                            </div>
-                                            <div class="mptrs_BottomMenuInFo">
-                                                <div class="mptrs_menuPrice"><?php echo wc_price($price); ?></div>
-                                            </div>
-                                            <div class="mptrs_menuDescription"><?php echo esc_html($existing_menu['menuDescription']); ?></div>
+            <?php if (!empty($existing_menus)) { ?>
+                <h4><?php esc_html_e('Menu', 'tablely'); ?> (<?php echo esc_html(count($existing_menus)); ?>)</h4>
+                <div class="mptrs-category-container">
+                    <?php if (!empty($categories)) { ?>
+                        <div class="mptrs-category-item  mptrs-active" data-filter="all"><?php echo esc_html__('All ', 'tablely').'('.count($existing_menus).')'; ?></div>
+                        <?php foreach ($categories as $key => $category) { ?>
+                            <div class="mptrs-category-item" data-filter="<?php echo esc_attr($key); ?>"><?php echo esc_html($category); ?></div>
+                        <?php } ?>
+                    <?php } ?>
+                    <div class="mptrs-more-button">...</div>
+                </div>
+                <div class="mptrs-food-menu-container">
+                        <?php
+                        $fallbackImgUrl = get_site_url() . '/wp-content/uploads/2025/02/fallbackimage.webp';
+                        foreach ($existing_menus as $key => $existing_menu) {
+                            $img = empty($existing_menu['menuImgUrl']) ? $fallbackImgUrl : $existing_menu['menuImgUrl'];
+                            $price = $existing_menu['menuPrice'];
+                            if (!empty($existing_edited_price) && isset($existing_edited_price[$key])) {
+                                $price = $existing_edited_price[$key];
+                            }
+                            ?>
+                            <div class="mptrs-food-menu" id="mptrs_foodMenuContent-<?php echo esc_attr($key); ?>" data-category="<?php echo esc_attr($existing_menu['menuCategory']); ?>" style="display: none">
+                                <div class="mptrs-menu-item-info">
+                                    <div class="mptrs_menuInfoHolder">
+                                        <div class="mptrs_topMenuInFo">
+                                            <div class="mptrs_menuName"><?php echo esc_html($existing_menu['menuName']); ?></div>
                                         </div>
-                                    </div>
-                                    <div class="mptrs-menu-item-thumbnail">
-                                        <div class="mptrs_menuImageHolder">
-                                            <img class="mptrs_menuImage" src="<?php echo esc_attr($img); ?>" >
-                                            <div class="mptrs_menuPersion"><i class='fas fa-user-alt' style='font-size:10px'></i><span class="mptrs_numberOfPerson"><?php echo esc_html($existing_menu['numPersons']); ?></span></div>
+                                        <div class="mptrs_BottomMenuInFo">
+                                            <div class="mptrs_menuPrice"><?php echo wc_price($price); ?></div>
                                         </div>
-                                        <div class="mptrs_addedMenuordered" data-menuCategory="<?php echo esc_attr($existing_menu['menuCategory']); ?>" data-menuName="<?php echo esc_attr($existing_menu['menuName']); ?>"
-                                        data-menuImgUrl="<?php echo esc_attr($img); ?>" data-menuPrice="<?php echo esc_attr(wc_price($price)); ?>" data-numOfPerson="<?php echo esc_attr($existing_menu['numPersons']); ?>">
-                                            <button class="mptrs_addBtn" id="mptrs_addBtn-<?php echo esc_attr($key); ?>"><i class="fas fa-plus"></i></button>
-                                        </div>
+                                        <div class="mptrs_menuDescription"><?php echo esc_html($existing_menu['menuDescription']); ?></div>
                                     </div>
                                 </div>
-                            <?php } ?>
-                        </div>
-                    <?php } ?>
+                                <div class="mptrs-menu-item-thumbnail">
+                                    <div class="mptrs_menuImageHolder">
+                                        <img class="mptrs_menuImage" src="<?php echo esc_attr($img); ?>" >
+                                        <div class="mptrs_menuPersion"><i class='fas fa-user-alt' style='font-size:10px'></i><span class="mptrs_numberOfPerson"><?php echo esc_html($existing_menu['numPersons']); ?></span></div>
+                                    </div>
+                                    <div class="mptrs_addedMenuordered" data-menuCategory="<?php echo esc_attr($existing_menu['menuCategory']); ?>" data-menuName="<?php echo esc_attr($existing_menu['menuName']); ?>"
+                                    data-menuImgUrl="<?php echo esc_attr($img); ?>" data-menuPrice="<?php echo esc_attr(wc_price($price)); ?>" data-numOfPerson="<?php echo esc_attr($existing_menu['numPersons']); ?>">
+                                        <button class="mptrs_addBtn" id="mptrs_addBtn-<?php echo esc_attr($key); ?>"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    </div>
 
-                
+                <?php if( $total_menus > $menu_display_limit ){?>
+                    <div class="mptrs_loadMoreMenuBtnHolder" id="mptrs_loadMoreMenuBtnHolder" style="display: none">
+                        <div class="mptrs_loadMoreMenuBtn">Load More Menu</div>
+                    </div>
+                <?php } } ?>
                 <input type="hidden" id="mptrs_getPost" value="<?php echo esc_attr( $post_id )?>">
+                <input type="hidden" id="mptrs_menu_display_limit" value="<?php echo esc_attr( $menu_display_limit )?>">
             <?php
         }
     }

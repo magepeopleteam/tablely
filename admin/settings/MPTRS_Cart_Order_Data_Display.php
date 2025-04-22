@@ -80,7 +80,7 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
                     update_post_meta($custom_order_id, '_mptrs_created_order_date', $order_created_date);
                     update_post_meta($custom_order_id, '_mptrs_order_total', $order_total);
                     update_post_meta($custom_order_id, '_mptrs_order_status', $order_status);
-                    update_post_meta($custom_order_id, '$order_locations', $order_locations);
+                    update_post_meta($custom_order_id, '_order_locations', $order_locations);
                     update_post_meta($custom_order_id, '_mptrs_customer_id', $customer_id);
                     update_post_meta($custom_order_id, '_mptrs_customer_name', $customer_name);
                     update_post_meta($custom_order_id, '_mptrs_customer_email', $customer_email);

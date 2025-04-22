@@ -147,3 +147,23 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.mptrs_loadMoreMenuBtnHolder{
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    padding: 10px;
+}
+.mptrs_loadMoreMenuBtn{
+    text-align: center;
+    cursor: pointer;
+    padding: 6px 12px;
+    color: #160303;
+    border: 1px solid #d1cccc;
+    border-radius: 3px;
+}
+
+.mptrs_loadMoreMenuBtn:hover{
+    background-color: #0a7aff;
+    color: #f3f3f3;
+}

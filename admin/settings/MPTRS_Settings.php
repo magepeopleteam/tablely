@@ -45,6 +45,10 @@
                                 <li data-tabs-target="#mptrs_faq_settings">
                                     <i class="fas fa-question-circle _mR_xs"></i><?php esc_html_e('FAQ', 'tablely'); ?>
                                 </li>
+
+                                <li data-tabs-target="#mptrs_restaurant_Settings">
+                                    <i class="fas fa-hamburger _mR_xs"></i><?php esc_html_e('Settings', 'tablely'); ?>
+                                </li>
 								<?php do_action('add_mptrs_settings_tab_after_date', $post_id); ?>
                             </ul>
                         </div>

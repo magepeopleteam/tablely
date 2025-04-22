@@ -182,8 +182,8 @@
   }
 }
 .mptrs-default-template .mptrs-content .mptrs-content-left .mptrs-food-menu-container .mptrs-food-menu:hover {
-  transform: scale(1.03);
-  background-color: var(--mptrs_color_theme_77);
+  /*transform: scale(1.03);*/
+  /*background-color: var(--mptrs_color_theme_77);*/
   border-radius: 5px;
   padding: 10px;
 }
