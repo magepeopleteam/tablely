@@ -168,11 +168,44 @@ function mptrs_load_sortable_datepicker(parent, item) {
         parent.find('.add_icon_image_button_area').slideDown('fast');
     });
 
+    // Click on status text to toggle dropdown visibility
+    $(document).on('click', '.status-toggle', function(e) {
+        e.stopPropagation();
+        // Hide all other dropdowns first
+        $('.mptrs_service_status').hide();
+        // Show only this dropdown
+        $(this).next('.mptrs_service_status').show();
+    });
+    
+    // Hide dropdown when clicking outside
+    $(document).on('click', function(e) {
+        if (!$(e.target).hasClass('status-toggle') && !$(e.target).hasClass('mptrs_service_status')) {
+            $('.mptrs_service_status').hide();
+        }
+    });
+    
+    // Hide dropdown after selection is made (after ajax success)
     $(document).on('change', '.mptrs_service_status', function () {
         let mptrs_service_status_id = $(this).attr('id');
         mptrs_service_status_id = mptrs_service_status_id.split('-');
         let orderPostId = mptrs_service_status_id[1];
         let selectedVal = $(this).val().trim();
+        
+        // Update the status display immediately in the UI
+        let parent = $(this).parent();
+        let statusSpan = parent.find('.mptrs_order_status');
+        
+        if (selectedVal === 'in_progress') {
+            statusSpan.removeClass('completed cancelled').addClass('on-process').text('On Process');
+        } else if (selectedVal === 'done') {
+            statusSpan.removeClass('on-process cancelled').addClass('completed').text('Completed');
+        } else if (selectedVal === 'service_out') {
+            statusSpan.removeClass('on-process completed').addClass('cancelled').text('Cancelled');
+        }
+        
+        // Hide the dropdown after selection
+        $(this).hide();
+        
         $.ajax({
             url: mptrs_admin_ajax.ajax_url,
             type: 'POST',
@@ -184,8 +217,13 @@ function mptrs_load_sortable_datepicker(parent, item) {
             },
             success: function (response) {
                 if ( response.data.success ) {
-                    alert(  response.data.message );
-                    // $('#post').off('submit').submit();
+                    // Success feedback
+                    parent.append('<span class="status-updated-msg">Status updated!</span>');
+                    setTimeout(function() {
+                        parent.find('.status-updated-msg').fadeOut(function() {
+                            $(this).remove();
+                        });
+                    }, 2000);
                 } else {
                     alert('Error: ' + response.data.message);
                 }
@@ -236,6 +274,120 @@ function mptrs_load_sortable_datepicker(parent, item) {
             $(".mptrs_order_row").hide().filter(`[ data-order_type_filter='${filterValue}']`).fadeIn();
         }
     });
+    
+    // Search functionality
+    $(document).on("keyup", "#mptrsOrderSearch", function() {
+        let searchValue = $(this).val().toLowerCase();
+        searchOrders(searchValue);
+    });
+    
+    $(document).on("click", "#mptrsOrderSearchBtn", function(e) {
+        e.preventDefault();
+        let searchValue = $("#mptrsOrderSearch").val().toLowerCase();
+        searchOrders(searchValue);
+    });
+    
+    function searchOrders(searchValue) {
+        if (searchValue.length > 0) {
+            $("#order-list tr").each(function() {
+                let found = false;
+                $(this).find('td').each(function() {
+                    if ($(this).text().toLowerCase().indexOf(searchValue) > -1) {
+                        found = true;
+                        return false; // Break the loop if found
+                    }
+                });
+                
+                if (found) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        } else {
+            // If search is empty, restore original filter view
+            const activeFilter = $(".mptrs_order_type_item.mptrs_active").data("filter");
+            if (activeFilter === "all") {
+                $(".mptrs_order_row").show();
+            } else {
+                $(".mptrs_order_row").hide().filter(`[ data-order_type_filter='${activeFilter}']`).show();
+            }
+        }
+    }
+    
+    // Time filter functionality
+    $(document).on("change", "#mptrsTimeFilter", function() {
+        const value = $(this).val();
+        let fromDate = null;
+        const today = new Date();
+        
+        switch(value) {
+            case 'this_week':
+                // Get first day of current week (Sunday)
+                const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+                fromDate = firstDayOfWeek;
+                break;
+            case 'this_month':
+                // First day of current month
+                fromDate = new Date(today.getFullYear(), today.getMonth(), 1);
+                break;
+            case 'last_month':
+                // First day of last month
+                fromDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                const lastDayOfLastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+                break;
+            case 'all_time':
+                // Show all orders
+                fromDate = null;
+                break;
+        }
+        
+        filterOrdersByDate(fromDate);
+    });
+    
+    function filterOrdersByDate(fromDate) {
+        if (!fromDate) {
+            // If no date filter, show according to current type filter
+            const activeFilter = $(".mptrs_order_type_item.mptrs_active").data("filter");
+            if (activeFilter === "all") {
+                $(".mptrs_order_row").fadeIn();
+            } else {
+                $(".mptrs_order_row").hide().filter(`[ data-order_type_filter='${activeFilter}']`).fadeIn();
+            }
+            return;
+        }
+        
+        $("#order-list tr").each(function() {
+            const dateCell = $(this).find('td:nth-child(3)').text().trim();
+            
+            if (dateCell) {
+                const parts = dateCell.split(' ')[0].split('-');
+                if (parts.length >= 3) {
+                    const orderDate = new Date(parts[0], parts[1] - 1, parts[2]);
+                    
+                    if (orderDate >= fromDate) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                } else {
+                    $(this).hide();
+                }
+            }
+        });
+    }
+    
+    // Select all checkboxes functionality
+    $(document).on("change", "#selectAllOrders", function() {
+        const isChecked = $(this).prop("checked");
+        $(".order-checkbox").prop("checked", isChecked);
+    });
+    
+    $(document).on("change", ".order-checkbox", function() {
+        const allChecked = $(".order-checkbox:checked").length === $(".order-checkbox").length;
+        $("#selectAllOrders").prop("checked", allChecked);
+    });
+    
     // upload image
     var mediaUploader;
     $(document).on("click", ".mptrs-logo-upload",function (e) {
