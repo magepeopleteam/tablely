@@ -1,0 +1,1372 @@
+/**
+ * Tablely - Restaurant Management Plugin
+ * Color Themes and Color Combinations
+ * Version: 1.0.0
+ */
+
+/* ===== Color Theme Variables ===== */
+:root {
+    /* Base Color Theme Variables */
+    --mptrs-primary: #0793C9;
+    --mptrs-primary-dark: #067ba8;
+    --mptrs-primary-light: #4fb8de;
+    --mptrs-secondary: #FF5722;
+    --mptrs-secondary-dark: #e64a14;
+    --mptrs-secondary-light: #ff7e50;
+    
+    /* Neutral Colors */
+    --mptrs-white: #ffffff;
+    --mptrs-black: #000000;
+    --mptrs-grey-100: #f8f9fa;
+    --mptrs-grey-200: #e9ecef;
+    --mptrs-grey-300: #dee2e6;
+    --mptrs-grey-400: #ced4da;
+    --mptrs-grey-500: #adb5bd;
+    --mptrs-grey-600: #6c757d;
+    --mptrs-grey-700: #495057;
+    --mptrs-grey-800: #343a40;
+    --mptrs-grey-900: #212529;
+    
+    /* State Colors */
+    --mptrs-success: #10B981;
+    --mptrs-success-light: #D1FAE5;
+    --mptrs-warning: #F59E0B;
+    --mptrs-warning-light: #FEF3C7;
+    --mptrs-danger: #EF4444;
+    --mptrs-danger-light: #FEE2E2;
+    --mptrs-info: #3B82F6;
+    --mptrs-info-light: #DBEAFE;
+    
+    /* UI Elements */
+    --mptrs-border-radius: 8px;
+    --mptrs-box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    --mptrs-transition: all 0.3s ease;
+    
+    /* Order Status Colors */
+    --mptrs-status-active: var(--mptrs-success);
+    --mptrs-status-completed: var(--mptrs-success);
+    --mptrs-status-pending: var(--mptrs-warning);
+    --mptrs-status-cancelled: var(--mptrs-danger);
+    --mptrs-status-processing: var(--mptrs-info);
+    
+    /* Order Type Colors */
+    --mptrs-order-dine-in: #6366F1;
+    --mptrs-order-takeaway: #8B5CF6;
+    --mptrs-order-delivery: #EC4899;
+}
+
+/* ===== Color Theme Presets ===== */
+/* These will be applied when certain classes are added to the body element */
+
+/* Blue Theme */
+body.mptrs-theme-blue {
+    --mptrs-primary: #3B82F6;
+    --mptrs-primary-dark: #2563EB;
+    --mptrs-primary-light: #60A5FA;
+    --mptrs-secondary: #F97316;
+}
+
+/* Green Theme */
+body.mptrs-theme-green {
+    --mptrs-primary: #10B981;
+    --mptrs-primary-dark: #059669;
+    --mptrs-primary-light: #34D399;
+    --mptrs-secondary: #8B5CF6;
+}
+
+/* Purple Theme */
+body.mptrs-theme-purple {
+    --mptrs-primary: #8B5CF6;
+    --mptrs-primary-dark: #7C3AED;
+    --mptrs-primary-light: #A78BFA;
+    --mptrs-secondary: #EC4899;
+}
+
+/* Dark Theme */
+body.mptrs-theme-dark {
+    --mptrs-primary: #1F2937;
+    --mptrs-primary-dark: #111827;
+    --mptrs-primary-light: #374151;
+    --mptrs-secondary: #F97316;
+    --mptrs-grey-100: #374151;
+    --mptrs-grey-200: #4B5563;
+    --mptrs-grey-800: #E5E7EB;
+    --mptrs-grey-900: #F9FAFB;
+}
+
+/* ===== Restaurant List Page Styling ===== */
+.mptrs_restaurant_page_wrap {
+    padding: 30px;
+    max-width: 1500px;
+    margin: 0 auto;
+    color: var(--mptrs-grey-800);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.mptrs_add_button {
+    background-color: var(--mptrs-primary);
+    color: var(--mptrs-white);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: var(--mptrs-transition);
+}
+
+.mptrs_add_button:hover {
+    background-color: var(--mptrs-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.mptrs_restaurant_list_table thead th {
+    background-color: var(--mptrs-grey-100);
+    color: var(--mptrs-grey-800);
+    border-bottom: 2px solid var(--mptrs-primary-light);
+}
+
+.mptrs_restaurant_list_table tbody tr {
+    transition: var(--mptrs-transition);
+    border-bottom: 1px solid var(--mptrs-grey-200);
+}
+
+.mptrs_restaurant_list_table tbody tr:hover {
+    background-color: rgba(var(--mptrs-primary-rgb, 11, 147, 201), 0.05);
+}
+
+/* Restaurant Status Styles */
+.mptrs_restaurant_status {
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-weight: 500;
+    text-align: center;
+    font-size: 12px;
+}
+
+.status-active {
+    background-color: var(--mptrs-success-light);
+    color: var(--mptrs-success);
+}
+
+.status-closed {
+    background-color: var(--mptrs-danger-light);
+    color: var(--mptrs-danger);
+}
+
+.status-temp-closed {
+    background-color: var(--mptrs-warning-light);
+    color: var(--mptrs-warning);
+}
+
+.status-draft {
+    background-color: var(--mptrs-grey-200);
+    color: var(--mptrs-grey-600);
+}
+
+/* Action Buttons */
+.mptrs_action_btn {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--mptrs-border-radius);
+    transition: var(--mptrs-transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mptrs_view_btn {
+    background-color: var(--mptrs-info);
+}
+
+.mptrs_view_btn:hover {
+    background-color: var(--mptrs-info-dark, #2563eb);
+    box-shadow: 0 3px 6px rgba(59, 130, 246, 0.3);
+}
+
+.mptrs_edit_btn {
+    background-color: var(--mptrs-success);
+}
+
+.mptrs_edit_btn:hover {
+    background-color: var(--mptrs-success-dark, #059669);
+    box-shadow: 0 3px 6px rgba(16, 185, 129, 0.3);
+}
+
+.mptrs_delete_btn {
+    background-color: var(--mptrs-danger);
+}
+
+.mptrs_delete_btn:hover {
+    background-color: var(--mptrs-danger-dark, #dc2626);
+    box-shadow: 0 3px 6px rgba(239, 68, 68, 0.3);
+}
+
+/* Pagination */
+.mptrs_pagination .page-numbers {
+    min-width: 38px;
+    height: 38px;
+    border-radius: 6px;
+    margin: 0 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--mptrs-white);
+    color: var(--mptrs-grey-700);
+    border: 1px solid var(--mptrs-grey-300);
+    font-weight: 500;
+    transition: var(--mptrs-transition);
+}
+
+.mptrs_pagination .page-numbers:hover {
+    background-color: var(--mptrs-grey-100);
+    color: var(--mptrs-primary);
+    border-color: var(--mptrs-primary-light);
+}
+
+.mptrs_pagination .page-numbers.current {
+    background-color: var(--mptrs-primary);
+    color: var(--mptrs-white);
+    border-color: var(--mptrs-primary);
+    box-shadow: 0 2px 5px rgba(var(--mptrs-primary-rgb, 11, 147, 201), 0.3);
+}
+
+/* ===== Search and Filters ===== */
+#mptrsRestaurantSearch {
+    border: 1px solid var(--mptrs-grey-300);
+    border-radius: var(--mptrs-border-radius);
+    padding: 10px 15px;
+    font-size: 14px;
+    transition: var(--mptrs-transition);
+}
+
+#mptrsRestaurantSearch:focus {
+    border-color: var(--mptrs-primary);
+    box-shadow: 0 0 0 3px rgba(var(--mptrs-primary-rgb, 11, 147, 201), 0.15);
+    outline: none;
+}
+
+#mptrsRestaurantSearchBtn {
+    color: var(--mptrs-grey-600);
+}
+
+#mptrsRestaurantSearchBtn:hover {
+    color: var(--mptrs-primary);
+}
+
+/* Display Limit Input */
+.mptrs_ordersPerPage {
+    border: 1px solid var(--mptrs-grey-300);
+    border-radius: var(--mptrs-border-radius);
+    padding: 8px 10px;
+    transition: var(--mptrs-transition);
+}
+
+.mptrs_ordersPerPage:focus {
+    border-color: var(--mptrs-primary);
+    box-shadow: 0 0 0 3px rgba(var(--mptrs-primary-rgb, 11, 147, 201), 0.15);
+    outline: none;
+}
+
+/* Order Type Indicators */
+.order-type-indicator {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.order-type-indicator.dine-in {
+    background-color: rgba(99, 102, 241, 0.1);
+    color: var(--mptrs-order-dine-in);
+}
+
+.order-type-indicator.takeaway {
+    background-color: rgba(139, 92, 246, 0.1);
+    color: var(--mptrs-order-takeaway);
+}
+
+.order-type-indicator.online {
+    background-color: rgba(236, 72, 153, 0.1);
+    color: var(--mptrs-order-delivery);
+}
+
+/* ===== Table Reserve Status Styles ===== */
+.mptrs_status_badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.mptrs_status_reserved {
+    background-color: var(--mptrs-success-light);
+    color: var(--mptrs-success);
+}
+
+.mptrs_status_in_progress {
+    background-color: var(--mptrs-warning-light);
+    color: var(--mptrs-warning);
+}
+
+/* Order Status Styles */
+.mptrs_order_status {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.mptrs_order_status.on-process {
+    background-color: var(--mptrs-info-light);
+    color: var(--mptrs-info);
+}
+
+.mptrs_order_status.completed {
+    background-color: var(--mptrs-success-light);
+    color: var(--mptrs-success);
+}
+
+.mptrs_order_status.cancelled {
+    background-color: var(--mptrs-danger-light);
+    color: var(--mptrs-danger);
+}
+
+/* ===== Color Theme Selector for Admin Settings ===== */
+.mptrs_color_theme_selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.mptrs_color_theme_option {
+    width: 120px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--mptrs-transition);
+    border-radius: var(--mptrs-border-radius);
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.mptrs_color_theme_option:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.mptrs_color_theme_option.active {
+    border: 2px solid var(--mptrs-primary);
+}
+
+.mptrs_color_preview {
+    height: 80px;
+    display: flex;
+}
+
+.mptrs_color_preview_main {
+    width: 70%;
+    background-color: var(--theme-primary, #0793C9);
+}
+
+.mptrs_color_preview_accent {
+    width: 30%;
+    background-color: var(--theme-secondary, #FF5722);
+}
+
+.mptrs_color_theme_name {
+    padding: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    background-color: var(--mptrs-grey-100);
+    color: var(--mptrs-grey-800);
+}
+
+/* Create RGB versions of the colors for opacity support */
+:root {
+    --mptrs-primary-rgb: 7, 147, 201;
+    --mptrs-secondary-rgb: 255, 87, 34;
+    --mptrs-success-rgb: 16, 185, 129;
+    --mptrs-warning-rgb: 245, 158, 11;
+    --mptrs-danger-rgb: 239, 68, 68;
+    --mptrs-info-rgb: 59, 130, 246;
+}
+
+/* Media Queries for Responsive Design */
+@media screen and (max-width: 768px) {
+    .mptrs_action_btn {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .mptrs_pagination .page-numbers {
+        min-width: 34px;
+        height: 34px;
+        font-size: 13px;
+    }
+    
+    .mptrs_color_theme_option {
+        width: 100px;
+    }
+    
+    .mptrs_color_preview {
+        height: 60px;
+    }
+}
+
+/* ===== Modern Restaurant List UI ===== */
+/* Filter section modernization */
+.mptrs_filters_section {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: var(--mptrs-white);
+    border-radius: var(--mptrs-border-radius);
+    box-shadow: var(--mptrs-box-shadow);
+}
+
+.mptrs_search_container {
+    flex: 1;
+    position: relative;
+    min-width: 250px;
+}
+
+#mptrsRestaurantSearch {
+    width: 100%;
+    padding: 12px 40px 12px 15px;
+    border: 1px solid var(--mptrs-grey-300);
+    border-radius: var(--mptrs-border-radius);
+    font-size: 14px;
+    background-color: var(--mptrs-grey-100);
+    transition: all 0.3s ease;
+}
+
+#mptrsRestaurantSearch:focus {
+    border-color: var(--mptrs-primary);
+    background-color: var(--mptrs-white);
+    box-shadow: 0 0 0 3px rgba(var(--mptrs-primary-rgb, 11, 147, 201), 0.1);
+    outline: none;
+}
+
+#mptrsRestaurantSearchBtn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: var(--mptrs-grey-600);
+    cursor: pointer;
+    padding: 0;
+    font-size: 16px;
+    transition: color 0.2s ease;
+}
+
+#mptrsRestaurantSearchBtn:hover {
+    color: var(--mptrs-primary);
+}
+
+.mptrs_modern_filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.mptrs_filter_group {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+    transition: all 0.2s ease-in-out;
+}
+
+.mptrs_filter_group:hover {
+    transform: translateY(-2px);
+}
+
+.mptrs_filter_group label {
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--mptrs-grey-700);
+}
+
+.mptrs_status_filter {
+    padding: 10px 15px;
+    border: 1px solid var(--mptrs-grey-300);
+    border-radius: var(--mptrs-border-radius);
+    background-color: var(--mptrs-grey-100);
+    font-size: 14px;
+    transition: all 0.3s ease;
+    color: var(--mptrs-grey-800);
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 35px;
+}
+
+.mptrs_status_filter:focus {
+    border-color: var(--mptrs-primary);
+    background-color: var(--mptrs-white);
+    box-shadow: 0 0 0 3px rgba(var(--mptrs-primary-rgb, 11, 147, 201), 0.1);
+    outline: none;
+}
+
+/* Table modernization */
+.mptrs_restaurant_list_table_container {
+    overflow: hidden;
+    border-radius: var(--mptrs-border-radius);
+    box-shadow: var(--mptrs-box-shadow);
+    margin-bottom: 30px;
+}
+
+.mptrs_restaurant_list_table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.mptrs_restaurant_list_table thead th {
+    background: linear-gradient(to bottom, var(--mptrs-grey-100), rgba(var(--mptrs-primary-rgb, 11, 147, 201), 0.05));
+    color: var(--mptrs-grey-800);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 16px;
+    text-align: left;
+    border-bottom: 2px solid rgba(var(--mptrs-primary-rgb, 11, 147, 201), 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.mptrs_restaurant_list_table tbody tr {
+    background-color: var(--mptrs-white);
+    transition: all 0.2s ease;
+}
+
+.mptrs_restaurant_list_table tbody tr:hover {
+    background-color: var(--mptrs-primary-50, #f5f3ff);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.mptrs_restaurant_list_table td {
+    padding: 16px;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--mptrs-grey-200);
+}
+
+.mptrs_restaurant_list_table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Restaurant image styling */
+.mptrs_restaurant_img_container {
+    width: 60px;
+    height: 60px;
+    overflow: hidden;
+    border-radius: 50%;
+    background-color: var(--mptrs-grey-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(var(--mptrs-primary-rgb, 11, 147, 201), 0.1);
+}
+
+.mptrs_restaurant_image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.mptrs_restaurant_row:hover .mptrs_restaurant_image {
+    transform: scale(1.1);
+}
+
+/* Restaurant name styling */
+.mptrs_restaurant_name {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--mptrs-grey-900);
+    transition: color 0.2s ease;
+}
+
+.mptrs_restaurant_row:hover .mptrs_restaurant_name {
+    color: var(--mptrs-primary);
+}
+
+/* Status badge enhanced styling */
+.mptrs_restaurant_status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-weight: 500;
+    font-size: 12px;
+    min-width: 80px;
+}
+
+/* Action buttons enhanced styling */
+.mptrs_action_btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    margin: 0 5px;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.mptrs_action_btn:hover {
+    transform: translateY(-3px);
+}
+
+/* Pagination enhancement */
+.mptrs_pagination {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.mptrs_display_limit_wrap {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: var(--mptrs-grey-700);
+}
+
+.mptrs_ordersPerPage {
+    margin-left: 10px;
+    padding: 8px 12px;
+    border: 1px solid var(--mptrs-grey-300);
+    border-radius: var(--mptrs-border-radius);
+    max-width: 70px;
+    text-align: center;
+}
+
+/* Page header modernization */
+.mptrs_header_section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--mptrs-grey-200);
+}
+
+.mptrs_page_title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--mptrs-grey-900);
+    margin: 0;
+    position: relative;
+    padding-left: 15px;
+}
+
+.mptrs_page_title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 4px;
+    /* background: linear-gradient(to bottom, var(--mptrs-primary), var(--mptrs-secondary)); */
+    border-radius: 4px;
+}
+
+.mptrs_add_button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to right, var(--mptrs-primary), var(--mptrs-primary-dark));
+    color: var(--mptrs-white);
+    border: none;
+    border-radius: var(--mptrs-border-radius);
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(var(--mptrs-primary-rgb, 11, 147, 201), 0.25);
+}
+
+.mptrs_add_button:hover {
+    background: linear-gradient(to right, var(--mptrs-primary-dark), var(--mptrs-primary));
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(var(--mptrs-primary-rgb, 11, 147, 201), 0.35);
+}
+
+.mptrs_add_button i {
+    margin-right: 8px;
+    font-size: 14px;
+}
+
+/* Empty state styling */
+.mptrs_empty_state {
+    padding: 50px 30px;
+    text-align: center;
+    background-color: var(--mptrs-white);
+    border-radius: var(--mptrs-border-radius);
+    box-shadow: var(--mptrs-box-shadow);
+    margin: 30px 0;
+}
+
+.mptrs_empty_state p {
+    font-size: 16px;
+    color: var(--mptrs-grey-600);
+    margin-bottom: 20px;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 782px) {
+    .mptrs_restaurant_page_wrap {
+        padding: 20px 15px;
+    }
+    
+    .mptrs_header_section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .mptrs_filters_section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .mptrs_restaurant_list_table th.mptrs_col_description, 
+    .mptrs_restaurant_list_table td.mptrs_col_description {
+        display: none;
+    }
+}
+
+/* Filter section animations and enhanced states */
+.mptrs_filter_group {
+    transition: all 0.2s ease-in-out;
+}
+
+.mptrs_filter_group:hover {
+    transform: translateY(-2px);
+}
+
+.mptrs_modern_filters .mptrs_search_input:focus {
+    box-shadow: 0 0 0 2px var(--mptrs-primary-700, #4527a0);
+    outline: none;
+}
+
+.mptrs_modern_filters .mptrs_search_button:hover {
+    background-color: var(--mptrs-primary-700, #4527a0);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.mptrs_modern_filters .mptrs_search_button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Table row hover effects */
+.mptrs_restaurant_list_table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.mptrs_restaurant_list_table tbody tr:hover {
+    background-color: var(--mptrs-primary-50, #f5f3ff);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Restaurant description styling */
+.mptrs_restaurant_description {
+    line-height: 1.6;
+    color: var(--mptrs-gray-700, #4a5568);
+    margin-top: 8px;
+    max-width: 600px;
+    font-size: 0.95em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.mptrs_restaurant_title {
+    font-weight: 600;
+    color: var(--mptrs-gray-900, #1a202c);
+    margin-bottom: 4px;
+    font-size: 1.1em;
+    transition: color 0.2s ease;
+}
+
+.mptrs_restaurant_title:hover {
+    color: var(--mptrs-primary-600, #5a32b8);
+}
+
+/* Restaurant meta information */
+.mptrs_restaurant_meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+    font-size: 0.85em;
+    color: var(--mptrs-gray-600, #718096);
+}
+
+.mptrs_restaurant_meta_item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.mptrs_restaurant_meta_item svg {
+    width: 14px;
+    height: 14px;
+    color: var(--mptrs-primary-500, #6d41d6);
+}
+
+/* Loading animations */
+.mptrs_loading {
+    position: relative;
+    min-height: 200px;
+}
+
+.mptrs_loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border: 4px solid rgba(109, 65, 214, 0.2);
+    border-top-color: var(--mptrs-primary-500, #6d41d6);
+    border-radius: 50%;
+    animation: mptrs-spin 1s linear infinite;
+}
+
+@keyframes mptrs-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.mptrs_fade_in {
+    animation: mptrs-fade-in 0.4s ease forwards;
+    opacity: 0;
+}
+
+@keyframes mptrs-fade-in {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Button styles */
+.mptrs_btn {
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    transition: all 0.15s ease-in-out;
+    text-decoration: none;
+}
+
+.mptrs_btn:hover, .mptrs_btn:focus {
+    opacity: 0.9;
+    text-decoration: none;
+}
+
+.mptrs_btn_primary {
+    background-color: #0073aa;
+    color: #fff;
+    border-color: #0073aa;
+}
+
+.mptrs_btn_secondary {
+    background-color: #f7f7f7;
+    color: #555;
+    border-color: #ccc;
+}
+
+.mptrs_btn_success {
+    background-color: #46b450;
+    color: #fff;
+    border-color: #46b450;
+}
+
+.mptrs_btn_danger {
+    background-color: #dc3232;
+    color: #fff;
+    border-color: #dc3232;
+}
+
+.mptrs_btn_warning {
+    background-color: #ffb900;
+    color: #fff;
+    border-color: #ffb900;
+}
+
+.mptrs_btn_sm {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+.mptrs_btn_lg {
+    padding: 12px 20px;
+    font-size: 16px;
+}
+
+.mptrs_btn_block {
+    display: block;
+    width: 100%;
+}
+
+/* Form elements */
+.mptrs_form_group {
+    margin-bottom: 16px;
+}
+
+.mptrs_form_label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.mptrs_form_control {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #32373c;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #7e8993;
+    border-radius: 4px;
+    transition: border-color 0.15s ease-in-out;
+}
+
+.mptrs_form_control:focus {
+    border-color: #0073aa;
+    outline: 0;
+    box-shadow: 0 0 0 1px #0073aa;
+}
+
+.mptrs_form_check {
+    position: relative;
+    display: block;
+    padding-left: 24px;
+    margin-bottom: 8px;
+}
+
+.mptrs_form_check_input {
+    position: absolute;
+    margin-top: 4px;
+    margin-left: -24px;
+}
+
+.mptrs_form_check_label {
+    margin-bottom: 0;
+}
+
+.mptrs_select {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #32373c;
+    background-color: #fff;
+    border: 1px solid #7e8993;
+    border-radius: 4px;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"><path d="M5 6l5 5 5-5 2 1-7 7-7-7z" fill="%23555"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 8px top 50%;
+    background-size: 16px 16px;
+    padding-right: 32px;
+}
+
+.mptrs_select:focus {
+    border-color: #0073aa;
+    outline: 0;
+    box-shadow: 0 0 0 1px #0073aa;
+}
+
+/* Table styles */
+.mptrs_table {
+    width: 100%;
+    margin-bottom: 16px;
+    border-collapse: collapse;
+}
+
+.mptrs_table th,
+.mptrs_table td {
+    padding: 8px 12px;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+    text-align: left;
+}
+
+.mptrs_table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.mptrs_table tbody tr:hover {
+    background-color: rgba(0,0,0,0.03);
+}
+
+.mptrs_table_bordered {
+    border: 1px solid #dee2e6;
+}
+
+.mptrs_table_bordered th,
+.mptrs_table_bordered td {
+    border: 1px solid #dee2e6;
+}
+
+.mptrs_table_striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0,0,0,0.02);
+}
+
+/* Grid and layout utilities */
+.mptrs_flex {
+    display: flex;
+}
+
+.mptrs_flex_col {
+    flex-direction: column;
+}
+
+.mptrs_items_center {
+    align-items: center;
+}
+
+.mptrs_justify_between {
+    justify-content: space-between;
+}
+
+.mptrs_gap_sm {
+    gap: 8px;
+}
+
+.mptrs_gap_md {
+    gap: 16px;
+}
+
+.mptrs_gap_lg {
+    gap: 24px;
+}
+
+.mptrs_grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+}
+
+.mptrs_col_span_4 {
+    grid-column: span 4;
+}
+
+.mptrs_col_span_6 {
+    grid-column: span 6;
+}
+
+.mptrs_col_span_8 {
+    grid-column: span 8;
+}
+
+.mptrs_col_span_12 {
+    grid-column: span 12;
+}
+
+/* Spacing utilities */
+.mptrs_m_0 { margin: 0; }
+.mptrs_m_1 { margin: 4px; }
+.mptrs_m_2 { margin: 8px; }
+.mptrs_m_3 { margin: 12px; }
+.mptrs_m_4 { margin: 16px; }
+.mptrs_m_5 { margin: 24px; }
+
+.mptrs_mt_0 { margin-top: 0; }
+.mptrs_mt_1 { margin-top: 4px; }
+.mptrs_mt_2 { margin-top: 8px; }
+.mptrs_mt_3 { margin-top: 12px; }
+.mptrs_mt_4 { margin-top: 16px; }
+.mptrs_mt_5 { margin-top: 24px; }
+
+.mptrs_mb_0 { margin-bottom: 0; }
+.mptrs_mb_1 { margin-bottom: 4px; }
+.mptrs_mb_2 { margin-bottom: 8px; }
+.mptrs_mb_3 { margin-bottom: 12px; }
+.mptrs_mb_4 { margin-bottom: 16px; }
+.mptrs_mb_5 { margin-bottom: 24px; }
+
+.mptrs_p_0 { padding: 0; }
+.mptrs_p_1 { padding: 4px; }
+.mptrs_p_2 { padding: 8px; }
+.mptrs_p_3 { padding: 12px; }
+.mptrs_p_4 { padding: 16px; }
+.mptrs_p_5 { padding: 24px; }
+
+/* Typography */
+.mptrs_text_xs { font-size: 12px; }
+.mptrs_text_sm { font-size: 14px; }
+.mptrs_text_md { font-size: 16px; }
+.mptrs_text_lg { font-size: 18px; }
+.mptrs_text_xl { font-size: 20px; }
+.mptrs_text_2xl { font-size: 24px; }
+
+.mptrs_text_bold { font-weight: 600; }
+.mptrs_text_normal { font-weight: 400; }
+.mptrs_text_light { font-weight: 300; }
+
+.mptrs_text_center { text-align: center; }
+.mptrs_text_right { text-align: right; }
+.mptrs_text_left { text-align: left; }
+
+/* Colors */
+.mptrs_text_primary { color: #0073aa; }
+.mptrs_text_success { color: #46b450; }
+.mptrs_text_danger { color: #dc3232; }
+.mptrs_text_warning { color: #ffb900; }
+.mptrs_text_muted { color: #767676; }
+
+.mptrs_bg_light { background-color: #f8f9fa; }
+.mptrs_bg_white { background-color: #ffffff; }
+.mptrs_bg_primary { background-color: #0073aa; }
+.mptrs_bg_success { background-color: #46b450; }
+.mptrs_bg_danger { background-color: #dc3232; }
+.mptrs_bg_warning { background-color: #ffb900; }
+
+/* Borders */
+.mptrs_border { border: 1px solid #ddd; }
+.mptrs_border_top { border-top: 1px solid #ddd; }
+.mptrs_border_bottom { border-bottom: 1px solid #ddd; }
+.mptrs_rounded { border-radius: 4px; }
+.mptrs_rounded_lg { border-radius: 8px; }
+.mptrs_rounded_full { border-radius: 9999px; }
+
+/* Card styles */
+.mptrs_card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.1);
+}
+
+.mptrs_card_header {
+    padding: 12px 16px;
+    margin-bottom: 0;
+    background-color: rgba(0,0,0,.03);
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mptrs_card_body {
+    flex: 1 1 auto;
+    padding: 16px;
+}
+
+.mptrs_card_title {
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.mptrs_card_text {
+    color: #555;
+    margin-bottom: 16px;
+}
+
+.mptrs_card_footer {
+    padding: 12px 16px;
+    background-color: rgba(0,0,0,.03);
+    border-top: 1px solid rgba(0,0,0,.125);
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+/* Layout utilities */
+.mptrs_container {
+    width: 100%;
+    padding-right: 16px;
+    padding-left: 16px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.mptrs_row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -8px;
+    margin-left: -8px;
+}
+
+.mptrs_col {
+    position: relative;
+    width: 100%;
+    padding-right: 8px;
+    padding-left: 8px;
+}
+
+.mptrs_col_6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+.mptrs_col_4 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+}
+
+.mptrs_col_3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+}
+
+.mptrs_col_8 {
+    flex: 0 0 66.666667%;
+    max-width: 66.666667%;
+}
+
+.mptrs_col_9 {
+    flex: 0 0 75%;
+    max-width: 75%;
+}
+
+.mptrs_flex {
+    display: flex;
+}
+
+.mptrs_flex_column {
+    flex-direction: column;
+}
+
+.mptrs_justify_between {
+    justify-content: space-between;
+}
+
+.mptrs_justify_center {
+    justify-content: center;
+}
+
+.mptrs_items_center {
+    align-items: center;
+}
+
+.mptrs_gap_2 {
+    gap: 8px;
+}
+
+.mptrs_gap_3 {
+    gap: 12px;
+}
+
+.mptrs_gap_4 {
+    gap: 16px;
+}
+
+/* Alert styles */
+.mptrs_alert {
+    position: relative;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.mptrs_alert_primary {
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+}
+
+.mptrs_alert_success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.mptrs_alert_danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.mptrs_alert_warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+
+/* Badge styles */
+.mptrs_badge {
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 3px;
+}
+
+.mptrs_badge_primary {
+    color: #fff;
+    background-color: #0073aa;
+}
+
+.mptrs_badge_success {
+    color: #fff;
+    background-color: #46b450;
+}
+
+.mptrs_badge_danger {
+    color: #fff;
+    background-color: #dc3232;
+}
+
+.mptrs_badge_warning {
+    color: #000;
+    background-color: #ffb900;
+} 

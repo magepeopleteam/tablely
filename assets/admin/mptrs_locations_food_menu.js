@@ -116,7 +116,10 @@ jQuery(document).ready(function ($) {
                 $(".mptrsTableRow").hide();
                 currentIndex = 0;
                 mptrs_showRows();
-                alert(response.data.message);
+                // Only show alert if the value actually changed
+                if (response.data.success) {
+                    alert(response.data.message);
+                }
             },
             error: function () {
                 alert('An unexpected error occurred.');
@@ -127,48 +130,66 @@ jQuery(document).ready(function ($) {
     $(document).on("blur", "#mptrs_menu_display_limit", function () {
         const newLimit = parseInt($(this).val(), 10) || 20;
         let limitKey = 'mptrs_menu_display_limit'
-        // alert( newLimit );
-        $.ajax({
-            url: mptrs_admin_ajax.ajax_url,
-            type: 'POST',
-            data: {
-                action: 'mptrs_set_food_menu_display_limit',
-                nonce: mptrs_admin_ajax.nonce,
-                newLimit: newLimit,
-                limitKey: limitKey,
-            },
-            success: function (response) {
-                alert(response.data.message);
-            },
-            error: function () {
-                alert('An unexpected error occurred.');
-            }
-        });
+        // Store the original value to compare
+        const originalValue = $(this).data('original-value') || $(this).val();
+        
+        // Only make the AJAX call if the value has changed
+        if (newLimit.toString() !== originalValue.toString()) {
+            $(this).data('original-value', newLimit);
+            
+            $.ajax({
+                url: mptrs_admin_ajax.ajax_url,
+                type: 'POST',
+                data: {
+                    action: 'mptrs_set_food_menu_display_limit',
+                    nonce: mptrs_admin_ajax.nonce,
+                    newLimit: newLimit,
+                    limitKey: limitKey,
+                },
+                success: function (response) {
+                    if (response.data.success) {
+                        alert(response.data.message);
+                    }
+                },
+                error: function () {
+                    alert('An unexpected error occurred.');
+                }
+            });
+        }
     });
 
     $(document).on("blur", ".mptrs_ordersPerPage", function () {
         const newLimit = parseInt($(this).val(), 10) || 20;
-        let limitKey = 'mptrs_order_lists_display_limit'
-        $.ajax({
-            url: mptrs_admin_ajax.ajax_url,
-            type: 'POST',
-            data: {
-                action: 'mptrs_set_food_menu_display_limit',
-                nonce: mptrs_admin_ajax.nonce,
-                newLimit: newLimit,
-                limitKey: limitKey,
-            },
-            success: function (response) {
-                $(".mptrs_display_limit").val( newLimit );
-                alert(response.data.message);
-                location.reload();
-            },
-            error: function () {
-                alert('An unexpected error occurred.');
-            }
-        });
-
-
+        let limitKey = 'mptrs_order_lists_display_limit';
+        
+        // Store the original value to compare
+        const originalValue = $(this).data('original-value') || $(this).val();
+        
+        // Only make the AJAX call if the value has changed
+        if (newLimit.toString() !== originalValue.toString()) {
+            $(this).data('original-value', newLimit);
+            
+            $.ajax({
+                url: mptrs_admin_ajax.ajax_url,
+                type: 'POST',
+                data: {
+                    action: 'mptrs_set_food_menu_display_limit',
+                    nonce: mptrs_admin_ajax.nonce,
+                    newLimit: newLimit,
+                    limitKey: limitKey,
+                },
+                success: function (response) {
+                    $(".mptrs_display_limit").val(newLimit);
+                    if (response.data.success) {
+                        alert(response.data.message);
+                        location.reload();
+                    }
+                },
+                error: function () {
+                    alert('An unexpected error occurred.');
+                }
+            });
+        }
     });
 
 
@@ -228,30 +249,31 @@ jQuery(document).ready(function ($) {
             $.each(categories, (key, value) => {
                 displayCategories += `
                     <div class="mptrs-category-item">
-                        <i class="fas fa-bars mptrs-drag"></i>
-                        <input class="mptrs-category-name" type="text" value="${value}">
+                        <i class="fas fa-arrows-alt mptrs-drag"></i>
+                        <input class="mptrs-category-name" type="text" value="${value}" placeholder="Category name">
                         <i class="fas fa-trash-alt mptrs-delete"></i>
                     </div>
             `;
             });
         } else {
-            displayCategories = 'No Category Found!';
+            displayCategories = '<div class="no-categories">No categories found. Add your first category below!</div>';
         }
 
         let mptrs_category_data = `
             <div class="mptrs_categoryDataHolder">
                 <div class="mptrs-popup-header">
-                    Categories
+                    <h3><i class="fas fa-tags mR_xs"></i> Manage Categories</h3>
+                    <span class="mptrs-close"><i class="fas fa-times"></i></span>
                 </div>
                 <div class="mptrs-category-list">
                     ${displayCategories}
                 </div>
-                <div class="mptrs-add-category">
-                    <i class="fas fa-plus"></i> Add category
-                </div>
+                <button class="mptrs-add-category">
+                    <i class="fas fa-plus"></i> Add Category
+                </button>
                 <div class="mptrs-popup-footer">
-                    <button class="mptrs-btn mptrs-cancel">Cancel</button>
-                    <button class="mptrs-btn mptrs-save">Save</button>
+                    <button class="mptrs-btn mptrs-cancel"><i class="fas fa-times"></i> Cancel</button>
+                    <button class="mptrs-btn mptrs-save"><i class="fas fa-check"></i> Save Changes</button>
                 </div>
             </div>
         `
@@ -313,7 +335,7 @@ jQuery(document).ready(function ($) {
 
     function mptrs_menuPopup( data, categories ) {
 
-        let displayCategory = '';
+        let displayCategory = '<option value="">' + (Object.keys(categories).length > 0 ? 'Select a category' : 'No categories available') + '</option>';
         $.each(categories, (key, value) => {
             displayCategory += `<option value="${key}" ${key === data.category ? 'selected' : ''}>${value}</option>`;
         });
@@ -332,7 +354,7 @@ jQuery(document).ready(function ($) {
                     <input type="text" name="variation_item_name[]" class="mptrs_input" placeholder="Item Name" value="${item.name}">
                     <input type="number" name="variation_item_price[]" class="mptrs_input" placeholder="Price" value="${item.price}">
                     <input type="number" name="variation_item_qty[]" class="mptrs_qty" min="1" value="${item.qty}">
-                    <button type="button" class="mptrs_removeVariationItem">X</button>
+                    <button type="button" class="mptrs_removeVariationItem"><i class="fas fa-times"></i></button>
                 </div>
             `;
             });
@@ -349,7 +371,7 @@ jQuery(document).ready(function ($) {
                 is_variations_exists = false;
                 options = `<option class="mptrs_variationAddons" value="variations" ${addOneVariation === 'variations' ? 'selected' : '' }>Variations</option>`;
                 select_type = `<option class="mptrs_select" value="single" ${variationData.radioOrCheckbox === 'single' ? 'selected' : ''}>Single Select (Radio)</option>`;
-            }else{
+            } else {
                 options = `<option class="mptrs_variationAddons" value="addons" ${addOneVariation === 'addons' ? 'selected' : '' }>Addons</option>`;
                 select_type = `<option class="mptrs_select" value="multiple" ${variationData.radioOrCheckbox === 'multiple' ? 'selected' : ''}>Multiple (Check Box)</option>
                             <option class="mptrs_select" value="single" ${variationData.radioOrCheckbox === 'single' ? 'selected' : ''}>Single Select (Radio)</option>
@@ -368,8 +390,8 @@ jQuery(document).ready(function ($) {
                 
                 <div class="mptrs_variationItems">${itemsHTML}</div>
                 <div class="mptrs_addRemoveHolder">
-                    <button type="button" class="mptrs_addVariationItem">+Add More ${addOneVariation}</button>
-                    <button type="button" class="mptrs_removeVariationCategory" id="${removeCategory}">Remove</button>
+                    <button type="button" class="mptrs_addVariationItem"><i class="fas fa-plus"></i> Add More ${addOneVariation}</button>
+                    <button type="button" class="mptrs_removeVariationCategory" id="${removeCategory}"><i class="fas fa-trash-alt"></i> Remove</button>
                 </div>
                 
             </div>
@@ -381,65 +403,102 @@ jQuery(document).ready(function ($) {
             variationsBtnDisplay = 'block';
         }
 
+        // Get any existing image for preview
+        let imagePreview = '';
+        if (data.imgUrl) {
+            imagePreview = `<img src="${data.imgUrl}" alt="Menu Preview">`;
+        } else {
+            imagePreview = `<div class="empty-preview-text"><i class="fas fa-image"></i><p>Upload an image</p></div>`;
+        }
+
         return `
-        <h2 class="mptrs_addEditMenuTitleText"><i class="fas fa-utensils mptrs_icon_color"></i>${data.popUpTitleText}</h2>
+        <h2 class="mptrs_addEditMenuTitleText">
+            <i class="fas fa-utensils"></i> 
+            ${data.popUpTitleText}
+        </h2>
         <form id="mptrs_foodMenuForm" class="mptrs_food_menu_form">
             <div class="mptrs_form_group">
-                <label for="mptrs_menuName"><i class="fas fa-hamburger mptrs_icon_color"></i>Menu Name</label>
-                <input type="text" id="mptrs_menuName" name="mptrs_menuName" class="mptrs_input" required value="${data.name}">
+                <label for="mptrs_menuName">Menu Name</label>
+                <div class="input-icon-wrapper">
+                    <i class="fas fa-hamburger input-icon"></i>
+                    <input type="text" id="mptrs_menuName" name="mptrs_menuName" class="mptrs_input" required value="${data.name}" placeholder="Enter menu item name">
+                </div>
             </div>
 
             <div class="mptrs_form_group">
-                <label for="mptrs_menuCategory"><i class="fas fa-layer-group mptrs_icon_color"></i>Category</label>
-                <select id="mptrs_menuCategory" name="mptrs_menuCategory" class="mptrs_select" required>
-                    ${displayCategory}
-                </select>
+                <label for="mptrs_menuCategory">Category</label>
+                <div class="input-icon-wrapper">
+                    <i class="fas fa-layer-group input-icon"></i>
+                    <select id="mptrs_menuCategory" name="mptrs_menuCategory" class="mptrs_select" required>
+                        ${displayCategory}
+                    </select>
+                </div>
+                <span class="mptrs_form_helper">Select a category or create one from Categories button</span>
             </div>
 
             <div class="mptrs_form_group mptrs_menuPriceHolder">
                 <div class="mptrs_regularSalePrice">
-                    <label for="mptrs_menuPrice"><i class="fas fa-dollar-sign mptrs_icon_color"></i>Regular Price</label>
-                    <input type="number" id="mptrs_menuPrice" name="mptrs_menuPrice" class="mptrs_input" required value="${data.price}">
-            
+                    <label for="mptrs_menuPrice">Regular Price</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-dollar-sign input-icon"></i>
+                        <input type="number" id="mptrs_menuPrice" name="mptrs_menuPrice" class="mptrs_input" min="0" step="0.01" required value="${data.price}" placeholder="0.00">
+                    </div>
                 </div>
-                 <div class="mptrs_regularSalePrice">
-                    <label for="mptrs_menuSalePrice"><i class="fas fa-tags mptrs_icon_color"></i>Sale Price</label>
-                    <input type="number" id="mptrs_menuSalePrice" name="mptrs_menuSalePrice" class="mptrs_input" value="${data.menuSalePrice}">
-                 </div>
+                <div class="mptrs_regularSalePrice">
+                    <label for="mptrs_menuSalePrice">Sale Price <span class="optional">(optional)</span></label>
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-tags input-icon"></i>
+                        <input type="number" id="mptrs_menuSalePrice" name="mptrs_menuSalePrice" class="mptrs_input" min="0" step="0.01" value="${data.menuSalePrice}" placeholder="0.00">
+                    </div>
+                </div>
             </div>
 
             <div class="mptrs_form_group">
-                <label for="mptrs_numPersons"><i class="fas fa-users mptrs_icon_color"></i>Number of Persons</label>
-                <input type="number" id="mptrs_numPersons" name="mptrs_numPersons" class="mptrs_input" min="1" required value="${data.person}">
+                <label for="mptrs_numPersons">Number of Persons</label>
+                <div class="input-icon-wrapper">
+                    <i class="fas fa-users input-icon"></i>
+                    <input type="number" id="mptrs_numPersons" name="mptrs_numPersons" class="mptrs_input" min="1" required value="${data.person}" placeholder="1">
+                </div>
+                <span class="mptrs_form_helper">How many people does this item serve?</span>
             </div>
 
             <div class="mptrs_form_group">
-                <label for="mptrs_numPersons"><i class="fas fa-pencil-alt mptrs_icon_color"></i>Short Description</label>
-                <textarea class="mptrs_menuDescription mptrs_input" 
-                  id="mptrs_menuDescription" 
-                  name="mptrs_menuDescription"
-                  required>${data.menuDescription}
-               </textarea>
+                <label for="mptrs_menuDescription">Short Description</label>
+                <div class="input-icon-wrapper">
+                    <i class="fas fa-pencil-alt input-icon description-icon"></i>
+                    <textarea class="mptrs_menuDescription mptrs_input" 
+                      id="mptrs_menuDescription" 
+                      name="mptrs_menuDescription"
+                      placeholder="Describe this menu item"
+                      required>${data.menuDescription}</textarea>
+                </div>
             </div>
 
             <div class="mptrs_form_group">
-                <label for="mptrs_menuImage"><i class="fas fa-image mptrs_icon_color"></i>Menu Image </label>
-                <input type="file" id="mptrs_menuImage" name="mptrs_menuImage" class="mptrs_input">
+                <label for="mptrs_menuImage">Menu Image</label>
+                <div class="input-icon-wrapper file-input-wrapper">
+                    <i class="fas fa-image input-icon"></i>
+                    <input type="file" id="mptrs_menuImage" name="mptrs_menuImage" class="mptrs_input" accept="image/*">
+                </div>
                 <input type="hidden" id="mptrs_menuImage_url" name="mptrs_menuImage_url" value="${data.imgUrl}">
-                <div class="custom-foodMenu-image-preview"></div>
+                <div class="custom-foodMenu-image-preview">
+                    ${imagePreview}
+                </div>
             </div>
 
             <div id="mptrs_variationsContainer">
                 <div class="mptrs_variationAddonsHolder">
-                    <button type="button" id="mptrs_addVariationCategory" style="display: ${variationsBtnDisplay}">+ Add Variation Category</button>
-                    <button type="button" id="mptrs_addAddonsCategory">+ Add Addons Category </button>
+                    <button type="button" id="mptrs_addVariationCategory" style="display: ${variationsBtnDisplay}"><i class="fas fa-plus"></i> Add Variation Category</button>
+                    <button type="button" id="mptrs_addAddonsCategory"><i class="fas fa-plus"></i> Add Addons Category</button>
                 </div>
                 <div class="mptrs_addonsDataHolder" id="mptrs_addonsDataHolder">
                     ${variationsHTML}
                 </div>
                 
             </div>
-            <button type="submit" class="${data.btnIdClass}" id="mptrs_AddEdit-${data.key}">${data.btnText}</button>
+            <button type="submit" class="${data.btnIdClass}" id="mptrs_AddEdit-${data.key}">
+                <i class="fas fa-${data.btnText.includes('Update') ? 'save' : 'plus-circle'}"></i> ${data.btnText}
+            </button>
         </form>
     `;
     }
@@ -1039,33 +1098,162 @@ jQuery(document).ready(function ($) {
                     let orderDetailsHtml = `<div class="mptrs_orderDetailPopupOverlay" style="display:block;">
                                                         <div class="orderDetailPopupContent">
                                                             <span class="mptrs_closePopup">&times;</span>
-                                                            <h3>Billing Email</h3>
-                                                            <p class="mptrs_billingEmail"></p>
+                            <h2 style="margin-top:0; font-size:22px; color:#333; margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:10px;">Order #${orderId} Details</h2>
+                            
+                            <div class="order-details-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:25px;">
+                                <div class="order-details-section">
+                                    <h3>Order Information</h3>
+                                    <p><strong>Order Type:</strong> <span class="mptrs_orderType badge-order-type"></span></p>
+                                    <p><strong>Order Status:</strong> <span class="order-status"></span></p>
+                                    <p><strong>Order Date:</strong> <span class="order-date"></span></p>
+                                    <p style="margin-top:15px;">
+                                        <strong>Change Status:</strong><br>
+                                        <select name="mptrs_service_status" id="mptrsServiceStatus-${postId}" class="mptrs_service_status" style="margin-top:5px;">
+                                            <option value="in_progress">In Progress</option>
+                                            <option value="done">Completed</option>
+                                            <option value="service_out">Cancelled</option>
+                                        </select>
+                                    </p>
+                                </div>
                                 
-                                                            <h3>Order type</h3>
-                                                            <p class="mptrs_orderType"></p>
-                                
-                                                            <h3>Order Info</h3>
+                                <div class="order-details-section">
+                                    <h3>Customer Information</h3>
+                                    <p><strong>Name:</strong> <span class="customer-name"></span></p>
+                                    <p><strong>Email:</strong> <span class="mptrs_billingEmail"></span></p>
+                                    <p><strong>Phone:</strong> <span class="customer-phone"></span></p>
+                                </div>
+                            </div>
+                            
+                            <h3>Order Details</h3>
                                                             <div class="mptrs_orderDetailsDisplay"></div>
+                            
+                            <div style="margin-top:20px; text-align:right;">
+                                <button id="update-status-btn" class="status-update-btn" data-post-id="${postId}" style="padding:8px 16px; background-color:#ff5722; color:white; border:none; border-radius:4px; cursor:pointer;">Update Status</button>
                                                         </div>
-                                                    </div>`
-                    $("#mptrs_orderDetailsDisplayHolder").html( orderDetailsHtml );
+                        </div>
+                    </div>`;
+                    
+                    $("#mptrs_orderDetailsDisplayHolder").html(orderDetailsHtml);
 
                     const orderData = response.data.order_data;
-                    $('.mptrs_billingEmail').text(orderData.billing_email);
-                    $('.mptrs_orderType').text(orderData.order_type);
+                    $('.mptrs_billingEmail').text(orderData.billing_email || 'N/A');
+                    $('.mptrs_orderType').text(orderData.order_type || 'N/A');
+                    
+                    // Set additional info if available
+                    if (orderData.order_date) {
+                        $('.order-date').text(orderData.order_date);
+                    } else {
+                        $('.order-date').text('N/A');
+                    }
+                    
+                    if (orderData.customer_name) {
+                        $('.customer-name').text(orderData.customer_name);
+                    } else {
+                        $('.customer-name').text('N/A');
+                    }
+                    
+                    if (orderData.customer_phone) {
+                        $('.customer-phone').text(orderData.customer_phone);
+                    } else {
+                        $('.customer-phone').text('N/A');
+                    }
+                    
+                    if (orderData.order_status) {
+                        $('.order-status').text(orderData.order_status);
+                        
+                        // Set the correct status in the dropdown
+                        let statusLower = orderData.order_status.toLowerCase();
+                        if (statusLower.includes("progress")) {
+                            $('#mptrsServiceStatus-' + postId).val('in_progress');
+                        } else if (statusLower.includes("complete") || statusLower.includes("done")) {
+                            $('#mptrsServiceStatus-' + postId).val('done');
+                        } else if (statusLower.includes("cancel") || statusLower.includes("out")) {
+                            $('#mptrsServiceStatus-' + postId).val('service_out');
+                        }
+                    } else {
+                        $('.order-status').text('N/A');
+                    }
+                    
+                    // Add class to order type badge
+                    let typeClass = '';
+                    if (orderData.order_type === 'Takeaway') {
+                        typeClass = 'takeaway';
+                    } else if (orderData.order_type === 'Delivery') {
+                        typeClass = 'online';
+                    } else if (orderData.order_type === 'Dine In') {
+                        typeClass = 'dine-in';
+                    }
+                    
+                    $('.badge-order-type').addClass(typeClass);
 
-                    let detailsHtml = '';
+                    let detailsHtml = '<div class="order-items">';
                     $.each(orderData.order_info, function(key, value) {
                         if (key === "Food Menu") {
-                            detailsHtml += '<div><strong>' + key + ':</strong><br>' + value + '</div>';
+                            detailsHtml += `<div class="order-section">
+                                <h4>${key}</h4>
+                                <div class="food-menu-items">${value}</div>
+                            </div>`;
                         } else {
-                            detailsHtml += '<div><strong>' + key + ':</strong> ' + value + '</div>';
+                            detailsHtml += `<div class="order-info-item"><strong>${key}:</strong> ${value}</div>`;
                         }
                     });
+                    detailsHtml += '</div>';
 
                     $('.mptrs_orderDetailsDisplay').html(detailsHtml);
-                    // alert( response.data.message );
+                    
+                    // Handle status update button click
+                    $('#update-status-btn').on('click', function() {
+                        let postId = $(this).data('post-id');
+                        let selectedVal = $('#mptrsServiceStatus-' + postId).val();
+                        
+                        $.ajax({
+                            url: mptrs_admin_ajax.ajax_url,
+                            type: 'POST',
+                            data: {
+                                action: 'mptrs_save_service_status_update',
+                                nonce: mptrs_admin_ajax.nonce,
+                                post_id: postId,
+                                selectedVal: selectedVal,
+                            },
+                            success: function(response) {
+                                if (response.data.success) {
+                                    // Update status text in popup
+                                    if (selectedVal === 'in_progress') {
+                                        $('.order-status').text('In Progress');
+                                    } else if (selectedVal === 'done') {
+                                        $('.order-status').text('Completed');
+                                    } else if (selectedVal === 'service_out') {
+                                        $('.order-status').text('Cancelled');
+                                    }
+                                    
+                                    // Update status badge in the table row
+                                    let statusHtml = '';
+                                    if (selectedVal === 'in_progress') {
+                                        statusHtml = '<span class="mptrs_order_status on-process">On Process</span>';
+                                    } else if (selectedVal === 'done') {
+                                        statusHtml = '<span class="mptrs_order_status completed">Completed</span>';
+                                    } else if (selectedVal === 'service_out') {
+                                        statusHtml = '<span class="mptrs_order_status cancelled">Cancelled</span>';
+                                    }
+                                    
+                                    // Find the table row and update the status
+                                    $('.mptrs_order_row').each(function() {
+                                        if ($(this).find('.mptrs_orderDetailsBtn').attr('id') === postId) {
+                                            $(this).find('td:last-child').html(statusHtml + 
+                                                '<span class="mptrs_orderDetailsBtn" id="' + postId + '">Details</span>');
+                                        }
+                                    });
+                                    
+                                    alert('Order status updated successfully!');
+                                } else {
+                                    alert('Error: ' + response.data.message);
+                                }
+                            },
+                            error: function() {
+                                alert('An unexpected error occurred.');
+                            }
+                        });
+                    });
                 } else {
                     alert('Something Wrong.');
                 }
