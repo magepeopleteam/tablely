@@ -111,8 +111,27 @@
                 wp_localize_script( 'mptrs_food_menu_add_cart', 'mptrs_food_menu', array(
                     get_option( '_mptrs_food_menu', true )
 				) );
-//                wp_enqueue_script('jquery', 'https://code.jquery.com/jquery-3.6.0.min.js', [], null, true);
-//                wp_enqueue_script('jquery-ui', 'https://code.jquery.com/ui/1.12.1/jquery-ui.min.js', ['jquery'], null, true);
+
+                $mptrs_google_map_key = get_option( 'mptrs_google_map_key' );
+                $enable_location_autocomplete = get_option( 'mptrs_enable_location_autocomplete' );
+                if( $enable_location_autocomplete === 'yes' ){
+                    if( $mptrs_google_map_key ){
+                        wp_enqueue_script(
+                            'google-places-api',
+                            'https://maps.googleapis.com/maps/api/js?key='.$mptrs_google_map_key.'&libraries=places',
+                            [],
+                            null,
+                            true
+                        );
+                    }
+                    wp_enqueue_script(
+                        'location-autocomplete',
+                        plugins_url('js/autocomplete.js', __FILE__),
+                        ['google-places-api'],
+                        '1.0',
+                        true
+                    );
+                }
 
 
                 do_action( 'add_mptrs_frontend_script' );

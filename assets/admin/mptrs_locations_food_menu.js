@@ -1,5 +1,16 @@
 jQuery(document).ready(function ($) {
 
+    function mptrsInitAutocomplete() {
+        const mptrsInput = document.getElementById('mptrs_deliveryLocation');
+        if (!mptrsInput) return;
+
+        const mptrsAutocomplete = new google.maps.places.Autocomplete(mptrsInput);
+    }
+
+    $(window).on('load', function () {
+        mptrsInitAutocomplete();
+    });
+
     /*$(document).on( 'click', '.mptrs_foodMenuTab', function () {
        let tabClickedId = $(this).attr('id');
        $('.mptrs_foodMenuTab').removeClass('mptrs_selectedMenuTab');

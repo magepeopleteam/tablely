@@ -279,12 +279,12 @@ if (!class_exists('MPTRS_Template')) {
                             $category_count = isset( $menu_category_count[$key]) ? $menu_category_count[$key] : 0;
                             if( $category_count > 0){
                                 $category_count_str = '( '.$category_count.' )';
-                            }else{
-                                $category_count_str = '';
-                            }
+                                ?>
+                                <div class="mptrs-category-item" data-filter="<?php echo esc_attr($key); ?>"><?php echo esc_html($category); ?><?php echo esc_attr( $category_count_str ) ?></div>
 
+                                <?php
+                            }
                             ?>
-                            <div class="mptrs-category-item" data-filter="<?php echo esc_attr($key); ?>"><?php echo esc_html($category); ?><?php echo esc_attr( $category_count_str ) ?></div>
                         <?php } ?>
                     <?php } ?>
                     <div class="mptrs-more-button">...</div>
