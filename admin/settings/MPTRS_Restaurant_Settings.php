@@ -16,6 +16,15 @@ if ( !class_exists('MPTRS_Restaurant_Settings' ) ) {
 
         public function restaurant_settings_tab(){
             $menu_display_limit = get_option( 'mptrs_menu_display_limit' );
+            $enable_location_autocomplete = get_option( 'mptrs_enable_location_autocomplete' );
+            if( $enable_location_autocomplete === 'yes' ){
+                $field_display = 'block';
+                $key_check_box = 'checked';
+            }else{
+                $field_display = 'none';
+                $key_check_box = '';
+            }
+            $mptrs_google_map_key = get_option( 'mptrs_google_map_key' );
 
             $seat_mapping_info = get_option( 'mptrs_seat_mapping_info' );
             $mptrs_box_size = isset($seat_mapping_info[ 'mptrs_box_size' ]) ? $seat_mapping_info[ 'mptrs_box_size' ] : 35;
@@ -63,10 +72,31 @@ if ( !class_exists('MPTRS_Restaurant_Settings' ) ) {
                     </div>
 
                 </section>
+
+
+                <section class="mptrs_restaurant_seat_mapping_section">
+                    <div class="mptrs_label_wrapper">
+                        <label style="display: flex; align-items: center; margin-top: 10px;">
+                            <input type="checkbox" id="mptrs_toggle_autocomplete" style="margin-right: 10px;" <?php echo esc_attr( $key_check_box );?>>
+                            <?php esc_html_e('Enable location autocomplete', 'tablely'); ?>
+                        </label>
+                        <div id="mptrs_set_google_map_api_key_holder" style="margin-top: 15px; display: <?php echo esc_attr( $field_display ); ?>;">
+                            <input
+                                    type="text"
+                                    value="<?php echo esc_attr( $mptrs_google_map_key );?>"
+                                    id="mptrs_set_google_map_api_key"
+                                    placeholder="<?php esc_attr_e('Enter your google map api key', 'tablely'); ?>"
+                                    style="width: 100%; max-width: 400px; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;"
+                            />
+                        </div>
+                        <div class="mptrs_submit_wrapper" id="mptrs_set_apikey_holder" style="display: <?php echo esc_attr( $field_display ); ?>">
+                            <button type="submit" class="mptrs_set_apikey"><?php esc_attr_e('Set API Key', 'tablely'); ?></button>
+                        </div>
+                    </div>
+                </section>
+
+
             </div>
-
-
-
         <?php
         }
     }

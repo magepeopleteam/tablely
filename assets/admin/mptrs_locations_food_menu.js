@@ -146,6 +146,75 @@ jQuery(document).ready(function ($) {
         });
     });
 
+    let mptrsInput = $('#mptrs_set_google_map_api_key');
+    const mptrsButtonHolder = $('#mptrs_set_apikey_holder');
+    const mptrsInputHolder = $('#mptrs_set_google_map_api_key_holder');
+    $(document).on("change", "#mptrs_toggle_autocomplete", function () {
+        let mptrsIsAutoComplete = $(this).is(':checked') ? 'yes' : 'no';
+        let mptrsOptionKey = 'mptrs_enable_location_autocomplete';
+
+        $.ajax({
+            url: mptrs_admin_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_set_food_menu_display_limit',
+                nonce: mptrs_admin_ajax.nonce,
+                newLimit: mptrsIsAutoComplete,
+                limitKey: mptrsOptionKey,
+            },
+            success: function (response) {
+                alert(response.data.message);
+                if ( mptrsIsAutoComplete == 'yes' ) {
+                    mptrsInputHolder.fadeIn();
+                } else {
+                    mptrsInputHolder.fadeOut();
+                    mptrsButtonHolder.fadeOut();
+                    mptrsInput.val('');
+                }
+            },
+            error: function () {
+                alert('An unexpected error occurred.');
+            }
+        });
+    });
+
+    $(document).on("click", ".mptrs_set_apikey", function ( e ) {
+        e.preventDefault();
+        let mptrsApiKey = '';
+        mptrsApiKey = $("#mptrs_set_google_map_api_key").val().trim();
+        let mptrs_API_Key_Option = 'mptrs_google_map_key';
+
+        if( mptrsApiKey ) {
+            $.ajax({
+                 url: mptrs_admin_ajax.ajax_url,
+                 type: 'POST',
+                 data: {
+                     action: 'mptrs_set_food_menu_display_limit',
+                     nonce: mptrs_admin_ajax.nonce,
+                     newLimit: mptrsApiKey,
+                     limitKey: mptrs_API_Key_Option,
+                 },
+                 success: function (response) {
+                     alert(response.data.message);
+                 },
+                 error: function () {
+                     alert('An unexpected error occurred.');
+                 }
+             });
+        }else{
+            alert('Fill API Input Fields');
+            $("#mptrs_set_google_map_api_key").focus();
+        }
+    });
+
+    mptrsInput.on('input', function () {
+        if ($(this).val().trim() !== '') {
+            mptrsButtonHolder.fadeIn();
+        } else {
+            mptrsButtonHolder.fadeOut();
+        }
+    });
+
     $(document).on("blur", ".mptrs_ordersPerPage", function () {
         const newLimit = parseInt($(this).val(), 10) || 20;
         let limitKey = 'mptrs_order_lists_display_limit'
@@ -1083,6 +1152,7 @@ jQuery(document).ready(function ($) {
         $('.mptrs_orderDetailsDisplayHolder').empty();
 
     });
+
 
     //load more menu
     /*const rowsPerPage = parseInt($("#mptrs_displayMenuCount").val(), 10) || 0;

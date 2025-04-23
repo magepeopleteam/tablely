@@ -1097,8 +1097,21 @@ body.mptrs_no_scroll {
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
 }
+.mptrs_set_apikey {
+    padding: 10px 20px;
+    background-color: #2271b1;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
 
 .mptrs_set_seat_mapping_info:hover {
+    background-color: #1a5f90;
+}
+.mptrs_set_apikey:hover {
     background-color: #1a5f90;
 }
 

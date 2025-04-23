@@ -944,7 +944,7 @@ jQuery(document).ready(function ($) {
 
 
         if (mptrs_orderType === 'Delivery' && mptrs_locations === '') {
-            alert('Please Fill Up Location Input Fields and Click Update');
+            alert('Kindly complete the location input fields and press \'Update\'.');
             $("#mptrs_deliveryLocation").focus();
             return;
         }
