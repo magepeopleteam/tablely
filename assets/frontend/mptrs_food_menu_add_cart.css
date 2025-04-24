@@ -166,3 +166,6 @@
     background-color: #0a7aff;
     color: #f3f3f3;
 }
+.pac-container {
+    z-index: 99999 !important; /* higher than your modal */
+}
