@@ -1,10 +1,31 @@
 jQuery(document).ready(function ($) {
 
-    function mptrsInitAutocomplete() {
-        const mptrsInput = document.getElementById('mptrs_deliveryLocation');
-        if (!mptrsInput) return;
 
+    function initAutocomplete() {
+        const input = document.getElementById('mptrs_deliveryLocation');
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+            types: ['geocode'], // You can also use 'establishment' or others
+            componentRestrictions: { country: 'us' }, // Optional: restrict to a country
+        });
+
+        autocomplete.addListener('place_changed', function () {
+            const place = autocomplete.getPlace();
+            console.log(place); // You can extract place.formatted_address, place.geometry, etc.
+        });
+    }
+    // initAutocomplete();
+
+    function mptrsInitAutocomplete() {
+        /*const mptrsInput = document.getElementById('mptrs_deliveryLocation');
+        if (!mptrsInput) return;
         const mptrsAutocomplete = new google.maps.places.Autocomplete(mptrsInput);
+        */
+        var autocomplete;
+        var id = 'mptrs_deliveryLocation';
+        autocomplete = new google.maps.places.Autocomplete((document.getElementById(id)), {
+            types: ['geocode'],
+        });
+
     }
 
     $(window).on('load', function () {

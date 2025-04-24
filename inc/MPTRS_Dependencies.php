@@ -114,22 +114,28 @@
 
                 $mptrs_google_map_key = get_option( 'mptrs_google_map_key' );
                 $enable_location_autocomplete = get_option( 'mptrs_enable_location_autocomplete' );
-                if( $enable_location_autocomplete === 'yes' ){
-                    if( $mptrs_google_map_key ){
-                        wp_enqueue_script(
-                            'google-places-api',
-                            'https://maps.googleapis.com/maps/api/js?key='.$mptrs_google_map_key.'&libraries=places',
-                            [],
-                            null,
-                            true
-                        );
-                    }
+                if( $enable_location_autocomplete === 'yes' && $mptrs_google_map_key ){
+                    wp_enqueue_script(
+                        'google-places-api',
+                        'https://maps.googleapis.com/maps/api/js?key=' . $mptrs_google_map_key . '&libraries=places',
+                        [],
+                        null,
+                        true
+                    );
                     wp_enqueue_script(
                         'location-autocomplete',
                         plugins_url('js/autocomplete.js', __FILE__),
                         ['google-places-api'],
                         '1.0',
                         true
+                    );
+
+                    wp_enqueue_script(
+                        'jquery', // Handle
+                        'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js', // Source
+                        array(), // Dependencies
+                        '3.5.1', // Version
+                        true // Load in footer
                     );
                 }
 
