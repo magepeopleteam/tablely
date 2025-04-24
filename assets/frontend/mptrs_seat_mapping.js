@@ -915,6 +915,9 @@ jQuery(document).ready(function ($) {
             minDate: 0,
             maxDate: "+1Y",
         }).val( today );
+
+        mptrs_load_auto_complete();
+
     }
 
     $(document).on("focus", ".mptrs_datepicker_input", function () {
@@ -928,6 +931,8 @@ jQuery(document).ready(function ($) {
 
     let mptrs_orderSettings = {};
     let mptrsOrderTypePopUp = 0;
+
+    
 
     $(document).on( 'click',"#mptrs_updateorderTypeBtn", function (e) {
         e.preventDefault();
@@ -1159,6 +1164,21 @@ jQuery(document).ready(function ($) {
 
     }
 
+
+    function mptrs_load_auto_complete(){
+
+        let get_is_auto_fillup = $("#mptrs_location_autocomplete").val().trim();
+        if( get_is_auto_fillup === "yes" ){
+            var autocomplete;
+            var id = 'mptrs_deliveryLocation';
+
+            autocomplete = new google.maps.places.Autocomplete((document.getElementById(id)), {
+                types: ['geocode'],
+            });
+        }
+
+    }
+
     let selectedMenu = mptrs_food_menu.find(item => item);
     let menuAddedClickedId = '';
     let mptrs_displayCartPopUp = 0;
@@ -1206,6 +1226,8 @@ jQuery(document).ready(function ($) {
         if( Object.keys(mptrs_orderSettings).length > 0 ) {
             mptrs_display_add_cart_item_data( menuAddedKey, mptrs_MenuPrice, mptrs_CurrencySymbol, menuPrice, 'flex', animationDiv, parentItem, mptrs_this, mptrs_menuImageUrl );
         }
+
+        mptrs_load_auto_complete();
 
     });
 

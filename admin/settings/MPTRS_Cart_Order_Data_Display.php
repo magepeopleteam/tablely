@@ -164,7 +164,7 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
         }
 
         public function display_custom_cart_item_data( $item_data, $cart_item ) {
-            if( $cart_item['mptrs_order_type'] === '' ){
+            if( isset( $cart_item['mptrs_order_type'] ) && $cart_item['mptrs_order_type'] === '' ){
                 $fields = [
                     'food_menu' => 'Food Menu',
                     'booking_seats' => 'Seats',

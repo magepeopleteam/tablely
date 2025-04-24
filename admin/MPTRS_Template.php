@@ -235,6 +235,8 @@ if (!class_exists('MPTRS_Template')) {
 //            $post_id = get_the_id();
             $categories = get_option('mptrs_categories');
 
+            $enable_location_autocomplete = get_option( 'mptrs_enable_location_autocomplete' );
+
 //            error_log( print_r( [ '$categories' => $categories ], true ) );
 
             $existing_menu_by_id = get_post_meta( $post_id, '_mptrs_food_menu_items', true );
@@ -271,8 +273,10 @@ if (!class_exists('MPTRS_Template')) {
             }
             ?>
             <?php if (!empty($existing_menus)) { ?>
+
                 <h4><?php esc_html_e('Menu', 'tablely'); ?> (<?php echo esc_html(count($existing_menus)); ?>)</h4>
                 <div class="mptrs-category-container">
+                    <input type="hidden" id="mptrs_location_autocomplete" value="<?php echo esc_attr( $enable_location_autocomplete );?>">
                     <?php if (!empty($categories)) { ?>
                         <div class="mptrs-category-item  mptrs-active" data-filter="all"><?php echo esc_html__('All ', 'tablely').'('.count($existing_menus).')'; ?></div>
                         <?php foreach ($categories as $key => $category) {

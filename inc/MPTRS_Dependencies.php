@@ -132,33 +132,22 @@
                     get_option( '_mptrs_food_menu', true )
 				) );
 
-                $mptrs_google_map_key = get_option( 'mptrs_google_map_key' );
+//                $mptrs_google_map_key = 'AIzaSyDhiivBpN07MklfUsfES586SsExXivHuIw';
+
                 $enable_location_autocomplete = get_option( 'mptrs_enable_location_autocomplete' );
-                if( $enable_location_autocomplete === 'yes' && $mptrs_google_map_key ){
-                    wp_enqueue_script(
-                        'google-places-api',
-                        'https://maps.googleapis.com/maps/api/js?key=' . $mptrs_google_map_key . '&libraries=places',
-                        [],
-                        null,
-                        true
-                    );
-                    wp_enqueue_script(
-                        'location-autocomplete',
-                        plugins_url('js/autocomplete.js', __FILE__),
-                        ['google-places-api'],
-                        '1.0',
-                        true
-                    );
-
-                    wp_enqueue_script(
-                        'jquery', // Handle
-                        'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js', // Source
-                        array(), // Dependencies
-                        '3.5.1', // Version
-                        true // Load in footer
-                    );
+                if( $enable_location_autocomplete === 'yes' ){
+                    $mptrs_google_map_key = get_option( 'mptrs_google_map_key' );
+                    if( $mptrs_google_map_key ){
+                        wp_register_script(
+                            'pa-google-maps-api',
+                            'https://maps.googleapis.com/maps/api/js?key='.$mptrs_google_map_key.'&libraries=places',
+                            [],
+                            null,
+                            true
+                        );
+                        wp_enqueue_script('pa-google-maps-api');
+                    }
                 }
-
 
                 do_action( 'add_mptrs_frontend_script' );
 			}

@@ -1,7 +1,7 @@
 jQuery(document).ready(function ($) {
 
 
-    function initAutocomplete() {
+    /*function initAutocomplete() {
         const input = document.getElementById('mptrs_deliveryLocation');
         const autocomplete = new google.maps.places.Autocomplete(input, {
             types: ['geocode'], // You can also use 'establishment' or others
@@ -16,10 +16,10 @@ jQuery(document).ready(function ($) {
     // initAutocomplete();
 
     function mptrsInitAutocomplete() {
-        /*const mptrsInput = document.getElementById('mptrs_deliveryLocation');
+        /!*const mptrsInput = document.getElementById('mptrs_deliveryLocation');
         if (!mptrsInput) return;
         const mptrsAutocomplete = new google.maps.places.Autocomplete(mptrsInput);
-        */
+        *!/
         var autocomplete;
         var id = 'mptrs_deliveryLocation';
         autocomplete = new google.maps.places.Autocomplete((document.getElementById(id)), {
@@ -30,7 +30,7 @@ jQuery(document).ready(function ($) {
 
     $(window).on('load', function () {
         mptrsInitAutocomplete();
-    });
+    });*/
 
     /*$(document).on( 'click', '.mptrs_foodMenuTab', function () {
        let tabClickedId = $(this).attr('id');
