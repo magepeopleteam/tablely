@@ -27,6 +27,7 @@
 				require_once MPTRS_PLUGIN_DIR . '/inc/MPTRS_Function.php';
 				require_once MPTRS_PLUGIN_DIR . '/inc/MPTRS_Slider.php';
 				require_once MPTRS_PLUGIN_DIR . '/inc/MPTRS_Style.php';
+				require_once MPTRS_PLUGIN_DIR . '/inc/MPTRS_Theme_Manager.php';
 				require_once MPTRS_PLUGIN_DIR . '/inc/MPTRS_Select_Icon_image.php';
 				require_once MPTRS_PLUGIN_DIR . '/inc/MPTRS_Query.php';
 				require_once MPTRS_PLUGIN_DIR . '/inc/MPTRS_Layout.php';
@@ -77,7 +78,25 @@
 				// ****custom************//
 				wp_enqueue_style( 'mptrs_admin', MPTRS_PLUGIN_URL . '/assets/admin/mptrs_admin.css', [], time() );
 				wp_enqueue_script( 'mptrs_admin', MPTRS_PLUGIN_URL . '/assets/admin/mptrs_admin.js', [ 'jquery' ], time(), true );
-				wp_localize_script( 'mptrs_admin', 'mptrs_admin_ajax', array(
+				
+                // Get current screen to conditionally load CSS
+                $screen = get_current_screen();
+                
+                // Restaurant lists modern design
+                if (isset($screen->id) && $screen->id === 'mptrs_item_page_mptrs_restaurant_lists') {
+                    wp_enqueue_style('mptrs_restaurant_lists', MPTRS_PLUGIN_URL . '/assets/admin/css/mptrs_restaurant_lists.css', [], time());
+                }
+                
+                // Table reserve lists modern design
+                if (isset($screen->id) && $screen->id === 'mptrs_item_page_mptrs_reserve') {
+                    wp_enqueue_style('mptrs_reserve_lists', MPTRS_PLUGIN_URL . '/assets/admin/css/mptrs_reserve_lists.css', [], time());
+                }
+                
+                // Enqueue color themes CSS for all admin pages
+                wp_enqueue_style('mptrs_color_themes', MPTRS_PLUGIN_URL . '/assets/admin/css/mptrs_color_themes.css', [], null);
+                wp_enqueue_script('mptrs_color_themes', MPTRS_PLUGIN_URL . '/assets/admin/js/mptrs_color_themes.js', ['jquery'], null, true);
+                
+                wp_localize_script( 'mptrs_admin', 'mptrs_admin_ajax', array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
 					'nonce'    => wp_create_nonce( 'mptrs_admin_nonce' ),
                     'site_url' => get_site_url(),
@@ -98,9 +117,10 @@
 				wp_enqueue_script( 'mptrs', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs.js', [ 'jquery' ], time(), true );
 				wp_enqueue_script( 'mptrs_seat_mapping', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_seat_mapping.js', [ 'jquery' ], time(), true );
 				wp_enqueue_style( 'mptrs_registration', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_registration.css', [], time() );
-				wp_enqueue_style( 'mptrs_seat_mapping', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_seat_mapping.css', [], time() );
+				wp_enqueue_style( 'mptrs_seat_mapping', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_seat_mapping.css', [], null );
 				wp_enqueue_style( 'mptrs-frontend', MPTRS_PLUGIN_URL . '/assets/frontend/frontend.css', [], time() );
 				wp_enqueue_style( 'mptrs_food_menu_add_cart', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_food_menu_add_cart.css', [], time() );
+				wp_enqueue_style( 'mptrs_color_themes', MPTRS_PLUGIN_URL . '/assets/admin/css/mptrs_color_themes.css', [], null );
 				wp_enqueue_script( 'mptrs_registration', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_registration.js', [ 'jquery' ], time(), true );
 				wp_enqueue_script( 'mptrs_food_menu_add_cart', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_food_menu_add_cart.js', [ 'jquery' ], time(), true );
 				wp_localize_script( 'mptrs_registration', 'mptrs_ajax', array(

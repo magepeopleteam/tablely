@@ -63,10 +63,19 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                     'mptrs_num_of_columns' => $mptrs_num_of_columns,
                 );
                 if( $limitKey ){
-                    $result = update_option( $limitKey, $info_data );
-                    $message = 'Display Limit Successfully Updated';
+                    // Get the current value
+                    $current_data = get_option( $limitKey, array() );
+                    
+                    // Only update if values are different
+                    if ($current_data !== $info_data) {
+                        $result = update_option( $limitKey, $info_data );
+                        $message = 'Display Limit Successfully Updated';
+                    } else {
+                        // No change was made, but still consider it a success
+                        $result = true;
+                        $message = 'No change in Display Limit';
+                    }
                 }
-
             }
 
             wp_send_json_success([
@@ -88,8 +97,18 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                 $limitKey = isset( $_POST['limitKey'] ) ? sanitize_file_name( wp_unslash( $_POST['limitKey'] ) ) : '';
 
                 if( $limitKey ){
-                    $result = update_option( $limitKey, $newLimit );
-                    $message = 'Display Limit Successfully Updated';
+                    // Get the current limit value
+                    $current_limit = get_option( $limitKey, '' );
+                    
+                    // Only update if the value is different
+                    if ($current_limit !== $newLimit) {
+                        $result = update_option( $limitKey, $newLimit );
+                        $message = 'Display Limit Successfully Updated';
+                    } else {
+                        // No change was made, but still consider it a success
+                        $result = true;
+                        $message = 'No change in Display Limit';
+                    }
                 }
 
             }
@@ -103,7 +122,6 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
         }
 
         function mptrs_order_details_display() {
-
             $result = false;
             $all_order_meta = [];
 
@@ -123,10 +141,36 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                                 'take_away' => 'Takeaway',
                             );
                             $order_type = get_post_meta( $post_id, '_mptrs_order_type', true );
-                            $all_order_meta['order_type'] = $order_types[$order_type];
+                            $all_order_meta['order_type'] = isset($order_types[$order_type]) ? $order_types[$order_type] : '';
+                            
+                            // Add additional data for improved order details popup
+                            $rbfw_service_status = get_post_meta( $post_id, '_mptrs_service_status', true );
+                            $rbfw_service_status = empty( $rbfw_service_status ) ? 'In progress' : $rbfw_service_status;
+                            $all_order_meta['order_status'] = $rbfw_service_status;
+                            
+                            // Get order date and time
+                            $order_date = get_post_meta( $post_id, '_mptrs_order_date', true );
+                            $order_time = get_post_meta( $post_id, '_mptrs_order_time', true );
+                            
+                            if (!empty($order_date)) {
+                                $formatted_date = date_i18n('F j, Y', strtotime($order_date));
+                                if (!empty($order_time)) {
+                                    $formatted_date .= ' at ' . $order_time;
+                                }
+                                $all_order_meta['order_date'] = $formatted_date;
+                            }
                         }
 
+                        // Add customer information
                         $all_order_meta['billing_email'] = $order->get_billing_email();
+                        $all_order_meta['customer_name'] = $order->get_billing_first_name() . ' ' . $order->get_billing_last_name();
+                        $all_order_meta['customer_phone'] = $order->get_billing_phone();
+                        
+                        // Get order status from WooCommerce
+                        if (empty($all_order_meta['order_status'])) {
+                            $all_order_meta['order_status'] = wc_get_order_status_name($order->get_status());
+                        }
+                        
                         foreach ( $order->get_items() as $item_id => $item ) {
                             $item_meta = [];
 
@@ -138,21 +182,16 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                                 $result = true;
                                 $all_order_meta[ 'order_info' ] = $item_meta;
                             }
-
                         }
                     }
-
                 }
-
             }
 
             wp_send_json_success([
-                'message' => 'order Details Displayed',
+                'message' => 'Order details successfully retrieved',
                 'success' => $result,
                 'order_data' => $all_order_meta,
             ]);
-
-
         }
 
         function mptrs_add_food_items_to_cart() {
