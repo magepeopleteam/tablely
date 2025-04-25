@@ -103,7 +103,7 @@ if (!class_exists('MPTRS_Template')) {
             <div id="mptrs-reviews-popup" class="mptrs-popup">
                 <div class="mptrs-popup-content mptrs-popup-medium">
                     <div class="mptrs-popup-header">
-                        <h2><?php esc_html_e('Reviews','Tablely') ?></h2>
+                        <h2><?php esc_html_e('Reviews','tablely') ?></h2>
                         <span class="mptrs-popup-close" data-popup-close="yes"><i class="fas fa-times"></i></span>
                     </div>
                     <div class="mptrs-popup-body">
