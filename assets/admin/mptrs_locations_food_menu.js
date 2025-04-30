@@ -1,5 +1,37 @@
 jQuery(document).ready(function ($) {
 
+
+    /*function initAutocomplete() {
+        const input = document.getElementById('mptrs_deliveryLocation');
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+            types: ['geocode'], // You can also use 'establishment' or others
+            componentRestrictions: { country: 'us' }, // Optional: restrict to a country
+        });
+
+        autocomplete.addListener('place_changed', function () {
+            const place = autocomplete.getPlace();
+            console.log(place); // You can extract place.formatted_address, place.geometry, etc.
+        });
+    }
+    // initAutocomplete();
+
+    function mptrsInitAutocomplete() {
+        /!*const mptrsInput = document.getElementById('mptrs_deliveryLocation');
+        if (!mptrsInput) return;
+        const mptrsAutocomplete = new google.maps.places.Autocomplete(mptrsInput);
+        *!/
+        var autocomplete;
+        var id = 'mptrs_deliveryLocation';
+        autocomplete = new google.maps.places.Autocomplete((document.getElementById(id)), {
+            types: ['geocode'],
+        });
+
+    }
+
+    $(window).on('load', function () {
+        mptrsInitAutocomplete();
+    });*/
+
     /*$(document).on( 'click', '.mptrs_foodMenuTab', function () {
        let tabClickedId = $(this).attr('id');
        $('.mptrs_foodMenuTab').removeClass('mptrs_selectedMenuTab');
@@ -155,6 +187,75 @@ jQuery(document).ready(function ($) {
                     alert('An unexpected error occurred.');
                 }
             });
+        }
+    });
+
+    let mptrsInput = $('#mptrs_set_google_map_api_key');
+    const mptrsButtonHolder = $('#mptrs_set_apikey_holder');
+    const mptrsInputHolder = $('#mptrs_set_google_map_api_key_holder');
+    $(document).on("change", "#mptrs_toggle_autocomplete", function () {
+        let mptrsIsAutoComplete = $(this).is(':checked') ? 'yes' : 'no';
+        let mptrsOptionKey = 'mptrs_enable_location_autocomplete';
+
+        $.ajax({
+            url: mptrs_admin_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_set_food_menu_display_limit',
+                nonce: mptrs_admin_ajax.nonce,
+                newLimit: mptrsIsAutoComplete,
+                limitKey: mptrsOptionKey,
+            },
+            success: function (response) {
+                alert(response.data.message);
+                if ( mptrsIsAutoComplete == 'yes' ) {
+                    mptrsInputHolder.fadeIn();
+                } else {
+                    mptrsInputHolder.fadeOut();
+                    mptrsButtonHolder.fadeOut();
+                    mptrsInput.val('');
+                }
+            },
+            error: function () {
+                alert('An unexpected error occurred.');
+            }
+        });
+    });
+
+    $(document).on("click", ".mptrs_set_apikey", function ( e ) {
+        e.preventDefault();
+        let mptrsApiKey = '';
+        mptrsApiKey = $("#mptrs_set_google_map_api_key").val().trim();
+        let mptrs_API_Key_Option = 'mptrs_google_map_key';
+
+        if( mptrsApiKey ) {
+            $.ajax({
+                 url: mptrs_admin_ajax.ajax_url,
+                 type: 'POST',
+                 data: {
+                     action: 'mptrs_set_food_menu_display_limit',
+                     nonce: mptrs_admin_ajax.nonce,
+                     newLimit: mptrsApiKey,
+                     limitKey: mptrs_API_Key_Option,
+                 },
+                 success: function (response) {
+                     alert(response.data.message);
+                 },
+                 error: function () {
+                     alert('An unexpected error occurred.');
+                 }
+             });
+        }else{
+            alert('Fill API Input Fields');
+            $("#mptrs_set_google_map_api_key").focus();
+        }
+    });
+
+    mptrsInput.on('input', function () {
+        if ($(this).val().trim() !== '') {
+            mptrsButtonHolder.fadeIn();
+        } else {
+            mptrsButtonHolder.fadeOut();
         }
     });
 
@@ -1271,6 +1372,7 @@ jQuery(document).ready(function ($) {
         $('.mptrs_orderDetailsDisplayHolder').empty();
 
     });
+
 
     //load more menu
     /*const rowsPerPage = parseInt($("#mptrs_displayMenuCount").val(), 10) || 0;

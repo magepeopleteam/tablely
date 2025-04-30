@@ -95,6 +95,7 @@ body.mptrs_no_scroll {
 .mptrs_foodMenuTabHoilder {
     width: 100%;
     display: flex;
+    flex-wrap: wrap;
     gap: 12px;
 }
 
@@ -1259,6 +1260,15 @@ body.mptrs_no_scroll {
     font-weight: normal;
     color: #94a3b8;
     font-size: 12px;
+}
+
+.mptrs_submit_wrapper{
+    display: flex;
+    justify-content: end;
+    padding-top: 5px;
+}
+.mptrs_set_seat_mapping_info, .mptrs_set_apikey{
+    padding: 5px 10px;
 }
 
 /* Animation for the form loading */

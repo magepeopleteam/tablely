@@ -103,7 +103,7 @@ if (!class_exists('MPTRS_Template')) {
             <div id="mptrs-reviews-popup" class="mptrs-popup">
                 <div class="mptrs-popup-content mptrs-popup-medium">
                     <div class="mptrs-popup-header">
-                        <h2><?php esc_html_e('Reviews','Tablely') ?></h2>
+                        <h2><?php esc_html_e('Reviews','tablely') ?></h2>
                         <span class="mptrs-popup-close" data-popup-close="yes"><i class="fas fa-times"></i></span>
                     </div>
                     <div class="mptrs-popup-body">
@@ -234,12 +234,19 @@ if (!class_exists('MPTRS_Template')) {
         public function display_restaurant_content( $post_id ) {
 //            $post_id = get_the_id();
             $categories = get_option('mptrs_categories');
+
+            $enable_location_autocomplete = get_option( 'mptrs_enable_location_autocomplete' );
+
+//            error_log( print_r( [ '$categories' => $categories ], true ) );
+
             $existing_menu_by_id = get_post_meta( $post_id, '_mptrs_food_menu_items', true );
+
             $existing_edited_price = get_post_meta( $post_id, '_mptrs_food_menu_edited_prices', true );
     
             $existing_menus = [];
             $all_food_menus = get_option('_mptrs_food_menu', true);
-    
+
+            $menu_category_count = [];
             if (is_array($existing_menu_by_id) && !empty($existing_menu_by_id)) {
                 foreach ($existing_menu_by_id as $item) {
                     if (isset($all_food_menus[$item])) {
@@ -254,20 +261,41 @@ if (!class_exists('MPTRS_Template')) {
 
             if( is_array( $existing_menus ) ){
                 $total_menus = count( $existing_menus );
+                foreach ($existing_menus as $menu) {
+                    if (!empty($menu['menuCategory'])) {
+                        $category = $menu['menuCategory'];
+                        if (!isset($menu_category_count[$category])) {
+                            $menu_category_count[$category] = 0;
+                        }
+                        $menu_category_count[$category]++;
+                    }
+                }
             }
-
             ?>
             <?php if (!empty($existing_menus)) { ?>
+
                 <h4><?php esc_html_e('Menu', 'tablely'); ?> (<?php echo esc_html(count($existing_menus)); ?>)</h4>
                 <div class="mptrs-category-container">
+                    <input type="hidden" id="mptrs_location_autocomplete" value="<?php echo esc_attr( $enable_location_autocomplete );?>">
                     <?php if (!empty($categories)) { ?>
                         <div class="mptrs-category-item  mptrs-active" data-filter="all"><?php echo esc_html__('All ', 'tablely').'('.count($existing_menus).')'; ?></div>
-                        <?php foreach ($categories as $key => $category) { ?>
-                            <div class="mptrs-category-item" data-filter="<?php echo esc_attr($key); ?>"><?php echo esc_html($category); ?></div>
+                        <?php foreach ($categories as $key => $category) {
+                            $category_count = isset( $menu_category_count[$key]) ? $menu_category_count[$key] : 0;
+                            if( $category_count > 0){
+                                $category_count_str = '( '.$category_count.' )';
+                                ?>
+                                <div class="mptrs-category-item" data-filter="<?php echo esc_attr($key); ?>"><?php echo esc_html($category); ?><?php echo esc_attr( $category_count_str ) ?></div>
+
+                                <?php
+                            }
+                            ?>
                         <?php } ?>
                     <?php } ?>
                     <div class="mptrs-more-button">...</div>
+
                 </div>
+                <div class="mptrs_hidden_items" style="display: none;"></div>
+
                 <div class="mptrs-food-menu-container">
                         <?php
                         $fallbackImgUrl = get_site_url() . '/wp-content/uploads/2025/02/fallbackimage.webp';

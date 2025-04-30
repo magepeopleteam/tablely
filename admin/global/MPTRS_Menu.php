@@ -495,7 +495,7 @@ if (!class_exists('MPTRS_Menu')) {
                         type: 'POST',
                         data: {
                             action: 'mptrs_save_table_reserved_status_update',
-                            nonce: '<?php echo wp_create_nonce('mptrs_admin_nonce'); ?>',
+                            nonce: '<?php echo esc_attr( wp_create_nonce('mptrs_admin_nonce') ); ?>',
                             post_id: postId,
                             selectedVal: status
                         },

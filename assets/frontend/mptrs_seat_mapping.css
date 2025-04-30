@@ -705,6 +705,20 @@
     z-index: 10;
 }
 
+.mptrs-category-item {
+    background: #ededed;
+    color: #333333;
+    padding:8px 10px;
+    margin-right:10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    cursor: pointer;
+    &.mptrs-active{
+        background-color: var(--mptrs_color_theme);
+        color: #fff;
+    }
+}
+
 .mptrs_orderOptionsTab {
     display: flex;
     justify-content: space-around;
