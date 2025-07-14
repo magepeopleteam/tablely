@@ -171,3 +171,12 @@
 }
 .mptrs-default-template{background:#fff; padding:20px;}
 .mptrs-content-left{border:1px solid #ebebeb;}
+.mptrs-content-right {
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+}
+.mptrs_menuAddedCartItem{
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    margin-top: 5px;
+}
