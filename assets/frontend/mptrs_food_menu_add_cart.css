@@ -218,7 +218,7 @@
 .mptrs_addBtn i{ color: var(--mptrs_color_light);
 }
 .mptrs_menuImage {
-    height: 130px;
+    height: 110px;
     width: 100%;
     object-fit: cover;
     cursor: pointer;
@@ -228,6 +228,11 @@
     position: relative;
     background: linear-gradient(135deg, #ff7e5f, #feb47b);
     border-radius: 5px;
-    height: 130px;
+    height: 110px;
     overflow: visible;
+}
+.mptrs_menuDescription
+ {
+    line-height: 18px;
+    font-size: 14px;
 }
