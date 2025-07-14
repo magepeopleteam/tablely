@@ -1,4 +1,15 @@
 jQuery(document).ready(function ($) {
+
+    $('#pa_seat_mapping_select').on('change', function () {
+        var postId = $(this).val();
+        alert( postId );
+        if (postId) {
+            var url = new URL(window.location.href);
+            url.searchParams.set('post_id', postId);
+            window.location.href = url.toString();
+        }
+    });
+
     /*var frame;
     $('.upload-feature-image-button').click(function(e) {
         e.preventDefault();

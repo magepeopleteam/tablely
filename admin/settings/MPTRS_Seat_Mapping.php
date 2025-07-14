@@ -118,6 +118,7 @@
 
                         foreach ( $templates as $template ) {
                             $plan_data = get_post_meta( $template, '_mptrs_seat_maps_data', true );
+
                             $plan_seats = isset( $plan_data['seat_data'] ) ? $plan_data['seat_data'] : array();
                             $plan_seat_texts = isset( $plan_data['seat_text_data'] ) ? $plan_data['seat_text_data'] : array();
                             $dynamic_shapes = isset( $plan_data['dynamic_shapes'] ) ? $plan_data['dynamic_shapes'] : '';
@@ -127,15 +128,15 @@
                                     $tableBindID = isset( $dynamic_shape['tableBindID'] ) ? $dynamic_shape['tableBindID'] : '';
                                     $shape_rotate_deg = isset( $dynamic_shape['shapeRotateDeg'] ) ? $dynamic_shape['shapeRotateDeg'] : 0;
                                     echo '<div id="'. esc_attr( $tableBindID ) .'" class="mptrs_dynamicShape ui-resizable ui-draggable ui-draggable-handle" data-shape-rotate="' . esc_attr( $shape_rotate_deg ) . '" style=" 
-                                        left: ' . esc_attr( $dynamic_shape['textLeft'] ) . 'px; 
-                                        top: ' . esc_attr( $dynamic_shape['textTop'] ) . 'px; 
-                                        width: ' . esc_attr( $dynamic_shape['width'] ) . 'px;
-                                        height: ' . esc_attr( $dynamic_shape['height'] ) . 'px;
-                                        background-color: ' . esc_attr( $dynamic_shape['backgroundColor'] ) . '; 
-                                        border-radius: ' . esc_attr( $dynamic_shape['borderRadius'] ) . ';
-                                        clip-path: ' . esc_attr( $dynamic_shape['clipPath'] ) . ';
-                                        transform: rotate(' . esc_attr( $shape_rotate_deg ) . 'deg);">
-                                    </div>';
+                                            left: ' . esc_attr( $dynamic_shape['textLeft'] ) . 'px; 
+                                            top: ' . esc_attr( $dynamic_shape['textTop'] ) . 'px; 
+                                            width: ' . esc_attr( $dynamic_shape['width'] ) . 'px;
+                                            height: ' . esc_attr( $dynamic_shape['height'] ) . 'px;
+                                            background-color: ' . esc_attr( $dynamic_shape['backgroundColor'] ) . '; 
+                                            border-radius: ' . esc_attr( $dynamic_shape['borderRadius'] ) . ';
+                                            clip-path: ' . esc_attr( $dynamic_shape['clipPath'] ) . ';
+                                            transform: rotate(' . esc_attr( $shape_rotate_deg ) . 'deg);">
+                                        </div>';
                                 }
                             }
 
