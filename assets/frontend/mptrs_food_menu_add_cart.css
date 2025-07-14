@@ -240,6 +240,7 @@
 .mptrs-food-menu
  {
     border:1px solid transparent;
+     transform: translateY(0px);
 }
 .mptrs-food-menu:hover
  {
