@@ -207,8 +207,8 @@
 }
 .mptrs_addedMenuordered {
     position: absolute;
-    bottom: 1px;
-    right: 1px;
+    bottom: -10px;
+    right: -5px;
 }
 .mptrs_addBtn:hover, .mptrs_addBtn:focus {
     background: var(--mptrs_color_theme);
@@ -216,4 +216,18 @@
 .mptrs_addBtn{ background: var(--mptrs_color_theme);
 }
 .mptrs_addBtn i{ color: var(--mptrs_color_light);
+}
+.mptrs_menuImage {
+    height: 130px;
+    width: 100%;
+    object-fit: cover;
+    cursor: pointer;
+}
+.mptrs-menu-item-thumbnail {
+    width: 30%;
+    position: relative;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+    border-radius: 5px;
+    height: 130px;
+    overflow: visible;
 }
