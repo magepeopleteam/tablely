@@ -215,3 +215,5 @@
 }
 .mptrs_addBtn{ background: var(--mptrs_color_theme);
 }
+.mptrs_addBtn i{ color: var(--mptrs_color_light);
+}
