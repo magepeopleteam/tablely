@@ -199,3 +199,9 @@
     padding: 5px 10px;
     border-radius: 10px;
 }
+
+.mptrs-default-template .mptrs-content .mptrs-content-left .mptrs-category-container .mptrs-category-item {
+    padding: 3px 10px;
+    font-weight: bold;
+    font-size: 14px;
+}
