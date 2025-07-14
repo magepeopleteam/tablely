@@ -169,4 +169,4 @@
 .pac-container {
     z-index: 99999 !important; /* higher than your modal */
 }
-.main.mptrs-default-template{background:#fff; padding:20px;}
+.mptrs-default-template{background:#fff; padding:20px;}
