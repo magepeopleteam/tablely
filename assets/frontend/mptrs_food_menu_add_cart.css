@@ -211,5 +211,7 @@
     right: 1px;
 }
 .mptrs_addBtn:hover, .mptrs_addBtn:focus {
-    background: var(--mptrs_color_theme)
+    background: var(--mptrs_color_theme);
+}
+.mptrs_addBtn{ background: var(--mptrs_color_theme);
 }
