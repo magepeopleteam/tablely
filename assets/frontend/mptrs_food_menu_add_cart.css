@@ -219,6 +219,7 @@
 }
 .mptrs_menuImage {
     height: 110px;
+    border-radius:10px;
     width: 100%;
     object-fit: cover;
     cursor: pointer;
@@ -226,7 +227,6 @@
 .mptrs-menu-item-thumbnail {
     width: 30%;
     position: relative;
-    background: linear-gradient(135deg, #ff7e5f, #feb47b);
     border-radius: 5px;
     height: 110px;
     overflow: visible;
