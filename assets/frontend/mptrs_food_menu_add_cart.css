@@ -205,3 +205,11 @@
     font-weight: bold;
     font-size: 14px;
 }
+.mptrs_addedMenuordered {
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+}
+.mptrs_addBtn:hover, .mptrs_addBtn:focus {
+    background: var(--mptrs_color_theme)
+}
