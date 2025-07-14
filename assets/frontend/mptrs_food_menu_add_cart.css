@@ -170,3 +170,4 @@
     z-index: 99999 !important; /* higher than your modal */
 }
 .mptrs-default-template{background:#fff; padding:20px;}
+.mptrs-content-left{border:1px solid #ebebeb;}
