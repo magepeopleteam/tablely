@@ -1,15 +1,4 @@
 jQuery(document).ready(function ($) {
-
-    $('#pa_seat_mapping_select').on('change', function () {
-        var postId = $(this).val();
-        alert( postId );
-        if (postId) {
-            var url = new URL(window.location.href);
-            url.searchParams.set('post_id', postId);
-            window.location.href = url.toString();
-        }
-    });
-
     /*var frame;
     $('.upload-feature-image-button').click(function(e) {
         e.preventDefault();
@@ -1972,7 +1961,9 @@ jQuery(document).ready(function ($) {
             const clipPath = $(this).css('clip-path') || '';
             const shapeRotateDeg = $(this).data('shape-rotate') || 0;
             const tableBindID = $(this).attr('id').trim() || '';
-            dynamicShapes.push({ textLeft, textTop, width, height,  backgroundColor, borderRadius, clipPath, shapeRotateDeg,tableBindID });
+            const backgroundImage = $(this).data('background-image');
+            console.log( backgroundImage );
+            dynamicShapes.push({ textLeft, textTop, width, height,  backgroundColor, borderRadius, clipPath, shapeRotateDeg,tableBindID, backgroundImage });
         });
 
         if ( selectedSeats.length === 0 ) {

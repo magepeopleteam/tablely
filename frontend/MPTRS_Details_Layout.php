@@ -146,6 +146,11 @@
                             }*/
 
                             $shape_class = 'mptrs_dynamicShape';
+                            if ( isset( $dynamic_shape['backgroundImage'] ) && $dynamic_shape['backgroundImage'] !== '' ) {
+                                $table_background_img_url = esc_url( MPTRS_Plan_ASSETS . 'images/icons/tableIcon/' . $dynamic_shape['backgroundImage'] . '.png' );
+                            }else{
+                                $table_background_img_url = '';
+                            }
 
                             $shape_rotate_deg = isset( $dynamic_shape['shapeRotateDeg'] ) ? $dynamic_shape['shapeRotateDeg'] : 0;
                             $custom_content .= '<div id="'.esc_attr( $dynamic_shape['tableBindID'] ).'" class="'.$shape_class.'" style=" 
@@ -157,6 +162,7 @@
                                                             border-radius: ' . esc_attr( $dynamic_shape['borderRadius'] ).';
                                                             clip-path: ' . esc_attr( $dynamic_shape['clipPath'] ).';
                                                             transform: rotate(' . $shape_rotate_deg . 'deg);
+                                                            background-image:url(' . esc_url( $table_background_img_url ) . ');
                                                         ">
                                                         </div>';
                         }

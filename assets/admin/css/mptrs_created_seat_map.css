@@ -1,0 +1,89 @@
+/* Wrap & Title */
+.mptrs_create_seat_wrap {
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 6px;
+    margin-top: 20px;
+}
+
+.mptrs_create_seat_title {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Add New Button */
+.mptrs_create_seat_add_new {
+    margin-bottom: 20px;
+}
+
+/* Search Form */
+.mptrs_create_seat_search_form {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.mptrs_create_seat_search_input {
+    width: 300px;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Seat Mapping List */
+.mptrs_create_seat_list_wrap {
+    margin-top: 30px;
+}
+
+.mptrs_create_seat_list_title {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.mptrs_create_seat_list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.mptrs_create_seat_item {
+    padding: 10px;
+    border: 1px solid #e2e4e7;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background: #f9f9f9;
+}
+
+.mptrs_create_seat_item strong {
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+.mptrs_create_seat_edit_btn,
+.mptrs_create_seat_delete_btn {
+    margin-right: 10px;
+    text-decoration: none !important;
+    color: #fff;
+}
+
+.mptrs_create_seat_edit_btn {
+    background: #0073aa;
+    border-color: #006799;
+}
+
+.mptrs_create_seat_delete_btn {
+    background: #ca4a1f;
+    border-color: #b33a1c;
+}
+
+.mptrs_create_seat_edit_btn:hover,
+.mptrs_create_seat_delete_btn:hover {
+    opacity: 0.9;
+}
+
+/* No Results */
+.mptrs_create_seat_no_results {
+    color: #888;
+    font-style: italic;
+}
