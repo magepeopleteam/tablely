@@ -1144,4 +1144,9 @@ div.mptrs_global_settings table td{border-left:none;}
     .mptrs_area [data-tabs-target]:hover {
         color: #717070;
     }
+
+ div.mptrs_area label, div.mptrs_area [class*="_fs_label"] {
+        font-size: 13px;
+        font-weight: normal;
+    }
 }
