@@ -257,7 +257,6 @@ p.mptrs-time-schedule {
     font-size:14px;
     border-radius: 10px;
     width: 290px;
-    font-weight: bold;
 }
 .mptrs-schedule-review{display:flex; gap: 10px; justify-content: start;}
 .mptrs-top-menu-tabs{display:flex; gap: 10px; justify-content: space-between;align-items:center;}
