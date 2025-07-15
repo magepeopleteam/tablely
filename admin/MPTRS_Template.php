@@ -1,6 +1,6 @@
 <?php
 /**
- * Tempalate for restaurant Tablely
+ * Template for restaurant Tablely
  * @author Shahadat Hossain <raselsha@gmail.com>
  * @version 1.0.0
  */
