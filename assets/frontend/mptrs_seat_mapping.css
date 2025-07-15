@@ -1202,6 +1202,8 @@ label[for="mptrs_deliveryLocation"] {
     margin-top: 10px;
 }
 
+.mptrs_popupOverlay .mptrs_toggleBtns{ font-weight:normal; }
+
 @media screen and (max-width: 600px) {
 
     #mptrs_popupContainer{
