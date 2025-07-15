@@ -165,14 +165,12 @@
 		font-weight: 600;
 		letter-spacing: 0.3px;
 		border-style: dotted;
-		border-radius: var(--mptrs-border-radius) 0 0 var(--mptrs-border-radius);
 	}
 
 	div.mptrs_global_settings table td {
 		padding: 10px 20px;
 		vertical-align: middle;
 		border-style: dotted;
-		border-radius: 0 var(--mptrs-border-radius) var(--mptrs-border-radius) 0;
 	}
 
 	div.mptrs_global_settings th label {
