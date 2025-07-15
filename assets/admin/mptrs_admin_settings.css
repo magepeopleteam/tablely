@@ -61,9 +61,8 @@
 	div.mptrs_global_settings .mpPanelHeader {
 		background: linear-gradient(120deg, var(--mptrs-primary-dark), var(--mptrs-primary));
 		color: #FFF;
-		padding: 25px;
-		font-size: 28px;
-		text-align: center;
+		font-size: 14px;
+		text-align: left;
 		border-radius: var(--mptrs-border-radius) var(--mptrs-border-radius) 0 0;
 		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 		position: relative;
@@ -78,7 +77,6 @@
 		left: 0;
 		width: 100%;
 		height: 8px;
-		background: linear-gradient(to right, var(--mptrs-primary-light), rgba(255, 255, 255, 0.3));
 	}
 
 	div.mptrs_global_settings .mptrs_tab {
