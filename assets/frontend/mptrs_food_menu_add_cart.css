@@ -250,3 +250,10 @@
     border-radius: 12px;
 }
 .mptrs-default-template .mptrs-content .mptrs-content-left .mptrs-category-container{justify-content:end;}
+p.mptrs-time-schedule {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff;
+    padding: 3px;
+    border-radius: 10px;
+    width: 290px;
+}
