@@ -289,3 +289,7 @@ p.mptrs-time-schedule {
     color: #d97706;
     border: 1px solid #d97706;
 }
+div#mptrs_orderedFoodMenuHolder {
+    max-height: 70vh;
+    overflow: auto;
+}
