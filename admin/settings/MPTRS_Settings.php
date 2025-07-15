@@ -33,9 +33,9 @@
                                 <li data-tabs-target="#mptrs_settings_date_time">
                                     <i class="fas fa-clock _mR_xs"></i><?php esc_html_e('Date & Time', 'tablely'); ?>
                                 </li>
-								<li data-tabs-target="#mptrs_seat_mapping">
-                                    <i class="fas fa-chair _mR_xs"></i><?php esc_html_e('Seat Mapping', 'tablely'); ?>
-                                </li>
+								<!--<li data-tabs-target="#mptrs_seat_mapping">
+                                    <i class="fas fa-chair _mR_xs"></i><?php /*esc_html_e('Seat Mapping', 'tablely'); */?>
+                                </li>-->
 								<li data-tabs-target="#mptrs_food_menu_add">
                                     <i class="fas fa-hamburger _mR_xs"></i><?php esc_html_e('Food Menu', 'tablely'); ?>
                                 </li>
@@ -48,6 +48,9 @@
 
                                 <li data-tabs-target="#mptrs_restaurant_Settings">
                                     <i class="fas fa-hamburger _mR_xs"></i><?php esc_html_e('Settings', 'tablely'); ?>
+                                </li>
+                                <li data-tabs-target="#mptrs_add_seat_mapping">
+                                    <i class="fas fa-chair _mR_xs"></i><?php esc_html_e('Add Seat Mapping', 'tablely'); ?>
                                 </li>
 								<?php do_action('add_mptrs_settings_tab_after_date', $post_id); ?>
                             </ul>
