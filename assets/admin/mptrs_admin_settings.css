@@ -1141,3 +1141,4 @@ div.mptrs_area .notification.error {
 	border-left-color: var(--mptrs-error);
 	color: var(--mptrs-error);
 }
+div.mptrs_global_settings table td{border-left:none;}
