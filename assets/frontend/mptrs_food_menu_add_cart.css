@@ -265,7 +265,7 @@ p.mptrs-time-schedule {
     width:60%;
 }
 .mptrs-default-template .mptrs-header .mptrs-restaurant-info .mptrs-reviews{background: #fef3c7; color: #d97706; padding:5px; border-radius:5px;}
-.mptrs-default-template .mptrs-header .mptrs-restaurant-info button {
+.mptrs_item-template-default .mptrs-default-template .mptrs-header .mptrs-restaurant-info button {
     background-color: none;
 }
 .mptrs-default-template .mptrs-content .mptrs-content-left .mptrs-food-menu-container{
