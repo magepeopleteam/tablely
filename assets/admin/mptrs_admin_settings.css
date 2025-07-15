@@ -97,8 +97,8 @@
 	}
 
 	div.mptrs_global_settings .tabLists li {
-		margin: 8px 0;
-		padding: 14px 20px;
+		margin: 1px 0;
+		padding: 7px 20px;
 		cursor: pointer;
 		border-left: 4px solid transparent;
 		transition: all 0.3s ease;
@@ -184,10 +184,9 @@
 
 	div.mptrs_global_settings label .info_text {
 		width: 100%;
-		margin: 8px 0 0 0;
 		font-size: 13px;
 		color: var(--mptrs-grey-600);
-		font-style: italic;
+		font-style: normal;
 		line-height: 1.5;
 	}
 
@@ -196,8 +195,8 @@
 	div.mptrs_global_settings textarea,
 	div.mptrs_global_settings select {
 		border: 1px solid var(--mptrs-grey-300);
-		padding: 12px 15px;
-		border-radius: var(--mptrs-border-radius);
+		padding: 5px 15px;
+		border-radius: 5px;
 		box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
 		width: 100%;
 		max-width: 400px;
