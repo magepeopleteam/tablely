@@ -254,8 +254,10 @@ p.mptrs-time-schedule {
     background: linear-gradient(135deg, #10b981, #059669);
     color: #fff;
     padding: 3px;
+    font-size:14px;
     border-radius: 10px;
     width: 290px;
+    font-weight: bold;
 }
 .mptrs-schedule-review{display:flex; gap: 10px; justify-content: start;}
 .mptrs-top-menu-tabs{display:flex; gap: 10px; justify-content: space-between;align-items:center;}
@@ -264,10 +266,11 @@ p.mptrs-time-schedule {
     margin:5px 0;
     width:60%;
 }
-.mptrs-default-template .mptrs-header .mptrs-restaurant-info .mptrs-reviews{background: #fef3c7; color: #d97706; padding:5px; border-radius:5px;}
+.mptrs-default-template .mptrs-header .mptrs-restaurant-info .mptrs-reviews{background: #fef3c7; color: #d97706; padding:2px 5px; border-radius:5px;}
 .mptrs_item-template-default .mptrs-default-template .mptrs-header .mptrs-restaurant-info button {
     background: none;
     color: #d97706;
+    font-size:14px;
 }
 .mptrs-default-template .mptrs-content .mptrs-content-left .mptrs-food-menu-container{
     justify-content:space-between;
@@ -286,9 +289,4 @@ p.mptrs-time-schedule {
  {
     color: #d97706;
     border: 1px solid #d97706;
-}
-.mptrs-default-template .mptrs-header .mptrs-restaurant-info .mptrs-time-schedule
- {
-  font-weight: bold;
-  font-size:14px;
 }
