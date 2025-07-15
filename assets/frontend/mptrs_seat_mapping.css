@@ -762,7 +762,7 @@
 .mptrs_menuAddedCartItem {
     display: flex;
     align-items: center;
-    padding: 5px;
+    padding: 4px;
     border-bottom: 1px solid #ddd;
 }
 .mptrs_menuAddedCartItem:last-child {
