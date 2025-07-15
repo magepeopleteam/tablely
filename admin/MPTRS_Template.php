@@ -143,8 +143,12 @@ if (!class_exists('MPTRS_Template')) {
                 <i class="fas fa-star"></i>
                 <span><?php echo esc_html__('4.8/5','tablely'); ?></span>
                 <button class="reviews-button mptrs-data" data-popup-target="#mptrs-reviews-popup"><?php echo esc_html__('See Reviews','tablely'); ?></button>
-                <button class="more-info-button mptrs-data" data-popup-target="#mptrs-restaurant-popup"><i class="fas fa-info"></i> <?php echo esc_html__('More Info','tablely'); ?></button>
+               
             </p>
+            <p class="mptrs-more-info">
+		 <button class="more-info-button mptrs-data" data-popup-target="#mptrs-restaurant-popup"><i class="fas fa-info"></i> <?php echo esc_html__('More Info','tablely'); ?></button>    
+	    </p>
+		    
 	</div>
             <?php
         }
