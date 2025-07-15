@@ -275,7 +275,7 @@ if (!class_exists('MPTRS_Template')) {
             }
             ?>
             <?php if (!empty($existing_menus)) { ?>
-                <div class=mptrs-top-menu-tabs">
+                <div class="mptrs-top-menu-tabs">
                     <h4><?php esc_html_e('Menu', 'tablely'); ?> (<?php echo esc_html(count($existing_menus)); ?>)</h4>
                     <div class="mptrs-category-container">
                         <input type="hidden" id="mptrs_location_autocomplete" value="<?php echo esc_attr( $enable_location_autocomplete );?>">
