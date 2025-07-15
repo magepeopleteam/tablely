@@ -140,7 +140,7 @@
 	div.mptrs_global_settings table tr {
 		transition: all 0.3s ease;
 		border-radius: var(--mptrs-border-radius);
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+		box-shadow: 0 0px 1px rgba(0, 0, 0, 0.5);
 	}
 
 	div.mptrs_global_settings table tr:hover {
