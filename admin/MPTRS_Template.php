@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Tempalate for restaurant Tablely
