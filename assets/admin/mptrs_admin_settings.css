@@ -1141,3 +1141,8 @@ div.mptrs_area .notification.error {
 	color: var(--mptrs-error);
 }
 div.mptrs_global_settings table td{border-left:none;}
+@media only screen and (min-width: 10px) {
+    .mptrs_area [data-tabs-target]:hover {
+        color: #717070;
+    }
+}
