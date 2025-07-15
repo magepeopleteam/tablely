@@ -282,3 +282,8 @@ p.mptrs-time-schedule {
  {
     color: #d97706;
 }
+.mptrs-default-template .mptrs-header .mptrs-restaurant-info .more-info-button i
+ {
+    color: #d97706;
+    border: 1px solid #d97706;
+}
