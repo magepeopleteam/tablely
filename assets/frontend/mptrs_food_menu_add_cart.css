@@ -261,6 +261,8 @@ p.mptrs-time-schedule {
 .mptrs-top-menu-tabs{display:flex; gap: 10px; justify-content: space-between;align-items:center;}
 .mptrs-default-template .mptrs-content .mptrs-content-left .mptrs-category-container{
     align-items: center;
+    margin:5px 0;
+    width:60%;
 }
 .mptrs-default-template .mptrs-header .mptrs-restaurant-info .mptrs-reviews{background: #fef3c7; color: #d97706; padding:5px; border-radius:5px;}
 .mptrs-default-template .mptrs-header .mptrs-restaurant-info button {
