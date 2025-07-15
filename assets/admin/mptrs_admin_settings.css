@@ -164,13 +164,13 @@
 		color: var(--mptrs-grey-800);
 		font-weight: 600;
 		letter-spacing: 0.3px;
-		border-style: dotted;
+		border-style: none;
 	}
 
 	div.mptrs_global_settings table td {
 		padding: 10px 20px;
 		vertical-align: middle;
-		border-style: dotted;
+		border-style: none;
 	}
 
 	div.mptrs_global_settings th label {
