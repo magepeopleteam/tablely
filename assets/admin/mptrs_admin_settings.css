@@ -159,7 +159,7 @@
 	div.mptrs_global_settings table th {
 		width: 40%;
 		min-width: 300px;
-		padding: 18px 20px;
+		padding: 10px 20px;
 		vertical-align: top;
 		color: var(--mptrs-grey-800);
 		font-weight: 600;
@@ -168,7 +168,7 @@
 	}
 
 	div.mptrs_global_settings table td {
-		padding: 18px 20px;
+		padding: 10px 20px;
 		vertical-align: middle;
 		border-radius: 0 var(--mptrs-border-radius) var(--mptrs-border-radius) 0;
 	}
