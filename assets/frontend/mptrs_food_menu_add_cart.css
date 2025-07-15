@@ -257,3 +257,4 @@ p.mptrs-time-schedule {
     border-radius: 10px;
     width: 290px;
 }
+.mptrs-schedule-review{display:flex; gap: 10px; justify-content: start;}
