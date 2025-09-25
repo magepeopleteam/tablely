@@ -186,7 +186,7 @@ if (!class_exists('MPTRS_Cart_Order_Data_Display')) {
                     $value = is_array($cart_item[$key]) ? implode(', ', $cart_item[$key]) : $cart_item[$key];
                     $item_data[] = [
                         'name'  => $label,
-                        'value' => esc_html(esc_html( $value ) )
+                        'value' => esc_html( $value )
                     ];
                 }
             }
