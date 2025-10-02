@@ -31,7 +31,7 @@ if (!class_exists('MPTRS_Template')) {
             $thumbnail_url = get_the_post_thumbnail_url($post_id, 'full');
             if ( has_post_thumbnail() ) : ?>
                 <header class="mptrs-header-baner"> 
-                    <img alt="<?php esc_attr( get_the_title() );?>" src=" <?php  echo esc_attr( $thumbnail_url );?>">
+                    <img alt="<?php echo esc_attr( get_the_title() );?>" src="<?php echo esc_attr( $thumbnail_url );?>">
                 </header>
             <?php endif; ?>
             <?php
@@ -122,7 +122,7 @@ if (!class_exists('MPTRS_Template')) {
             ?>
             <?php if ($image_url): ?>
                 <div div class="mptrs-logo">
-                    <img alt="<?php esc_attr( get_the_title() );?>" src="<?php echo esc_attr($image_url); ?>">
+                    <img alt="<?php echo esc_attr( get_the_title() );?>" src="<?php echo esc_attr($image_url); ?>">
                 </div>
             <?php endif; ?>
             <?php
