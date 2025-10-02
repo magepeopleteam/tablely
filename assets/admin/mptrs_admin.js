@@ -256,6 +256,33 @@
         e.preventDefault();
         update_ext_service();
     });
+
+    $(document).on('change', '#mptrs_seat_mapping_select',function () {
+        let seat_map_id = $(this).val();
+        let post_id = $("#mptrs_add_mapping_id").val().trim();
+
+        if ( post_id ) {
+            $.ajax({
+                url: mptrs_admin_ajax.ajax_url,
+                type: 'POST',
+                data: {
+                    action: 'mptrs_added_seat_mapping_in_restaurant',
+                    seat_map_id: seat_map_id,
+                    post_id: post_id,
+                    nonce: mptrs_admin_ajax.nonce
+                },
+                success: function (response) {
+                    alert( response.data );
+                },
+                error: function (error) {
+                    console.log('Error:', error);
+                }
+            });
+        } else {
+            $('#mptrs_seat_mapping_meta_display').html('');
+        }
+    });
+
     function update_ext_service() {
         var postID = $('input[name="mptrs_ext_post_id"]');
         var itemId = $('input[name="mptrs_ext_service_item_id"]');

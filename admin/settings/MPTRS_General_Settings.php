@@ -12,9 +12,11 @@
 				add_action('add_mptrs_settings_tab_content', [$this, 'general_settings'], 10, 1);
 				add_action('save_post', array($this, 'save_settings'));
 			}
-			public function general_settings($post_id) {
+			public function general_settings( $post_id ) {
 				$image_id = get_post_meta($post_id, 'mptrs_restaurant_logo', true);
 				$image_url = $image_id ? wp_get_attachment_image_src($image_id, 'full')[0] : '';
+
+                $selected_seat_map_id = get_post_meta( $post_id, 'mptrs_selected_seat_map', true );
 				?>
                 <div class="tabsItem" data-tabs="#mptrs_general_info">
 					<header>
@@ -64,6 +66,7 @@
 							</div>
                         </label>
                     </section>
+                    <?php if( $selected_seat_map_id ){?>
 					<section>
                         <label class="label">
                             <div>
@@ -72,11 +75,12 @@
                             </div>
                             <div>
 								<code>
-									<?php echo esc_html('[mptrs_reserve_table seat_mapping="yes/no" post_id="'.get_the_ID().'"]') ?>
+									<?php echo esc_html('[mptrs_reserve_table seat_mapping="yes/no" post_id="'.$selected_seat_map_id.'"]') ?>
 								</code>
 							</div>
                         </label>
                     </section>
+                    <?php }?>
                 </div>
 				<?php
 			}

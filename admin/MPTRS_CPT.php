@@ -11,6 +11,8 @@
 			public function __construct() {
 				add_action('init', [$this, 'add_cpt']);
                 add_action('init', [$this, 'register_mptrs_table_reservations_cpt'] );
+                add_action('init', [$this, 'create_mptrs_table_reservations_cpt'] );
+                add_action( 'add_meta_boxes', [$this,'pa_add_seat_design_meta_box'] );
 			}
 			public function add_cpt(): void {
 				$cpt = MPTRS_Function::get_cpt();
@@ -72,6 +74,78 @@
                     'show_ui' => false,
                 ));
             }
+            function create_mptrs_table_reservations_cpt_aa() {
+                register_post_type('mptrs_table_reserv', array(
+                    'label' => 'Table Reservations',
+                    'public' => true,
+                    'supports' => ['title', 'custom-fields'],
+                    'show_in_rest' => false,
+                    'show_ui' => false,
+                ));
+            }
+
+            // 1. Register Custom Post Type: mptrs_seat_reservation
+            function create_mptrs_table_reservations_cpt() {
+                $labels = array(
+                    'name'               => 'Seat Reservations',
+                    'singular_name'      => 'Seat Reservation',
+                    'menu_name'          => 'Seat Reservations',
+                    'name_admin_bar'     => 'Seat Reservation',
+                    'add_new'            => 'Add New',
+                    'add_new_item'       => 'Add New Seat Reservation',
+                    'edit_item'          => 'Edit Seat Reservation',
+                    'new_item'           => 'New Seat Reservation',
+                    'view_item'          => 'View Seat Reservation',
+                    'all_items'          => 'All Seat Reservations',
+                    'search_items'       => 'Search Seat Reservations',
+                    'not_found'          => 'No seat reservations found.',
+                    'not_found_in_trash' => 'No seat reservations found in Trash.'
+                );
+
+                $args = array(
+                    'labels'             => $labels,
+                    'description'        => 'Manage seat reservations with design.',
+                    'public'             => true,
+                    'show_ui'            => true,
+                    'show_in_menu'       => false,
+                    'menu_position'      => 25,
+                    'menu_icon'          => 'dashicons-tickets-alt',
+                    'supports'           => array( 'title' ), // ✅ Only title field
+                    'has_archive'        => true,
+                    'rewrite'            => array( 'slug' => 'seat-reservation' ),
+                );
+
+                register_post_type( 'mptrs_seat_mapping', $args );
+            }
+
+            function pa_add_seat_design_meta_box() {
+                add_meta_box(
+                    'pa_seat_design_meta',
+                    'Seat Design',
+                    [$this,'pa_seat_design_meta_callback'],
+                    'mptrs_seat_mapping',
+                    'normal',
+                    'default'
+                );
+            }
+
+            function pa_seat_design_meta_callback( $post ) { ?>
+                <div class="tabsItem" data-tabs="#mptrs_seat_mapping">
+                <header>
+                    <h2><?php esc_html_e('Seat Mapping', 'tablely'); ?></h2>
+                    <span><?php esc_html_e('In this section you will make table and seat for reservation.', 'tablely'); ?></span>
+                </header>
+                <section class="mptrs-seat-mapping-section " id="mptrs-seat-mapping-section">
+                <?php
+                $seat_design = get_post_meta( $post->ID, '_pa_seat_design', true );
+                    MPTRS_Seat_Mapping::render_seat_mapping_meta_box( $post->ID ); ?>
+                </section>
+                </div>
+                <?php
+
+
+            }
+
 
 		}
 		new MPTRS_CPT();
