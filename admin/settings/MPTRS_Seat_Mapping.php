@@ -835,7 +835,7 @@
                                 }
                                 wp_reset_postdata();
                             } else {
-                                echo '<option value="">'.esc_html_e('No seat mappings found', 'tablely').'</option>';
+                                echo '<option value="">'.esc_html__('No seat mappings found', 'tablely').'</option>';
                             }
                             ?>
                         </select>
