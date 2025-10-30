@@ -121,7 +121,9 @@
 				wp_enqueue_style( 'mptrs-frontend', MPTRS_PLUGIN_URL . '/assets/frontend/frontend.css', [], time() );
 				wp_enqueue_style( 'mptrs_food_menu_add_cart', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_food_menu_add_cart.css', [], time() );
 				wp_enqueue_style( 'mptrs_color_themes', MPTRS_PLUGIN_URL . '/assets/admin/css/mptrs_color_themes.css', [], null );
+				wp_enqueue_style( 'mptrs_display_shortcode_data', MPTRS_PLUGIN_URL . '/assets/frontend/css/mptrs_display_shortcode_data.css', [], null );
 				wp_enqueue_script( 'mptrs_registration', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_registration.js', [ 'jquery' ], time(), true );
+				wp_enqueue_script( 'mptrs_display_shortcode_data', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_display_shortcode_data.js', [ 'jquery' ], time(), true );
 				wp_enqueue_script( 'mptrs_food_menu_add_cart', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_food_menu_add_cart.js', [ 'jquery' ], time(), true );
 				wp_localize_script( 'mptrs_registration', 'mptrs_ajax', array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
