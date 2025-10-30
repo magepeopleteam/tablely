@@ -121,8 +121,8 @@ if (!class_exists('MPTRS_Template')) {
 			$image_url = $image_id ? wp_get_attachment_image_src($image_id, 'full')[0] : '';
             ?>
             <?php if ($image_url): ?>
-                <div div class="mptrs-logo">
-                    <img alt="<?php esc_attr( get_the_title() );?>" src="<?php echo esc_attr($image_url); ?>">
+                <div class="mptrs-logo">
+                    <img class="mptrs_logo_image" alt="<?php esc_attr( get_the_title() );?>" src="<?php echo esc_attr($image_url); ?>">
                 </div>
             <?php endif; ?>
             <?php

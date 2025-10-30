@@ -169,3 +169,7 @@
 .pac-container {
     z-index: 99999 !important; /* higher than your modal */
 }
+
+.mptrs_logo_image{
+    width: 100%;
+}
