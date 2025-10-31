@@ -298,6 +298,8 @@ jQuery(document).ready(function ($) {
                         button.text('Process Checkout')
                     },1000);
 
+                    alert( mptrs_ajax.site_url );
+
                     window.location.href = mptrs_ajax.site_url+'/checkout/';
                 } else {
                     alert(response.data);
