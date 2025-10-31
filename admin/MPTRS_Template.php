@@ -203,6 +203,7 @@ if (!class_exists('MPTRS_Template')) {
 
         public static function display_cart_data_from_cookie( $post_id ){
             $html = '';
+            $total_price = 0;
 
             if ( isset( $_COOKIE['mptrs_cart_cookie_items'] ) ) {
                 $cookie_data = $_COOKIE['mptrs_cart_cookie_items'];
@@ -210,7 +211,6 @@ if (!class_exists('MPTRS_Template')) {
                 $existing_menu_by_id = array_keys( $item_keys );
 
                 $existing_edited_price = get_post_meta( $post_id, '_mptrs_food_menu_edited_prices', true );
-                error_log( print_r( [ '$existing_edited_price' => $existing_edited_price ], true ) );
 
                 $existing_menus = [];
                 $all_food_menus = get_option('_mptrs_food_menu', true);
@@ -226,6 +226,7 @@ if (!class_exists('MPTRS_Template')) {
 
                 $orderVarDetails = '';
                 ob_start();
+
                 foreach ( $existing_menus as $key => $item ){
                     $price = $item['menuPrice'];
                     $count = isset( $item_keys[ $key ] ) ? $item_keys[ $key ] : 1;
@@ -233,6 +234,7 @@ if (!class_exists('MPTRS_Template')) {
                         $price = $existing_edited_price[$key];
                     }
 
+                    $total_price += $price*$count;
                     ?>
                     <div class="mptrs_menuAddedCartItem"
                      id="mptrs_menuAddedCartItem-<?php echo esc_attr( $key ); ?>"
@@ -269,10 +271,14 @@ if (!class_exists('MPTRS_Template')) {
                 </div>
                     <?php
                 }
+
                 $html = ob_get_clean();
             }
 
-            return $html;
+            return array(
+                    'html' => $html,
+                    'total_price' => $total_price,
+            );
         }
 
         public function display_restaurant_basket( $post_id ){
@@ -291,22 +297,28 @@ if (!class_exists('MPTRS_Template')) {
                     </div>
                     <div class="mptrs_orderedFoodMenuHolder" id="mptrs_orderedFoodMenuHolder">
                         <?php
+
                         $cookie_data = self::display_cart_data_from_cookie( $post_id );
-//                        echo $cookie_data;
+                        $cookie_data['html'] = '';
+//                        echo $cookie_data['html'];
                         ?>
                     </div>
                 </div>
-                <?php if( $cookie_data === '' ){?>
+                <?php if( $cookie_data['html'] === '' ){?>
                 <div class="mptrs-basket-middle" id="mptrs-basket-middle">
                     <img src="<?php echo MPTRS_Plan_URL; ?>/assets/images/dish.png" alt="">
                     <p><?php esc_html_e('Please Add menu to busket','tablely'); ?></p>
                 </div>
-                <?php }?>
+                <?php }
+
+                $cookie_data['total_price'] = 0;
+                $formatted_price = wc_price( $cookie_data['total_price'] );
+                ?>
                 <div class="mptrs-basket-bottom">
                     <div class="mptrs_totalPriceHolder" id="mptrs_totalPriceHolder">
                         <div class="mptrs_totalPricetext"><?php esc_html_e( 'Total', 'tablely' ); ?></div>
                         <!--  <span class="mptrs_sitePriceSymble" id="mptrs_sitePriceSymble"></span>-->
-                        <input class="mptrs_totalPrice" id="mptrs_totalPrice" name="mptrs_totalPrice" value="200" readonly placeholder="$0" disabled>
+                        <input class="mptrs_totalPrice" data-mptrs-total-price="<?php echo esc_attr( $cookie_data['total_price'] );?>" id="mptrs_totalPrice" name="mptrs_totalPrice" value="<?php echo esc_html( strip_tags( $formatted_price ) );?>" readonly placeholder="$0" disabled>
                     </div>
                     <div class="mptrs_dineInOrderPlaceBtn" id="mptrs_dineInOrderPlaceBtn"><?php esc_html_e( 'Process Checkout', 'tablely' )?></div>
                 </div>
@@ -318,8 +330,6 @@ if (!class_exists('MPTRS_Template')) {
             $categories = get_option('mptrs_categories');
 
             $enable_location_autocomplete = get_option( 'mptrs_enable_location_autocomplete' );
-
-//            error_log( print_r( [ '$categories' => $categories ], true ) );
 
             $existing_menu_by_id = get_post_meta( $post_id, '_mptrs_food_menu_items', true );
 
