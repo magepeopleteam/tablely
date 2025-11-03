@@ -240,8 +240,6 @@ jQuery(document).ready(function ($) {
         let mptrs_locations = mptrs_orderSettings.mptrs_locations;
         let postId = $("#mptrs_getPost").val().trim();
 
-        console.log(mptrs_orderSettings);
-
         let seats = '';
         // let mptrs_location = [];
 
@@ -872,7 +870,7 @@ jQuery(document).ready(function ($) {
     function mptrs_display_popup_for_order_types(){
 
         // console.log( mptrs_orderSettings );
-        let setLocations = '';
+        let setLocations = 'dahka';
         if( mptrs_orderSettings.hasOwnProperty( 'mptrs_locations' ) && mptrs_orderSettings.mptrs_locations ){
             setLocations = mptrs_orderSettings.mptrs_locations;
         }
@@ -969,6 +967,10 @@ jQuery(document).ready(function ($) {
             mptrs_orderTime,
             mptrs_locations
         };
+
+        const cookieCartDetails = JSON.stringify(mptrs_orderSettings);
+        setCookie('mptrs_cart_details_cookie', cookieCartDetails );
+        // console.log( cookieValue );
 
         let mptrs_order_des = `${mptrs_orderType}, Order Date: ${mptrs_orderDate}, Time: ${mptrs_orderTime}`;
         if (mptrs_locations) {
