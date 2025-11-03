@@ -206,13 +206,11 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                     $ordered_menu_key = json_decode($ordered_menu_key, true);
                 }
 
+                $cart_details_cookie_data = [];
                 if ( isset( $_COOKIE['mptrs_cart_details_cookie'] ) ) {
                     $cart_details_cookie = wp_unslash($_COOKIE['mptrs_cart_details_cookie']);
                     $cart_details_cookie_data = json_decode($cart_details_cookie, true);
-
-                    $_POST['mptrs_orderType'] = $cart_details_cookie_data['mptrs_orderType'];
-
-//                    error_log( print_r( [ '$cart_details_cookie_data' => $cart_details_cookie_data ], true ) );
+//                    $_POST['mptrs_orderType'] = $cart_details_cookie_data['mptrs_orderType'];
                 }
 
                 if (!isset($_POST['post_id'], $_POST['price'], $_POST['quantity'])) {
@@ -255,10 +253,12 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                 $mptrs_locations = isset($_POST['mptrs_locations']) ? sanitize_text_field( wp_unslash( $_POST['mptrs_locations'] ) ) : '';
                 $mptrs_orderType_text = sanitize_text_field( wp_unslash( $_POST['mptrs_orderType'] ) );*/
 
-                $mptrs_order_date = isset($ordered_menu_key['mptrs_orderDate']) ? sanitize_text_field( wp_unslash( $ordered_menu_key['mptrs_orderDate'] ) ) : '';
-                $mptrs_order_time = isset($ordered_menu_key['mptrs_orderTime']) ? sanitize_text_field( wp_unslash( $ordered_menu_key['mptrs_orderTime'] ) ) : '';
-                $mptrs_locations = isset($ordered_menu_key['mptrs_locations']) ? sanitize_text_field( wp_unslash( $ordered_menu_key['mptrs_locations'] ) ) : '';
-                $mptrs_orderType_text = sanitize_text_field( wp_unslash( $ordered_menu_key['mptrs_orderType'] ) );
+                $mptrs_order_date = isset($cart_details_cookie_data['mptrs_orderDate']) ? sanitize_text_field( wp_unslash( $cart_details_cookie_data['mptrs_orderDate'] ) ) : '';
+                $mptrs_order_time = isset($cart_details_cookie_data['mptrs_orderTime']) ? sanitize_text_field( wp_unslash( $cart_details_cookie_data['mptrs_orderTime'] ) ) : '';
+                $mptrs_locations = isset($cart_details_cookie_data['mptrs_locations']) ? sanitize_text_field( wp_unslash( $cart_details_cookie_data['mptrs_locations'] ) ) : '';
+                $mptrs_orderType_text = sanitize_text_field( wp_unslash( $cart_details_cookie_data['mptrs_orderType'] ) );
+
+
 
                 $price = floatval( wp_unslash( $_POST['price'] ) );
                 $quantity = intval( wp_unslash( $_POST['quantity'] ) );

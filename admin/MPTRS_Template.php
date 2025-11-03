@@ -285,16 +285,13 @@ if (!class_exists('MPTRS_Template')) {
 
             $cookie_data = self::display_cart_data_from_cookie( $post_id );
 
-            $details_display = 'none';
-            if( $cookie_data['html'] ){
-                $details_display = 'block';
-            }
-
             $cart_details_cookie_data = [];
             $order_details = '';
+            $details_display = 'none';
             if ( isset( $_COOKIE['mptrs_cart_details_cookie'] ) ) {
                 $cart_details_cookie = wp_unslash( $_COOKIE['mptrs_cart_details_cookie'] );
                 $cart_details_cookie_data = json_decode( $cart_details_cookie, true );
+                $details_display = 'block';
 
                 $location = '';
                 if( $cart_details_cookie_data['mptrs_orderType'] === 'Delivery' ){
