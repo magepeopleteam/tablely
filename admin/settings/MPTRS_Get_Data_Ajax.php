@@ -253,12 +253,10 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                 $mptrs_locations = isset($_POST['mptrs_locations']) ? sanitize_text_field( wp_unslash( $_POST['mptrs_locations'] ) ) : '';
                 $mptrs_orderType_text = sanitize_text_field( wp_unslash( $_POST['mptrs_orderType'] ) );*/
 
-                $mptrs_order_date = isset($cart_details_cookie_data['mptrs_orderDate']) ? sanitize_text_field( wp_unslash( $cart_details_cookie_data['mptrs_orderDate'] ) ) : '';
-                $mptrs_order_time = isset($cart_details_cookie_data['mptrs_orderTime']) ? sanitize_text_field( wp_unslash( $cart_details_cookie_data['mptrs_orderTime'] ) ) : '';
-                $mptrs_locations = isset($cart_details_cookie_data['mptrs_locations']) ? sanitize_text_field( wp_unslash( $cart_details_cookie_data['mptrs_locations'] ) ) : '';
-                $mptrs_orderType_text = sanitize_text_field( wp_unslash( $cart_details_cookie_data['mptrs_orderType'] ) );
-
-
+                $mptrs_order_date       = isset($cart_details_cookie_data['mptrs_orderDate']) ? sanitize_text_field( wp_unslash( $cart_details_cookie_data['mptrs_orderDate'] ) ) : '';
+                $mptrs_order_time       = isset($cart_details_cookie_data['mptrs_orderTime']) ? sanitize_text_field( wp_unslash( $cart_details_cookie_data['mptrs_orderTime'] ) ) : '';
+                $mptrs_locations        = isset($cart_details_cookie_data['mptrs_locations']) ? sanitize_text_field( wp_unslash( $cart_details_cookie_data['mptrs_locations'] ) ) : '';
+                $mptrs_orderType_text   =  isset($cart_details_cookie_data['mptrs_locations']) ? sanitize_text_field( wp_unslash( $cart_details_cookie_data['mptrs_orderType'] ) ) : '';
 
                 $price = floatval( wp_unslash( $_POST['price'] ) );
                 $quantity = intval( wp_unslash( $_POST['quantity'] ) );
