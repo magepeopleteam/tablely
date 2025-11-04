@@ -170,6 +170,7 @@
     z-index: 99999 !important; /* higher than your modal */
 }
 
+
 .mptrs_logo_image{
     width: 100%;
 }
@@ -313,3 +314,129 @@
         grid-template-columns: repeat(1, 1fr);
     }
 }
+
+.mptrs-default-template{background:#fff; padding:20px;}
+.mptrs-content-right {
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+}
+.mptrs_menuAddedCartItem{
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    margin-top: 2px;
+}
+.mptrs_item-template-default .mptrs-default-template .mptrs-content .mptrs-content-right .mptrs-ordered-basket{border:none;}
+.mptrs_item-template-default .mptrs-default-template .mptrs-content .mptrs-content-right{border:1px solid #e5e7eb; border-radius:10px;}
+.mptrs-content-right .mptrs_orderTypeDatesDisplay {
+    background: #fff;
+    display: inline-block;
+    font-size: 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    text-align: left;
+}
+.mptrs_menuName{color:#333;}
+.mptrs_item-template-default .mptrs-default-template .mptrs-content .mptrs-content-right .mptrs-ordered-basket .mptrs-basket-top .basket-header{background:none;}
+.mptrs-ordered-basket .mptrs_clearOrder {
+    font-size: 13px;
+    background: rgba(239, 68, 68, 0.2);
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+
+.mptrs-default-template .mptrs-content .mptrs-content-left .mptrs-category-container .mptrs-category-item {
+    padding: 3px 10px;
+    font-weight: bold;
+    font-size: 14px;
+}
+.mptrs_addedMenuordered {
+    position: absolute;
+    bottom: -10px;
+    right: -5px;
+}
+.mptrs_addBtn:hover, .mptrs_addBtn:focus {
+    background: var(--mptrs_color_theme);
+}
+.mptrs_addBtn{ background: var(--mptrs_color_theme);
+}
+.mptrs_addBtn i{ color: var(--mptrs_color_light);
+}
+.mptrs_menuImage {
+    height: 110px;
+    border-radius:10px;
+    width: 100%;
+    object-fit: cover;
+    cursor: pointer;
+}
+.mptrs-menu-item-thumbnail {
+    width: 30%;
+    position: relative;
+    border-radius: 5px;
+    height: 110px;
+    overflow: visible;
+    background: none;
+}
+.mptrs_menuDescription
+ {
+    line-height: 18px;
+    font-size: 14px;
+}
+.mptrs-food-menu
+ {
+    border:1px solid transparent;
+     transform: translateY(0px);
+}
+.mptrs-food-menu:hover
+ {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border:1px solid var(--mptrs_color_theme);
+    border-radius: 12px;
+}
+.mptrs-default-template .mptrs-content .mptrs-content-left .mptrs-category-container{justify-content:end;}
+p.mptrs-time-schedule {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff;
+    padding: 3px;
+    font-size:14px;
+    border-radius: 10px;
+    width: 290px;
+}
+.mptrs-schedule-review{display:flex; gap: 10px; justify-content: start;}
+.mptrs-top-menu-tabs{display:flex; gap: 10px; justify-content: space-between;align-items:center;}
+.mptrs-default-template .mptrs-content .mptrs-content-left .mptrs-category-container{
+    align-items: center;
+    margin:5px 0;
+    width:60%;
+}
+.mptrs-default-template .mptrs-header .mptrs-restaurant-info .mptrs-reviews{background: #fef3c7; color: #d97706; padding:2px 5px; border-radius:5px;}
+.mptrs_item-template-default .mptrs-default-template .mptrs-header .mptrs-restaurant-info button {
+    background: none;
+    color: #d97706;
+    font-size:14px;
+}
+.mptrs-default-template .mptrs-content .mptrs-content-left .mptrs-food-menu-container{
+    justify-content:space-between;
+}
+@media (min-width: 1440px) {
+    .mptrs-default-template .mptrs-content .mptrs-content-left .mptrs-food-menu-container .mptrs-food-menu{
+        width:48%;
+        gap:10px;
+    }
+}
+.mptrs-default-template .mptrs-header .mptrs-restaurant-info .mptrs-reviews i
+ {
+    color: #d97706;
+}
+.mptrs-default-template .mptrs-header .mptrs-restaurant-info .more-info-button i
+ {
+    color: #d97706;
+    border: 1px solid #d97706;
+}
+div#mptrs_orderedFoodMenuHolder {
+    max-height: 70vh;
+    overflow: auto;
+}
+

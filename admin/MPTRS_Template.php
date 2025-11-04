@@ -1,6 +1,6 @@
 <?php
 /**
- * Tempalate for restaurant Tablely
+ * Template for restaurant Tablely
  * @author Shahadat Hossain <raselsha@gmail.com>
  * @version 1.0.0
  */
@@ -31,7 +31,7 @@ if (!class_exists('MPTRS_Template')) {
             $thumbnail_url = get_the_post_thumbnail_url($post_id, 'full');
             if ( has_post_thumbnail() ) : ?>
                 <header class="mptrs-header-baner"> 
-                    <img alt="<?php esc_attr( get_the_title() );?>" src=" <?php  echo esc_attr( $thumbnail_url );?>">
+                    <img alt="<?php echo esc_attr( get_the_title() );?>" src="<?php echo esc_attr( $thumbnail_url );?>">
                 </header>
             <?php endif; ?>
             <?php
@@ -123,6 +123,7 @@ if (!class_exists('MPTRS_Template')) {
             <?php if ($image_url): ?>
                 <div class="mptrs-logo">
                     <img class="mptrs_logo_image" alt="<?php esc_attr( get_the_title() );?>" src="<?php echo esc_attr($image_url); ?>">
+
                 </div>
             <?php endif; ?>
             <?php
@@ -134,7 +135,8 @@ if (!class_exists('MPTRS_Template')) {
             ?>
             <h1 class="mptrs-restaurant-name"><?php the_title();?></h1>
             <p class="mptrs-location"><i class="fas fa-map-marker-alt"></i> <?php esc_html_e( '5th floor, Concord MK Heritage, Dhaka, Dhanmondi Dhaka', 'tablely' ); ?></p>
-            <p class="mptrs-time-schedule">
+            <div class="mptrs-schedule-review">
+<p class="mptrs-time-schedule">
                 <span class="open-now"></span><?php esc_html_e( 'Open Now', 'tablely' ); ?></span>
                 <?php esc_html_e( '11:00 AM - 11:00 PM', 'tablely' ); ?>
             </p>
@@ -142,8 +144,13 @@ if (!class_exists('MPTRS_Template')) {
                 <i class="fas fa-star"></i>
                 <span><?php echo esc_html__('4.8/5','tablely'); ?></span>
                 <button class="reviews-button mptrs-data" data-popup-target="#mptrs-reviews-popup"><?php echo esc_html__('See Reviews','tablely'); ?></button>
-                <button class="more-info-button mptrs-data" data-popup-target="#mptrs-restaurant-popup"><i class="fas fa-info"></i> <?php echo esc_html__('More Info','tablely'); ?></button>
+               
             </p>
+            <p class="mptrs-more-info">
+		 <button class="more-info-button mptrs-data" data-popup-target="#mptrs-restaurant-popup"><i class="fas fa-info"></i> <?php echo esc_html__('More Info','tablely'); ?></button>    
+	    </p>
+		    
+	</div>
             <?php
         }
 
@@ -398,29 +405,29 @@ if (!class_exists('MPTRS_Template')) {
             }
             ?>
             <?php if (!empty($existing_menus)) { ?>
+                <div class="mptrs-top-menu-tabs">
+                    <h4><?php esc_html_e('Menu', 'tablely'); ?> (<?php echo esc_html(count($existing_menus)); ?>)</h4>
+                    <div class="mptrs-category-container">
+                        <input type="hidden" id="mptrs_location_autocomplete" value="<?php echo esc_attr( $enable_location_autocomplete );?>">
+                        <?php if (!empty($categories)) { ?>
+                            <div class="mptrs-category-item  mptrs-active" data-filter="all"><?php echo esc_html__('All ', 'tablely').'('.count($existing_menus).')'; ?></div>
+                            <?php foreach ($categories as $key => $category) {
+                                $category_count = isset( $menu_category_count[$key]) ? $menu_category_count[$key] : 0;
+                                if( $category_count > 0){
+                                    $category_count_str = '( '.$category_count.' )';
+                                    ?>
+                                    <div class="mptrs-category-item" data-filter="<?php echo esc_attr($key); ?>"><?php echo esc_html($category); ?><?php echo esc_attr( $category_count_str ) ?></div>
 
-                <h4><?php esc_html_e('Menu', 'tablely'); ?> (<?php echo esc_html(count($existing_menus)); ?>)</h4>
-                <div class="mptrs-category-container">
-                    <input type="hidden" id="mptrs_location_autocomplete" value="<?php echo esc_attr( $enable_location_autocomplete );?>">
-                    <?php if (!empty($categories)) { ?>
-                        <div class="mptrs-category-item  mptrs-active" data-filter="all"><?php echo esc_html__('All ', 'tablely').'('.count($existing_menus).')'; ?></div>
-                        <?php foreach ($categories as $key => $category) {
-                            $category_count = isset( $menu_category_count[$key]) ? $menu_category_count[$key] : 0;
-                            if( $category_count > 0){
-                                $category_count_str = '( '.$category_count.' )';
+                                    <?php
+                                }
                                 ?>
-                                <div class="mptrs-category-item" data-filter="<?php echo esc_attr($key); ?>"><?php echo esc_html($category); ?><?php echo esc_attr( $category_count_str ) ?></div>
-
-                                <?php
-                            }
-                            ?>
+                            <?php } ?>
                         <?php } ?>
-                    <?php } ?>
-                    <div class="mptrs-more-button">...</div>
+                        <div class="mptrs-more-button">...</div>
 
+                    </div>
+                    <div class="mptrs_hidden_items" style="display: none;"></div>
                 </div>
-                <div class="mptrs_hidden_items" style="display: none;"></div>
-
                 <div class="mptrs-food-menu-container">
                         <?php
                         $fallbackImgUrl = get_site_url() . '/wp-content/uploads/2025/02/fallbackimage.webp';

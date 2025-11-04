@@ -95,6 +95,10 @@
     border-bottom: 1px dotted #e5dfdf;
 }
 
+.mptrs_action_img{
+    width: 100%;height: auto;max-width: 100%;
+}
+
 .mptrs_seatIconContainer{
     display: block;
     padding-bottom: 10px;
@@ -877,3 +881,4 @@ button.mptrs_textZoomIn:hover, button.mptrs_textZoomOut:hover {
         left: 200px;
     }
 }
+

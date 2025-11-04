@@ -248,7 +248,8 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             }
 
             $post_id = intval(isset( $_POST['post_id']) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : 0 );
-            if (!$post_id || get_post_type($post_id) !== 'mptrs_item') {
+            if (!$post_id || get_post_type($post_id) !== 'mptrs_seat_mapping') {
+//            if (!$post_id || get_post_type($post_id) !== 'mptrs_item') {
                 wp_send_json_error(['message' => 'Invalid post ID or post type.']);
             }
 
@@ -260,7 +261,6 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
             $seat_maps_meta_data = isset( $_POST['seat_maps_meta_data'] ) ? json_decode( sanitize_text_field( wp_unslash( $_POST['seat_maps_meta_data'] ) ), true ) : [];
             $seat_plan_texts= isset( $_POST['seatPlanTexts'] ) ? json_decode( sanitize_text_field( wp_unslash( $_POST['seatPlanTexts'] ) ), true ) : '' ;
             $dynamicShapes = isset( $_POST['dynamicShapes'] ) ? json_decode( sanitize_text_field( wp_unslash( $_POST['dynamicShapes'] ) ), true ) : '';
-
 
             $template = isset( $_POST['template'] ) ? sanitize_text_field( wp_unslash( $_POST['template'] ) ) : '';
             $seat_plan_data = array(

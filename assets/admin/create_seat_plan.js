@@ -1961,7 +1961,9 @@ jQuery(document).ready(function ($) {
             const clipPath = $(this).css('clip-path') || '';
             const shapeRotateDeg = $(this).data('shape-rotate') || 0;
             const tableBindID = $(this).attr('id').trim() || '';
-            dynamicShapes.push({ textLeft, textTop, width, height,  backgroundColor, borderRadius, clipPath, shapeRotateDeg,tableBindID });
+            const backgroundImage = $(this).data('background-image');
+            console.log( backgroundImage );
+            dynamicShapes.push({ textLeft, textTop, width, height,  backgroundColor, borderRadius, clipPath, shapeRotateDeg,tableBindID, backgroundImage });
         });
 
         if ( selectedSeats.length === 0 ) {
