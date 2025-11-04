@@ -22,8 +22,8 @@
             <?php do_action('mptrs_template_menus', $post_id ); ?>
         </div>
         <div class="mptrs-content-right">
-            <?php do_action('mptrs_template_basket'); ?>
-            <?php do_action('mptrs_sidebar_content'); ?>
+            <?php do_action('mptrs_template_basket' , $post_id); ?>
+            <?php do_action('mptrs_sidebar_content' , $post_id); ?>
         </div>
     </div>
 </main>

@@ -169,6 +169,152 @@
 .pac-container {
     z-index: 99999 !important; /* higher than your modal */
 }
+
+
+.mptrs_logo_image{
+    width: 100%;
+}
+
+
+
+/*Shortcode*/
+.mptrs_food_menu_wrapper{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border: 1px solid #ebe5e5;
+    border-radius: 10px;
+}
+.mptrs_food_menu_toolbar {
+    text-align: right;
+    margin-bottom: 15px;
+}
+.mptrs_food_menu_toolbar button {
+    border: none;
+    background: #f1f1f1;
+    padding: 8px 15px;
+    margin-left: 5px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+.mptrs_food_menu_toolbar button.active,
+.mptrs_food_menu_toolbar button:hover {
+    background: #0073aa;
+    color: #fff;
+}
+
+/* ---------- Grid Container ---------- */
+.mptrs_food_menu_container {
+    display: grid;
+    gap: 20px;
+    transition: all 0.4s ease;
+}
+.mptrs_food_menu_container.grid-view {
+    grid-template-columns: repeat(var(--mptrs-columns, 3), 1fr);
+}
+.mptrs_food_menu_container.list-view {
+    display: block;
+}
+
+/* ---------- Card Design ---------- */
+.mptrs_food_menu_card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    opacity: 0;
+    transform: translateY(30px);
+}
+.mptrs_food_menu_card.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+.mptrs_food_menu_img_wrap img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+.mptrs_food_menu_content {
+    padding: 15px;
+}
+.mptrs_food_menu_name {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 5px;
+}
+.mptrs_food_menu_cat {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 10px;
+}
+.mptrs_food_menu_desc {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+}
+.mptrs_food_menu_price {
+    font-size: 16px;
+    font-weight: bold;
+    color: #0073aa;
+}
+
+/* ---------- List View ---------- */
+.mptrs_food_menu_container.list-view .mptrs_food_menu_card {
+    display: flex;
+    align-items: center;
+}
+.mptrs_food_menu_container.list-view .mptrs_food_menu_img_wrap {
+    flex: 0 0 150px;
+    height: 100px;
+    overflow: hidden;
+}
+.mptrs_food_menu_container.list-view .mptrs_food_menu_img_wrap img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+.mptrs_food_menu_container.list-view .mptrs_food_menu_content {
+    flex: 1;
+    padding: 10px 15px;
+}
+
+.mptrs_food_category_holder{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 5px 0 10px 0;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.mptrs_food_category{
+    padding: 5px 10px;
+    border: 1px solid #dbdbdb;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.active{
+    background-color: #666666;
+    color: #f6f6f6;
+
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 992px) {
+    .mptrs_food_menu_container.grid-view {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 600px) {
+    .mptrs_food_menu_container.grid-view {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
 .mptrs-default-template{background:#fff; padding:20px;}
 .mptrs-content-right {
     background: linear-gradient(135deg, #f8fafc, #f1f5f9);
@@ -293,3 +439,4 @@ div#mptrs_orderedFoodMenuHolder {
     max-height: 70vh;
     overflow: auto;
 }
+

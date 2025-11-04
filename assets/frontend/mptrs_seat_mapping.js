@@ -240,8 +240,6 @@ jQuery(document).ready(function ($) {
         let mptrs_locations = mptrs_orderSettings.mptrs_locations;
         let postId = $("#mptrs_getPost").val().trim();
 
-        console.log(mptrs_orderSettings);
-
         let seats = '';
         // let mptrs_location = [];
 
@@ -528,6 +526,8 @@ jQuery(document).ready(function ($) {
         $("#"+menuAddedQtyKey).text(quantity);
         $("#"+menuQtyKey).text(quantity);
 
+        increase_cart_cookie_data( 'mptrs_cart_cookie_items', menuKey, 'increase' );
+
         addToCartData[menuKey] = quantity;
 
         calculateTotal();
@@ -548,6 +548,13 @@ jQuery(document).ready(function ($) {
 
         let quantityElem = $(this).siblings(".mptrs_quantity");
         let quantity = parseInt(quantityElem.text()) - 1;
+
+        if( quantity >= 1 ){
+            increase_cart_cookie_data( 'mptrs_cart_cookie_items', menuKey, 'decrease' );
+        }else{
+            mptrs_remove_cart_item_cookie_data(menuKey);
+        }
+
         if (quantity < 1) {
 
             let qtyControlHolder = 'mptrs_addedQuantityControls-'+menuKey;
@@ -863,7 +870,7 @@ jQuery(document).ready(function ($) {
     function mptrs_display_popup_for_order_types(){
 
         // console.log( mptrs_orderSettings );
-        let setLocations = '';
+        let setLocations = 'dahka';
         if( mptrs_orderSettings.hasOwnProperty( 'mptrs_locations' ) && mptrs_orderSettings.mptrs_locations ){
             setLocations = mptrs_orderSettings.mptrs_locations;
         }
@@ -961,6 +968,10 @@ jQuery(document).ready(function ($) {
             mptrs_locations
         };
 
+        const cookieCartDetails = JSON.stringify(mptrs_orderSettings);
+        setCookie('mptrs_cart_details_cookie', cookieCartDetails );
+        // console.log( cookieValue );
+
         let mptrs_order_des = `${mptrs_orderType}, Order Date: ${mptrs_orderDate}, Time: ${mptrs_orderTime}`;
         if (mptrs_locations) {
             mptrs_order_des += `, Location: ${mptrs_locations}`;
@@ -988,9 +999,7 @@ jQuery(document).ready(function ($) {
         $('.mptrs-food-menu-container').find('.mptrs_addBtn').fadeIn(1000);
 
         mptrs_show_hide_basket();
-
-
-
+        deleteCookie( 'mptrs_cart_cookie_items' );
     })
 
     $(document).on( 'click', '.mptrs_orderTypeDatesChange', function (e) {
@@ -1022,10 +1031,66 @@ jQuery(document).ready(function ($) {
 
     });
 
+
+    function setCookie(name, value, hours = 1) {
+        const d = new Date();
+        d.setTime(d.getTime() + ( hours*60*60*1000 ) );
+        document.cookie = name + "=" + encodeURIComponent(value) + ";expires=" + d.toUTCString() + ";path=/";
+    }
+    function getCookie(name) {
+        const cname = name + "=";
+        const decoded = decodeURIComponent(document.cookie);
+        const ca = decoded.split(';');
+        for (let c of ca) {
+            while (c.charAt(0) === ' ') c = c.substring(1);
+            if (c.indexOf(cname) === 0) return c.substring(cname.length, c.length);
+        }
+        return "";
+    }
+
+    function deleteCookie(name) {
+        document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
+
+    function mptrs_display_add_cart_cookie_item_data(menuAddedKey) {
+        let existingData = getCookie('mptrs_cart_cookie_items');
+        let itemsObj = existingData ? JSON.parse(existingData) : {};
+        itemsObj[menuAddedKey] = 1;
+        setCookie('mptrs_cart_cookie_items', JSON.stringify(itemsObj));
+        console.log( itemsObj );
+    }
+
+    function increase_cart_cookie_data( name, menuAddedKey, incDec ){
+        let existingData = getCookie(name );
+        let itemsObj = existingData ? JSON.parse(existingData) : {};
+        let currentValue = itemsObj[menuAddedKey] ? parseInt(itemsObj[menuAddedKey]) : 0;
+        if( incDec === 'increase' ){
+            itemsObj[menuAddedKey] = currentValue + 1;
+        }else{
+            itemsObj[menuAddedKey] = currentValue - 1;
+        }
+
+        setCookie(name, JSON.stringify(itemsObj));
+    }
+
+    function mptrs_remove_cart_item_cookie_data(menuKey) {
+        let existingData = getCookie('mptrs_cart_cookie_items');
+        if (!existingData) return;
+        let itemsObj = JSON.parse(existingData);
+        delete itemsObj[menuKey];
+
+        if (Object.keys(itemsObj).length === 0) {
+            deleteCookie('mptrs_cart_cookie_items');
+        } else {
+            setCookie('mptrs_cart_cookie_items', JSON.stringify(itemsObj));
+        }
+    }
+
+
     function mptrs_display_add_cart_item_data( menuAddedKey, mptrs_MenuPrice, mptrs_CurrencySymbol, menuPrice, display, animationDiv, parentItem, mptrs_this, mptrs_menuImageUrl ){
         // let mptrs_CurrencySymbol = jQuery('.woocommerce-Price-currencySymbol:first').text().trim();
-
-        // console.log( mptrs_menuImageUrl );
+        mptrs_display_add_cart_cookie_item_data( menuAddedKey );
+        // deleteCookie('mptrs_cart_cookie_items')
         let menuItem = selectedMenu[menuAddedKey];
         let addOneVariation = '';
 
