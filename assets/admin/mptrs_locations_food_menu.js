@@ -1042,7 +1042,7 @@ jQuery(document).ready(function ($) {
             // $("#" + getClickedId).text('Removing..');
             action = '';
         }
-        const postId = $('#mptrs_mapping_plan_id').val();
+        const postId = $('#mptrs_post_id').val();
         if (menuAddText !== 'Added') {
             $.ajax({
                 url: mptrs_admin_ajax.ajax_url,

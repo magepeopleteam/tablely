@@ -212,8 +212,8 @@ if (!class_exists('MPTRS_Template')) {
             $html = '';
             $total_price = 0;
 
-            if ( isset( $_COOKIE['mptrs_cart_cookie_items'] ) ) {
-                $cookie_data = $_COOKIE['mptrs_cart_cookie_items'];
+            if ( isset( $_COOKIE['mptrs_cart_cookie_items_'.$post_id] ) ) {
+                $cookie_data = $_COOKIE['mptrs_cart_cookie_items_'.$post_id];
                 $item_keys = (array) json_decode( wp_unslash( $cookie_data, true ) );
                 $existing_menu_by_id = array_keys( $item_keys );
 
@@ -256,7 +256,6 @@ if (!class_exists('MPTRS_Template')) {
                         <div class="mptrs_addedMenuName"><?php echo esc_html( $item['menuName'] ); ?></div>
                         <div class="mptrs_addedMenuOrderDetails"><?php echo esc_html( $orderVarDetails ); ?></div>
                         <div class="mptrs_menuPrice">
-<!--                            --><?php //echo esc_html( $item['mptrs_CurrencySymbol'] ); ?>
                             <?php echo esc_html( $price ); ?>
                         </div>
                     </div>
@@ -292,22 +291,25 @@ if (!class_exists('MPTRS_Template')) {
 
             $cookie_data = self::display_cart_data_from_cookie( $post_id );
 
-            $cart_details_cookie_data = [];
+            $cart_details_cookie_data = $cart_cookie_items= [];
             $order_details = '';
-            $details_display = 'none';
-            if ( isset( $_COOKIE['mptrs_cart_details_cookie'] ) ) {
-                $cart_details_cookie = wp_unslash( $_COOKIE['mptrs_cart_details_cookie'] );
+            $details_display = $clear_order = 'none';
+
+            if ( isset( $_COOKIE['mptrs_cart_details_cookie_'.$post_id] ) ) {
+                $cart_details_cookie = wp_unslash( $_COOKIE['mptrs_cart_details_cookie_'.$post_id] );
                 $cart_details_cookie_data = json_decode( $cart_details_cookie, true );
                 $details_display = 'block';
-
                 $location = '';
                 if( $cart_details_cookie_data['mptrs_orderType'] === 'Delivery' ){
                     $location = isset( $cart_details_cookie_data['mptrs_locations'] )
                         ? ', Location: ' . $cart_details_cookie_data['mptrs_locations']
                         : '';
                 }
-
                 $order_details = ' '.$cart_details_cookie_data['mptrs_orderType'].', Order Date: '.$cart_details_cookie_data['mptrs_orderDate'].', Time: '.$cart_details_cookie_data['mptrs_orderTime'].' '.$location;
+            }
+
+            if($cookie_data['html'] !== '' ){
+                $clear_order = 'block';
             }
 
 
@@ -325,7 +327,7 @@ if (!class_exists('MPTRS_Template')) {
                     <div class="basket-header">
                         <h6><?php esc_html_e( 'Your Orders', 'tablely' ); ?></h6>
                         <div class="mptrs_orderedMenuHolder">
-                            <span class="mptrs_clearOrder" style="display: <?php echo esc_html( $details_display );?>"><?php esc_html_e( 'Clear Order', 'tablely' );?></span>
+                            <span class="mptrs_clearOrder" style="display: <?php echo esc_html( $clear_order );?>"><?php esc_html_e( 'Clear Order', 'tablely' );?></span>
                         </div>
                     </div>
                     <div class="mptrs_orderedFoodMenuHolder" id="mptrs_orderedFoodMenuHolder">
@@ -359,8 +361,8 @@ if (!class_exists('MPTRS_Template')) {
         public function display_restaurant_content( $post_id ) {
 
             $existing_menu_cookie = $item_keys = [];
-            if ( isset( $_COOKIE['mptrs_cart_cookie_items'] ) ) {
-                $cookie_data = $_COOKIE['mptrs_cart_cookie_items'];
+            if ( isset( $_COOKIE['mptrs_cart_cookie_items_'.$post_id] ) ) {
+                $cookie_data = $_COOKIE['mptrs_cart_cookie_items_'.$post_id];
                 $item_keys = (array)json_decode(wp_unslash($cookie_data, true));
                 $existing_menu_cookie = array_keys($item_keys);
             }
