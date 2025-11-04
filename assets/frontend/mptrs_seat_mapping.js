@@ -1217,6 +1217,9 @@ jQuery(document).ready(function ($) {
             `;
 
             menuHtml += `<div class="mptrs_optionGroupHolder">`;
+
+            console.log( menuItem );
+
             if (menuItem && menuItem.hasOwnProperty('variations')) {
                 menuItem.variations.forEach(variation => {
                     if (variation && variation.hasOwnProperty('variationOrAddOne')) {
@@ -1280,8 +1283,7 @@ jQuery(document).ready(function ($) {
                     </div>`;
             menuHtml += `</div> </div>`;
             $('body').append(menuHtml);
-        }
-        else {
+        }else{
             mptrs_this.fadeOut();
             let addedMenu = mptrs_increase_decrease_cart_data( menuAddedKey );
             mptrs_this.parent().append(addedMenu);

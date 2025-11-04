@@ -897,6 +897,7 @@ jQuery(document).ready(function ($) {
         $("#mptrs_variationsContainer").append(categoryHTML);
     }
     function addVariationItem(category) {
+        let uniqueKey = 'v_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
         let itemHTML = `
             <div class="mptrs_variationItem">
                 <input type="text" name="variation_item_name[]" class="mptrs_input" placeholder="Item Name">
