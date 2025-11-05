@@ -330,12 +330,13 @@
 .mptrs-content-right .mptrs_orderTypeDatesDisplay {
     background: #fff;
     display: inline-block;
-    font-size: 14px;
+    font-size: 16px;
     border: 1px solid #e5e7eb;
     border-radius: 10px;
     margin-bottom: 10px;
     padding: 10px;
     text-align: left;
+    font-weight: 800;
 }
 .mptrs_menuName{color:#333;}
 .mptrs_item-template-default .mptrs-default-template .mptrs-content .mptrs-content-right .mptrs-ordered-basket .mptrs-basket-top .basket-header{background:none;}

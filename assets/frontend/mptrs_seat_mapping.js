@@ -1,7 +1,7 @@
 jQuery(document).ready(function ($) {
     var get_post_id = $("#mptrs_getPost").val().trim();
     let mptrs_expire_cookie = 1;
-    let mptrs_order_detail_expire = 24;
+    let order_details_cookie_expire = 1;
 
     $(document).on('click',".mptrs_menuImageHolder_old", function() {
         let foodMenuCategory = $(this).closest('.mptrs-food-menu').find('.mptrs_addedMenuordered').attr('data-menuCategory');
@@ -294,6 +294,13 @@ jQuery(document).ready(function ($) {
             success: function (response) {
                 if (response.success) {
                     button.text('Added to Cart ✅');
+
+                    let cookieName = 'mptrs_cart_cookie_items_'+get_post_id;
+                    let addonCookieName = "mptrs_menu_addon_items_"+get_post_id;
+
+                    deleteCookie( cookieName );
+                    deleteCookie( addonCookieName );
+
                     setTimeout(  function () {
                         button.text('Process Checkout')
                     },1000);
@@ -631,7 +638,7 @@ jQuery(document).ready(function ($) {
         }
         setCookie("mptrs_menu_addon_items_"+get_post_id, JSON.stringify( menuAddonDetailsData ), mptrs_expire_cookie );
 
-        let menuItem = ` ll          let[-P                        00
+        let menuItem = `
         <div class="mptrs_menuAddedCartItem" id="mptrs_menuAddedCartItem-${item.menuAddedKey}" data-id="${item.menuAddedKey}" data-price="${item.menuPrice}">
             <img class="mptrs_menuImg" src="${item.menuImgUrl}" alt="${item.menuName}">
             <div class="mptrs_menuDetails">
@@ -1097,7 +1104,7 @@ jQuery(document).ready(function ($) {
         const cookieCartDetails = JSON.stringify( mptrs_orderSettings );
 
         let cookie_name = 'mptrs_cart_details_cookie_'+get_post_id;
-        setCookie( cookie_name, cookieCartDetails, mptrs_order_detail_expire );
+        setCookie( cookie_name, cookieCartDetails, order_details_cookie_expire );
 
         let mptrs_order_des = `${mptrs_orderType}, Order Date: ${mptrs_orderDate}, Time: ${mptrs_orderTime}`;
         if (mptrs_locations) {
