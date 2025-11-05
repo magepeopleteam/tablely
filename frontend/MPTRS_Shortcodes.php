@@ -93,9 +93,6 @@
                 );
             }
             public function display_food_menu_list( $attrs ){
-
-                error_log( print_r( [ '$attrs' => $attrs ], true ) );
-
                 $attrs = shortcode_atts( [
                     'category'          => '',
                     'post_id'           => '',

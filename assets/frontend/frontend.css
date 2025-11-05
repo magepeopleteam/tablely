@@ -207,7 +207,7 @@
   padding: 10px;
   border-radius: 10px;
   text-align: center;
-  height: calc(-142px + 100vh);
+  /*height: calc(-142px + 100vh);*/
   background-repeat: no-repeat;
   background-position: center 40%;
 }

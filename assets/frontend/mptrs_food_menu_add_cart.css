@@ -317,7 +317,11 @@
 
 .mptrs-default-template{background:#fff; padding:20px;}
 .mptrs-content-right {
+    /*background: linear-gradient(135deg, #f8fafc, #f1f5f9);*/
+}
+.mptrs-ordered-basket{
     background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    border: 1px solid #e5e7eb;
 }
 .mptrs_menuAddedCartItem{
     background: #fff;
@@ -326,7 +330,7 @@
     margin-top: 2px;
 }
 .mptrs_item-template-default .mptrs-default-template .mptrs-content .mptrs-content-right .mptrs-ordered-basket{border:none;}
-.mptrs_item-template-default .mptrs-default-template .mptrs-content .mptrs-content-right{border:1px solid #e5e7eb; border-radius:10px;}
+.mptrs_item-template-default .mptrs-default-template .mptrs-content {border:1px solid #e5e7eb; border-radius:10px;}
 .mptrs-content-right .mptrs_orderTypeDatesDisplay {
     background: #fff;
     display: inline-block;

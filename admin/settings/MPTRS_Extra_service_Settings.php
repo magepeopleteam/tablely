@@ -24,8 +24,11 @@
 				if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'mptrs_admin_nonce')) {
 					wp_send_json_error('Invalid nonce!'); // Prevent unauthorized access
 				}
+
+
 				$post_id = isset($_POST['service_postID']) ? sanitize_text_field(wp_unslash($_POST['service_postID'])) : '';
 				$ext_services = $this->get_extra_services($post_id);
+
 				$iconClass = '';
 				$imageID = '';
 				if (isset($_POST['service_image_icon'])) {
@@ -50,6 +53,7 @@
 						$ext_services[sanitize_text_field(wp_unslash($_POST['service_itemId']))] = $new_data;
 					}
 				}
+
 				update_post_meta($post_id, 'mptrs_extra_service', $ext_services);
 				ob_start();
 				$resultMessage = esc_html__('Data Updated Successfully', 'tablely');
@@ -79,6 +83,7 @@
 						$imageID = '';
 					}
 				}
+                $unique_id = 'es_' . uniqid();
 				$new_data = [
 					'name' => isset($_POST['service_name']) ?sanitize_text_field(wp_unslash($_POST['service_name'])):'',
 					'price' => isset($_POST['service_price']) ?sanitize_text_field(wp_unslash($_POST['service_price'])):'',
@@ -87,7 +92,8 @@
 					'icon' => $iconClass,
 					'image' => $imageID,
 				];
-				array_push($extra_services, $new_data);
+//				array_push($extra_services, $new_data);
+                $extra_services[$unique_id] = $new_data;
 				update_post_meta($post_id, 'mptrs_extra_service', $extra_services);
 				ob_start();
 				$resultMessage = esc_html__('Data Updated Successfully', 'tablely');
