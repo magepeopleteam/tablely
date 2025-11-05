@@ -213,6 +213,13 @@ if (!class_exists('MPTRS_Template')) {
             $total_price = 0;
 
             if ( isset( $_COOKIE['mptrs_cart_cookie_items_'.$post_id] ) ) {
+
+                $addon_data = [];
+                if ( isset( $_COOKIE['mptrs_menu_addon_items_'.$post_id] ) ) {
+                    $addon_cookie_data = $_COOKIE['mptrs_menu_addon_items_' . $post_id];
+                    $addon_data = (array) json_decode( wp_unslash( $addon_cookie_data, true ) );
+                }
+
                 $cookie_data = $_COOKIE['mptrs_cart_cookie_items_'.$post_id];
                 $item_keys = (array) json_decode( wp_unslash( $cookie_data, true ) );
                 $existing_menu_by_id = array_keys( $item_keys );
@@ -237,8 +244,13 @@ if (!class_exists('MPTRS_Template')) {
                 foreach ( $existing_menus as $key => $item ){
                     $price = $item['menuPrice'];
                     $count = isset( $item_keys[ $key ] ) ? $item_keys[ $key ] : 1;
-                    if ( !empty($existing_edited_price) && isset($existing_edited_price[$key]  )) {
+                    if ( !empty($existing_edited_price) && isset($existing_edited_price[$key] )) {
                         $price = $existing_edited_price[$key];
+                    }
+
+                    if ( !empty($addon_data) && isset($addon_data[$key] )) {
+                        $price = $addon_data[$key]->price;
+                        $orderVarDetails = $addon_data[$key]->text;
                     }
 
                     $total_price += $price*$count;
@@ -256,7 +268,7 @@ if (!class_exists('MPTRS_Template')) {
                         <div class="mptrs_addedMenuName"><?php echo esc_html( $item['menuName'] ); ?></div>
                         <div class="mptrs_addedMenuOrderDetails"><?php echo esc_html( $orderVarDetails ); ?></div>
                         <div class="mptrs_menuPrice">
-                            <?php echo esc_html( $price ); ?>
+                            <?php echo wp_kses_post( wc_price( $price ) ); ?>
                         </div>
                     </div>
 
