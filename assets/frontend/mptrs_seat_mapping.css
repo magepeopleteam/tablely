@@ -802,6 +802,17 @@
     height: 30px;;
     gap: 5px;
 }
+.mptrs_exQuantityControls {
+    display: flex;
+    align-items: center;
+    border: 1px solid #d9d2d2;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-bottom: 4px;
+    border-radius: 50px;
+    height: 30px;;
+    gap: 5px;
+}
 .mptrs_addedQuantityControls {
     display: flex;
     flex-direction: row;

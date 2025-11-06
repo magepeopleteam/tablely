@@ -159,9 +159,9 @@ jQuery(document).ready(function ($) {
         let data_tableBindIds = [];
 
         $(".mptrs_reservedMappedSeat").each(function () {
-            let tableBindID = $(this).attr("data-tablebind"); // Get data attribute
+            let tableBindID = $(this).attr("data-tablebind");
             if (tableBindID) {
-                data_tableBindIds.push(tableBindID); // Add to array
+                data_tableBindIds.push(tableBindID);
             }
         });
 
@@ -172,7 +172,7 @@ jQuery(document).ready(function ($) {
                 let selectedSeatId = $(this).attr("id");
                 let selectedSeatname = $(this).attr('data-seat-num');
                 if (seatBooked.includes(selectedSeatId)) {
-                    seatBooked = seatBooked.filter(seat => seat !== selectedSeatId); // Remove if exists
+                    seatBooked = seatBooked.filter(seat => seat !== selectedSeatId);
                     $("#"+selectedSeatId).children().css('background-color', 'rgb(52, 152, 219)');
                 } else {
                     seatBooked.push(selectedSeatId);
@@ -180,7 +180,7 @@ jQuery(document).ready(function ($) {
                 }
 
                 if (seatBookedName.includes(selectedSeatname)) {
-                    seatBookedName = seatBookedName.filter(seatName => seatName !== selectedSeatname); // Remove if exists
+                    seatBookedName = seatBookedName.filter(seatName => seatName !== selectedSeatname);
                 } else {
                     seatBookedName.push(selectedSeatname);
                 }
@@ -205,7 +205,7 @@ jQuery(document).ready(function ($) {
         }
 
         if (seatBookedName.includes(seatNum)) {
-            seatBookedName = seatBookedName.filter(seatName => seatName !== seatNum); // Remove if exists
+            seatBookedName = seatBookedName.filter(seatName => seatName !== seatNum);
         } else {
             seatBookedName.push(seatNum);
         }
@@ -219,6 +219,46 @@ jQuery(document).ready(function ($) {
     });
 
 
+    $(document).on("click", ".mptrs_ex_increase", function () {
+        let quantityElement = $(this)
+            .closest('.mptrs_exQuantityControls')
+            .find('.mptrs_ex_quantity');
+        let mptrsExQuantity = parseInt(quantityElement.text()) || 0;
+        mptrsExQuantity++;
+        quantityElement.text(mptrsExQuantity);
+        $(this).closest('.mptrs_extra_service_card').attr( 'data-extra-service-qty', mptrsExQuantity );
+        if ( mptrsExQuantity === 1 ) {
+            $(this).closest('.mptrs_exQuantityControls').find('.mptrs_ex_decrease').html("<i class='fas fa-trash' style='font-size: 16px'></i>");
+        } else {
+            $(this).closest('.mptrs_exQuantityControls').find('.mptrs_ex_decrease').text("-");
+        }
+        mptrs_calculateTotal();
+
+    });
+    $(document).on("click", ".mptrs_ex_decrease", function () {
+        let quantityElement = $(this)
+            .closest('.mptrs_exQuantityControls')
+            .find('.mptrs_ex_quantity');
+        let mptrsExQuantity = parseInt(quantityElement.text()) || 0;
+        mptrsExQuantity--;
+        quantityElement.text(mptrsExQuantity);
+        $(this).closest('.mptrs_extra_service_card').attr( 'data-extra-service-qty', mptrsExQuantity );
+
+        if( mptrsExQuantity === 0 ){
+            $(this).parent().fadeOut();
+            $(this).parent().siblings().text('Select').removeClass('mptrs_extra_service_selected');
+            $(this).parent().siblings().fadeIn();
+        } else{
+            if ( mptrsExQuantity === 1 ) {
+                $(this).closest('.mptrs_exQuantityControls').find('.mptrs_ex_decrease').html("<i class='fas fa-trash' style='font-size: 16px'></i>");
+            } else {
+                $(this).closest('.mptrs_exQuantityControls').find('.mptrs_ex_decrease').text("-");
+            }
+        }
+
+        mptrs_calculateTotal();
+
+    });
 
     const mptrs_extra_service_data = {};
     const ex_service_obj = {};
@@ -230,11 +270,13 @@ jQuery(document).ready(function ($) {
         const qty = card.attr('data-extra-service-qty');
         const price = card.attr('data-extra-service-price');
 
+        let btnText = btn.text().trim();
+
         const cookie_name = "mptrs_extra_service_items_" + get_post_id;
         let existingExData = getCookie(cookie_name);
         let ex_itemsObj = existingExData ? JSON.parse(existingExData) : {};
 
-        if ( !ex_itemsObj[key] ) {
+        if ( !btn.hasClass( 'mptrs_extra_service_selected' ) ) {
             mptrs_extra_service_data[key] = {
                 service_name: name,
                 service_price: price,
@@ -249,6 +291,10 @@ jQuery(document).ready(function ($) {
 
             btn.text('Selected').addClass('mptrs_extra_service_selected');
             card.addClass('mptrs_service_selected');
+
+            btn.fadeOut();
+            btn.siblings().fadeIn();
+            btn.siblings().find('.mptrs_ex_quantity').text(1);
         } else {
             delete mptrs_extra_service_data[key];
             if (ex_itemsObj[key]) delete ex_itemsObj[key];
@@ -273,8 +319,9 @@ jQuery(document).ready(function ($) {
         });
 
         let orderId = $(this).attr('id').trim();
-        let mptrs_totalPrices = $("#mptrs_totalPrice").val().trim();
-        mptrs_totalPrices = parseFloat(mptrs_totalPrices.replace(/[^\d.]/g, ''));
+        // let mptrs_totalPrices = $("#mptrs_totalPrice").val().trim();
+        let mptrs_totalPrices = $("#mptrs_totalPrice").attr('data-mptrs-total-price');
+        // mptrs_totalPrices = parseFloat(mptrs_totalPrices.replace(/[^\d.]/g, ''));
         let mptrs_order_time = mptrs_orderSettings.mptrs_orderTime;
         let mptrs_order_date = mptrs_orderSettings.mptrs_orderDate;
         let mptrs_orderType = mptrs_orderSettings.mptrs_orderType;
@@ -399,23 +446,6 @@ jQuery(document).ready(function ($) {
         // orderClickedId = orderClickedId.slice('-');
         let idParts = orderClickedId.split('-');
         let postId = idParts[1];
-        // alert(postId);
-        /*$.ajax({
-            url: mptrs_ajax.ajax_url,
-            type: 'POST',
-            data: {
-                action: 'mptrs_set_order',
-                nonce: mptrs_ajax.nonce,
-            },
-            dataType: 'json',
-            success: function (response) {
-                console.log('Success:', response);
-            },
-            error: function (xhr, status, error) {
-                console.error('AJAX Error:', status, error);
-            }
-        });*/
-
     });
 
     // Adjust #seat-grid's margin if needed
@@ -437,7 +467,6 @@ jQuery(document).ready(function ($) {
         }
     }
 
-    // Call the function to adjust the margin
     adjustGridMargin();
     function removeDataFromArray(seatArray, seatIdToRemove) {
         return seatArray.filter(seat => seat.seatId !== seatIdToRemove);
@@ -530,7 +559,8 @@ jQuery(document).ready(function ($) {
 
         $(".mptrs_extra_service_card.mptrs_service_selected").each(function () {
             let ex_price = parseFloat($(this).data("extra-service-price"));
-            let ex_quantity = parseInt($(this).data("extra-service-qty"));
+            let ex_quantity = parseInt($(this).find(".mptrs_ex_quantity").text());
+            console.log( ex_quantity );
             if ( !isNaN(ex_price) && !isNaN(ex_quantity ) ) {
                 total += ex_price * ex_quantity;
             }
@@ -538,7 +568,9 @@ jQuery(document).ready(function ($) {
 
         let mptrs_priceSimble = jQuery('.woocommerce-Price-currencySymbol:first').text().trim();
 
+        $("#mptrs_totalPrice").attr( 'data-mptrs-total-price', total );
         $("#mptrs_totalPrice").val( mptrs_priceSimble + total );
+
         if( total === 0 ){
             $("#mptrs_totalPriceHolder").fadeOut();
             $(".mptrs_foodOrderContentholder").fadeOut();

@@ -363,11 +363,11 @@ if (!class_exists('MPTRS_Template')) {
                             <span><?php esc_attr_e( 'Extra Service', 'tablely' )?></span>
                             <?php
                             $extra_price = 0;
-                            foreach ($mptrs_extra_service as $key => $item ):
+                            foreach ($mptrs_extra_service as $ex_key => $item ):
 
                                 $is_select = 'Select';
                                 $selected_class = $selected_parent_class= '';
-                                if ( isset($extra_service_array[$key]) ) {
+                                if ( isset($extra_service_array[$ex_key]) ) {
                                     $is_select = 'Selected';
                                     $selected_class = 'mptrs_extra_service_selected';
                                     $selected_parent_class = 'mptrs_service_selected';
@@ -382,7 +382,7 @@ if (!class_exists('MPTRS_Template')) {
                                 ?>
                                 <div class="mptrs_extra_service_card <?php echo esc_attr( $selected_parent_class );?>"
                                      data-extra-service-price="<?php echo esc_attr($item['price'])?>"
-                                     data-key="<?php echo esc_attr($key); ?>"
+                                     data-key="<?php echo esc_attr($ex_key); ?>"
                                      data-extra-service-qty = "1"
                                 >
                                     <div class="mptrs_extra_service_left">
@@ -394,10 +394,10 @@ if (!class_exists('MPTRS_Template')) {
                                     </div>
                                     <div class="mptrs_extra_service_action">
                                         <button class="mptrs_extra_service_select <?php echo esc_attr( $selected_class );?>"><?php echo esc_attr( $is_select )?></button>
-                                        <div class="mptrs_extra_service_qty_control" id="mptrs_addedQuantityControls-<?php echo esc_attr( $key );?>" style="display: none">
-                                            <span class="mptrs_decrease"><i class='fas fa-trash' style="font-size: 16px"></i></span>
-                                            <span class="mptrs_quantity" id="mptrs_menuAddedQuantity-<?php echo esc_attr( $key );?>">1</span>
-                                            <span class="mptrs_increase">+</span>
+                                        <div class="mptrs_exQuantityControls" style="display: none">
+                                            <span class="mptrs_ex_decrease" id="mptrs_ex_decrease-<?php echo esc_attr( $ex_key );?>"><i class='fas fa-trash' style="font-size: 16px"></i></span>
+                                            <span class="mptrs_ex_quantity" >1</span>
+                                            <span class="mptrs_ex_increase">+</span>
                                         </div>
                                     </div>
                                 </div>
