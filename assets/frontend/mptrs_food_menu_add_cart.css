@@ -427,7 +427,7 @@ p.mptrs-time-schedule {
 }
 @media (min-width: 1440px) {
     .mptrs-default-template .mptrs-content .mptrs-content-left .mptrs-food-menu-container .mptrs-food-menu{
-        width:48%;
+        width:46%;
         gap:10px;
     }
 }

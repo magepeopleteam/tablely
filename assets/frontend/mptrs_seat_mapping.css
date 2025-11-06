@@ -762,7 +762,7 @@
 .mptrs_menuAddedCartItem {
     display: flex;
     align-items: center;
-    padding: 5px;
+    padding: 10px;
     border-bottom: 1px solid #ddd;
 }
 .mptrs_menuAddedCartItem:last-child {
@@ -778,8 +778,8 @@
     border-bottom: none;
 }
 .mptrs_menuImg {
-    width: 40px;
-    height: 40px;
+    width: 75px;
+    height: 60px;
     object-fit: cover;
     border-radius: 8px;
     margin-right: 15px;
@@ -802,15 +802,6 @@
     height: 30px;;
     gap: 5px;
 }
-/*.mptrs_addedQuantityControls {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 5px;
-    position: absolute;
-    right: 6px;
-    top: 38px;
-}*/
 .mptrs_addedQuantityControls {
     display: flex;
     flex-direction: row;
@@ -824,9 +815,20 @@
     padding-left: 10px;
     padding-right: 10px;
     padding-bottom: 2px;
-    /* position: absolute; */
-    /* right: 6px; */
-    /* top: 38px; */
+}
+.mptrs_extra_service_qty_control {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    height: 30px;
+    /*background-color: #f6f6f6;*/
+    background-color: #f6f6f6c2;
+    border: 1px solid #d7d5d5;
+    border-radius: 50px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 2px;
 }
 
 .mptrs_quantityControls button {

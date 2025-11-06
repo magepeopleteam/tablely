@@ -217,9 +217,12 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                 $get_food_menu = get_option('_mptrs_food_menu');
 
 
-                $orderVarDetailsAry = isset($_POST['orderVarDetailsStr']) ? (array)json_decode(  sanitize_text_field( wp_unslash( $_POST['orderVarDetailsStr'] ) ) ) : [];
+                $orderVarDetailsAry = isset( $_POST['orderVarDetailsStr'] ) ? (array)json_decode( sanitize_text_field( wp_unslash( $_POST['orderVarDetailsStr'] ) ) ) : [];
+                $mptrs_extra_service = isset( $_POST['mptrs_extra_service'] ) ? (array)json_decode( sanitize_text_field( wp_unslash( $_POST['mptrs_extra_service'] ) ) ) : [];
 
-                $menu = '<ul class="mptrs_orderDetailListsHolder">';
+//                error_log( print_r( [ '$mptrs_extra_service' => $mptrs_extra_service ], true ) );
+
+                $menu = '<div class="mptrs_orderDetailLis"><ul class="mptrs_orderDetailListsHolder">';
                 foreach ($ordered_menu_key as $key => $value) {
                     $var_details = '';
                     if (isset($get_food_menu[$key])) {
@@ -228,21 +231,28 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                         }
                         if ($var_details) {
                             $menu .= '<li class="mptrs_orderDetailList">
-                                     <strong>Item Name:</strong> ' . $get_food_menu[$key]['menuName'] . '<br>
-                                     <strong>Quantity:<strong>' . ' ' . $value . '<br>
-                                     <strong>Details:<strong>' . ' ' . $var_details . '<br>
+                                     <strong>Item Name:</strong> ' . $get_food_menu[$key]['menuName'] . '('.$value.')
+                                     <strong>Addons:<strong>' . $var_details . '<br>
                                     </li>';
                         } else {
 //                        $menu .= '<li class="mptrs_orderDetailList">Item Name: '.$get_food_menu[ $key ]['menuName']. ' Person:'.$get_food_menu[ $key ]['numPersons'].' Quantity:'.$value.'</li>';
                             $menu .= '<li class="mptrs_orderDetailList">
-                                     <strong>Item Name:</strong> ' . $get_food_menu[$key]['menuName'] . '<br>
-                                     <strong>Quantity:<strong>' .' ' .  $value . '<br>
+                                     <strong>Item Name:</strong> ' . $get_food_menu[$key]['menuName'] . '('.$value.')
                                    </li>';
                         }
                         $menu .= '';
                     }
                 }
                 $menu .= '</ul>';
+                $menu .= '<ul><h3>Extra Service</h3>';
+                foreach ($mptrs_extra_service as $key => $extra_service ) {
+                    $menu .= '<li class="mptrs_orderDetailList">
+                                     <strong></strong> ' . $extra_service->service_name . '<br>
+                                     <strong><strong>(' . ' ' . $extra_service->service_qty . '* '.$extra_service->service_price.')<br>
+                                    </li>';
+                }
+                $menu .= '</ul> </div>';
+
 
 
                 if ( isset( $_COOKIE['mptrs_cart_details_cookie_'.$original_post_id] ) ) {
@@ -258,7 +268,7 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                     $mptrs_order_date = isset($_POST['mptrs_order_date']) ? sanitize_text_field( wp_unslash( $_POST['mptrs_order_date'] ) ) : '';
                     $mptrs_order_time = isset($_POST['mptrs_order_time']) ? sanitize_text_field( wp_unslash( $_POST['mptrs_order_time'] ) ) : '';
                     $mptrs_locations = isset($_POST['mptrs_locations']) ? sanitize_text_field( wp_unslash( $_POST['mptrs_locations'] ) ) : '';
-                    $mptrs_orderType_text = sanitize_text_field( wp_unslash( $_POST['mptrs_orderType'] ) );
+                    $mptrs_orderType_text = isset( $_POST['mptrs_orderType'] ) ? sanitize_text_field( wp_unslash( $_POST['mptrs_orderType'] ) ) : '' ;
                 }
 
 
@@ -279,51 +289,6 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
                 } else {
                     $mptrs_orderType = '';
                 }
-
-                /*if( $mptrs_orderType === 'dine_in' ){
-                    $seats = json_decode( stripslashes( sanitize_text_field( $_POST['seats'] ) ), true);
-                    $bookedSeatName = json_decode( stripslashes( sanitize_text_field( $_POST['bookedSeatName'] ) ), true);
-                    $cart_item_data = [
-                        'mptrs_original_post_id' => $original_post_id,
-                        'mptrs_item_id' => $post_id,
-                        'food_menu' => $menu,
-                        'mptrs_order_type' => $mptrs_orderType,
-                        'booking_seat_ids' => $seats,
-                        'booking_seats' => $bookedSeatName,
-                        'price' => $price,
-                        'mptrs_order_date' => $mptrs_order_date,
-                        'mptrs_order_time' => $mptrs_order_time,
-                        'mptrs_user_details' => $mptrs_user_details,
-                    ];
-                }
-                else if( $mptrs_orderType === 'delivery' ){
-                    $mptrs_locations = json_decode( stripslashes( sanitize_text_field( $_POST['mptrs_locations'] ) ), true);
-                    $cart_item_data = [
-                        'mptrs_original_post_id' => $original_post_id,
-                        'mptrs_item_id' => $post_id,
-                        'food_menu' => $menu,
-                        'mptrs_order_type' => $mptrs_orderType,
-                        'mptrs_locations' => $mptrs_locations,
-                        'price' => $price,
-                        'mptrs_order_date' => $mptrs_order_date,
-                        'mptrs_order_time' => $mptrs_order_time,
-                        'mptrs_user_details' => $mptrs_user_details,
-                    ];
-                }
-                else{
-                    $mptrs_locations = '';
-                    $cart_item_data = [
-                        'mptrs_original_post_id' => $original_post_id,
-                        'mptrs_item_id' => $post_id,
-                        'food_menu' => $menu,
-                        'mptrs_order_type' => $mptrs_orderType,
-                        'mptrs_locations' => $mptrs_locations,
-                        'price' => $price,
-                        'mptrs_order_date' => $mptrs_order_date,
-                        'mptrs_order_time' => $mptrs_order_time,
-                        'mptrs_user_details' => $mptrs_user_details,
-                    ];
-                }*/
 
                 $cart_item_data = [
                     'mptrs_original_post_id' => $original_post_id,

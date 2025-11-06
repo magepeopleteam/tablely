@@ -1,7 +1,7 @@
 jQuery(document).ready(function ($) {
     var get_post_id = $("#mptrs_getPost").val().trim();
     let mptrs_expire_cookie = 1;
-    let order_details_cookie_expire = 1;
+    let order_details_cookie_expire = 24;
 
     $(document).on('click',".mptrs_menuImageHolder_old", function() {
         let foodMenuCategory = $(this).closest('.mptrs-food-menu').find('.mptrs_addedMenuordered').attr('data-menuCategory');
@@ -219,10 +219,49 @@ jQuery(document).ready(function ($) {
     });
 
 
-    let disabledDates = ["2025-03-20", "2025-03-25", "2025-02-26"];
-   /* mptrs_datePicker( disabledDates, 'mptrs_date' );
-    mptrs_datePicker( disabledDates, 'mptrs_dalivery_date' );
-    mptrs_datePicker( disabledDates, 'mptrs_takeaway_date' );*/
+
+    const mptrs_extra_service_data = {};
+    const ex_service_obj = {};
+    $(document).on('click', '.mptrs_extra_service_select', function(){
+        const card = $(this).closest('.mptrs_extra_service_card');
+        const btn = $(this);
+        const key = card.data('key');
+        const name = card.find('.mptrs_extra_service_name').text();
+        const qty = card.attr('data-extra-service-qty');
+        const price = card.attr('data-extra-service-price');
+
+        const cookie_name = "mptrs_extra_service_items_" + get_post_id;
+        let existingExData = getCookie(cookie_name);
+        let ex_itemsObj = existingExData ? JSON.parse(existingExData) : {};
+
+        if ( !ex_itemsObj[key] ) {
+            mptrs_extra_service_data[key] = {
+                service_name: name,
+                service_price: price,
+                service_qty: qty,
+            };
+
+            ex_itemsObj[key] = {
+                service_name: name,
+                service_price: price,
+                service_qty: qty
+            };
+
+            btn.text('Selected').addClass('mptrs_extra_service_selected');
+            card.addClass('mptrs_service_selected');
+        } else {
+            delete mptrs_extra_service_data[key];
+            if (ex_itemsObj[key]) delete ex_itemsObj[key];
+            btn.text('Select').removeClass('mptrs_extra_service_selected');
+            card.removeClass('mptrs_service_selected');
+        }
+
+        setCookie(cookie_name, JSON.stringify(ex_itemsObj), mptrs_expire_cookie);
+
+        mptrs_calculateTotal();
+
+    });
+
 
     $(document).on('click',".mptrs_dineInOrderPlaceBtn",function () {
         let orderVarDetails = {};
@@ -242,31 +281,11 @@ jQuery(document).ready(function ($) {
         let mptrs_locations = mptrs_orderSettings.mptrs_locations;
         let postId = $("#mptrs_getPost").val().trim();
 
-        let seats = '';
-        // let mptrs_location = [];
-
-
-        if( orderId === 'mptrs_dineInOrderPlaceBtn' ){
-            // mptrs_order_date = $("#mptrs_date").val().trim();
-            seats = JSON.stringify( seatBooked );
-            // mptrs_orderType = 'dine_in';
-        }else if( orderId === 'mptrs_deliveryOrderPlaceBtn' ){
-            let mptrs_Location = $("#mptrsLocation").val().trim();
-            let mptrs_StreetAddress = $("#mptrsStreetAddress").val().trim();
-            // mptrs_location.push( mptrs_Location, mptrs_StreetAddress);
-            // mptrs_locations = JSON.stringify( mptrs_location );
-            // mptrs_order_date = $("#mptrs_dalivery_date").val().trim();
-            // mptrs_orderType = 'delivery';
-        }else{
-            // mptrs_orderType = 'take_away';
-            // mptrs_order_date = $("#mptrs_takeaway_date").val().trim();
-        }
-
         let button = $(this);
         let post_id = postId;
         let menu = JSON.stringify( addToCartData );
         let orderVarDetailsStr = JSON.stringify( orderVarDetails );
-        let bookedSeatName =  JSON.stringify( seatBookedName );
+        let mptrs_extra_service =  JSON.stringify( mptrs_extra_service_data );
         let quantity = 300; // Total quantity
         let nonce = mptrs_ajax.nonce;
 
@@ -279,6 +298,7 @@ jQuery(document).ready(function ($) {
                 mptrs_orderType: mptrs_orderType,
                 menu: menu,
                 orderVarDetailsStr: orderVarDetailsStr,
+                mptrs_extra_service: mptrs_extra_service,
                 // seats: seats,
                 mptrs_locations: mptrs_locations,
                 // bookedSeatName: bookedSeatName,
@@ -295,11 +315,9 @@ jQuery(document).ready(function ($) {
                 if (response.success) {
                     button.text('Added to Cart ✅');
 
-                    let cookieName = 'mptrs_cart_cookie_items_'+get_post_id;
-                    let addonCookieName = "mptrs_menu_addon_items_"+get_post_id;
-
-                    deleteCookie( cookieName );
-                    deleteCookie( addonCookieName );
+                    mptrs_show_hide_basket();
+                    mptrs_remove_ex_service();
+                    mptrs_delete_cookie();
 
                     setTimeout(  function () {
                         button.text('Process Checkout')
@@ -314,6 +332,15 @@ jQuery(document).ready(function ($) {
         });
     });
 
+    function mptrs_delete_cookie(){
+        let cookieName = 'mptrs_cart_cookie_items_'+get_post_id;
+        let addonCookieName = "mptrs_menu_addon_items_"+get_post_id;
+        let extraServiceCookieName = "mptrs_extra_service_items_"+get_post_id;
+
+        deleteCookie( cookieName );
+        deleteCookie( addonCookieName );
+        deleteCookie( extraServiceCookieName );
+    }
 
     function mptrs_datePicker( disabledDates, id ) {
         $(".mptrs_DatePickerContainer").fadeIn();
@@ -479,11 +506,6 @@ jQuery(document).ready(function ($) {
         $(".mptrs_time_container").css("display", "flex");
     });
 
-    /*$(document).on( 'click', '.mptrs_findTimeButton', function () {
-        $(".mptrs_tableReserveTimeContainer").css("display", "flex");
-    });*/
-
-
     $(document).on('click',".mptrsPopupCloseBtn",function () {
         $("#menuDetailsPopup").fadeOut();
         $("#menuDetailsPopup").remove();
@@ -495,7 +517,7 @@ jQuery(document).ready(function ($) {
     });
 
 
-    function calculateTotal() {
+    function mptrs_calculateTotal() {
         let total = 0;
         $(".mptrs_menuAddedCartItem").each(function () {
             let price = parseFloat($(this).data("price"));
@@ -505,21 +527,29 @@ jQuery(document).ready(function ($) {
             }
         });
 
+
+        $(".mptrs_extra_service_card.mptrs_service_selected").each(function () {
+            let ex_price = parseFloat($(this).data("extra-service-price"));
+            let ex_quantity = parseInt($(this).data("extra-service-qty"));
+            if ( !isNaN(ex_price) && !isNaN(ex_quantity ) ) {
+                total += ex_price * ex_quantity;
+            }
+        });
+
         let mptrs_priceSimble = jQuery('.woocommerce-Price-currencySymbol:first').text().trim();
 
-        // $("#mptrs_sitePriceSymble").text( mptrs_priceSimble );
-        $("#mptrs_totalPrice").val( mptrs_priceSimble+ total );
+        $("#mptrs_totalPrice").val( mptrs_priceSimble + total );
         if( total === 0 ){
             $("#mptrs_totalPriceHolder").fadeOut();
             $(".mptrs_foodOrderContentholder").fadeOut();
-            // $("#mptrs_orderedFoodMenuInfoHolder").fadeOut();
-            // $(".mptrs_clearOrder").fadeOut();
             $("#mptrs_foodMenuAddedCart").fadeIn();
+            $("#mptrs_extra_service_container").fadeOut();
         }else{
             $("#mptrs_totalPriceHolder").fadeIn();
             $("#mptrs_orderedFoodMenuInfoHolder").fadeIn();
             $("#mptrs_foodMenuAddedCart").fadeOut();
             $(".mptrs_foodOrderContentholder").fadeIn();
+            $("#mptrs_extra_service_container").fadeIn();
         }
     }
     // Increase Button Click
@@ -539,7 +569,7 @@ jQuery(document).ready(function ($) {
 
         addToCartData[menuKey] = quantity;
 
-        calculateTotal();
+        mptrs_calculateTotal();
 
         mptrs_increase_decrease_icon_change();
 
@@ -587,7 +617,7 @@ jQuery(document).ready(function ($) {
             $("#"+menuQtyKey).text(quantity);
         }
 
-        calculateTotal();
+        mptrs_calculateTotal();
 
         mptrs_show_hide_basket();
 
@@ -608,7 +638,6 @@ jQuery(document).ready(function ($) {
     }
 
     let addToCartData = {};
-    // Add Button Click
     function mptrs_append_order_food_menu(item) {
         let container = $("#mptrs_orderedFoodMenuHolder");
         let orderVarDetails = item.mptrs_oderDetails.trim();
@@ -661,6 +690,13 @@ jQuery(document).ready(function ($) {
         mptrs_show_hide_basket();
     }
 
+    function mptrs_remove_ex_service(){
+        let parent = $('.mptrs_extra_service_container');
+        parent.find(".mptrs_extra_service_card").each(function () {
+            $(this).removeClass('mptrs_service_selected');
+            $(this).find('.mptrs_extra_service_select').removeClass('mptrs_extra_service_selected').text('Select');
+        });
+    }
     function mptrs_show_hide_basket(){
         if( $("#mptrs_orderedFoodMenuHolder").find('.mptrs_menuAddedCartItem').length > 0 ){
             $("#mptrs-basket-middle").fadeOut();
@@ -1127,14 +1163,20 @@ jQuery(document).ready(function ($) {
         $("#mptrs_foodMenuAddedCart").fadeIn();
         $("#mptrs_orderedFoodMenuHolder").empty();
         $(".mptrs_addedQuantityControls").remove();
+        $("#mptrs_extra_service_container").fadeOut();
 
         addToCartData = {};
         $('.mptrs-food-menu-container').find('.mptrs_addedQuantityControls').fadeOut();
         $('.mptrs-food-menu-container').find('.mptrs_addBtn').fadeIn(1000);
 
+
+
         mptrs_show_hide_basket();
-        deleteCookie( 'mptrs_cart_cookie_items_'+get_post_id );
-        deleteCookie( 'mptrs_menu_addon_items_'+get_post_id );
+        mptrs_remove_ex_service();
+
+        mptrs_calculateTotal();
+        mptrs_delete_cookie();
+
     })
 
     $(document).on( 'click', '.mptrs_orderTypeDatesChange', function (e) {
@@ -1368,7 +1410,7 @@ jQuery(document).ready(function ($) {
             }, 800, function () {
                 flyItem.remove();
                 mptrs_append_order_food_menu(item);
-                calculateTotal();
+                mptrs_calculateTotal();
             });
         }
 
@@ -1643,7 +1685,7 @@ jQuery(document).ready(function ($) {
         }, 800, function () {
             flyItem.remove();
             mptrs_append_order_food_menu(item);
-            calculateTotal();
+            mptrs_calculateTotal();
         });
 
         $("#"+menuAddedClickedId).fadeOut();

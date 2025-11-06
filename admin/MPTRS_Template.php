@@ -306,6 +306,12 @@ if (!class_exists('MPTRS_Template')) {
             $order_details = '';
             $details_display = $clear_order = 'none';
 
+            $extra_service_array = [];
+            if ( isset( $_COOKIE['mptrs_extra_service_items_'.$post_id] ) ) {
+                $extra_Service_cookie = wp_unslash( $_COOKIE['mptrs_extra_service_items_'.$post_id] );
+                $extra_service_array = json_decode( $extra_Service_cookie, true );
+            }
+
             if ( isset( $_COOKIE['mptrs_cart_details_cookie_'.$post_id] ) ) {
                 $cart_details_cookie = wp_unslash( $_COOKIE['mptrs_cart_details_cookie_'.$post_id] );
                 $cart_details_cookie_data = json_decode( $cart_details_cookie, true );
@@ -319,13 +325,14 @@ if (!class_exists('MPTRS_Template')) {
                 $order_details = ' '.$cart_details_cookie_data['mptrs_orderType'].', Order Date: '.$cart_details_cookie_data['mptrs_orderDate'].', Time: '.$cart_details_cookie_data['mptrs_orderTime'].' '.$location;
             }
 
+            $ex_service = 'none';
             if($cookie_data['html'] !== '' ){
                 $clear_order = 'block';
+                $ex_service = 'flex';
             }
 
             $enable_extra_service = get_post_meta( $post_id, 'mptrs_extra_service_active', true );
-            $enable_extra_service = get_post_meta( $post_id, 'mptrs_extra_service', true );
-//            error_log( print_r( [ '$enable_extra_service' => $enable_extra_service], true ) );
+            $mptrs_extra_service = get_post_meta( $post_id, 'mptrs_extra_service', true );
 
             ?>
             <div class="mptrs-ordered-basket" id="mptrs_orderedFoodMenuInfoHolder">
@@ -350,6 +357,54 @@ if (!class_exists('MPTRS_Template')) {
                         echo wp_kses_post( $cookie_data['html'] );
                         ?>
                     </div>
+
+                    <div class="mptrs_extra_service_container" id="mptrs_extra_service_container" style="display: <?php echo esc_attr( $ex_service );?>">
+                        <?php if( $enable_extra_service === 'on' && !empty( $mptrs_extra_service ) ){ ?>
+                            <span><?php esc_attr_e( 'Extra Service', 'tablely' )?></span>
+                            <?php
+                            $extra_price = 0;
+                            foreach ($mptrs_extra_service as $key => $item ):
+
+                                $is_select = 'Select';
+                                $selected_class = $selected_parent_class= '';
+                                if ( isset($extra_service_array[$key]) ) {
+                                    $is_select = 'Selected';
+                                    $selected_class = 'mptrs_extra_service_selected';
+                                    $selected_parent_class = 'mptrs_service_selected';
+                                    $extra_price += $item['price'];
+                                }
+
+                                $image_url = !empty($item['image'])
+                                    ? wp_get_attachment_url($item['image'])
+                                    : 'https://via.placeholder.com/70';
+
+
+                                ?>
+                                <div class="mptrs_extra_service_card <?php echo esc_attr( $selected_parent_class );?>"
+                                     data-extra-service-price="<?php echo esc_attr($item['price'])?>"
+                                     data-key="<?php echo esc_attr($key); ?>"
+                                     data-extra-service-qty = "1"
+                                >
+                                    <div class="mptrs_extra_service_left">
+                                        <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($item['name']); ?>">
+                                    </div>
+                                    <div class="mptrs_extra_service_right">
+                                        <div class="mptrs_extra_service_name"><?php echo esc_html($item['name']); ?></div>
+                                        <div class="mptrs_extra_service_price"><?php esc_attr_e( 'Price', 'tablely' )?>: <?php echo wp_kses_post( wc_price( $item['price'] ) ); ?></div>
+                                    </div>
+                                    <div class="mptrs_extra_service_action">
+                                        <button class="mptrs_extra_service_select <?php echo esc_attr( $selected_class );?>"><?php echo esc_attr( $is_select )?></button>
+                                        <div class="mptrs_extra_service_qty_control" id="mptrs_addedQuantityControls-<?php echo esc_attr( $key );?>" style="display: none">
+                                            <span class="mptrs_decrease"><i class='fas fa-trash' style="font-size: 16px"></i></span>
+                                            <span class="mptrs_quantity" id="mptrs_menuAddedQuantity-<?php echo esc_attr( $key );?>">1</span>
+                                            <span class="mptrs_increase">+</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach;
+                        }
+                        ?>
+                    </div>
                 </div>
                 <?php
                 $basket_icon = 'none';
@@ -362,13 +417,15 @@ if (!class_exists('MPTRS_Template')) {
                     <p><?php esc_html_e('Please Add menu to busket','tablely'); ?></p>
                 </div>
                 <?php
-                $formatted_price = wc_price( $cookie_data['total_price'] );
+
+                $total_price = $extra_price + $cookie_data['total_price'];
+                $formatted_price = wc_price( $total_price );
                 ?>
                 <div class="mptrs-basket-bottom">
                     <div class="mptrs_totalPriceHolder" id="mptrs_totalPriceHolder">
                         <div class="mptrs_totalPricetext"><?php esc_html_e( 'Total', 'tablely' ); ?></div>
                         <!--  <span class="mptrs_sitePriceSymble" id="mptrs_sitePriceSymble"></span>-->
-                        <input class="mptrs_totalPrice" data-mptrs-total-price="<?php echo esc_attr( $cookie_data['total_price'] );?>" id="mptrs_totalPrice" name="mptrs_totalPrice" value="<?php echo esc_html( strip_tags( $formatted_price ) );?>" readonly placeholder="$0" disabled>
+                        <input class="mptrs_totalPrice" data-mptrs-total-price="<?php echo esc_attr( $total_price );?>" id="mptrs_totalPrice" name="mptrs_totalPrice" value="<?php echo esc_html( strip_tags( $formatted_price ) );?>" readonly placeholder="$0" disabled>
                     </div>
                     <div class="mptrs_dineInOrderPlaceBtn" id="mptrs_dineInOrderPlaceBtn"><?php esc_html_e( 'Process Checkout', 'tablely' )?></div>
                 </div>
