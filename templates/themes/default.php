@@ -20,6 +20,7 @@
     <div class="mptrs-content">
         <div class="mptrs-content-left">
             <?php do_action('mptrs_template_menus', $post_id ); ?>
+            <?php do_action('mptrs_faq_content' , $post_id); ?>
         </div>
         <div class="mptrs-content-right">
             <?php do_action('mptrs_template_basket' , $post_id); ?>

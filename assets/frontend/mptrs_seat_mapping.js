@@ -1,7 +1,9 @@
 jQuery(document).ready(function ($) {
+    var get_post_id = $("#mptrs_getPost").val().trim();
+    let mptrs_expire_cookie = 1;
+    let order_details_cookie_expire = 1;
 
     $(document).on('click',".mptrs_menuImageHolder_old", function() {
-
         let foodMenuCategory = $(this).closest('.mptrs-food-menu').find('.mptrs_addedMenuordered').attr('data-menuCategory');
         let menuName = $(this).closest('.mptrs-food-menu').find('.mptrs_addedMenuordered').attr('data-menuName').trim();
         let menuImg = $(this).closest('.mptrs-food-menu').find('.mptrs_menuImage').attr('src').trim();
@@ -292,6 +294,13 @@ jQuery(document).ready(function ($) {
             success: function (response) {
                 if (response.success) {
                     button.text('Added to Cart ✅');
+
+                    let cookieName = 'mptrs_cart_cookie_items_'+get_post_id;
+                    let addonCookieName = "mptrs_menu_addon_items_"+get_post_id;
+
+                    deleteCookie( cookieName );
+                    deleteCookie( addonCookieName );
+
                     setTimeout(  function () {
                         button.text('Process Checkout')
                     },1000);
@@ -526,7 +535,7 @@ jQuery(document).ready(function ($) {
         $("#"+menuAddedQtyKey).text(quantity);
         $("#"+menuQtyKey).text(quantity);
 
-        increase_cart_cookie_data( 'mptrs_cart_cookie_items', menuKey, 'increase' );
+        increase_cart_cookie_data( 'mptrs_cart_cookie_items_'+get_post_id, menuKey, 'increase' );
 
         addToCartData[menuKey] = quantity;
 
@@ -549,10 +558,13 @@ jQuery(document).ready(function ($) {
         let quantityElem = $(this).siblings(".mptrs_quantity");
         let quantity = parseInt(quantityElem.text()) - 1;
 
+        let cookieName = 'mptrs_cart_cookie_items_'+get_post_id;
+        let addonCookieName = "mptrs_menu_addon_items_"+get_post_id;
         if( quantity >= 1 ){
-            increase_cart_cookie_data( 'mptrs_cart_cookie_items', menuKey, 'decrease' );
+            increase_cart_cookie_data( cookieName, menuKey, 'decrease' );
         }else{
-            mptrs_remove_cart_item_cookie_data(menuKey);
+            mptrs_remove_cart_item_cookie_data( cookieName, menuKey);
+            mptrs_remove_cart_item_cookie_data( addonCookieName, menuKey);
         }
 
         if (quantity < 1) {
@@ -599,8 +611,33 @@ jQuery(document).ready(function ($) {
     // Add Button Click
     function mptrs_append_order_food_menu(item) {
         let container = $("#mptrs_orderedFoodMenuHolder");
-        let orderVarDetails = item.mptrs_oderDetails.trim(); // Get text from element
+        let orderVarDetails = item.mptrs_oderDetails.trim();
+
         orderVarDetails = orderVarDetails.replace(/,\s*$/, "");
+
+
+        let menuAddonDetailsData = {};
+        let existingAddonCookie = getCookie("mptrs_menu_addon_items_"+get_post_id);
+
+        if (existingAddonCookie) {
+            try {
+                menuAddonDetailsData = JSON.parse(existingAddonCookie);
+            } catch (e) {
+                menuAddonDetailsData = {};
+            }
+        }
+
+        if (menuAddonDetailsData[item.menuAddedKey]) {
+            menuAddonDetailsData[item.menuAddedKey].text = orderVarDetails;
+            menuAddonDetailsData[item.menuAddedKey].price = item.menuPrice;
+        } else {
+            menuAddonDetailsData[item.menuAddedKey] = {
+                text: orderVarDetails,
+                price: item.menuPrice
+            };
+        }
+        setCookie("mptrs_menu_addon_items_"+get_post_id, JSON.stringify( menuAddonDetailsData ), mptrs_expire_cookie );
+
         let menuItem = `
         <div class="mptrs_menuAddedCartItem" id="mptrs_menuAddedCartItem-${item.menuAddedKey}" data-id="${item.menuAddedKey}" data-price="${item.menuPrice}">
             <img class="mptrs_menuImg" src="${item.menuImgUrl}" alt="${item.menuName}">
@@ -804,7 +841,6 @@ jQuery(document).ready(function ($) {
             $(this).text('Confirm Reservation');
         }else {
             $(this).text('Booking...');
-            // console.log( mptrs_tableReserveDate, mptrs_tableReserveTime, mptrs_tableReservePost );
             mptrs_tableReservePost = $("#mptrs_tableReserveId").val().trim();
             mptrs_tableReserveTime = $(".mptrs_tableReserveTimeButton.active").attr('data-time').trim();
             mptrs_tableReserveDate = $("#mptrs_seatReserveDate").val().trim();
@@ -841,7 +877,6 @@ jQuery(document).ready(function ($) {
                 dataType: 'json',
                 success: function (response) {
                     $('#mptrs_tableReservationButton').text('Confirm Reservation');
-                    console.log(response);
                 },
                 error: function () {
                     alert('Error Occured');
@@ -867,12 +902,18 @@ jQuery(document).ready(function ($) {
 
     });
 
-    function mptrs_display_popup_for_order_types(){
+    function mptrs_display_popup_for_order_types_old(){
 
-        // console.log( mptrs_orderSettings );
-        let setLocations = 'dahka';
-        if( mptrs_orderSettings.hasOwnProperty( 'mptrs_locations' ) && mptrs_orderSettings.mptrs_locations ){
-            setLocations = mptrs_orderSettings.mptrs_locations;
+        let cart_details_cookie_data = getCookie('mptrs_cart_details_cookie_'+get_post_id );
+        let cartCookieDetails = {};
+        if ( cart_details_cookie_data ) {
+            cartCookieDetails = JSON.parse(cart_details_cookie_data);
+        }else{
+            cartCookieDetails = mptrs_orderSettings;
+        }
+        let setLocations = '';
+        if( cartCookieDetails.hasOwnProperty( 'mptrs_locations' ) && cartCookieDetails.mptrs_locations ){
+            setLocations = cartCookieDetails.mptrs_locations;
         }
 
         let orderTypes = `
@@ -897,6 +938,12 @@ jQuery(document).ready(function ($) {
                 <div class="mptrs_DatePickerContainer">
                     <label for="mptrs_pickupTime">Select a pickup time</label>
                     <select id="mptrs_pickupTime" class="mptrs_dropdown">
+                        <option>8:30am</option>
+                        <option>9:00am</option>
+                        <option>9:30am</option>
+                        <option>10:00am</option>
+                        <option>10:30am</option>
+                        <option>11:00am</option>
                         <option>11:30am</option>
                         <option>12:00pm</option>
                         <option>12:30pm</option>
@@ -926,6 +973,92 @@ jQuery(document).ready(function ($) {
         mptrs_load_auto_complete();
 
     }
+
+    function mptrs_display_popup_for_order_types() {
+
+        let cart_details_cookie_data = getCookie('mptrs_cart_details_cookie_' + get_post_id);
+        let cartCookieDetails = {};
+
+        // Parse or fallback
+        if (cart_details_cookie_data) {
+            try {
+                cartCookieDetails = JSON.parse(cart_details_cookie_data);
+            } catch (e) {
+                console.error('Invalid cookie JSON:', e);
+                cartCookieDetails = {};
+            }
+        } else {
+            cartCookieDetails = typeof mptrs_orderSettings !== 'undefined' ? mptrs_orderSettings : {};
+        }
+
+        // Default values (fallbacks)
+        let setOrderType = cartCookieDetails.mptrs_orderType || 'Delivery';
+        let setOrderDate = cartCookieDetails.mptrs_orderDate || $.datepicker.formatDate("dd MM yy", new Date());
+        let setOrderTime = cartCookieDetails.mptrs_orderTime || '8:30am';
+        let setLocations = cartCookieDetails.mptrs_locations || '';
+
+        // Build popup HTML
+        let orderTypes = `
+        <div class="mptrs_popupOverlay" id="mptrs_popupOverlay">
+            <div class="mptrs_popupBox">
+                <span class="mptrs_closeBtn"><i class="fas fa-times"></i></span>
+                <div class="mptrs_popupTitle">Your Order Settings</div>
+    
+                <div class="mptrs_toggleBtns">
+                    <button id="mptrs_dine_in" class="mptrs_orderTypeSelect ${setOrderType === 'Delivery' ? 'active' : ''}">Delivery</button>
+                    <button id="mptrs_take_away" class="mptrs_orderTypeSelect ${setOrderType === 'Takeaway' ? 'active' : ''}">Takeaway</button>
+                    <button id="mptrs_dineInBtn" class="mptrs_orderTypeSelect ${setOrderType === 'Dine-In' ? 'active' : ''}">Dine-In</button>
+                </div>
+    
+                <div class="mptrs_DatePickerContainer">
+                    <label for="mptrs_dateDatepicker">Select pickup order date</label>
+                    <input type="text" id="mptrs_dateDatepicker" class="mptrs_datepicker_input" placeholder="Select a Date" value="${setOrderDate}">
+                    <span class="mptrs_calendarIcon">&#128197;</span>
+                </div>
+    
+                <div class="mptrs_DatePickerContainer">
+                    <label for="mptrs_pickupTime">Select a pickup time</label>
+                    <select id="mptrs_pickupTime" class="mptrs_dropdown">
+                        <option ${setOrderTime === '8:30am' ? 'selected' : ''}>8:30am</option>
+                        <option ${setOrderTime === '9:00am' ? 'selected' : ''}>9:00am</option>
+                        <option ${setOrderTime === '9:30am' ? 'selected' : ''}>9:30am</option>
+                        <option ${setOrderTime === '10:00am' ? 'selected' : ''}>10:00am</option>
+                        <option ${setOrderTime === '10:30am' ? 'selected' : ''}>10:30am</option>
+                        <option ${setOrderTime === '11:00am' ? 'selected' : ''}>11:00am</option>
+                        <option ${setOrderTime === '11:30am' ? 'selected' : ''}>11:30am</option>
+                        <option ${setOrderTime === '12:00pm' ? 'selected' : ''}>12:00pm</option>
+                        <option ${setOrderTime === '12:30pm' ? 'selected' : ''}>12:30pm</option>
+                    </select>
+                </div>
+    
+                <div class="mptrs_OrderTypeLocationsContainer" style="display: block">
+                    <label for="mptrs_deliveryLocation">Set Delivery Location</label>
+                    <input type="text" id="mptrs_deliveryLocation" class="mptrs_deliveryLocations" value="${setLocations}" placeholder="Set Delivery Location">
+                </div>
+    
+                <button class="mptrs_updateBtn" id="mptrs_updateorderTypeBtn">Update</button>
+            </div>
+        </div>
+    `;
+
+        // Append popup
+        $('body').append(orderTypes);
+
+        // Datepicker setup
+        $(".mptrs_datepicker_input").datepicker({
+            dateFormat: "dd MM yy",
+            changeMonth: true,
+            changeYear: true,
+            minDate: 0,
+            maxDate: "+1Y",
+        });
+
+        // Initialize autocomplete if needed
+        if (typeof mptrs_load_auto_complete === 'function') {
+            mptrs_load_auto_complete();
+        }
+    }
+
 
     $(document).on("focus", ".mptrs_datepicker_input", function () {
         $(this).datepicker("show");
@@ -968,9 +1101,10 @@ jQuery(document).ready(function ($) {
             mptrs_locations
         };
 
-        const cookieCartDetails = JSON.stringify(mptrs_orderSettings);
-        setCookie('mptrs_cart_details_cookie', cookieCartDetails );
-        // console.log( cookieValue );
+        const cookieCartDetails = JSON.stringify( mptrs_orderSettings );
+
+        let cookie_name = 'mptrs_cart_details_cookie_'+get_post_id;
+        setCookie( cookie_name, cookieCartDetails, order_details_cookie_expire );
 
         let mptrs_order_des = `${mptrs_orderType}, Order Date: ${mptrs_orderDate}, Time: ${mptrs_orderTime}`;
         if (mptrs_locations) {
@@ -979,7 +1113,7 @@ jQuery(document).ready(function ($) {
         $("#mptrs_orderTypeDates").text(mptrs_order_des);
 
         mptrs_close_order_type_popup();
-        if (mptrsOrderTypePopUp === 0) {
+        if ( menuAddedKey && mptrsOrderTypePopUp === 0 ) {
             mptrs_display_add_cart_item_data(menuAddedKey, mptrs_MenuPrice, mptrs_CurrencySymbol, menuPrice, 'flex', animationDiv, parentItem, mptrs_this, mptrs_menuImageUrl);
         }
         mptrsOrderTypePopUp++;
@@ -999,7 +1133,8 @@ jQuery(document).ready(function ($) {
         $('.mptrs-food-menu-container').find('.mptrs_addBtn').fadeIn(1000);
 
         mptrs_show_hide_basket();
-        deleteCookie( 'mptrs_cart_cookie_items' );
+        deleteCookie( 'mptrs_cart_cookie_items_'+get_post_id );
+        deleteCookie( 'mptrs_menu_addon_items_'+get_post_id );
     })
 
     $(document).on( 'click', '.mptrs_orderTypeDatesChange', function (e) {
@@ -1032,7 +1167,7 @@ jQuery(document).ready(function ($) {
     });
 
 
-    function setCookie(name, value, hours = 1) {
+    function setCookie(name, value, hours = 1 ) {
         const d = new Date();
         d.setTime(d.getTime() + ( hours*60*60*1000 ) );
         document.cookie = name + "=" + encodeURIComponent(value) + ";expires=" + d.toUTCString() + ";path=/";
@@ -1053,11 +1188,10 @@ jQuery(document).ready(function ($) {
     }
 
     function mptrs_display_add_cart_cookie_item_data(menuAddedKey) {
-        let existingData = getCookie('mptrs_cart_cookie_items');
+        let existingData = getCookie('mptrs_cart_cookie_items_'+get_post_id );
         let itemsObj = existingData ? JSON.parse(existingData) : {};
         itemsObj[menuAddedKey] = 1;
-        setCookie('mptrs_cart_cookie_items', JSON.stringify(itemsObj));
-        console.log( itemsObj );
+        setCookie('mptrs_cart_cookie_items_'+get_post_id, JSON.stringify(itemsObj), mptrs_expire_cookie );
     }
 
     function increase_cart_cookie_data( name, menuAddedKey, incDec ){
@@ -1072,17 +1206,29 @@ jQuery(document).ready(function ($) {
 
         setCookie(name, JSON.stringify(itemsObj));
     }
+    function increase_cart_addon_cookie_data( name, menuAddedKey, incDec ){
+        let existingData = getCookie(name );
+        let itemsObj = existingData ? JSON.parse(existingData) : {};
+        let currentValue = itemsObj[menuAddedKey] ? parseInt(itemsObj[menuAddedKey]) : 0;
+        if( incDec === 'increase' ){
+            itemsObj[menuAddedKey] = currentValue + 1;
+        }else{
+            itemsObj[menuAddedKey] = currentValue - 1;
+        }
 
-    function mptrs_remove_cart_item_cookie_data(menuKey) {
-        let existingData = getCookie('mptrs_cart_cookie_items');
+        setCookie(name, JSON.stringify(itemsObj));
+    }
+
+    function mptrs_remove_cart_item_cookie_data( cookieName, menuKey ) {
+        let existingData = getCookie(cookieName );
         if (!existingData) return;
         let itemsObj = JSON.parse(existingData);
         delete itemsObj[menuKey];
 
         if (Object.keys(itemsObj).length === 0) {
-            deleteCookie('mptrs_cart_cookie_items');
+            deleteCookie(cookieName );
         } else {
-            setCookie('mptrs_cart_cookie_items', JSON.stringify(itemsObj));
+            setCookie(cookieName, JSON.stringify(itemsObj));
         }
     }
 
@@ -1090,7 +1236,6 @@ jQuery(document).ready(function ($) {
     function mptrs_display_add_cart_item_data( menuAddedKey, mptrs_MenuPrice, mptrs_CurrencySymbol, menuPrice, display, animationDiv, parentItem, mptrs_this, mptrs_menuImageUrl ){
         // let mptrs_CurrencySymbol = jQuery('.woocommerce-Price-currencySymbol:first').text().trim();
         mptrs_display_add_cart_cookie_item_data( menuAddedKey );
-        // deleteCookie('mptrs_cart_cookie_items')
         let menuItem = selectedMenu[menuAddedKey];
         let addOneVariation = '';
 
@@ -1118,6 +1263,7 @@ jQuery(document).ready(function ($) {
             `;
 
             menuHtml += `<div class="mptrs_optionGroupHolder">`;
+
             if (menuItem && menuItem.hasOwnProperty('variations')) {
                 menuItem.variations.forEach(variation => {
                     if (variation && variation.hasOwnProperty('variationOrAddOne')) {
@@ -1181,8 +1327,7 @@ jQuery(document).ready(function ($) {
                     </div>`;
             menuHtml += `</div> </div>`;
             $('body').append(menuHtml);
-        }
-        else {
+        }else{
             mptrs_this.fadeOut();
             let addedMenu = mptrs_increase_decrease_cart_data( menuAddedKey );
             mptrs_this.parent().append(addedMenu);
@@ -1279,8 +1424,16 @@ jQuery(document).ready(function ($) {
         menuAddedKey = menuAddedKeys[1];
 
 
+        let cart_details_cookie_data = getCookie('mptrs_cart_details_cookie_'+get_post_id );
+        let cartCookieDetails = {};
+        if ( cart_details_cookie_data ) {
+            cartCookieDetails = JSON.parse(cart_details_cookie_data);
+        }else{
+            cartCookieDetails = mptrs_orderSettings;
+        }
+        // console.log( mptrs_orderSettings, cartCookieDetails );
 
-        if ( Object.keys(mptrs_orderSettings).length === 0 ) {
+        if ( Object.keys(cartCookieDetails).length === 0 ) {
 
             mptrs_display_popup_for_order_types();
             mptrs_displayCartPopUp++;
@@ -1288,7 +1441,7 @@ jQuery(document).ready(function ($) {
 
         }
 
-        if( Object.keys(mptrs_orderSettings).length > 0 ) {
+        if( Object.keys( cartCookieDetails ).length > 0 ) {
             mptrs_display_add_cart_item_data( menuAddedKey, mptrs_MenuPrice, mptrs_CurrencySymbol, menuPrice, 'flex', animationDiv, parentItem, mptrs_this, mptrs_menuImageUrl );
         }
 

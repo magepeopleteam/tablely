@@ -12,11 +12,11 @@ if (!class_exists('MPTRS_Food_Menu_Added')) {
 
     class MPTRS_Food_Menu_Added{
         public function __construct() {
-            add_action('add_mptrs_settings_tab_content', [$this, 'add_food_menu_tab_content']);
+            add_action('add_mptrs_settings_tab_content', [$this, 'add_food_menu_tab_content'], 10, 1 );
         }
 
-        public function add_food_menu_tab_content(){
-            $post_id = get_the_ID();
+        public function add_food_menu_tab_content( $post_id ){
+//            $post_id = get_the_ID();
             $menu_categories = get_option( 'mptrs_categories' );
             $existing_menu_by_id = get_post_meta($post_id, '_mptrs_food_menu_items', true);
             $existing_edited_price = get_post_meta($post_id, '_mptrs_food_menu_edited_prices', true);

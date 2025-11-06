@@ -206,6 +206,8 @@ if (!class_exists('MPTRS_Seat_Mapping_Settings')) {
                 $variations_ary = json_decode( stripslashes( sanitize_text_field( $variations ) ), true);
             }
 
+            error_log( print_r( [ '$variations_ary' => $variations_ary ], true ) );
+
             $uniqueKey = isset(  $_POST['menuEditData']['menuKey'] ) ? sanitize_text_field( wp_unslash( $_POST['menuEditData']['menuKey'] ) ) : '';
             $new_menu_data = [
                 'menuName'     => isset( $_POST['menuEditData']['menuName'] ) ? sanitize_text_field( wp_unslash( $_POST['menuEditData']['menuName'] ) ) : '',

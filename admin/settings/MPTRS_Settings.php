@@ -24,6 +24,7 @@
 				wp_nonce_field('mptrs_nonce', 'mptrs_nonce');
 				?>
                 <div class="mptrs_area">
+                    <input type="hidden" name="mptrs_post_id" id="mptrs_post_id" value="<?php echo esc_attr( $post_id );?>">
                     <div class="mptrs_tab">
                         <div class="tabLists">
                             <ul class="_fullWidth">
