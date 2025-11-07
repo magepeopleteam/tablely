@@ -432,6 +432,7 @@ function mptrs_load_sortable_datepicker(parent, item) {
         let taxoName = $('[name="mptrs_taxo_name"]').val();
         let taxoSlug = $('[name="mptrs_taxo_slug"]').val();
         let taxoDesc = $('[name="mptrs_taxo_desc"]').val();
+        let restaurant_id = $(this).attr( 'data-restaurant-id' );
 
         $.ajax({
             url: mptrs_admin_ajax.ajax_url,
@@ -441,16 +442,18 @@ function mptrs_load_sortable_datepicker(parent, item) {
                 taxo_name: taxoName,
                 taxo_slug: taxoSlug,
                 taxo_descname: taxoDesc,
+                restaurant_id: restaurant_id,
                 nonce: mptrs_admin_ajax.nonce,
             },
             success: function(response) {
-                $('.mptrs_create_taxo_message').html('<p style="color:green;">' + response.data + '</p>');
-                // $('#mptrs_create_taxo_form')[0].reset();
-
+                $('.mptrs_create_taxo_message').html('<p style="color:green;">' + response.data.message + '</p>');
                 $('[name="mptrs_taxo_name"]').val('');
                 $('[name="mptrs_taxo_slug"]').val('');
                 $('[name="mptrs_taxo_desc"]').val('');
                 $('.mptrs_create_taxo_popup').fadeOut();
+                if( response.data.cities_html ){
+                    $("#mptrs_restaurant_city").html( response.data.cities_html );
+                }
             },
             error: function() {
                 $('.mptrs_create_taxo_message').html('<p style="color:red;">Something went wrong!</p>');

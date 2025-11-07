@@ -14,14 +14,43 @@
                 add_action('wp_ajax_mptrs_add_taxonomy_term', array($this, 'mptrs_add_taxonomy_term_callback' ) );
 			}
 
-            function mptrs_add_taxonomy_term_callback() {
+            public static function display_restaurant_cities( $post_id ){
 
+                $get_taxonomy = 'mptrs_restaurant_city';
+                $restaurant_cities = get_terms([
+                    'taxonomy'   => $get_taxonomy,
+                    'hide_empty' => false,
+                ]);
+                ob_start();
+                ?>
+                <option value=""><?php esc_attr_e( '-- Select City --', 'tablely' )?></option>
+                <?php
+                $selected_city = get_post_meta( $post_id, 'mptrs_restaurant_city', true );
+                if ( ! empty( $restaurant_cities ) && ! is_wp_error( $restaurant_cities ) ) : ?>
+                    <?php foreach ( $restaurant_cities as $restaurant_city ) :
+                        $select_city = '';
+                        if( $selected_city === $restaurant_city->name ){
+                            $select_city = 'selected';
+                        }
+                        ?>
+                        <option value="<?php echo esc_attr( $restaurant_city->name ); ?>" <?php echo esc_attr( $select_city );?>>
+                            <?php echo esc_html( $restaurant_city->name ); ?>
+                        </option>
+                    <?php endforeach; ?>
+                <?php else : ?>
+                    <option value=""><?php esc_attr_e( 'No cities found', 'tablely' )?></option>
+                <?php endif;
+
+                return ob_get_clean();
+            }
+            function mptrs_add_taxonomy_term_callback() {
+                $cities_html = '';
                 if ( isset( $_POST['nonce']) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mptrs_admin_nonce')) {
                     $name = sanitize_text_field( wp_unslash($_POST['taxo_name'] ) );
                     $slug = sanitize_title(wp_unslash($_POST['taxo_slug']));
                     $desc = sanitize_textarea_field(wp_unslash($_POST['taxo_descname']));
+                    $post_id = sanitize_textarea_field(wp_unslash($_POST['restaurant_id']));
                     $taxonomy = 'mptrs_restaurant_city';
-
                     if (empty($name)) {
                         wp_send_json_error('Taxonomy name is required!');
                     }
@@ -30,19 +59,33 @@
                         'description' => $desc,
                     ]);
 
+
+                    $cities_html = self::display_restaurant_cities( $post_id );
+                    ?>
+
+
+                    <?php
                     if (is_wp_error($term)) {
                         wp_send_json_error($term->get_error_message());
                     }
 
-                    wp_send_json_success('Taxonomy term added & assigned successfully!');
+                    wp_send_json_success( [
+                        'message' => 'Taxonomy term added & assigned successfully!',
+                        'cities_html'    => $cities_html,
+                    ] );
                 }else{
-                    wp_send_json_success('Taxonomy term added Failed!');
+                    wp_send_json_success(
+                        [
+                            'message' => ' Security issue Taxonomy term added failed!',
+                            'html'    => $cities_html,
+                        ]
+                    );
                 }
 
 
             }
 
-            public static function add_taxonomy_html_data( $type, $term_name ){
+            public static function add_taxonomy_html_data( $type, $term_name, $post_id ){
                 ob_start();
                 ?>
                 <div class="mptrs_create_taxo_popup">
@@ -60,7 +103,7 @@
                             <label><?php esc_html_e('Description:', 'tablely'); ?></label>
                             <textarea name="mptrs_taxo_desc" class="mptrs_create_taxo_input"></textarea><br>
 
-                            <button type="submit" class="mptrs_create_taxo_submitBtn"><?php esc_html_e('Save '.$type.'', 'tablely'); ?></button>
+                            <button type="submit" class="mptrs_create_taxo_submitBtn" data-restaurant-id="<?php echo esc_attr( $post_id );?>"><?php esc_html_e('Save '.$type.'', 'tablely'); ?></button>
                         </div>
                         <div class="mptrs_create_taxo_message"></div>
                     </div>
@@ -85,7 +128,7 @@
 
                 $term_name = 'mptrs_restaurant_city';
                 $type = 'City';
-                echo self::add_taxonomy_html_data( $type, $term_name );
+                echo self::add_taxonomy_html_data( $type, $term_name, $post_id );
 				?>
                 <div class="tabsItem" data-tabs="#mptrs_general_info">
 					<header>
@@ -107,9 +150,9 @@
                             <p><?php esc_html_e('Add City', 'tablely'); ?></p>
                             <button class="mptrs_restaurant_city_add_btn"><?php esc_html_e('+Add City', 'tablely'); ?></button>
                         </label>
-                        <label for="mptrs_city_select">Select City:</label>
-                        <select name="mptrs_restaurant_city" id="mptrs_city_select" class="mptrs_input">
-                            <option value="">-- Select City --</option>
+                        <label for="mptrs_restaurant_city"><?php esc_html_e('Select City:', 'tablely'); ?></label>
+                        <select name="mptrs_restaurant_city" id="mptrs_restaurant_city" class="mptrs_input">
+                            <option value=""><?php esc_html_e('-- Select City --', 'tablely'); ?></option>
                             <?php
                             if ( ! empty( $restaurant_cities ) && ! is_wp_error( $restaurant_cities ) ) : ?>
                                 <?php foreach ( $restaurant_cities as $restaurant_city ) :
@@ -117,14 +160,13 @@
                                     if( $selected_city === $restaurant_city->name ){
                                         $select_city = 'selected';
                                     }
-                                    error_log( print_r( [ '$restaurant_city' => $restaurant_city, 'dd' =>  $restaurant_city->name ], true ) );
                                     ?>
                                     <option value="<?php echo esc_attr( $restaurant_city->name ); ?>" <?php echo esc_attr( $select_city );?>>
                                         <?php echo esc_html( $restaurant_city->name ); ?>
                                     </option>
                                 <?php endforeach; ?>
                             <?php else : ?>
-                                <option value="">No cities found</option>
+                                <option value=""><?php esc_html_e('No cities found', 'tablely'); ?></option>
                             <?php endif; ?>
                         </select>
                     </section>
