@@ -306,14 +306,8 @@ if (!class_exists('MPTRS_Template')) {
             $order_details = '';
             $details_display = $clear_order = 'none';
 
-            $extra_service_array = [];
-            if ( isset( $_COOKIE['mptrs_extra_service_items_'.$post_id] ) ) {
-                $extra_Service_cookie = wp_unslash( $_COOKIE['mptrs_extra_service_items_'.$post_id] );
-                $extra_service_array = json_decode( $extra_Service_cookie, true );
-            }
-
-            if ( isset( $_COOKIE['mptrs_cart_details_cookie_'.$post_id] ) ) {
-                $cart_details_cookie = wp_unslash( $_COOKIE['mptrs_cart_details_cookie_'.$post_id] );
+            if ( isset( $_COOKIE['mptrs_cart_details_cookie'] ) ) {
+                $cart_details_cookie = wp_unslash( $_COOKIE['mptrs_cart_details_cookie'] );
                 $cart_details_cookie_data = json_decode( $cart_details_cookie, true );
                 $details_display = 'block';
                 $location = '';
@@ -359,19 +353,34 @@ if (!class_exists('MPTRS_Template')) {
                     </div>
 
                     <div class="mptrs_extra_service_container" id="mptrs_extra_service_container" style="display: <?php echo esc_attr( $ex_service );?>">
-                        <?php if( $enable_extra_service === 'on' && !empty( $mptrs_extra_service ) ){ ?>
+                        <?php
+                        $extra_price = 0;
+                        if( $enable_extra_service === 'on' && !empty( $mptrs_extra_service ) ){
+                            $extra_service_cookie_array = [];
+                            if ( isset( $_COOKIE['mptrs_extra_service_items_'.$post_id] ) ) {
+                                $extra_service_cookie = wp_unslash( $_COOKIE['mptrs_extra_service_items_'.$post_id] );
+                                $extra_service_cookie_array = json_decode( $extra_service_cookie, true );
+                            }
+                            ?>
                             <span><?php esc_attr_e( 'Extra Service', 'tablely' )?></span>
                             <?php
-                            $extra_price = 0;
+
                             foreach ($mptrs_extra_service as $ex_key => $item ):
 
                                 $is_select = 'Select';
-                                $selected_class = $selected_parent_class= '';
-                                if ( isset($extra_service_array[$ex_key]) ) {
+                                $selected_class = $selected_parent_class = '';
+
+                                $ex_service_select_cookie = 'none';
+                                $ex_service_not_select_cookie = 'block';
+                                $ex_qty = 1;
+                                if ( isset($extra_service_cookie_array[$ex_key]) ) {
                                     $is_select = 'Selected';
                                     $selected_class = 'mptrs_extra_service_selected';
                                     $selected_parent_class = 'mptrs_service_selected';
-                                    $extra_price += $item['price'];
+                                    $ex_service_select_cookie = 'block';
+                                    $ex_service_not_select_cookie = 'none';
+                                    $ex_qty = isset( $extra_service_cookie_array[$ex_key]['service_qty'] ) ? (int)$extra_service_cookie_array[$ex_key]['service_qty'] : 1 ;
+                                    $extra_price += ( $item['price'] * $ex_qty ) ;
                                 }
 
                                 $image_url = !empty($item['image'])
@@ -393,10 +402,16 @@ if (!class_exists('MPTRS_Template')) {
                                         <div class="mptrs_extra_service_price"><?php esc_attr_e( 'Price', 'tablely' )?>: <?php echo wp_kses_post( wc_price( $item['price'] ) ); ?></div>
                                     </div>
                                     <div class="mptrs_extra_service_action">
-                                        <button class="mptrs_extra_service_select <?php echo esc_attr( $selected_class );?>"><?php echo esc_attr( $is_select )?></button>
-                                        <div class="mptrs_exQuantityControls" style="display: none">
-                                            <span class="mptrs_ex_decrease" id="mptrs_ex_decrease-<?php echo esc_attr( $ex_key );?>"><i class='fas fa-trash' style="font-size: 16px"></i></span>
-                                            <span class="mptrs_ex_quantity" >1</span>
+                                        <button class="mptrs_extra_service_select" style="display: <?php echo esc_attr( $ex_service_not_select_cookie );?>"><?php echo esc_attr( $is_select )?></button>
+                                        <div class="mptrs_exQuantityControls" style="display: <?php echo esc_attr( $ex_service_select_cookie );?>" >
+                                            <span class="mptrs_ex_decrease">
+                                                <?php if( $ex_qty === 1 ){?>
+                                                <i class='fas fa-trash' style="font-size: 16px"></i>
+                                                <?php }else{?>
+                                                    -
+                                                <?php }?>
+                                            </span>
+                                            <span class="mptrs_ex_quantity" ><?php echo esc_attr( $ex_qty );?></span>
                                             <span class="mptrs_ex_increase">+</span>
                                         </div>
                                     </div>

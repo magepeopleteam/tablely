@@ -1,6 +1,6 @@
 .mptrs-default-template {
   max-width: 1440px;
-  width: 100%;
+  width: calc( 100% - 40px);
   margin: auto;
 }
 .mptrs-default-template .mptrs-header-baner {
@@ -116,7 +116,7 @@
 }
 .mptrs-default-template .mptrs-content .mptrs-content-left {
   position: relative;
-  width: 100%;
+  width: calc(100% - 20px );
   padding: 10px;
 }
 @media (min-width: 1440px) {
@@ -189,7 +189,7 @@
 }
 .mptrs-default-template .mptrs-content .mptrs-content-right {
   position: relative;
-  width: 100%;
+  width: calc( 100% - 20px );
   padding: 10px;
 }
 @media (min-width: 1440px) {
