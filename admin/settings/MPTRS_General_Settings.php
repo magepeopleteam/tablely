@@ -11,13 +11,81 @@
 			public function __construct() {
 				add_action('add_mptrs_settings_tab_content', [$this, 'general_settings'], 10, 1);
 				add_action('save_post', array($this, 'save_settings'));
+                add_action('wp_ajax_mptrs_add_taxonomy_term', array($this, 'mptrs_add_taxonomy_term_callback' ) );
 			}
+
+            function mptrs_add_taxonomy_term_callback() {
+
+                if ( isset( $_POST['nonce']) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mptrs_admin_nonce')) {
+                    $name = sanitize_text_field( wp_unslash($_POST['taxo_name'] ) );
+                    $slug = sanitize_title(wp_unslash($_POST['taxo_slug']));
+                    $desc = sanitize_textarea_field(wp_unslash($_POST['taxo_descname']));
+                    $taxonomy = 'mptrs_restaurant_city';
+
+                    if (empty($name)) {
+                        wp_send_json_error('Taxonomy name is required!');
+                    }
+                    $term = wp_insert_term($name, $taxonomy, [
+                        'slug' => $slug,
+                        'description' => $desc,
+                    ]);
+
+                    if (is_wp_error($term)) {
+                        wp_send_json_error($term->get_error_message());
+                    }
+
+                    wp_send_json_success('Taxonomy term added & assigned successfully!');
+                }else{
+                    wp_send_json_success('Taxonomy term added Failed!');
+                }
+
+
+            }
+
+            public static function add_taxonomy_html_data( $type, $term_name ){
+                ob_start();
+                ?>
+                <div class="mptrs_create_taxo_popup">
+                    <div class="mptrs_create_taxo_popup_content">
+                        <input type="hidden" name="mptrs_get_taxonomy_name" value="<?php echo esc_attr( $term_name );?>">
+                        <span class="mptrs_create_taxo_close">&times;</span>
+                        <h3><?php esc_html_e('Add New '.$type.'', 'tablely'); ?></h3>
+                        <div id="mptrs_create_taxo_form">
+                            <label><?php esc_html_e('Name:', 'tablely'); ?></label>
+                            <input type="text" name="mptrs_taxo_name" class="mptrs_create_taxo_input"><br>
+
+                            <label><?php esc_html_e('Slug:', 'tablely'); ?></label>
+                            <input type="text" name="mptrs_taxo_slug" class="mptrs_create_taxo_input"><br>
+
+                            <label><?php esc_html_e('Description:', 'tablely'); ?></label>
+                            <textarea name="mptrs_taxo_desc" class="mptrs_create_taxo_input"></textarea><br>
+
+                            <button type="submit" class="mptrs_create_taxo_submitBtn"><?php esc_html_e('Save '.$type.'', 'tablely'); ?></button>
+                        </div>
+                        <div class="mptrs_create_taxo_message"></div>
+                    </div>
+                </div>
+                <?php
+
+                return ob_get_clean();
+            }
 			public function general_settings( $post_id ) {
 				$image_id = get_post_meta($post_id, 'mptrs_restaurant_logo', true);
 				$restaurant_address = get_post_meta( $post_id, 'mptrs_restaurant_address', true );
-				$image_url = $image_id ? wp_get_attachment_image_src($image_id, 'full')[0] : '';
+				$selected_city = get_post_meta( $post_id, 'mptrs_restaurant_city', true );
 
+                $taxonomy = 'mptrs_restaurant_city';
+                $restaurant_cities = get_terms([
+                    'taxonomy'   => $taxonomy,
+                    'hide_empty' => false,
+                ]);
+
+				$image_url = $image_id ? wp_get_attachment_image_src($image_id, 'full')[0] : '';
                 $selected_seat_map_id = get_post_meta( $post_id, 'mptrs_selected_seat_map', true );
+
+                $term_name = 'mptrs_restaurant_city';
+                $type = 'City';
+                echo self::add_taxonomy_html_data( $type, $term_name );
 				?>
                 <div class="tabsItem" data-tabs="#mptrs_general_info">
 					<header>
@@ -31,9 +99,34 @@
                     <section>
                         <label class="label">
                             <p><?php esc_html_e('Add Edit restaurant address', 'tablely'); ?></p>
-
                         </label>
                         <input name="mptrs_restaurant_address" class="mptrs_restaurant_address" value="<?php echo esc_attr( $restaurant_address );?>">
+                    </section>
+                    <section>
+                        <label class="label">
+                            <p><?php esc_html_e('Add City', 'tablely'); ?></p>
+                            <button class="mptrs_restaurant_city_add_btn"><?php esc_html_e('+Add City', 'tablely'); ?></button>
+                        </label>
+                        <label for="mptrs_city_select">Select City:</label>
+                        <select name="mptrs_restaurant_city" id="mptrs_city_select" class="mptrs_input">
+                            <option value="">-- Select City --</option>
+                            <?php
+                            if ( ! empty( $restaurant_cities ) && ! is_wp_error( $restaurant_cities ) ) : ?>
+                                <?php foreach ( $restaurant_cities as $restaurant_city ) :
+                                    $select_city = '';
+                                    if( $selected_city === $restaurant_city->name ){
+                                        $select_city = 'selected';
+                                    }
+                                    error_log( print_r( [ '$restaurant_city' => $restaurant_city, 'dd' =>  $restaurant_city->name ], true ) );
+                                    ?>
+                                    <option value="<?php echo esc_attr( $restaurant_city->name ); ?>" <?php echo esc_attr( $select_city );?>>
+                                        <?php echo esc_html( $restaurant_city->name ); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            <?php else : ?>
+                                <option value="">No cities found</option>
+                            <?php endif; ?>
+                        </select>
                     </section>
 
                     <section class="section">
@@ -108,6 +201,9 @@
 
 					$restaurant_address = isset($_POST['mptrs_restaurant_address']) ? sanitize_text_field(wp_unslash($_POST['mptrs_restaurant_address'])) : '';
 					update_post_meta($post_id, 'mptrs_restaurant_address', $restaurant_address );
+
+					$restaurant_city = isset($_POST['mptrs_restaurant_city']) ? sanitize_text_field(wp_unslash($_POST['mptrs_restaurant_city'])) : '';
+					update_post_meta($post_id, 'mptrs_restaurant_city', $restaurant_city );
 				}
 			}
 		}

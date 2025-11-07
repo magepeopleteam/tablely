@@ -414,4 +414,52 @@ function mptrs_load_sortable_datepicker(parent, item) {
         $('#mptrs-restaurant-logo').val('');
         $('.mptrs-logo-wrapper').html('');
     });
+
+
+    $(document).on( 'click', '.mptrs_restaurant_city_add_btn', function( e ) {
+        e.preventDefault();
+        $('.mptrs_create_taxo_popup').fadeIn();
+    });
+
+    $(document).on( 'click', '.mptrs_create_taxo_close', function(e) {
+        e.preventDefault();
+        $('.mptrs_create_taxo_popup').fadeOut();
+    });
+
+    $(document).on( 'click', '.mptrs_create_taxo_submitBtn', function( e ) {
+        e.preventDefault();
+
+        let taxoName = $('[name="mptrs_taxo_name"]').val();
+        let taxoSlug = $('[name="mptrs_taxo_slug"]').val();
+        let taxoDesc = $('[name="mptrs_taxo_desc"]').val();
+
+        $.ajax({
+            url: mptrs_admin_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mptrs_add_taxonomy_term',
+                taxo_name: taxoName,
+                taxo_slug: taxoSlug,
+                taxo_descname: taxoDesc,
+                nonce: mptrs_admin_ajax.nonce,
+            },
+            success: function(response) {
+                $('.mptrs_create_taxo_message').html('<p style="color:green;">' + response.data + '</p>');
+                // $('#mptrs_create_taxo_form')[0].reset();
+
+                $('[name="mptrs_taxo_name"]').val('');
+                $('[name="mptrs_taxo_slug"]').val('');
+                $('[name="mptrs_taxo_desc"]').val('');
+                $('.mptrs_create_taxo_popup').fadeOut();
+            },
+            error: function() {
+                $('.mptrs_create_taxo_message').html('<p style="color:red;">Something went wrong!</p>');
+                $('[name="mptrs_taxo_name"]').val('');
+                $('[name="mptrs_taxo_slug"]').val('');
+                $('[name="mptrs_taxo_desc"]').val('');
+                $('.mptrs_create_taxo_popup').fadeOut();
+            }
+        });
+    });
+
 }(jQuery));
