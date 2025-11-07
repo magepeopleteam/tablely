@@ -209,7 +209,7 @@
                             </div>
                             <div>
 								<code>
-									<?php echo esc_html('[mptrs_display_food_menu post_id="'.get_the_ID().'"]') ?>
+									<?php echo esc_html('[mptrs_display_food_menu restaurant_id_id="'.get_the_ID().'"]') ?>
 								</code>
 							</div>
                         </label>
@@ -223,7 +223,7 @@
                             </div>
                             <div>
 								<code>
-									<?php echo esc_html('[mptrs_reserve_table seat_mapping="yes/no" post_id="'.$selected_seat_map_id.'"]') ?>
+									<?php echo esc_html('[mptrs_reserve_table seat_mapping="yes/no" restaurant_id="'.$selected_seat_map_id.'"]') ?>
 								</code>
 							</div>
                         </label>
