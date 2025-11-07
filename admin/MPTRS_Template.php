@@ -133,11 +133,12 @@ if (!class_exists('MPTRS_Template')) {
         public function restaurant_info()
         {
             $post_id = get_the_id();
+            $restaurant_address = get_post_meta( $post_id, 'mptrs_restaurant_address', true );
             ?>
             <h1 class="mptrs-restaurant-name"><?php the_title();?></h1>
-            <p class="mptrs-location"><i class="fas fa-map-marker-alt"></i> <?php esc_html_e( '5th floor, Concord MK Heritage, Dhaka, Dhanmondi Dhaka', 'tablely' ); ?></p>
+            <p class="mptrs-location"><i class="fas fa-map-marker-alt"></i> <?php echo esc_html( $restaurant_address ); ?></p>
             <div class="mptrs-schedule-review">
-<p class="mptrs-time-schedule">
+            <p class="mptrs-time-schedule">
                 <span class="open-now"></span><?php esc_html_e( 'Open Now', 'tablely' ); ?></span>
                 <?php esc_html_e( '11:00 AM - 11:00 PM', 'tablely' ); ?>
             </p>

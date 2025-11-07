@@ -14,6 +14,7 @@
 			}
 			public function general_settings( $post_id ) {
 				$image_id = get_post_meta($post_id, 'mptrs_restaurant_logo', true);
+				$restaurant_address = get_post_meta( $post_id, 'mptrs_restaurant_address', true );
 				$image_url = $image_id ? wp_get_attachment_image_src($image_id, 'full')[0] : '';
 
                 $selected_seat_map_id = get_post_meta( $post_id, 'mptrs_selected_seat_map', true );
@@ -23,6 +24,18 @@
                         <h2><?php esc_html_e('General Settings', 'tablely'); ?></h2>
                         <span><?php esc_html_e('In this section you will get basic settings.', 'tablely'); ?></span>
                     </header>
+                    <section class="section">
+                        <h2><?php esc_html_e('Restaurant Address', 'tablely'); ?></h2>
+                        <span><?php esc_html_e('Restaurant Address.', 'tablely'); ?></span>
+                    </section>
+                    <section>
+                        <label class="label">
+                            <p><?php esc_html_e('Add Edit restaurant address', 'tablely'); ?></p>
+
+                        </label>
+                        <input name="mptrs_restaurant_address" class="mptrs_restaurant_address" value="<?php echo esc_attr( $restaurant_address );?>">
+                    </section>
+
                     <section class="section">
                         <h2><?php esc_html_e('Restaurant Branding', 'tablely'); ?></h2>
                         <span><?php esc_html_e('Restaurant Branding.', 'tablely'); ?></span>
@@ -92,6 +105,9 @@
 				if (get_post_type($post_id) == MPTRS_Function::get_cpt()) {
 					$image_logo = isset($_POST['mptrs_restaurant_logo']) ? sanitize_text_field(wp_unslash($_POST['mptrs_restaurant_logo'])) : '';
 					update_post_meta($post_id, 'mptrs_restaurant_logo', $image_logo);
+
+					$restaurant_address = isset($_POST['mptrs_restaurant_address']) ? sanitize_text_field(wp_unslash($_POST['mptrs_restaurant_address'])) : '';
+					update_post_meta($post_id, 'mptrs_restaurant_address', $restaurant_address );
 				}
 			}
 		}

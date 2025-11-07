@@ -715,6 +715,17 @@
 	div.single_image_item:hover img {
 		transform: scale(1.05);
 	}
+
+	.mptrs_restaurant_address{
+		border: 1px solid var(--mptrs-grey-300);
+		padding: 10px 15px;
+		border-radius: var(--mptrs-border-radius);
+		box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+		width: 100%;
+		transition: all 0.3s
+		ease;
+		font-size: 14px;
+	}
 }
 /******************************************************************** add Icon image ************************************************/
 @media only screen and (min-width: 10px) {
