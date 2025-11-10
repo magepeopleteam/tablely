@@ -34,6 +34,7 @@
     justify-content: space-between;
     align-items: center;
     transition: color 0.3s ease;
+    text-transform: none;
 }
 
 .mptrs_faq_question:hover {
