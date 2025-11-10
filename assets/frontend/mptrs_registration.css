@@ -28,9 +28,9 @@
     text-align: left;
     font-size: 1.1rem;
     font-weight: 600;
-    color: #333;
+    color: #fff;
     cursor: pointer;
-    padding: 12px 0;
+    padding: 12px 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
