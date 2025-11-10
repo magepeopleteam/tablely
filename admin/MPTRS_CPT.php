@@ -12,8 +12,21 @@
 				add_action('init', [$this, 'add_cpt']);
                 add_action('init', [$this, 'register_mptrs_table_reservations_cpt'] );
                 add_action('init', [$this, 'create_mptrs_table_reservations_cpt'] );
+                add_action( 'init', [ $this, 'register_taxonomy' ] );
                 add_action( 'add_meta_boxes', [$this,'pa_add_seat_design_meta_box'] );
 			}
+
+            public function register_taxonomy() {
+                $args = [
+                    'hierarchical'      => false,
+                    'show_ui'           => false,
+                    'show_admin_column' => false,
+                    'query_var'         => true,
+                    'rewrite'           => [ 'slug' => 'restaurant-type' ],
+                ];
+
+                register_taxonomy( 'mptrs_restaurant_city', [ 'restaurant-city' ], $args );
+            }
 			public function add_cpt(): void {
 				$cpt = MPTRS_Function::get_cpt();
 				$label = MPTRS_Function::get_name();

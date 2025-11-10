@@ -16,7 +16,7 @@
 
             public static function mptrs_food_menu_data( $attrs )
             {
-                $post_id = isset( $attrs['post_id'] ) ? $attrs['post_id'] : '';
+                $post_id = isset( $attrs['restaurant_id'] ) ? $attrs['restaurant_id'] : '';
                 $found_category = isset( $attrs['category'] ) ? $attrs['category'] : '';
                 $existing_menus = $food_menus = $get_category = [];
 
@@ -95,7 +95,7 @@
             public function display_food_menu_list( $attrs ){
                 $attrs = shortcode_atts( [
                     'category'          => '',
-                    'post_id'           => '',
+                    'restaurant_id'     => '',
                     'per_page'          => 20,
                     'column'            => 3,
                     'style'             => 'grid',
@@ -165,7 +165,7 @@
             return ob_get_clean();
             }
             public function display_seat_mapping_shortcode( $atts ){
-                $post_id = isset( $atts['post_id'] ) ? $atts['post_id'] : '';
+                $post_id = isset( $atts['restaurant_id'] ) ? $atts['restaurant_id'] : '';
                 $table_reserve = '';
                 if( $post_id ){
                     $not_available = [];
@@ -177,7 +177,7 @@
             }
 
             public function display_restaurant_menu_content_shortcode( $atts ) {
-                $post_id = isset( $atts['post_id'] ) ? $atts['post_id'] : '';
+                $post_id = isset( $atts['restaurant_id'] ) ? $atts['restaurant_id'] : '';
 
                 ob_start();
                 ?>
