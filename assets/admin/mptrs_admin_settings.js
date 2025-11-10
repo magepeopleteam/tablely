@@ -496,4 +496,32 @@ function mptrs_load_sortable_datepicker(parent, item) {
         });
     });
 
+    let itemsPerPage = 10;
+    let currentCount = itemsPerPage;
+    const $rows = $(".mptrs_food_menu_in_all");
+    const totalRows = $rows.length;
+    $rows.hide();
+    $rows.slice(0, itemsPerPage).show();
+    $(".mptrs_all_menu_load_more_btn span").on("click", function () {
+        currentCount += itemsPerPage;
+        $rows.slice(0, currentCount).slideDown(200);
+        if (currentCount >= totalRows) {
+            $(".mptrs_all_menu_load_more_btn").fadeOut(300);
+        }
+    });
+
+    let selectedItemsPerPage = 10;
+    let currentMenuCount = selectedItemsPerPage;
+    const selectedMenuRows = $(".mptrs_food_menu_in_selected");
+    const totalSelectedMenuRows = selectedMenuRows.length;
+    selectedMenuRows.hide();
+    selectedMenuRows.slice(0, selectedItemsPerPage).show();
+    $(".mptrs_selected_food_menu_load_more_btn span").on("click", function () {
+        currentMenuCount += selectedItemsPerPage;
+        selectedMenuRows.slice(0, currentMenuCount).slideDown(200);
+        if (currentMenuCount >= totalSelectedMenuRows) {
+            $(".mptrs_selected_food_menu_load_more_btn").fadeOut(300);
+        }
+    });
+
 }(jQuery));

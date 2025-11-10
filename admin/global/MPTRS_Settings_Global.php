@@ -161,6 +161,14 @@
 							'default' => 0,
 							'placeholder' => esc_html__('Ex:50', 'tablely'),
 						),
+						array(
+							'name' => 'mptrs_google_map_key',
+							'label' => esc_html__('Google Map Api', 'tablely'),
+							'desc' => esc_html__('Enter your google map api key', 'tablely'),
+							'type' => 'text',
+							'default' => '',
+							'placeholder' => esc_html__('Google Map Api', 'tablely'),
+						),
 					)),
 					'mptrs_global_settings' => apply_filters('filter_mptrs_global_settings', array(
 						array(

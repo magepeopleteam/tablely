@@ -145,6 +145,14 @@ body.mptrs_no_scroll {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
+.mptrs_addMenuToPost{
+    padding: 5px 10px;
+}
+.mptrs_addedMenuClass{
+    background-color: #990000;
+    color: #fff;
+}
+
 .mptrs_addNewFoodMenuBtnHolder {
     display: flex;
     justify-content: flex-end;
@@ -1270,6 +1278,36 @@ body.mptrs_no_scroll {
 .mptrs_set_seat_mapping_info, .mptrs_set_apikey{
     padding: 5px 10px;
 }
+
+.mptrs_all_menu_load_more_btn, .mptrs_selected_food_menu_load_more_btn {
+    text-align: center;
+    margin: 15px;
+}
+.mptrs_all_menu_load_more_btn span {
+    display: inline-block;
+    background: #0073aa;
+    color: #fff;
+    padding: 10px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+.mptrs_all_menu_load_more_btn span:hover {
+    background: #005d8f;
+}
+.mptrs_selected_food_menu_load_more_btn span {
+    display: inline-block;
+    background: #0073aa;
+    color: #fff;
+    padding: 10px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+.mptrs_selected_food_menu_load_more_btn span:hover {
+    background: #005d8f;
+}
+
 
 /* Animation for the form loading */
 @keyframes form-fade-in {
