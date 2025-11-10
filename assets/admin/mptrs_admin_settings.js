@@ -160,6 +160,35 @@ function mptrs_load_sortable_datepicker(parent, item) {
         wp.media.editor.open($this);
         return false;
     });
+
+    $(document).on('click', '.mptrs_area button.mp_image_add', function () {
+        let $this = $(this);
+        let parent = $this.closest('.add_icon_image_area');
+        wp.media.editor.send.attachment = function (props, attachment) {
+            let attachment_id = attachment.id;
+            let attachment_url = attachment.url;
+            parent.find('.mptrs_get_taxonomy_image_id').val(attachment_id);
+            parent.find('img').attr('src', attachment_url);
+        }
+        wp.media.editor.open($this);
+        return false;
+    });
+
+    $(document).on('click', '.mptrs_taxo_image_add', function () {
+        let $this = $(this);
+        let parent = $this.closest('.mptrs_create_taxo_popup_content');
+        wp.media.editor.send.attachment = function (props, attachment) {
+            let attachment_id = attachment.id;
+            let attachment_url = attachment.url;
+            parent.find('input[type="hidden"]').val(attachment_id);
+            parent.find('.icon_item').slideUp('fast');
+            parent.find('img').attr('src', attachment_url);
+            parent.find('.image_item').slideDown('fast');
+            parent.find('.add_icon_image_button_area').slideUp('fast');
+        }
+        wp.media.editor.open($this);
+        return false;
+    });
     $(document).on('click', '.mptrs_area .add_icon_image_area .image_remove', function () {
         let parent = $(this).closest('.add_icon_image_area');
         parent.find('input[type="hidden"]').val('');
@@ -432,6 +461,7 @@ function mptrs_load_sortable_datepicker(parent, item) {
         let taxoName = $('[name="mptrs_taxo_name"]').val();
         let taxoSlug = $('[name="mptrs_taxo_slug"]').val();
         let taxoDesc = $('[name="mptrs_taxo_desc"]').val();
+        let mptrs_city_image_id = $('[name="mptrs_get_taxonomy_image_id"]').val();
         let restaurant_id = $(this).attr( 'data-restaurant-id' );
 
         $.ajax({
@@ -439,10 +469,11 @@ function mptrs_load_sortable_datepicker(parent, item) {
             type: 'POST',
             data: {
                 action: 'mptrs_add_taxonomy_term',
-                taxo_name: taxoName,
-                taxo_slug: taxoSlug,
-                taxo_descname: taxoDesc,
+                mptrs_taxonomy_name: taxoName,
+                mptrs_taxonomy_slug: taxoSlug,
+                mptrs_taxonomy_desc: taxoDesc,
                 restaurant_id: restaurant_id,
+                mptrs_city_image_id: mptrs_city_image_id,
                 nonce: mptrs_admin_ajax.nonce,
             },
             success: function(response) {

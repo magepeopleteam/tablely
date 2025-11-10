@@ -775,6 +775,12 @@
 		padding: 5px 0 !important;
 	}
 
+	.mptrs_taxo_image_holder{
+		display: flex;
+		justify-content: space-between;
+		margin: 10px 0;
+	}
+
 }
 /******************************************************************** add Icon image ************************************************/
 @media only screen and (min-width: 10px) {
