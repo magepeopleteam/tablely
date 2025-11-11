@@ -15,8 +15,7 @@
                 add_shortcode( 'mptrs_restaurant_lists', array( $this, 'restaurant_lists_display' ) );
 			}
 
-            public static function mptrs_food_menu_data( $attrs )
-            {
+            public static function mptrs_food_menu_data( $attrs ){
                 $post_id = isset( $attrs['restaurant_id'] ) ? $attrs['restaurant_id'] : '';
                 $found_category = isset( $attrs['category'] ) ? $attrs['category'] : '';
                 $existing_menus = $food_menus = $get_category = [];
@@ -93,6 +92,139 @@
                         'category' => $get_category,
                 );
             }
+
+            public static function get_restaurant_lists( $attrs ) {
+                $args = [
+                    'post_type'      => 'mptrs_item',
+                    'posts_per_page' => -1, // Load all, JS can control display
+                    'post_status'    => 'publish',
+                ];
+
+                $query = new WP_Query($args);
+                $restaurants = [];
+                $cities = [];
+
+                if ($query->have_posts()) {
+                    while ($query->have_posts()) {
+                        $query->the_post();
+                        $post_id = get_the_ID();
+
+                        $restaurants[] = [
+                            'id'                => $post_id,
+                            'title'             => get_the_title($post_id),
+                            'permalink'         => get_permalink($post_id),
+                            'thumbnail'         => get_the_post_thumbnail_url($post_id, 'medium'),
+                            'address'           => get_post_meta($post_id, 'mptrs_restaurant_address', true),
+                            'restaurant_type'   => get_post_meta($post_id, 'mptrs_restaurant_type', true),
+                            'email'             => get_post_meta($post_id, 'mptrs_restaurant_email', true),
+                            'city'              => get_post_meta($post_id, 'mptrs_restaurant_city', true),
+                            'rating'            => get_post_meta($post_id, 'mptrs_restaurant_rating', true),
+                            'description'       => wp_trim_words(get_the_excerpt(), 15, '...'),
+                        ];
+                        $cities [] = get_post_meta( $post_id, 'mptrs_restaurant_city', true );
+                    }
+                    wp_reset_postdata();
+                }
+
+                $cities = array_filter($cities);
+                $cities = array_values($cities);
+
+                return array(
+                        'restaurants' => $restaurants,
+                        'cities' => $cities,
+                );
+            }
+
+            public function restaurant_lists_display( $attrs ){
+                $attrs = shortcode_atts( [
+                    'per_page'          => 2,
+                    'columns'           => 4,
+                    'style'             => 'grid',
+                    'city_filter'       => 'yes',
+                    'load_more_button'  => 'yes',
+                ], $attrs, 'mptrs_restaurant_lists' );
+
+                $restaurant_data = self::get_restaurant_lists( $attrs );
+                $restaurant_lists = $restaurant_data['restaurants'];
+
+                $total_restaurant = count( $restaurant_lists );
+                $cities = $restaurant_data['cities'];
+
+
+                $default_columns = isset( $attrs['columns'] ) ? $attrs['columns'] : 3;
+                $style = isset( $attrs['style'] ) ? $attrs['style'] : 'grid';
+                $city_filter = isset( $attrs['city_filter'] ) ? $attrs['city_filter'] : 'no';
+                $per_page = isset( $attrs['per_page'] ) ? $attrs['per_page'] : 10;
+                $load_more = isset( $attrs['load_more_button'] ) ? $attrs['load_more_button'] : 'no';
+                if( $style === 'list' ){
+                    $list_grid_class = 'list-view';
+                    $description_show = 'block';
+                }else{
+                    $list_grid_class = 'grid-view';
+                    $description_show = 'none';
+                }
+                ob_start();
+                ?>
+
+                <div class="mptrs_restaurant_wrapper" data-columns="<?php echo esc_attr($default_columns); ?>">
+                    <input type="hidden" name="mptrs_display_restaurant_count" value="<?php echo esc_attr( $per_page );?>">
+
+                    <div class="mptrs_restaurant_title">
+                        <h3><?php esc_attr_e( 'Restaurants near you', 'tablely' )?></h3>
+                        <div class="mptrs_restaurant_toolbar" style="display: block">
+                            <button class="mptrs_restaurant_btn_grid active"><?php esc_attr_e( 'Grid View', 'tablely' );?></button>
+                            <button class="mptrs_restaurant_btn_list"><?php esc_attr_e( 'List View', 'tablely' );?></button>
+                        </div>
+                    </div>
+
+
+
+                    <?php if( $city_filter === 'yes' ){?>
+                        <div class="mptrs_restaurant_city_holder">
+                            <div class="mptrs_restaurant_city active" data-city="all"><?php esc_attr_e( 'All', 'tablely' );?></div>
+                            <?php  if( !empty( $cities ) ){
+                                foreach ( $cities as $key => $city) : ?>
+                                    <div class="mptrs_restaurant_city" data-city="<?php echo esc_html( $city )?>"><?php echo  esc_html( ucfirst( $city ) );?></div>
+                                <?php
+                                endforeach;
+                            }
+                            ?>
+                        </div>
+                    <?php }?>
+
+                    <div class="mptrs_restaurant_container <?php echo esc_html( $list_grid_class );?>">
+                        <?php
+                        if( !empty( $restaurant_lists ) ){
+                            foreach ($restaurant_lists as $key => $restaurant) : ?>
+                                <div class="mptrs_restaurant_card" data-city-filter="<?php echo esc_html($restaurant['city']); ?>">
+                                    <div class="mptrs_restaurant_img_wrap">
+                                        <img src="<?php echo esc_url($restaurant['thumbnail']); ?>" alt="<?php echo esc_attr($restaurant['title']); ?>">
+                                    </div>
+                                    <div class="mptrs_restaurant_content">
+                                        <h3 class="mptrs_restaurant_name"><?php echo esc_html($restaurant['title']); ?></h3>
+                                        <p class="mptrs_restaurant_desc" style="display: <?php echo esc_attr( $description_show );?>"><?php echo esc_html($restaurant['description']); ?></p>
+                                        <p class="mptrs_restaurant_type"><?php echo esc_html($restaurant['restaurant_type']); ?></p>
+                                    </div>
+                                </div>
+                            <?php endforeach;
+                        }
+                        ?>
+                    </div>
+
+                    <?php if( $load_more === 'yes' && $total_restaurant > $per_page ){ ?>
+                        <div class="mptrs_restaurant_load_more_btn_holder">
+                            <div class="mptrs_restaurant_load_more_btn"><?php esc_attr_e( 'Load More', 'tablely' )?></div>
+                        </div>
+                    <?php }?>
+
+
+                </div>
+
+            <?php
+
+            return ob_get_clean();
+            }
+
             public function display_food_menu_list( $attrs ){
                 $attrs = shortcode_atts( [
                     'category'          => '',
@@ -122,13 +254,13 @@
                 <div class="mptrs_food_menu_wrapper" data-columns="<?php echo esc_attr($default_columns); ?>">
 
                     <div class="mptrs_food_menu_toolbar" style="display: none">
-                        <button class="mptrs_food_menu_btn_grid active">Grid View</button>
-                        <button class="mptrs_food_menu_btn_list">List View</button>
+                        <button class="mptrs_food_menu_btn_grid active"><?php esc_attr_e( 'Grid View', 'tablely' );?></button>
+                        <button class="mptrs_food_menu_btn_list"><?php esc_attr_e( 'List View', 'tablely' );?></button>
                     </div>
 
                     <?php if( $category_filter === 'yes' ){?>
                         <div class="mptrs_food_category_holder">
-                            <div class="mptrs_food_category active" data-category="all">All</div>
+                            <div class="mptrs_food_category active" data-category="all"><?php esc_attr_e( 'All', 'tablely' );?></div>
                             <?php  if( !empty( $categories ) ){
                                 foreach ( $categories as $key => $food_category) : ?>
 

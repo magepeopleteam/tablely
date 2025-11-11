@@ -139,6 +139,7 @@
 			public function general_settings( $post_id ) {
 				$image_id = get_post_meta($post_id, 'mptrs_restaurant_logo', true);
 				$restaurant_address = get_post_meta( $post_id, 'mptrs_restaurant_address', true );
+				$restaurant_type = get_post_meta( $post_id, 'mptrs_restaurant_type', true );
 				$selected_city = get_post_meta( $post_id, 'mptrs_restaurant_city', true );
 
                 $taxonomy = 'mptrs_restaurant_city';
@@ -160,6 +161,18 @@
                         <h2><?php esc_html_e('General Settings', 'tablely'); ?></h2>
                         <span><?php esc_html_e('In this section you will get basic settings.', 'tablely'); ?></span>
                     </header>
+                    <section class="section">
+                        <h2><?php esc_html_e('Restaurant Type', 'tablely'); ?></h2>
+                        <span><?php esc_html_e('Restaurant Type.', 'tablely'); ?></span>
+                    </section>
+                    <section>
+                        <label class="label">
+                            <p><?php esc_html_e('Add Edit restaurant type', 'tablely'); ?></p>
+                        </label>
+                        <input name="mptrs_restaurant_type" class="mptrs_restaurant_address" value="<?php echo esc_attr( $restaurant_type );?>">
+                    </section>
+
+
                     <section class="section">
                         <h2><?php esc_html_e('Restaurant Address', 'tablely'); ?></h2>
                         <span><?php esc_html_e('Restaurant Address.', 'tablely'); ?></span>
@@ -271,6 +284,9 @@
 
 					$restaurant_city = isset($_POST['mptrs_restaurant_city']) ? sanitize_text_field(wp_unslash($_POST['mptrs_restaurant_city'])) : '';
 					update_post_meta($post_id, 'mptrs_restaurant_city', $restaurant_city );
+
+					$restaurant_type = isset($_POST['mptrs_restaurant_type']) ? sanitize_text_field(wp_unslash($_POST['mptrs_restaurant_type'])) : '';
+					update_post_meta($post_id, 'mptrs_restaurant_type', $restaurant_type );
 				}
 			}
 		}
