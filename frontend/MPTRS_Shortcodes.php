@@ -12,6 +12,7 @@
                 add_shortcode( 'mptrs_display_food_menu', array( $this, 'display_restaurant_menu_content_shortcode' ) );
                 add_shortcode( 'mptrs_reserve_table', array( $this, 'display_seat_mapping_shortcode' ) );
                 add_shortcode( 'mptrs_food_menu_list', array( $this, 'display_food_menu_list' ) );
+                add_shortcode( 'mptrs_restaurant_lists', array( $this, 'restaurant_lists_display' ) );
 			}
 
             public static function mptrs_food_menu_data( $attrs )

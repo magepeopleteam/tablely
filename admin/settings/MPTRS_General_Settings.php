@@ -46,11 +46,17 @@
             function mptrs_add_taxonomy_term_callback() {
                 $cities_html = '';
                 if ( isset( $_POST['nonce']) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mptrs_admin_nonce')) {
-                    $name = sanitize_text_field( wp_unslash($_POST['taxo_name'] ) );
-                    $slug = sanitize_title(wp_unslash($_POST['taxo_slug']));
-                    $desc = sanitize_textarea_field(wp_unslash($_POST['taxo_descname']));
-                    $post_id = sanitize_textarea_field(wp_unslash($_POST['restaurant_id']));
+
+                    $post_id = isset($_POST['restaurant_id']) ? sanitize_text_field(wp_unslash($_POST['restaurant_id'])) : '';
+                    $taxo_image_id = isset($_POST['mptrs_city_image_id'])
+                        ? sanitize_text_field(wp_unslash($_POST['mptrs_city_image_id']))
+                        : '';
                     $taxonomy = 'mptrs_restaurant_city';
+                    $name     = isset($_POST['mptrs_taxonomy_name']) ? sanitize_text_field(wp_unslash($_POST['mptrs_taxonomy_name'])) : '';
+                    $slug     = isset($_POST['mptrs_taxonomy_slug']) ? sanitize_title(wp_unslash($_POST['mptrs_taxonomy_slug'])) : '';
+                    $desc     = isset($_POST['mptrs_taxonomy_desc']) ? sanitize_textarea_field(wp_unslash($_POST['mptrs_taxonomy_desc'])) : '';
+
+
                     if (empty($name)) {
                         wp_send_json_error('Taxonomy name is required!');
                     }
@@ -58,6 +64,13 @@
                         'slug' => $slug,
                         'description' => $desc,
                     ]);
+
+                    if (is_wp_error( $term ) ) {
+                        wp_send_json_error($term->get_error_message());
+                    }
+                    if (!empty($taxo_image_id) && !is_wp_error($term)) {
+                        update_term_meta( $term['term_id'], 'mptrs_restaurant_city_image_id', $taxo_image_id );
+                    }
 
 
                     $cities_html = self::display_restaurant_cities( $post_id );
@@ -85,12 +98,14 @@
 
             }
 
-            public static function add_taxonomy_html_data( $type, $term_name, $post_id ){
+            public static function add_taxonomy_html_data( $type, $term_name, $post_id, $term_id = '' ){
+                $image_id = '';
                 ob_start();
                 ?>
                 <div class="mptrs_create_taxo_popup">
                     <div class="mptrs_create_taxo_popup_content">
                         <input type="hidden" name="mptrs_get_taxonomy_name" value="<?php echo esc_attr( $term_name );?>">
+                        <input type="hidden" name="mptrs_get_taxonomy_image_id" value="<?php echo esc_attr( $image_id ); ?>"/>
                         <span class="mptrs_create_taxo_close">&times;</span>
                         <h3><?php esc_html_e('Add New '.$type.'', 'tablely'); ?></h3>
                         <div id="mptrs_create_taxo_form">
@@ -102,6 +117,15 @@
 
                             <label><?php esc_html_e('Description:', 'tablely'); ?></label>
                             <textarea name="mptrs_taxo_desc" class="mptrs_create_taxo_input"></textarea><br>
+
+                            <label><?php esc_html_e('Image:', 'tablely'); ?></label>
+                            <div class="mptrs_taxo_image_holder">
+                                <img src="" alt="" style="width: 100px; height: auto">
+                                <button class="mptrs_taxo_image_add" type="button">
+                                    <?php esc_html_e('Add Image', 'tablely'); ?> <span class="fas fa-images"></span>
+                                </button>
+                            </div>
+
 
                             <button type="submit" class="mptrs_create_taxo_submitBtn" data-restaurant-id="<?php echo esc_attr( $post_id );?>"><?php esc_html_e('Save '.$type.'', 'tablely'); ?></button>
                         </div>
@@ -128,7 +152,8 @@
 
                 $term_name = 'mptrs_restaurant_city';
                 $type = 'City';
-                echo self::add_taxonomy_html_data( $type, $term_name, $post_id );
+                $term_id = '';
+                echo self::add_taxonomy_html_data( $type, $term_name, $post_id, $term_id );
 				?>
                 <div class="tabsItem" data-tabs="#mptrs_general_info">
 					<header>
