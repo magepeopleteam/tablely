@@ -120,6 +120,15 @@
     margin: 0 0 5px;
 }
 
+.mptrs_restaurant_link{
+    text-decoration: unset;
+}
+
+.mptrs_restaurant_link:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 
 
 .mptrs_restaurant_load_more_btn {

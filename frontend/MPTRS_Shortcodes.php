@@ -93,11 +93,25 @@
                 );
             }
 
-            public static function get_restaurant_lists( $attrs ) {
+            public static function get_restaurant_lists( $city_name ) {
+
+                $meta_city = '';
+                if( $city_name ){
+                    $meta_city = [
+                        'key'     => 'mptrs_restaurant_city',
+                        'value'   => $city_name,
+                        'compare' => '=',                      // exact match
+                    ];
+                }
+
+
                 $args = [
                     'post_type'      => 'mptrs_item',
                     'posts_per_page' => -1, // Load all, JS can control display
                     'post_status'    => 'publish',
+                    'meta_query'     => [
+                        $meta_city,
+                    ],
                 ];
 
                 $query = new WP_Query($args);
@@ -126,7 +140,7 @@
                     wp_reset_postdata();
                 }
 
-                $cities = array_filter($cities);
+                $cities = array_filter( array_unique( $cities ) );
                 $cities = array_values($cities);
 
                 return array(
@@ -137,14 +151,17 @@
 
             public function restaurant_lists_display( $attrs ){
                 $attrs = shortcode_atts( [
-                    'per_page'          => 2,
+                    'per_page'          => 20,
                     'columns'           => 4,
                     'style'             => 'grid',
                     'city_filter'       => 'yes',
+                    'city_name'         => '',
                     'load_more_button'  => 'yes',
                 ], $attrs, 'mptrs_restaurant_lists' );
 
-                $restaurant_data = self::get_restaurant_lists( $attrs );
+                $city_name = isset( $attrs['city_name'] ) ? $attrs['city_name'] : '';
+
+                $restaurant_data = self::get_restaurant_lists( $city_name );
                 $restaurant_lists = $restaurant_data['restaurants'];
 
                 $total_restaurant = count( $restaurant_lists );
@@ -156,6 +173,7 @@
                 $city_filter = isset( $attrs['city_filter'] ) ? $attrs['city_filter'] : 'no';
                 $per_page = isset( $attrs['per_page'] ) ? $attrs['per_page'] : 10;
                 $load_more = isset( $attrs['load_more_button'] ) ? $attrs['load_more_button'] : 'no';
+
                 if( $style === 'list' ){
                     $list_grid_class = 'list-view';
                     $description_show = 'block';
@@ -201,7 +219,7 @@
                                         <img src="<?php echo esc_url($restaurant['thumbnail']); ?>" alt="<?php echo esc_attr($restaurant['title']); ?>">
                                     </div>
                                     <div class="mptrs_restaurant_content">
-                                        <h3 class="mptrs_restaurant_name"><?php echo esc_html($restaurant['title']); ?></h3>
+                                        <a class="mptrs_restaurant_link" href="<?php echo esc_attr( $restaurant['permalink'] )?>"><h3 class="mptrs_restaurant_name"><?php echo esc_html($restaurant['title']); ?></h3></a>
                                         <p class="mptrs_restaurant_desc" style="display: <?php echo esc_attr( $description_show );?>"><?php echo esc_html($restaurant['description']); ?></p>
                                         <p class="mptrs_restaurant_type"><?php echo esc_html($restaurant['restaurant_type']); ?></p>
                                     </div>
