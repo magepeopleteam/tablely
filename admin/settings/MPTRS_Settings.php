@@ -89,12 +89,12 @@
 					$repeated_after = isset($_POST['mptrs_repeated_after']) ? sanitize_text_field(wp_unslash($_POST['mptrs_repeated_after'])) : 1;
 					update_post_meta($post_id, 'mptrs_repeated_after', $repeated_after);
 					$active_days = isset($_POST['mptrs_active_days']) ? sanitize_text_field(wp_unslash($_POST['mptrs_active_days'])) : '';
-					update_post_meta($post_id, 'mpwpb_active_days', $active_days);
+					update_post_meta($post_id, 'mptrs_active_days', $active_days);
 					//**********************//
-					$time_slot_length = isset($_POST['mpwpb_time_slot_length']) ? sanitize_text_field(wp_unslash($_POST['mpwpb_time_slot_length'])) : '';
-					$capacity_per_session = isset($_POST['mpwpb_capacity_per_session']) ? sanitize_text_field(wp_unslash($_POST['mpwpb_capacity_per_session'])) : '';
-					update_post_meta($post_id, 'mpwpb_time_slot_length', $time_slot_length);
-					update_post_meta($post_id, 'mpwpb_capacity_per_session', $capacity_per_session);
+					$time_slot_length = isset($_POST['mptrs_time_slot_length']) ? sanitize_text_field(wp_unslash($_POST['mptrs_time_slot_length'])) : '';
+					$capacity_per_session = isset($_POST['mptrs_capacity_per_session']) ? sanitize_text_field(wp_unslash($_POST['mptrs_capacity_per_session'])) : '';
+					update_post_meta($post_id, 'mptrs_time_slot_length', $time_slot_length);
+					update_post_meta($post_id, 'mptrs_capacity_per_session', $capacity_per_session);
 					//**********************//
 					$this->save_schedule($post_id, 'default');
 					$days = MPTRS_Function::week_day();
@@ -102,10 +102,11 @@
 						$this->save_schedule($post_id, $key);
 					}
 					//**********************//
-					$off_days = isset($_POST['mpwpb_off_days']) ? array_map('sanitize_text_field', wp_unslash($_POST['mpwpb_off_days'])) : [];
-					update_post_meta($post_id, 'mpwpb_off_days', $off_days);
+
+					$off_days = isset($_POST['mptrs_off_days']) ? sanitize_text_field( wp_unslash( $_POST[ 'mptrs_off_days' ] ) ) : [];
+					update_post_meta($post_id, 'mptrs_off_days', $off_days);
 					//**********************//
-					$off_dates = isset($_POST['mpwpb_off_dates']) ? array_map('sanitize_text_field', wp_unslash($_POST['mpwpb_off_dates'])) : [];
+					$off_dates = isset($_POST['mptrs_off_dates']) ? array_map('sanitize_text_field', wp_unslash($_POST['mptrs_off_dates'])) : [];
 					$_off_dates = array();
 					if (sizeof($off_dates) > 0) {
 						foreach ($off_dates as $off_date) {
@@ -114,47 +115,47 @@
 							}
 						}
 					}
-					update_post_meta($post_id, 'mpwpb_off_dates', $_off_dates);
+					update_post_meta($post_id, 'mptrs_off_dates', $_off_dates);
 				}
 				if (get_post_type($post_id) == MPTRS_Function::get_cpt()) {
-					$mpwpb_faq_active = isset($_POST['mpwpb_faq_active']) ? sanitize_text_field(wp_unslash($_POST['mpwpb_faq_active'])) : '';
-					update_post_meta($post_id, 'mpwpb_faq_active', $mpwpb_faq_active);
+					$mptrs_faq_active = isset($_POST['mptrs_faq_active']) ? sanitize_text_field(wp_unslash($_POST['mptrs_faq_active'])) : '';
+					update_post_meta($post_id, 'mptrs_faq_active', $mptrs_faq_active);
 				}
 				if (get_post_type($post_id) == MPTRS_Function::get_cpt()) {
-					$slider = isset($_POST['mpwpb_display_slider']) && sanitize_text_field(wp_unslash($_POST['mpwpb_display_slider'])) ? 'on' : 'off';
-					update_post_meta($post_id, 'mpwpb_display_slider', $slider);
-					$images = isset($_POST['mpwpb_slider_images']) ? sanitize_text_field(wp_unslash($_POST['mpwpb_slider_images'])) : '';
+					$slider = isset($_POST['mptrs_display_slider']) && sanitize_text_field(wp_unslash($_POST['mptrs_display_slider'])) ? 'on' : 'off';
+					update_post_meta($post_id, 'mptrs_display_slider', $slider);
+					$images = isset($_POST['mptrs_slider_images']) ? sanitize_text_field(wp_unslash($_POST['mptrs_slider_images'])) : '';
 					$all_images = explode(',', $images);
-					update_post_meta($post_id, 'mpwpb_slider_images', $all_images);
+					update_post_meta($post_id, 'mptrs_slider_images', $all_images);
 				}
 				do_action('mptrs_settings_save', $post_id);
 			}
 			public function save_schedule($post_id, $day) {
-				if (!isset($_POST['mpwpb_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['mpwpb_nonce'])), 'mpwpb_nonce') && defined('DOING_AUTOSAVE') && DOING_AUTOSAVE && !current_user_can('edit_post', $post_id)) {
+				if (!isset($_POST['mptrs_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['mptrs_nonce'])), 'mptrs_nonce') && defined('DOING_AUTOSAVE') && DOING_AUTOSAVE && !current_user_can('edit_post', $post_id)) {
 					return;
 				}
-				$start_name = 'mpwpb_' . $day . '_start_time';
+				$start_name = 'mptrs_' . $day . '_start_time';
 				$start_time = isset($_POST[$start_name]) ? sanitize_text_field(wp_unslash($_POST[$start_name])) : '';
 				update_post_meta($post_id, $start_name, $start_time);
-				$end_name = 'mpwpb_' . $day . '_end_time';
+				$end_name = 'mptrs_' . $day . '_end_time';
 				$end_time = isset($_POST[$end_name]) ? sanitize_text_field(wp_unslash($_POST[$end_name])) : '';
 				update_post_meta($post_id, $end_name, $end_time);
-				$start_name_break = 'mpwpb_' . $day . '_start_break_time';
+				$start_name_break = 'mptrs_' . $day . '_start_break_time';
 				$start_time_break = isset($_POST[$start_name_break]) ? sanitize_text_field(wp_unslash($_POST[$start_name_break])) : '';
 				update_post_meta($post_id, $start_name_break, $start_time_break);
-				$end_name_break = 'mpwpb_' . $day . '_end_break_time';
+				$end_name_break = 'mptrs_' . $day . '_end_break_time';
 				$end_time_break = isset($_POST[$end_name_break]) ? sanitize_text_field(wp_unslash($_POST[$end_name_break])) : '';
 				update_post_meta($post_id, $end_name_break, $end_time_break);
 			}
 			public static function description_array($key) {
 				$des = array(
-					'mpwpb_display_slider' => esc_html__('By default slider is ON but you can keep it off by switching this option', 'tablely'),
-					'mpwpb_slider_images' => esc_html__('Please upload images for gallery', 'tablely'),
+					'mptrs_display_slider' => esc_html__('By default slider is ON but you can keep it off by switching this option', 'tablely'),
+					'mptrs_slider_images' => esc_html__('Please upload images for gallery', 'tablely'),
 					'date_time_desc' => esc_html__('Date & time settings', 'tablely'),
 					'general_date_time_desc' => esc_html__('Date & time settings', 'tablely'),
 					//''          => esc_html__( '', 'tablely' ),
 				);
-				$des = apply_filters('mpwpb_filter_description_array', $des);
+				$des = apply_filters('mptrs_filter_description_array', $des);
 				return $des[$key];
 			}
 			public static function info_text($key) {

@@ -178,6 +178,7 @@
 
 
 /*Shortcode*/
+
 .mptrs_food_menu_wrapper{
     display: flex;
     flex-direction: column;
@@ -214,7 +215,9 @@
     grid-template-columns: repeat(var(--mptrs-columns, 3), 1fr);
 }
 .mptrs_food_menu_container.list-view {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 /* ---------- Card Design ---------- */

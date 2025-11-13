@@ -117,7 +117,9 @@
 				wp_enqueue_style( 'mptrs', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs.css', [], time() );
 				wp_enqueue_script( 'mptrs', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs.js', [ 'jquery' ], time(), true );
 				wp_enqueue_script( 'mptrs_seat_mapping', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_seat_mapping.js', [ 'jquery' ], time(), true );
+				wp_enqueue_script( 'mptrs_restaurant_lists', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_restaurant_lists.js', [ 'jquery' ], time(), true );
 				wp_enqueue_style( 'mptrs_registration', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_registration.css', [], time() );
+				wp_enqueue_style( 'mptrs_restaurant_lists', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_restaurant_lists.css', [], time() );
 				wp_enqueue_style( 'mptrs_seat_mapping', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_seat_mapping.css', [], null );
 				wp_enqueue_style( 'mptrs-frontend', MPTRS_PLUGIN_URL . '/assets/frontend/frontend.css', [], time() );
 				wp_enqueue_style( 'mptrs_food_menu_add_cart', MPTRS_PLUGIN_URL . '/assets/frontend/mptrs_food_menu_add_cart.css', [], time() );

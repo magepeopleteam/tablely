@@ -101,6 +101,6 @@ if ( !class_exists('MPTRS_Restaurant_Settings' ) ) {
         }
     }
 
-
+    new MPTRS_Restaurant_Settings();
 }
-new MPTRS_Restaurant_Settings();
+
