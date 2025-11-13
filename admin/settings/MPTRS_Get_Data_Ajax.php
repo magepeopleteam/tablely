@@ -44,6 +44,98 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
             add_action('wp_ajax_nopriv_mptrs_set_seat_mapping_info', [$this, 'mptrs_set_seat_mapping_info'] );
 
 
+            add_action('wp_ajax_mptrs_get_day_wise_time_slot', [$this, 'mptrs_get_day_wise_time_slot'] );
+            add_action('wp_ajax_nopriv_mptrs_get_day_wise_time_slot', [$this, 'mptrs_get_day_wise_time_slot'] );
+
+
+        }
+
+        public static function floatToMinutes($floatHour) {
+            return floor($floatHour) * 60 + ($floatHour - floor($floatHour)) * 60;
+        }
+        public static function minutesToTime($minutes) {
+            $h = floor($minutes / 60);
+            $m = $minutes % 60;
+            return date("g:i a", mktime($h, $m));
+        }
+
+        public static function get_time_slot( $post_id, $day ){
+
+            $default_start_time = get_post_meta( $post_id, 'mptrs_default_start_time', true ) ;
+            $default_end_time = get_post_meta( $post_id, 'mptrs_default_end_time', true ) ;
+            $default_start_break_time = get_post_meta( $post_id, 'mptrs_default_start_break_time', true ) ;
+            $default_end_break_time = get_post_meta( $post_id, 'mptrs_default_end_break_time', true ) ;
+
+            $start_name = 'mptrs_' . $day . '_start_time';
+            $start_time = MPTRS_Function::get_post_info($post_id, $start_name, $default_start_time );
+
+            $end_name = 'mptrs_' . $day . '_end_time';
+            $end_time = MPTRS_Function::get_post_info($post_id, $end_name, $default_end_time);
+
+            $start_name_break = 'mptrs_' . $day . '_start_break_time';
+            $start_time_break = MPTRS_Function::get_post_info($post_id, $start_name_break, $default_start_break_time );
+
+            $end_name_break = 'mptrs_' . $day . '_end_break_time';
+            $end_time_break = MPTRS_Function::get_post_info($post_id, $end_name_break, $default_end_break_time );
+
+            $input = [
+                'start_time'   => $start_time,
+                'end_time'     => $end_time,
+                'start_time_break'   => $start_time_break,
+                'end_time_break'   => $end_time_break,
+
+            ];
+            $interval = 15;
+            $times = [];
+            $start = self::floatToMinutes($input['start_time']);
+            $end = self::floatToMinutes($input['end_time']);
+            $breakStart = self::floatToMinutes($input['start_time_break']);
+            $breakEnd = self::floatToMinutes($input['end_time_break']);
+
+            for ($time = $start; $time <= $end; $time += $interval) {
+                if ($time >= $breakStart && $time < $breakEnd) {
+                    continue;
+                }
+                $times[] = self::minutesToTime($time);
+            }
+
+            return $times;
+        }
+
+        function mptrs_get_day_wise_time_slot() {
+
+            $time_slot = '';
+            $result =false;
+
+            if ( isset($_POST['nonce']) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mptrs_nonce')) {
+
+                $cart_details = isset( $_COOKIE['mptrs_cart_details_cookie']) ? sanitize_text_field( wp_unslash( $_COOKIE['mptrs_cart_details_cookie'] ) ) : '';
+                $cart_details_array = json_decode( $cart_details, true );
+
+                $setOrderTime = !empty( $cart_details_array ) && isset( $cart_details_array['mptrs_orderTime'] ) ? $cart_details_array['mptrs_orderTime'] : '10:00 am';
+
+
+                $restaurant_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
+                $day            = isset( $_POST['day_name'] ) ? sanitize_text_field( wp_unslash( strtolower( $_POST['day_name'] ) ) ) : '';
+
+                if( $restaurant_id ){
+                    $times = self::get_time_slot( $restaurant_id, $day );
+
+
+                    foreach ($times as $time) {
+                        $selected = ($setOrderTime === $time) ? 'selected' : '';
+                        $time_slot .= "<option value='{$time}' {$selected}>{$time}</option>\n";
+                    }
+
+                    $result = true;
+                }
+            }
+
+            wp_send_json_success([
+                'time_slot' => $time_slot,
+                'success' => $result,
+            ]);
+
         }
 
         function mptrs_set_seat_mapping_info() {
@@ -219,8 +311,6 @@ if (!class_exists('MPTRS_Get_Data_Ajax')) {
 
                 $orderVarDetailsAry = isset( $_POST['orderVarDetailsStr'] ) ? (array)json_decode( sanitize_text_field( wp_unslash( $_POST['orderVarDetailsStr'] ) ) ) : [];
                 $mptrs_extra_service = isset( $_POST['mptrs_extra_service'] ) ? (array)json_decode( sanitize_text_field( wp_unslash( $_POST['mptrs_extra_service'] ) ) ) : [];
-
-//                error_log( print_r( [ '$mptrs_extra_service' => $mptrs_extra_service ], true ) );
 
                 $menu = '<div class="mptrs_orderDetailLis"><ul class="mptrs_orderDetailListsHolder">';
                 foreach ($ordered_menu_key as $key => $value) {

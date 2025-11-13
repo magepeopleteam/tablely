@@ -331,6 +331,9 @@ if (!class_exists('MPTRS_Template')) {
 
             ?>
             <div class="mptrs-ordered-basket" id="mptrs_orderedFoodMenuInfoHolder">
+                <input type="hidden" id="mptrs_disabled_dates" value="12-11-2025,15-11-2025,25-11-2025">
+                <input type="hidden" id="mptrs_disabled_days" value="sunday">
+                <input type="hidden" id="mptrs_restaurant_id" value="<?php echo esc_attr( $post_id );?>">
                 <div class="mptrs-basket-top">
                     <div class="mptrs_orderTypeDatesDisplay">
                         <span class="mptrs_orderTypeDates" id="mptrs_orderTypeDates">

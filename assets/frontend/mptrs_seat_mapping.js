@@ -995,78 +995,6 @@ jQuery(document).ready(function ($) {
 
     });
 
-    function mptrs_display_popup_for_order_types_old(){
-
-        let cart_details_cookie_data = getCookie('mptrs_cart_details_cookie' );
-        let cartCookieDetails = {};
-        if ( cart_details_cookie_data ) {
-            cartCookieDetails = JSON.parse(cart_details_cookie_data);
-        }else{
-            cartCookieDetails = mptrs_orderSettings;
-        }
-        let setLocations = '';
-        if( cartCookieDetails.hasOwnProperty( 'mptrs_locations' ) && cartCookieDetails.mptrs_locations ){
-            setLocations = cartCookieDetails.mptrs_locations;
-        }
-
-        let orderTypes = `
-            <div class="mptrs_popupOverlay" id="mptrs_popupOverlay">
-                <div class="mptrs_popupBox">
-                <span class="mptrs_closeBtn"><i class="fas fa-times"></i></span>
-                <div class="mptrs_popupTitle">Your Order Settings</div>
-       
-                <div class="mptrs_toggleBtns">
-                    <button id="mptrs_dine_in" class="mptrs_orderTypeSelect active">Delivery</button>
-                    <button id="mptrs_take_away" class="mptrs_orderTypeSelect">Takeaway</button>
-                    <button id="mptrs_dineInBtn" class="mptrs_orderTypeSelect">Dine-In</button>
-                </div>
-        
-                
-                <div class="mptrs_DatePickerContainer">
-                    <label for="mptrs_dateDatepicker">Select pickup order date</label>
-                    <input type="text" id="mptrs_dateDatepicker" class="mptrs_datepicker_input" placeholder="Select a Date">
-                    <span class="mptrs_calendarIcon">&#128197;</span>
-                </div>
-        
-                <div class="mptrs_DatePickerContainer">
-                    <label for="mptrs_pickupTime">Select a pickup time</label>
-                    <select id="mptrs_pickupTime" class="mptrs_dropdown">
-                        <option>8:30am</option>
-                        <option>9:00am</option>
-                        <option>9:30am</option>
-                        <option>10:00am</option>
-                        <option>10:30am</option>
-                        <option>11:00am</option>
-                        <option>11:30am</option>
-                        <option>12:00pm</option>
-                        <option>12:30pm</option>
-                    </select>
-                </div>
-                
-                <div class="mptrs_OrderTypeLocationsContainer" style="display: block">
-                    <label for="mptrs_deliveryLocation">Set Delivery Location</label>
-                    <input type="text" id="mptrs_deliveryLocation" class="mptrs_deliveryLocations" value="${setLocations}" placeholder="Set Delivery Location">
-                </div>
-        
-                <button class="mptrs_updateBtn" id="mptrs_updateorderTypeBtn">Update</button>
-            </div>
-        </div>`
-        $('body').append( orderTypes );
-        let today = $.datepicker.formatDate("dd MM yy", new Date());
-
-        $(".mptrs_datepicker_input").datepicker({
-
-            dateFormat: "dd MM yy",  // Formats as "10 March 2025"
-            changeMonth: true,
-            changeYear: true,
-            minDate: 0,
-            maxDate: "+1Y",
-        }).val( today );
-
-        mptrs_load_auto_complete();
-
-    }
-
     function mptrs_display_popup_for_order_types() {
 
         let cart_details_cookie_data = getCookie('mptrs_cart_details_cookie' );
@@ -1087,70 +1015,129 @@ jQuery(document).ready(function ($) {
         // Default values (fallbacks)
         let setOrderType = cartCookieDetails.mptrs_orderType || 'Delivery';
         let setOrderDate = cartCookieDetails.mptrs_orderDate || $.datepicker.formatDate("dd MM yy", new Date());
-        let setOrderTime = cartCookieDetails.mptrs_orderTime || '8:30am';
+        let setOrderTime = cartCookieDetails.mptrs_orderTime || '9:30am';
         let setLocations = cartCookieDetails.mptrs_locations || '';
 
         let isDelivery = setOrderType === 'Delivery' ? 'block' : 'none';
+
+        let restaurantID = $("#mptrs_restaurant_id").val().trim();
         // Build popup HTML
         let orderTypes = `
-        <div class="mptrs_popupOverlay" id="mptrs_popupOverlay">
-            <div class="mptrs_popupBox">
-                <span class="mptrs_closeBtn"><i class="fas fa-times"></i></span>
-                <div class="mptrs_popupTitle">Your Order Settings</div>
-    
-                <div class="mptrs_toggleBtns">
-                    <button id="mptrs_dine_in" class="mptrs_orderTypeSelect ${setOrderType === 'Delivery' ? 'active' : ''}">Delivery</button>
-                    <button id="mptrs_take_away" class="mptrs_orderTypeSelect ${setOrderType === 'Takeaway' ? 'active' : ''}">Takeaway</button>
-                    <button id="mptrs_dineInBtn" class="mptrs_orderTypeSelect ${setOrderType === 'Dine-In' ? 'active' : ''}">Dine-In</button>
+            <div class="mptrs_popupOverlay" id="mptrs_popupOverlay">
+                <div class="mptrs_popupBox">
+                    <span class="mptrs_closeBtn"><i class="fas fa-times"></i></span>
+                    <div class="mptrs_popupTitle">Your Order Settings</div>
+        
+                    <div class="mptrs_toggleBtns">
+                        <button id="mptrs_dine_in" class="mptrs_orderTypeSelect ${setOrderType === 'Delivery' ? 'active' : ''}">Delivery</button>
+                        <button id="mptrs_take_away" class="mptrs_orderTypeSelect ${setOrderType === 'Takeaway' ? 'active' : ''}">Takeaway</button>
+                        <button id="mptrs_dineInBtn" class="mptrs_orderTypeSelect ${setOrderType === 'Dine-In' ? 'active' : ''}">Dine-In</button>
+                    </div>
+        
+                    <div class="mptrs_DatePickerContainer">
+                        <label for="mptrs_dateDatepicker">Select pickup order date</label>
+                        <input type="text" id="mptrs_dateDatepicker" class="mptrs_datepicker_input" placeholder="Select a Date" value="${setOrderDate}">
+                        <span class="mptrs_calendarIcon">&#128197;</span>
+                    </div>
+        
+                    <div class="mptrs_DatePickerContainer">
+                        <label for="mptrs_pickupTime">Select a pickup time</label>
+                        <select id="mptrs_pickupTime" class="mptrs_dropdown">
+                            
+                        </select>
+                    </div>
+        
+                    <div class="mptrs_OrderTypeLocationsContainer" style="display: ${isDelivery}">
+                        <label for="mptrs_deliveryLocation">Set Delivery Location</label>
+                        <input type="text" id="mptrs_deliveryLocation" class="mptrs_deliveryLocations" value="${setLocations}" placeholder="Set Delivery Location">
+                    </div>
+        
+                    <button class="mptrs_updateBtn" id="mptrs_updateorderTypeBtn">Update</button>
                 </div>
-    
-                <div class="mptrs_DatePickerContainer">
-                    <label for="mptrs_dateDatepicker">Select pickup order date</label>
-                    <input type="text" id="mptrs_dateDatepicker" class="mptrs_datepicker_input" placeholder="Select a Date" value="${setOrderDate}">
-                    <span class="mptrs_calendarIcon">&#128197;</span>
-                </div>
-    
-                <div class="mptrs_DatePickerContainer">
-                    <label for="mptrs_pickupTime">Select a pickup time</label>
-                    <select id="mptrs_pickupTime" class="mptrs_dropdown">
-                        <option ${setOrderTime === '8:30am' ? 'selected' : ''}>8:30am</option>
-                        <option ${setOrderTime === '9:00am' ? 'selected' : ''}>9:00am</option>
-                        <option ${setOrderTime === '9:30am' ? 'selected' : ''}>9:30am</option>
-                        <option ${setOrderTime === '10:00am' ? 'selected' : ''}>10:00am</option>
-                        <option ${setOrderTime === '10:30am' ? 'selected' : ''}>10:30am</option>
-                        <option ${setOrderTime === '11:00am' ? 'selected' : ''}>11:00am</option>
-                        <option ${setOrderTime === '11:30am' ? 'selected' : ''}>11:30am</option>
-                        <option ${setOrderTime === '12:00pm' ? 'selected' : ''}>12:00pm</option>
-                        <option ${setOrderTime === '12:30pm' ? 'selected' : ''}>12:30pm</option>
-                    </select>
-                </div>
-    
-                <div class="mptrs_OrderTypeLocationsContainer" style="display: ${isDelivery}">
-                    <label for="mptrs_deliveryLocation">Set Delivery Location</label>
-                    <input type="text" id="mptrs_deliveryLocation" class="mptrs_deliveryLocations" value="${setLocations}" placeholder="Set Delivery Location">
-                </div>
-    
-                <button class="mptrs_updateBtn" id="mptrs_updateorderTypeBtn">Update</button>
             </div>
-        </div>
-    `;
-
-        // Append popup
+        `;
         $('body').append(orderTypes);
 
-        // Datepicker setup
+        handleDateSelected( setOrderDate, restaurantID );
+
+
+        const mptrs_dayMap = {
+            sunday: 0,
+            monday: 1,
+            tuesday: 2,
+            wednesday: 3,
+            thursday: 4,
+            friday: 5,
+            saturday: 6
+        };
+        const mptrs_daysValue = $("#mptrs_disabled_days").val().toLowerCase().split(',').map(day => day.trim());
+        const mptrs_disabledDays = mptrs_daysValue.map(day => mptrs_dayMap[day]).filter(num => num !== undefined);
+
+        const mptrs_dateInput = $('#mptrs_disabled_dates').val();
+        const mptrs_dateArray = mptrs_dateInput.split(',');
+        const  mptrs_disabledDates = mptrs_dateArray.map(dateStr => {
+            const [day, month, year] = dateStr.split('-');
+            const dateObj = new Date(`${year}-${month}-${day}`);
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            return dateObj.toLocaleDateString('en-GB', options);
+        });
+
+
         $(".mptrs_datepicker_input").datepicker({
             dateFormat: "dd MM yy",
             changeMonth: true,
             changeYear: true,
             minDate: 0,
             maxDate: "+1Y",
+            beforeShowDay: function(date) {
+                const day = date.getDay();
+                const formattedDate = $.datepicker.formatDate('dd MM yy', date);
+                if ( mptrs_disabledDays.includes(day)) {
+                    return [false, "", "This day is disabled"];
+                }
+                if (mptrs_disabledDates.includes(formattedDate)) {
+                    return [false, "", "Date Disabled"];
+                }
+                return [true, ""];
+            },
+            onSelect: function( selectedDate, inst) {
+                handleDateSelected( selectedDate, restaurantID );
+            }
         });
 
-        // Initialize autocomplete if needed
         if (typeof mptrs_load_auto_complete === 'function') {
             mptrs_load_auto_complete();
         }
+    }
+
+    function handleDateSelected( dateString, restaurantID ) {
+        let dateObj= {};
+        let dayName = '';
+
+        if( dateString ){
+            dateObj = new Date( dateString );
+            dayName = dateObj.toLocaleDateString('en-GB', { weekday: 'long' });
+        }else{const today = new Date();
+           dayName = today.toLocaleDateString('en-GB', { weekday: 'long' });
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: mptrs_ajax.ajax_url,
+            data: {
+                action: 'mptrs_get_day_wise_time_slot',
+                nonce: mptrs_ajax.nonce,
+                post_id: restaurantID,
+                day_name: dayName,
+            },
+            success: function (response) {
+                if (response.data.success) {
+                    $("#mptrs_pickupTime").html(response.data.time_slot );
+                } else {
+                    console.log(response.success);
+                }
+            }
+        });
     }
 
 
